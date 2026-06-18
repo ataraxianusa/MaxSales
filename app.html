@@ -4,11 +4,9 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>MaxSales Dashboard</title>
-    <script type="module" crossorigin src="/MaxSales/assets/index-C8DvhmKT.js"></script>
-    <link rel="stylesheet" crossorigin href="/MaxSales/assets/index-B3gX-9Tq.css">
+    <script type="module" crossorigin src="./assets/index-C8DvhmKT.js"></script>
+    <link rel="stylesheet" crossorigin href="./assets/index-B3gX-9Tq.css">
     <style>
-      /* Fallback: tampilkan pesan ramah jika React gagal mount */
-      #root:empty ~ #fallback { display: flex; }
       #fallback {
         display: none;
         position: fixed;
@@ -47,7 +45,6 @@
       <a href="./">← Kembali ke Landing Page</a>
     </div>
     <script>
-      // Tampilkan fallback jika React tidak mount dalam 5 detik
       setTimeout(function() {
         var root = document.getElementById('root');
         var fallback = document.getElementById('fallback');
