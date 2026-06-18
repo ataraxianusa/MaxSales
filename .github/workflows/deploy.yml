@@ -36,11 +36,11 @@ jobs:
         env:
           VITE_GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
 
-      # Deploy built dist/ INTO the gh-pages branch.
-      # clean: false  → preserves existing files on gh-pages (our landing index.html)
-      # folder: dist  → only the built assets are pushed
-      # target-folder: .  → place them at the repo root on gh-pages (Vite base=/MaxSales/
-      #                      means all assets already have /MaxSales/ prefix baked in)
+      # Rename index.html → app.html so the landing page (index.html on gh-pages)
+      # is never overwritten by the React build output.
+      - name: Rename dist/index.html to app.html
+        run: mv dist/index.html dist/app.html
+
       - name: Deploy to gh-pages (preserve landing)
         uses: JamesIves/github-pages-deploy-action@v4
         with:
