@@ -1,0 +1,133 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap');
+@import "tailwindcss";
+
+@variant dark (&:where(.dark, .dark *));
+
+:root {
+  /* Clean, crisp styling colors for Light Mode */
+  --slate-50: #f8fafc;
+  --slate-100: #f1f5f9;
+  --slate-150: #e2e8f0;
+  --slate-200: #e2e8f0;
+  --slate-201: #e2e8f0;
+  --slate-205: #cbd5e1;
+  --slate-250: #94a3b8;
+  --slate-300: #cbd5e1;
+  --slate-400: #64748b;
+  --slate-500: #64748b;
+  --slate-700: #334155;
+  --slate-702: #1e293b;
+  --slate-705: #1e293b;
+  --slate-800: #1e293b;
+  --slate-850: #0f172a;
+  --slate-900: #0f172a;
+  --slate-950: #020617;
+
+  /* Custom helper backgrounds for standard light wrapper overrides */
+  --gray-800: #e2e8f0;
+  --gray-850: #cbd5e1;
+  --gray-900: #0f172a;
+
+  --body-bg: #f8fafc;
+  --body-color: #0f172a;
+  --scroll-track: #f1f5f9;
+  --scroll-thumb: #cbd5e1;
+}
+
+.dark {
+  /* Custom brand colors for Sophisticated Dark Mode */
+  --slate-50: #0d1117;
+  --slate-100: #161b22;
+  --slate-150: #1a1f26;
+  --slate-200: #1f2937;
+  --slate-201: #1f2937;
+  --slate-205: #1f2937;
+  --slate-250: #1f2937;
+  --slate-300: #30363d;
+  --slate-400: #768390;
+  --slate-500: #768390;
+  --slate-700: #21262d;
+  --slate-702: #21262d;
+  --slate-705: #21262d;
+  --slate-800: #1f2937;
+  --slate-850: #111827;
+  --slate-900: #0a0c10;
+  --slate-950: #07090d;
+
+  --gray-800: #1f2937;
+  --gray-850: #151d28;
+  --gray-900: #0d1117;
+
+  --body-bg: #0a0c10;
+  --body-color: #e5e7eb;
+  --scroll-track: #0a0c10;
+  --scroll-thumb: #1f2937;
+}
+
+@theme {
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, monospace;
+
+  /* Overwrite default slate color palette with our CSS custom variables */
+  --color-slate-50: var(--slate-50);
+  --color-slate-100: var(--slate-100);
+  --color-slate-150: var(--slate-150);
+  --color-slate-200: var(--slate-200);
+  --color-slate-201: var(--slate-201);
+  --color-slate-205: var(--slate-205);
+  --color-slate-250: var(--slate-250);
+  --color-slate-300: var(--slate-300);
+  --color-slate-400: var(--slate-400);
+  --color-slate-500: var(--slate-500);
+  --color-slate-700: var(--slate-700);
+  --color-slate-702: var(--slate-702);
+  --color-slate-705: var(--slate-705);
+  --color-slate-800: var(--slate-800);
+  --color-slate-850: var(--slate-850);
+  --color-slate-900: var(--slate-900);
+  --color-slate-950: var(--slate-950);
+
+  /* Custom helper backgrounds for standard dark mode wrappers and borders */
+  --color-gray-800: var(--gray-800);
+  --color-gray-850: var(--gray-850);
+  --color-gray-900: var(--gray-900);
+}
+
+body {
+  background-color: var(--body-bg);
+  color: var(--body-color);
+  transition: background-color 0.25s, color 0.25s;
+}
+
+/* Custom scrollbar to keep layout clean and premium */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: var(--scroll-track);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--scroll-thumb);
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #00A3E0;
+}
+
+/* Premium native transition animation for chart filters and updates */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fadeInUp {
+  animation: fadeInUp 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
