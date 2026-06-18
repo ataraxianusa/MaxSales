@@ -3,11 +3,58 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>MaxSales by VOXIA</title>
+    <title>MaxSales Dashboard</title>
     <script type="module" crossorigin src="/MaxSales/assets/index-C8DvhmKT.js"></script>
     <link rel="stylesheet" crossorigin href="/MaxSales/assets/index-B3gX-9Tq.css">
+    <style>
+      /* Fallback: tampilkan pesan ramah jika React gagal mount */
+      #root:empty ~ #fallback { display: flex; }
+      #fallback {
+        display: none;
+        position: fixed;
+        inset: 0;
+        background: #0a0c10;
+        color: #e6edf3;
+        font-family: 'Inter', system-ui, sans-serif;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 1rem;
+        text-align: center;
+        padding: 2rem;
+      }
+      #fallback h2 { font-size: 1.5rem; font-weight: 700; color: #00a3e0; }
+      #fallback p { color: #8b949e; max-width: 40ch; line-height: 1.7; }
+      #fallback a {
+        display: inline-flex; align-items: center; gap: .5rem;
+        margin-top: .5rem; padding: .65rem 1.5rem;
+        background: #00a3e0; color: #fff;
+        border-radius: .75rem; font-weight: 600;
+        text-decoration: none; font-size: .95rem;
+      }
+    </style>
   </head>
   <body>
     <div id="root"></div>
+    <div id="fallback">
+      <svg width="40" height="40" viewBox="0 0 28 28" fill="none">
+        <rect width="28" height="28" rx="7" fill="#00a3e0"/>
+        <path d="M6 18L11 10L15.5 15.5L19.5 8" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+        <circle cx="19.5" cy="8" r="2.5" fill="#ffb400"/>
+      </svg>
+      <h2>Memuat MaxSales Dashboard…</h2>
+      <p>Jika halaman ini tetap kosong, coba refresh browser atau gunakan Chrome/Edge versi terbaru.</p>
+      <a href="./">← Kembali ke Landing Page</a>
+    </div>
+    <script>
+      // Tampilkan fallback jika React tidak mount dalam 5 detik
+      setTimeout(function() {
+        var root = document.getElementById('root');
+        var fallback = document.getElementById('fallback');
+        if (root && !root.hasChildNodes() && fallback) {
+          fallback.style.display = 'flex';
+        }
+      }, 5000);
+    </script>
   </body>
 </html>
