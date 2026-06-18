@@ -10,8 +10,6 @@ import {
   Sparkles,
   Compass,
   Users,
-  Search,
-  Bell,
   TrendingUp,
   MapPin,
   Moon,
@@ -21,7 +19,7 @@ import {
   LogOut,
   User,
   CreditCard,
-  Settings
+  Home
 } from 'lucide-react';
 
 interface SidebarProps {
@@ -42,6 +40,7 @@ interface SidebarProps {
   };
   onEditProfile?: () => void;
   onViewBilling?: () => void;
+  onBackToLanding?: () => void;
 }
 
 export default function Sidebar({
@@ -54,7 +53,8 @@ export default function Sidebar({
   addToast,
   userProfile,
   onEditProfile,
-  onViewBilling
+  onViewBilling,
+  onBackToLanding
 }: SidebarProps) {
   const [profileDropdownOpen, setProfileDropdownOpen] = React.useState(false);
 
@@ -87,7 +87,7 @@ export default function Sidebar({
                   VOXIA
                 </span>
                 <span className="block text-[10px] font-mono font-bold uppercase tracking-wider text-slate-400 dark:text-gray-500">
-                  Sales-Flow
+                  MaxSales
                 </span>
               </div>
             </div>
@@ -131,6 +131,18 @@ export default function Sidebar({
 
         {/* Lower Toolbar / Actions */}
         <div className="p-3 border-t border-slate-200 dark:border-gray-850 space-y-2">
+          {/* Back to Landing Page button */}
+          {onBackToLanding && (
+            <button
+              onClick={onBackToLanding}
+              className="w-full flex items-center gap-2 px-3 py-2 rounded-lg text-xs font-semibold hover:bg-[#00A3E0]/10 text-slate-600 dark:text-gray-400 hover:text-[#00A3E0] cursor-pointer transition-all border border-transparent hover:border-[#00A3E0]/30"
+              title="Kembali ke Halaman Muka"
+            >
+              <Home size={15} className="flex-shrink-0" />
+              {!collapsed && <span className="font-medium">Kembali ke Beranda</span>}
+            </button>
+          )}
+
           {/* Theme switcher toggle button */}
           <button
             onClick={() => {
@@ -235,16 +247,16 @@ export default function Sidebar({
             </button>
           );
         })}
-        {/* Toggle option tab button on mobile */}
-        <button
-          onClick={() => setActiveTab('branches')}
-          className={`flex flex-col items-center justify-center h-full px-2 py-1 space-y-0.5 cursor-pointer ${
-            activeTab === 'branches' ? 'text-[#00A3E0]' : 'text-gray-500'
-          }`}
-        >
-          <MapPin size={18} className={activeTab === 'branches' ? 'scale-110' : ''} />
-          <span className="text-[10px] font-bold">Cabang</span>
-        </button>
+        {/* Back to landing on mobile */}
+        {onBackToLanding && (
+          <button
+            onClick={onBackToLanding}
+            className="flex flex-col items-center justify-center h-full px-2 py-1 space-y-0.5 cursor-pointer text-gray-500 hover:text-[#00A3E0]"
+          >
+            <Home size={18} />
+            <span className="text-[10px] font-bold">Beranda</span>
+          </button>
+        )}
       </div>
     </>
   );

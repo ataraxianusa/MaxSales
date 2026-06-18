@@ -55,7 +55,8 @@ import {
   Zap,
   Globe,
   ChevronRight,
-  Play
+  Play,
+  Home
 } from 'lucide-react';
 
 interface ToastMessage {
@@ -80,7 +81,7 @@ function LandingPage({ onEnterDashboard }: { onEnterDashboard: () => void }) {
     {
       icon: <Brain size={22} />,
       title: 'AI Sales Advisor',
-      desc: 'Asisten cerdas berbasis Gemini AI yang membantu strategi penjualan dan analisis prospek secara real-time.',
+      desc: 'Asisten cerdas berbasis Voxia AI yang membantu strategi penjualan dan analisis prospek secara real-time.',
     },
     {
       icon: <Target size={22} />,
@@ -100,7 +101,7 @@ function LandingPage({ onEnterDashboard }: { onEnterDashboard: () => void }) {
     {
       icon: <Zap size={22} />,
       title: 'Branding Generator',
-      desc: 'Buat aset promosi berkualitas tinggi dengan AI dalam hitungan detik — siap pakai untuk semua kanal.',
+      desc: 'Buat aset promosi berkualitas tinggi dengan Voxia AI dalam hitungan detik — siap pakai untuk semua kanal.',
     },
     {
       icon: <TrendingUp size={22} />,
@@ -113,12 +114,12 @@ function LandingPage({ onEnterDashboard }: { onEnterDashboard: () => void }) {
     { value: '10x', label: 'Peningkatan Efisiensi Tim Sales' },
     { value: '98%', label: 'Tingkat Kepuasan Pengguna' },
     { value: '500+', label: 'Bisnis Aktif Terdaftar' },
-    { value: '24/7', label: 'Dukungan AI Non-Stop' },
+    { value: '24/7', label: 'Dukungan Voxia AI Non-Stop' },
   ];
 
   return (
     <div className="min-h-screen bg-[#07090d] text-gray-200 font-sans overflow-x-hidden">
-      {/* ── NAV ─────────────────────────────────────────────────── */}
+      {/* ── NAV ────────────────────────────────────────────────────── */}
       <nav
         className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
           scrolled
@@ -155,7 +156,7 @@ function LandingPage({ onEnterDashboard }: { onEnterDashboard: () => void }) {
         </div>
       </nav>
 
-      {/* ── HERO ────────────────────────────────────────────────── */}
+      {/* ── HERO ─────────────────────────────────────────────────────── */}
       <section className="relative min-h-screen flex flex-col items-center justify-center text-center px-6 pt-16 overflow-hidden">
         {/* Atmospheric glow */}
         <div className="absolute top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-[#00A3E0]/8 rounded-full blur-[100px] pointer-events-none" />
@@ -165,11 +166,11 @@ function LandingPage({ onEnterDashboard }: { onEnterDashboard: () => void }) {
         {/* Badge */}
         <div className="inline-flex items-center gap-2 px-3 py-1.5 bg-[#00A3E0]/10 border border-[#00A3E0]/30 rounded-full text-[#00A3E0] text-xs font-bold tracking-wider mb-6 relative z-10">
           <Sparkles size={12} className="animate-pulse" />
-          Powered by Gemini AI · Versi 2.0 · 2026
+          Powered by Voxia AI · Versi 2.0 · 2026
         </div>
 
         {/* Heading */}
-        <h1 className="relative z-10 text-4xl sm:text-5xl md:text-6xl font-black text-white leading-tight max-w-4xl mb-6 tracking-tight">
+        <h1 className="relative z-10 text-4xl sm:text-5xl md:text-7xl font-black text-white leading-[1.05] max-w-4xl mb-6 tracking-tight">
           Platform CRM &amp; Sales AI{' '}
           <span className="text-[#00A3E0]">Paling Cerdas</span>{' '}
           untuk Bisnis Modern
@@ -177,7 +178,7 @@ function LandingPage({ onEnterDashboard }: { onEnterDashboard: () => void }) {
 
         {/* Sub */}
         <p className="relative z-10 text-slate-400 text-base sm:text-lg max-w-2xl mb-10 leading-relaxed font-medium">
-          MaxSales by VOXIA mengintegrasikan kecerdasan buatan, CRM otomatis, intel kompetitor, dan
+          MaxSales by VOXIA mengintegrasikan kecerdasan Voxia AI, CRM otomatis, intel kompetitor, dan
           manajemen multi-cabang dalam satu platform yang siap pakai hari ini.
         </p>
 
@@ -272,7 +273,7 @@ function LandingPage({ onEnterDashboard }: { onEnterDashboard: () => void }) {
         </div>
       </section>
 
-      {/* ── STATS ───────────────────────────────────────────────── */}
+      {/* ── STATS ─────────────────────────────────────────────────────── */}
       <section id="statistik" className="py-16 border-y border-slate-800/50 bg-[#0d1117]/50">
         <div className="max-w-4xl mx-auto px-6 grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
           {stats.map((s, i) => (
@@ -284,7 +285,7 @@ function LandingPage({ onEnterDashboard }: { onEnterDashboard: () => void }) {
         </div>
       </section>
 
-      {/* ── FEATURES ────────────────────────────────────────────── */}
+      {/* ── FEATURES ────────────────────────────────────────────────────── */}
       <section id="fitur" className="py-20 px-6">
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-12">
@@ -295,7 +296,7 @@ function LandingPage({ onEnterDashboard }: { onEnterDashboard: () => void }) {
               Semua Yang Dibutuhkan Tim Sales
             </h2>
             <p className="text-slate-400 max-w-xl mx-auto text-sm leading-relaxed">
-              Satu platform lengkap dengan AI terintegrasi — dari prospek pertama hingga closing deal.
+              Satu platform lengkap dengan Voxia AI terintegrasi — dari prospek pertama hingga closing deal.
             </p>
           </div>
 
@@ -316,7 +317,7 @@ function LandingPage({ onEnterDashboard }: { onEnterDashboard: () => void }) {
         </div>
       </section>
 
-      {/* ── PRICING TEASER ──────────────────────────────────────── */}
+      {/* ── PRICING TEASER ─────────────────────────────────────────────────────── */}
       <section id="harga" className="py-20 px-6 bg-[#0a0c10]/60">
         <div className="max-w-3xl mx-auto text-center">
           <div className="inline-block px-3 py-1 bg-emerald-500/10 text-emerald-400 text-xs font-bold rounded-full border border-emerald-500/20 mb-4">
@@ -345,7 +346,7 @@ function LandingPage({ onEnterDashboard }: { onEnterDashboard: () => void }) {
         </div>
       </section>
 
-      {/* ── FOOTER ──────────────────────────────────────────────── */}
+      {/* ── FOOTER ──────────────────────────────────────────────────────── */}
       <footer className="border-t border-slate-800/50 py-8 px-6">
         <div className="max-w-6xl mx-auto flex flex-col sm:flex-row justify-between items-center gap-4 text-xs text-slate-600">
           <div className="flex items-center gap-2">
@@ -373,7 +374,7 @@ export default function App() {
 
   // Theme state
   const [theme, setTheme] = useState<'light' | 'dark'>(() => {
-    return (localStorage.getItem('vox_theme') as 'light' | 'dark') || 'dark';
+    try { return (localStorage.getItem('vox_theme') as 'light' | 'dark') || 'dark'; } catch { return 'dark'; }
   });
 
   // Current tab routing
@@ -417,4 +418,411 @@ export default function App() {
   const [branches, setBranches] = useState<Branch[]>(INITIAL_BRANCHES);
 
   // Toast alert states
-  const [toasts, se
+  const [toasts, setToasts] = useState<ToastMessage[]>([]);
+  const addToast = (message: string, type: 'success' | 'error' | 'warning' = 'success') => {
+    const id = Date.now().toString();
+    setToasts(prev => [...prev, { id, message, type }]);
+    setTimeout(() => setToasts(prev => prev.filter(t => t.id !== id)), 4000);
+  };
+
+  // Chat state
+  const [isChatOpen, setIsChatOpen] = useState(false);
+  const [chatSessions, setChatSessions] = useState<UnifiedChatSession[]>([]);
+  const [activeChatSessionId, setActiveChatSessionId] = useState<string | null>(null);
+  const [currentChatInput, setCurrentChatInput] = useState('');
+  const [isChatLoading, setIsChatLoading] = useState(false);
+  const chatBottomRef = useRef<HTMLDivElement>(null);
+
+  // Theme apply
+  useEffect(() => {
+    document.documentElement.classList.toggle('dark', theme === 'dark');
+    try { localStorage.setItem('vox_theme', theme); } catch {}
+  }, [theme]);
+
+  // Scroll to bottom of chat
+  useEffect(() => {
+    if (isChatOpen) chatBottomRef.current?.scrollIntoView({ behavior: 'smooth' });
+  }, [chatSessions, isChatOpen]);
+
+  const handleBackToLanding = () => {
+    setView('landing');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
+  // ── LANDING PAGE VIEW ──────────────────────────────────────
+  if (view === 'landing') {
+    return <LandingPage onEnterDashboard={() => setView('app')} />;
+  }
+
+  // ── DASHBOARD VIEW ─────────────────────────────────────────
+  const activeSession = chatSessions.find(s => s.id === activeChatSessionId) || null;
+
+  return (
+    <div className={`flex min-h-screen ${theme === 'dark' ? 'dark' : ''}`}>
+      <Sidebar
+        activeTab={activeTab}
+        setActiveTab={setActiveTab}
+        collapsed={sidebarCollapsed}
+        setCollapsed={setSidebarCollapsed}
+        theme={theme}
+        setTheme={setTheme}
+        addToast={addToast}
+        userProfile={userProfile}
+        onEditProfile={() => setIsProfileModalOpen(true)}
+        onViewBilling={() => setIsBillingModalOpen(true)}
+        onBackToLanding={handleBackToLanding}
+      />
+
+      {/* Main Content Area */}
+      <main className="flex-1 flex flex-col min-w-0 bg-slate-50 dark:bg-[#0a0c10] overflow-hidden">
+        {/* Top Header Bar */}
+        <header className="sticky top-0 z-30 flex items-center justify-between px-4 sm:px-6 h-14 bg-white dark:bg-[#07090d] border-b border-slate-200 dark:border-gray-850 shadow-sm flex-shrink-0">
+          <div className="flex items-center gap-3">
+            {/* Back to landing button for mobile (header) */}
+            <button
+              onClick={handleBackToLanding}
+              className="md:hidden flex items-center gap-1.5 text-xs font-semibold text-slate-500 hover:text-[#00A3E0] transition-colors px-2 py-1 rounded-lg hover:bg-[#00A3E0]/10"
+              title="Kembali ke Beranda"
+            >
+              <Home size={15} />
+              <span>Beranda</span>
+            </button>
+            <div className="hidden md:block">
+              <h2 className="text-sm font-bold text-slate-800 dark:text-gray-200 capitalize">
+                {activeTab === 'dashboard' ? 'Dashboard Utama' :
+                 activeTab === 'branding' ? 'Branding AI Generator' :
+                 activeTab === 'strategy' ? 'Strategy AI Engine' :
+                 activeTab === 'crm' ? 'CRM & Leads Management' :
+                 activeTab === 'competitor' ? 'Competitor Intelligence' :
+                 activeTab === 'branches' ? 'Multi-Branch Management' : activeTab}
+              </h2>
+              <p className="text-[10px] text-slate-400 font-medium">
+                VOXIA MaxSales · Powered by Voxia AI
+              </p>
+            </div>
+          </div>
+          <div className="flex items-center gap-2">
+            <button className="p-2 rounded-lg hover:bg-slate-100 dark:hover:bg-gray-900 text-slate-500 dark:text-gray-400 transition-colors">
+              <Search size={17} />
+            </button>
+            <button className="p-2 rounded-lg hover:bg-slate-100 dark:hover:bg-gray-900 text-slate-500 dark:text-gray-400 transition-colors relative">
+              <Bell size={17} />
+              <span className="absolute top-1.5 right-1.5 w-2 h-2 bg-rose-500 rounded-full"></span>
+            </button>
+            <button
+              onClick={() => setIsChatOpen(true)}
+              className="flex items-center gap-2 px-3 py-1.5 bg-[#00A3E0] hover:bg-[#0092c8] text-black text-xs font-bold rounded-lg transition-all shadow-sm shadow-[#00A3E0]/25"
+            >
+              <Sparkles size={13} />
+              <span className="hidden sm:inline">Voxia AI</span>
+            </button>
+          </div>
+        </header>
+
+        {/* Page Content */}
+        <div className="flex-1 overflow-y-auto">
+          {activeTab === 'dashboard' && (
+            <DashboardView
+              theme={theme}
+              assets={assets}
+              strategy={strategy}
+              contacts={contacts}
+              competitors={competitors}
+              branches={branches}
+              addToast={addToast}
+            />
+          )}
+          {activeTab === 'branding' && (
+            <BrandingView assets={assets} setAssets={setAssets} theme={theme} addToast={addToast} />
+          )}
+          {activeTab === 'strategy' && (
+            <StrategyView strategy={strategy} setStrategy={setStrategy} theme={theme} addToast={addToast} />
+          )}
+          {activeTab === 'crm' && (
+            <CrmView contacts={contacts} setContacts={setContacts} theme={theme} addToast={addToast} />
+          )}
+          {activeTab === 'competitor' && (
+            <CompetitorView competitors={competitors} setCompetitors={setCompetitors} theme={theme} addToast={addToast} />
+          )}
+          {activeTab === 'branches' && (
+            <BranchesView branches={branches} setBranches={setBranches} theme={theme} addToast={addToast} />
+          )}
+        </div>
+      </main>
+
+      {/* ── TOASTS ──────────────────────────────────────────────── */}
+      <div className="fixed bottom-20 right-4 z-[200] flex flex-col gap-2 pointer-events-none">
+        {toasts.map(toast => (
+          <div
+            key={toast.id}
+            className={`pointer-events-auto flex items-center gap-2.5 px-4 py-3 rounded-xl shadow-xl text-xs font-semibold max-w-xs border backdrop-blur-sm animate-in slide-in-from-right ${
+              toast.type === 'success' ? 'bg-emerald-950/90 border-emerald-800 text-emerald-300' :
+              toast.type === 'error' ? 'bg-rose-950/90 border-rose-800 text-rose-300' :
+              'bg-amber-950/90 border-amber-800 text-amber-300'
+            }`}
+          >
+            {toast.type === 'success' ? <Check size={13} /> : toast.type === 'error' ? <X size={13} /> : <Bell size={13} />}
+            {toast.message}
+          </div>
+        ))}
+      </div>
+
+      {/* ── VOXIA AI CHAT PANEL ─────────────────────────────────── */}
+      {isChatOpen && (
+        <div className="fixed inset-y-0 right-0 w-full sm:w-96 bg-white dark:bg-[#07090d] border-l border-slate-200 dark:border-gray-800 z-[150] flex flex-col shadow-2xl">
+          {/* Chat Header */}
+          <div className="flex items-center justify-between px-4 py-3 border-b border-slate-200 dark:border-gray-800 bg-white dark:bg-[#07090d]">
+            <div className="flex items-center gap-2">
+              <div className="w-7 h-7 rounded-lg bg-[#00A3E0]/20 flex items-center justify-center">
+                <Sparkles size={14} className="text-[#00A3E0]" />
+              </div>
+              <div>
+                <span className="text-sm font-black text-slate-800 dark:text-gray-100">Voxia AI</span>
+                <span className="ml-1.5 px-1.5 py-0.5 bg-emerald-500/15 text-emerald-400 text-[9px] font-bold rounded-full">ONLINE</span>
+              </div>
+            </div>
+            <button onClick={() => setIsChatOpen(false)} className="p-1.5 rounded-lg hover:bg-slate-100 dark:hover:bg-gray-900 text-slate-500 dark:text-gray-400 cursor-pointer">
+              <X size={17} />
+            </button>
+          </div>
+
+          {/* Chat Body */}
+          <div className="flex-1 overflow-y-auto p-4 space-y-3">
+            {!activeSession || activeSession.messages.length === 0 ? (
+              <div className="h-full flex flex-col items-center justify-center text-center gap-4 text-slate-400">
+                <div className="w-14 h-14 rounded-2xl bg-[#00A3E0]/10 flex items-center justify-center">
+                  <Sparkles size={24} className="text-[#00A3E0]" />
+                </div>
+                <div>
+                  <p className="text-sm font-bold text-slate-700 dark:text-gray-200 mb-1">Selamat datang di Voxia AI</p>
+                  <p className="text-xs text-slate-400 max-w-[240px] leading-relaxed">Tanyakan apa saja tentang data penjualan, strategi, atau minta saran untuk meningkatkan performa bisnis Anda.</p>
+                </div>
+                <div className="grid grid-cols-1 gap-2 w-full">
+                  {[
+                    'Analisis performa penjualan bulan ini',
+                    'Buat strategi untuk meningkatkan konversi',
+                    'Leads mana yang harus diprioritaskan?',
+                  ].map((q, i) => (
+                    <button
+                      key={i}
+                      onClick={() => setCurrentChatInput(q)}
+                      className="text-left text-xs px-3 py-2 rounded-lg border border-slate-200 dark:border-gray-800 hover:border-[#00A3E0]/50 hover:text-[#00A3E0] transition-all text-slate-500 dark:text-gray-400"
+                    >
+                      {q}
+                    </button>
+                  ))}
+                </div>
+              </div>
+            ) : (
+              activeSession.messages.map((msg, i) => (
+                <div key={i} className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}>
+                  <div className={`max-w-[85%] px-3.5 py-2.5 rounded-2xl text-xs leading-relaxed ${
+                    msg.role === 'user'
+                      ? 'bg-[#00A3E0] text-black font-medium rounded-br-sm'
+                      : 'bg-slate-100 dark:bg-gray-900 text-slate-700 dark:text-gray-300 rounded-bl-sm'
+                  }`}>
+                    {msg.content}
+                  </div>
+                </div>
+              ))
+            )}
+            {isChatLoading && (
+              <div className="flex justify-start">
+                <div className="bg-slate-100 dark:bg-gray-900 px-4 py-3 rounded-2xl rounded-bl-sm flex gap-1.5 items-center">
+                  {[0,1,2].map(i => (
+                    <span key={i} className="w-1.5 h-1.5 bg-[#00A3E0] rounded-full animate-bounce" style={{animationDelay: `${i * 0.15}s`}} />
+                  ))}
+                </div>
+              </div>
+            )}
+            <div ref={chatBottomRef} />
+          </div>
+
+          {/* Chat Input */}
+          <div className="p-3 border-t border-slate-200 dark:border-gray-800">
+            <form
+              onSubmit={async (e) => {
+                e.preventDefault();
+                if (!currentChatInput.trim() || isChatLoading) return;
+                const userMsg = currentChatInput.trim();
+                setCurrentChatInput('');
+                setIsChatLoading(true);
+
+                let sessionId = activeChatSessionId;
+                if (!sessionId) {
+                  sessionId = Date.now().toString();
+                  const newSession: UnifiedChatSession = { id: sessionId, title: userMsg.slice(0, 40), messages: [], createdAt: new Date().toISOString() };
+                  setChatSessions(prev => [newSession, ...prev]);
+                  setActiveChatSessionId(sessionId);
+                }
+
+                setChatSessions(prev => prev.map(s =>
+                  s.id === sessionId
+                    ? { ...s, messages: [...s.messages, { role: 'user', content: userMsg, timestamp: new Date().toISOString() }] }
+                    : s
+                ));
+
+                // Simulate Voxia AI response
+                await new Promise(r => setTimeout(r, 1200 + Math.random() * 800));
+                const aiReply = `Terima kasih atas pertanyaan Anda tentang "${userMsg.slice(0, 60)}...". Sebagai Voxia AI, saya sedang menganalisis data Anda dan akan memberikan insight yang relevan untuk meningkatkan performa penjualan Anda.`;
+
+                setChatSessions(prev => prev.map(s =>
+                  s.id === sessionId
+                    ? { ...s, messages: [...s.messages, { role: 'assistant', content: aiReply, timestamp: new Date().toISOString() }] }
+                    : s
+                ));
+                setIsChatLoading(false);
+              }}
+              className="flex gap-2"
+            >
+              <input
+                type="text"
+                value={currentChatInput}
+                onChange={e => setCurrentChatInput(e.target.value)}
+                placeholder="Tanya Voxia AI..."
+                className="flex-1 px-3 py-2.5 rounded-xl text-xs bg-slate-100 dark:bg-gray-900 border border-slate-200 dark:border-gray-800 focus:outline-none focus:border-[#00A3E0] text-slate-700 dark:text-gray-200 placeholder-slate-400 dark:placeholder-gray-600"
+              />
+              <button
+                type="submit"
+                disabled={!currentChatInput.trim() || isChatLoading}
+                className="p-2.5 bg-[#00A3E0] hover:bg-[#0092c8] disabled:opacity-40 disabled:cursor-not-allowed text-black rounded-xl transition-all cursor-pointer"
+              >
+                <Send size={15} />
+              </button>
+            </form>
+          </div>
+        </div>
+      )}
+
+      {/* ── EDIT PROFILE MODAL ──────────────────────────────────── */}
+      {isProfileModalOpen && (
+        <div className="fixed inset-0 z-[300] flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm">
+          <div className="w-full max-w-md bg-white dark:bg-[#111827] rounded-2xl shadow-2xl border border-slate-200 dark:border-gray-800 p-6">
+            <div className="flex items-center justify-between mb-5">
+              <h3 className="text-base font-black text-slate-800 dark:text-gray-100">Edit Profile</h3>
+              <button onClick={() => setIsProfileModalOpen(false)} className="p-1.5 rounded-lg hover:bg-slate-100 dark:hover:bg-gray-900 text-slate-500 cursor-pointer"><X size={16} /></button>
+            </div>
+            <div className="space-y-3">
+              {([
+                { label: 'Nama Lengkap', key: 'name', icon: <User size={13}/> },
+                { label: 'Email', key: 'email', icon: <Database size={13}/> },
+                { label: 'Nomor HP', key: 'phone', icon: <Phone size={13}/> },
+                { label: 'Perusahaan', key: 'company', icon: <Building size={13}/> },
+                { label: 'Role/Jabatan', key: 'role', icon: <Shield size={13}/> },
+              ] as { label: string; key: keyof typeof userProfile; icon: React.ReactNode }[]).map(field => (
+                <div key={field.key}>
+                  <label className="block text-[10px] font-bold text-slate-500 dark:text-gray-500 uppercase tracking-wider mb-1">{field.label}</label>
+                  <div className="flex items-center gap-2 px-3 py-2 bg-slate-50 dark:bg-gray-900 border border-slate-200 dark:border-gray-800 rounded-lg">
+                    <span className="text-slate-400 dark:text-gray-500">{field.icon}</span>
+                    <input
+                      className="flex-1 bg-transparent text-xs text-slate-700 dark:text-gray-200 focus:outline-none"
+                      value={userProfile[field.key]}
+                      onChange={e => setUserProfile(prev => ({ ...prev, [field.key]: e.target.value }))}
+                    />
+                  </div>
+                </div>
+              ))}
+            </div>
+            <div className="flex gap-2 mt-5">
+              <button onClick={() => setIsProfileModalOpen(false)} className="flex-1 py-2 rounded-lg border border-slate-200 dark:border-gray-800 text-xs font-semibold text-slate-600 dark:text-gray-400 hover:bg-slate-50 dark:hover:bg-gray-900 cursor-pointer">Batal</button>
+              <button
+                onClick={() => { setIsProfileModalOpen(false); addToast('Profil berhasil diperbarui!', 'success'); }}
+                className="flex-1 py-2 rounded-lg bg-[#00A3E0] hover:bg-[#0092c8] text-black text-xs font-extrabold cursor-pointer transition-all"
+              >
+                Simpan Perubahan
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* ── BILLING MODAL ───────────────────────────────────────── */}
+      {isBillingModalOpen && (
+        <div className="fixed inset-0 z-[300] flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm">
+          <div className="w-full max-w-lg bg-white dark:bg-[#111827] rounded-2xl shadow-2xl border border-slate-200 dark:border-gray-800 p-6 max-h-[90vh] overflow-y-auto">
+            <div className="flex items-center justify-between mb-5">
+              <h3 className="text-base font-black text-slate-800 dark:text-gray-100">Billing &amp; Langganan</h3>
+              <button onClick={() => setIsBillingModalOpen(false)} className="p-1.5 rounded-lg hover:bg-slate-100 dark:hover:bg-gray-900 text-slate-500 cursor-pointer"><X size={16} /></button>
+            </div>
+
+            {/* Current Plan */}
+            <div className="mb-4">
+              <p className="text-[10px] font-bold text-slate-500 uppercase tracking-wider mb-2">Paket Aktif</p>
+              <div className="grid grid-cols-3 gap-2">
+                {(['Starter', 'Pro', 'Enterprise'] as const).map(plan => (
+                  <button
+                    key={plan}
+                    onClick={() => { setBillingPlan(plan); addToast(`Paket diubah ke ${plan}`, 'success'); }}
+                    className={`py-2 rounded-lg text-xs font-bold border transition-all cursor-pointer ${
+                      billingPlan === plan
+                        ? 'bg-[#00A3E0] text-black border-[#00A3E0]'
+                        : 'border-slate-200 dark:border-gray-800 text-slate-500 dark:text-gray-400 hover:border-[#00A3E0]/50'
+                    }`}
+                  >
+                    {plan}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            {/* Payment Method */}
+            <div className="mb-4">
+              <p className="text-[10px] font-bold text-slate-500 uppercase tracking-wider mb-2">Metode Pembayaran</p>
+              <div className="p-3 bg-slate-50 dark:bg-gray-900 rounded-xl border border-slate-200 dark:border-gray-800">
+                <div className="flex items-center gap-2 mb-2">
+                  <CreditCard size={14} className="text-[#00A3E0]" />
+                  <span className="text-xs font-bold text-slate-700 dark:text-gray-300">Kartu Kredit / Debit</span>
+                  <span className="ml-auto px-2 py-0.5 bg-emerald-500/10 text-emerald-400 text-[9px] font-bold rounded-full">AKTIF</span>
+                </div>
+                {([
+                  { label: 'Nomor Kartu', key: 'cardNumber' },
+                  { label: 'Pemegang', key: 'cardHolder' },
+                  { label: 'Expired', key: 'expiry' },
+                  { label: 'CVV', key: 'cvv' },
+                ] as { label: string; key: keyof typeof paymentMethod }[]).map(f => (
+                  <div key={f.key} className="flex items-center gap-2 py-1">
+                    <span className="text-[10px] text-slate-400 w-24">{f.label}</span>
+                    <input
+                      className="flex-1 bg-transparent text-xs font-mono text-slate-600 dark:text-gray-300 focus:outline-none"
+                      value={f.key === 'cvv' ? '•••' : paymentMethod[f.key]}
+                      readOnly={f.key === 'cvv'}
+                      onChange={e => setPaymentMethod(prev => ({ ...prev, [f.key]: e.target.value }))}
+                    />
+                    {f.key !== 'cvv' && <Lock size={10} className="text-slate-400" />}
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Billing History */}
+            <div>
+              <p className="text-[10px] font-bold text-slate-500 uppercase tracking-wider mb-2">Riwayat Tagihan</p>
+              <div className="space-y-1.5">
+                {billingHistory.map(inv => (
+                  <div key={inv.id} className="flex items-center gap-3 px-3 py-2 bg-slate-50 dark:bg-gray-900 rounded-lg border border-slate-100 dark:border-gray-800">
+                    <Download size={12} className="text-slate-400 flex-shrink-0" />
+                    <div className="flex-1 min-w-0">
+                      <p className="text-xs font-bold text-slate-700 dark:text-gray-300 truncate">{inv.id}</p>
+                      <p className="text-[10px] text-slate-400 truncate">{inv.description}</p>
+                    </div>
+                    <div className="text-right flex-shrink-0">
+                      <p className="text-xs font-mono font-bold text-slate-600 dark:text-gray-300">{inv.amount}</p>
+                      <p className="text-[9px] text-emerald-400">{inv.status}</p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            <button
+              onClick={() => setIsBillingModalOpen(false)}
+              className="w-full mt-5 py-2.5 rounded-xl bg-[#00A3E0] hover:bg-[#0092c8] text-black text-xs font-extrabold cursor-pointer transition-all"
+            >
+              Tutup
+            </button>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
