@@ -35,9 +35,7 @@ jobs:
       - name: Build (frontend only)
         run: npx vite build
         env:
-          # Gemini API key for build-time (jika dibutuhkan)
-          # Set secret ini di Settings > Secrets > Actions
-          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY || 'placeholder' }}
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
