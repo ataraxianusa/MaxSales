@@ -32,6 +32,16 @@ interface SidebarProps {
   theme: 'light' | 'dark';
   setTheme: (t: 'light' | 'dark') => void;
   addToast: (message: string, type?: 'success' | 'error' | 'warning') => void;
+  userProfile?: {
+    name: string;
+    email: string;
+    avatar: string;
+    role: string;
+    phone: string;
+    company: string;
+  };
+  onEditProfile?: () => void;
+  onViewBilling?: () => void;
 }
 
 export default function Sidebar({
@@ -41,7 +51,10 @@ export default function Sidebar({
   setCollapsed,
   theme,
   setTheme,
-  addToast
+  addToast,
+  userProfile,
+  onEditProfile,
+  onViewBilling
 }: SidebarProps) {
   const [profileDropdownOpen, setProfileDropdownOpen] = React.useState(false);
 
@@ -151,17 +164,17 @@ export default function Sidebar({
             >
               <div className="flex items-center gap-2">
                 <img
-                  src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=80&q=80"
+                  src={userProfile?.avatar || "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=80&q=80"}
                   alt="Avatar"
                   className="w-8 h-8 rounded-full ring-2 ring-[#00A3E0]/30 object-cover"
                 />
                 {!collapsed && (
                   <div className="text-left">
-                    <span className="block text-xs font-bold text-slate-800 dark:text-gray-200">
-                      Zahra Admin
+                    <span className="block text-xs font-bold text-slate-800 dark:text-gray-200 truncate max-w-[130px]">
+                      {userProfile?.name || "Zahra Admin"}
                     </span>
-                    <span className="block text-[10px] text-slate-500 dark:text-gray-500 truncate max-w-[110px]">
-                      invezthink@gmail.com
+                    <span className="block text-[10px] text-slate-500 dark:text-gray-500 truncate max-w-[130px]">
+                      {userProfile?.email || "invezthink@gmail.com"}
                     </span>
                   </div>
                 )}
@@ -171,21 +184,30 @@ export default function Sidebar({
             {profileDropdownOpen && !collapsed && (
               <div className="absolute bottom-12 left-0 w-full bg-white dark:bg-[#111827] rounded-lg shadow-xl border border-slate-200 dark:border-gray-800 py-1.5 z-50 text-xs">
                 <button
-                  onClick={() => alert('Profile options: Edit Zahra Admin.')}
-                  className="w-full text-left px-3 py-2 text-slate-700 dark:text-gray-300 hover:bg-slate-100 dark:hover:bg-gray-900 font-medium flex items-center gap-2"
+                  onClick={() => {
+                    setProfileDropdownOpen(false);
+                    if (onEditProfile) onEditProfile();
+                  }}
+                  className="w-full text-left px-3 py-2 text-slate-700 dark:text-gray-300 hover:bg-slate-100 dark:hover:bg-gray-900 font-medium flex items-center gap-2 cursor-pointer"
                 >
                   <User size={13} /> Edit Profile
                 </button>
                 <button
-                  onClick={() => alert('Billing Info: Starter Free Tier activated.')}
-                  className="w-full text-left px-3 py-2 text-slate-700 dark:text-gray-300 hover:bg-slate-100 dark:hover:bg-gray-900 font-medium flex items-center gap-2"
+                  onClick={() => {
+                    setProfileDropdownOpen(false);
+                    if (onViewBilling) onViewBilling();
+                  }}
+                  className="w-full text-left px-3 py-2 text-slate-700 dark:text-gray-300 hover:bg-slate-100 dark:hover:bg-gray-900 font-medium flex items-center gap-2 cursor-pointer"
                 >
                   <CreditCard size={13} /> Billing
                 </button>
                 <div className="border-t border-slate-200 dark:border-gray-800 my-1"></div>
                 <button
-                  onClick={() => alert('Logout action triggered.')}
-                  className="w-full text-left px-3 py-2 text-rose-500 hover:bg-rose-50 dark:hover:bg-rose-950/20 font-semibold flex items-center gap-2"
+                  onClick={() => {
+                    setProfileDropdownOpen(false);
+                    addToast('Sesi Berakhir: Anda keluar aman dari dasbor.', 'warning');
+                  }}
+                  className="w-full text-left px-3 py-2 text-rose-500 hover:bg-rose-50 dark:hover:bg-rose-950/20 font-semibold flex items-center gap-2 cursor-pointer"
                 >
                   <LogOut size={13} /> Keluar
                 </button>
