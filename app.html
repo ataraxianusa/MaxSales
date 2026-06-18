@@ -45,6 +45,7 @@
       <a href="./">← Kembali ke Landing Page</a>
     </div>
     <script>
+      // Fallback jika React tidak mount dalam 5 detik
       setTimeout(function() {
         var root = document.getElementById('root');
         var fallback = document.getElementById('fallback');
@@ -52,6 +53,17 @@
           fallback.style.display = 'flex';
         }
       }, 5000);
+
+      // Intercept tombol "Beranda" yang di-render React agar selalu
+      // mengarah ke landing page dengan path relatif (./)
+      // — tidak menyentuh JS build sama sekali
+      document.addEventListener('click', function(e) {
+        var el = e.target.closest('a[href="/MaxSales/"], a[href="/MaxSales"]');
+        if (el) {
+          e.preventDefault();
+          window.location.href = './';
+        }
+      }, true);
     </script>
   </body>
 </html>
