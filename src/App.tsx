@@ -46,7 +46,8 @@ import {
   Lock,
   Calendar,
   Building,
-  Phone
+  Phone,
+  ArrowLeft
 } from 'lucide-react';
 
 interface ToastMessage {
@@ -297,8 +298,17 @@ export default function App() {
           
           {/* HEADER TOP BAR CONTAINER */}
           <header className="h-16 border-b border-slate-200 dark:border-gray-850 bg-white/95 dark:bg-[#07090d]/90 backdrop-blur-md px-4 flex items-center justify-between sticky top-0 z-30 select-none">
-            {/* Left title section logo indicator */}
-            <div className="flex items-center gap-2">
+            {/* Left: Back to Landing button + logo indicator */}
+            <div className="flex items-center gap-2.5">
+              {/* ← Kembali ke Halaman Muka */}
+              <a
+                href="/MaxSales/"
+                title="Kembali ke Halaman Muka"
+                className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg border border-slate-200 dark:border-gray-800 bg-white dark:bg-[#0d1117] text-slate-500 dark:text-slate-400 hover:text-[#00A3E0] hover:border-[#00A3E0] transition-colors text-xs font-semibold shrink-0"
+              >
+                <ArrowLeft size={13} />
+                <span className="hidden sm:inline">Beranda</span>
+              </a>
               <span className="p-1 px-2.5 bg-[#00A3E0] text-black font-extrabold rounded-lg text-xs font-sans tracking-wider leading-none">
                 VOXIA AI
               </span>
@@ -563,13 +573,13 @@ export default function App() {
             <div className="space-y-2.5 text-xs text-slate-600 font-medium">
               {[
                 { keys: 'Alt + 1', desc: 'Buka Dashboard Utama' },
-                { keys: 'Alt + 2', desc: 'Akses Branding Asset Generator AI' },
+                { keys: 'Alt + 2', desc: 'Akses Branding Asset Generator Voxia AI' },
                 { keys: 'Alt + 3', desc: 'Akses Strategy Recommendation Engine' },
                 { keys: 'Alt + 4', desc: 'Buka CRM Customer Automations' },
                 { keys: 'Alt + 5', desc: 'Buka Competitor Intelligence Scraper' },
                 { keys: 'Alt + 6', desc: 'Akses Sebaran Multi-Cabang Wilayah' },
                 { keys: 'Alt + S', desc: 'Fokuskan kursor ke pencarian global' },
-                { keys: 'Alt + C', desc: 'Togel dialog asisten Chatbot AI' },
+                { keys: 'Alt + C', desc: 'Togel dialog asisten Chatbot Voxia AI' },
                 { keys: 'Alt + H', desc: 'Tutup / buka jendela panduan ini' }
               ].map((shortcut) => (
                 <div key={shortcut.keys} className="flex justify-between items-center py-0.5 border-b border-slate-100/40">
@@ -805,8 +815,8 @@ export default function App() {
                 </h4>
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                   {[
-                    { id: 'Starter', name: 'Starter Free', price: 'Rp 0', period: '/selamanya', desc: 'Sempurna untuk evaluasi awal & simulasi CRM tunggal.', color: 'border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-950', badge: 'Gratis', perks: ['10 AI Predicts harian', 'Peta cabang terintegrasi', 'Optimasi branding visual standard'] },
-                    { id: 'Pro', name: 'Pro Premium', price: 'Rp 349.000', period: '/bulan', desc: 'Untuk peningkatan volume konversi prospek cepat dengan kecocokan CS teruji.', color: 'border-cyan-500 ring-2 ring-cyan-500/10 bg-cyan-500/5', badge: 'Terpopuler', perks: ['Unlimited AI evaluation', 'Analisis kompetitor mendalam', 'Email Broadcast tak terbatas', 'Dashboard trend real-time'] },
+                    { id: 'Starter', name: 'Starter Free', price: 'Rp 0', period: '/selamanya', desc: 'Sempurna untuk evaluasi awal & simulasi CRM tunggal.', color: 'border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-950', badge: 'Gratis', perks: ['10 Voxia AI Predicts harian', 'Peta cabang terintegrasi', 'Optimasi branding visual standard'] },
+                    { id: 'Pro', name: 'Pro Premium', price: 'Rp 349.000', period: '/bulan', desc: 'Untuk peningkatan volume konversi prospek cepat dengan kecocokan CS teruji.', color: 'border-cyan-500 ring-2 ring-cyan-500/10 bg-cyan-500/5', badge: 'Terpopuler', perks: ['Unlimited Voxia AI evaluation', 'Analisis kompetitor mendalam', 'Email Broadcast tak terbatas', 'Dashboard trend real-time'] },
                     { id: 'Enterprise', name: 'Enterprise Partner', price: 'Rp 1.899.000', period: '/bulan', desc: 'Disesuaikan dengan korporasi berjejaring besar multi-cabang.', color: 'border-amber-500 ring-2 ring-amber-500/10 bg-amber-500/5', badge: 'Dedicated', perks: ['Sinkronisasi Pusat-Cabang HQ', 'Akses instan kustom API', '24/7 dedicated sales advisor', 'Audit branding otomatis mingguan'] }
                   ].map((plan) => {
                     const isActive = billingPlan === plan.id;
@@ -979,7 +989,6 @@ export default function App() {
                           placeholder="4242 4242 4242 4242"
                           value={paymentMethod.cardNumber}
                           onChange={(e) => {
-                            // formatting space every 4 digits
                             let val = e.target.value.replace(/\s+/g, '').replace(/[^0-9]/gi, '');
                             let matches = val.match(/\d{4,16}/g);
                             let match = matches && matches[0] || '';
@@ -1128,7 +1137,7 @@ export default function App() {
         </div>
       )}
 
-      {/* FLOATING AI CHATBOT ADVISOR DOOR */}
+      {/* FLOATING VOXIA AI CHATBOT ADVISOR DOOR */}
       <div className="fixed bottom-20 lg:bottom-6 right-6 z-40 flex flex-col items-end">
         {/* Chat box container window */}
         {isChatOpen && (
@@ -1140,8 +1149,8 @@ export default function App() {
                   <Sparkles size={11} className="animate-spin text-[#0A3D62]" />
                 </div>
                 <div>
-                  <h4 className="text-xs font-extrabold uppercase leading-none tracking-tight">VOXIA Advisor Desk</h4>
-                  <span className="text-[8px] font-mono text-cyan-300 uppercase block mt-0.5">Asisten Pintar Penjualan</span>
+                  <h4 className="text-xs font-extrabold uppercase leading-none tracking-tight">VOXIA MaxSales Advisor</h4>
+                  <span className="text-[8px] font-mono text-cyan-300 uppercase block mt-0.5">Asisten Voxia AI Penjualan</span>
                 </div>
               </div>
               <button onClick={() => setIsChatOpen(false)} className="text-slate-300 hover:text-white cursor-pointer">
@@ -1173,7 +1182,7 @@ export default function App() {
                       <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
                       <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
                     </svg>
-                    <span>Asisten sedang merumuskan jawaban...</span>
+                    <span>Voxia AI sedang merumuskan jawaban...</span>
                   </div>
                 </div>
               )}
@@ -1206,10 +1215,10 @@ export default function App() {
         <button
           onClick={() => {
             setIsChatOpen((prev) => !prev);
-            addToast(isChatOpen ? 'Asisten ditutup.' : 'Sales Advisor AI siap melayani!', 'success');
+            addToast(isChatOpen ? 'Asisten ditutup.' : 'Voxia AI Sales Advisor siap melayani!', 'success');
           }}
           className="w-12 h-12 rounded-full bg-[#00A3E0] hover:bg-[#0092c8] text-white shadow-2xl flex items-center justify-center cursor-pointer transition-transform hover:scale-115 active:scale-95"
-          title="Tanya Asisten Advisor AI (Alt+C)"
+          title="Tanya Voxia AI Advisor (Alt+C)"
         >
           {isChatOpen ? <X size={20} /> : <MessageSquare size={20} />}
         </button>
