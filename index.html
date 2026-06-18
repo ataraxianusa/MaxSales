@@ -1,1 +1,699 @@
-{landing_content}
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>VOXIA MaxSales — AI-Powered Sales Intelligence Platform</title>
+<meta name="description" content="The AI-powered Sales-Flow Platform for optimized lead management, unified CRM analytics, competitor intelligence, and multi-branch orchestration.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+<style>
+/* Art direction: AI SaaS sales platform — precise, confident, data-driven
+   Palette: deep slate dark, cyan-blue #00A3E0 primary, amber #FFB400 accent
+   Typography: Inter (body + display) + JetBrains Mono (numbers/code)
+   Density: balanced — enough whitespace to breathe, dense enough to feel product-rich */
+:root {
+  --text-xs:   clamp(0.75rem,  0.7rem  + 0.25vw, 0.875rem);
+  --text-sm:   clamp(0.875rem, 0.8rem  + 0.35vw, 1rem);
+  --text-base: clamp(1rem,     0.95rem + 0.25vw, 1.125rem);
+  --text-lg:   clamp(1.125rem, 1rem    + 0.75vw, 1.5rem);
+  --text-xl:   clamp(1.5rem,   1.2rem  + 1.25vw, 2.25rem);
+  --text-2xl:  clamp(2rem,     1.2rem  + 2.5vw,  3.5rem);
+  --text-3xl:  clamp(2.5rem,   1rem    + 4vw,    5rem);
+  --text-hero: clamp(3rem,     0.5rem  + 7vw,    8rem);
+  --space-1:  0.25rem; --space-2:  0.5rem;  --space-3:  0.75rem;
+  --space-4:  1rem;    --space-5:  1.25rem; --space-6:  1.5rem;
+  --space-8:  2rem;    --space-10: 2.5rem;  --space-12: 3rem;
+  --space-16: 4rem;    --space-20: 5rem;    --space-24: 6rem;
+  --space-32: 8rem;
+  --radius-sm: 0.375rem; --radius-md: 0.5rem; --radius-lg: 0.75rem;
+  --radius-xl: 1rem;     --radius-2xl: 1.5rem; --radius-full: 9999px;
+  --font-display: 'Inter', ui-sans-serif, sans-serif;
+  --font-body: 'Inter', ui-sans-serif, sans-serif;
+  --font-mono: 'JetBrains Mono', 'Fira Code', monospace;
+  --transition-interactive: 180ms cubic-bezier(0.16, 1, 0.3, 1);
+  --content-narrow: 640px; --content-default: 960px; --content-wide: 1200px;
+}
+
+/* DARK (default) */
+:root, [data-theme="dark"] {
+  --color-bg:             #0a0c10;
+  --color-surface:        #161b22;
+  --color-surface-2:      #1a1f26;
+  --color-surface-offset: #1f2937;
+  --color-surface-dynamic:#21262d;
+  --color-divider:        #21262d;
+  --color-border:         #30363d;
+  --color-text:           #e5e7eb;
+  --color-text-muted:     #768390;
+  --color-text-faint:     #4a5568;
+  --color-text-inverse:   #0a0c10;
+  --color-primary:        #00A3E0;
+  --color-primary-hover:  #0095cc;
+  --color-primary-active: #007aab;
+  --color-primary-highlight: rgba(0,163,224,0.12);
+  --color-accent:         #FFB400;
+  --color-accent-dim:     rgba(255,180,0,0.08);
+  --color-success:        #22d47a;
+  --color-warning:        #f5a623;
+  --color-error:          #ff4f6d;
+  --shadow-sm: 0 1px 3px rgba(0,0,0,0.4);
+  --shadow-md: 0 4px 16px rgba(0,0,0,0.5);
+  --shadow-lg: 0 12px 40px rgba(0,0,0,0.6);
+  --shadow-glow: 0 0 60px rgba(0,163,224,0.15);
+}
+
+/* LIGHT */
+[data-theme="light"] {
+  --color-bg:             #f8fafc;
+  --color-surface:        #ffffff;
+  --color-surface-2:      #f1f5f9;
+  --color-surface-offset: #e2e8f0;
+  --color-surface-dynamic:#cbd5e1;
+  --color-divider:        #e2e8f0;
+  --color-border:         #cbd5e1;
+  --color-text:           #0f172a;
+  --color-text-muted:     #64748b;
+  --color-text-faint:     #94a3b8;
+  --color-text-inverse:   #ffffff;
+  --color-primary:        #0A3D62;
+  --color-primary-hover:  #0c4e7a;
+  --color-primary-active: #062e4e;
+  --color-primary-highlight: rgba(10,61,98,0.08);
+  --color-accent:         #FFB400;
+  --color-accent-dim:     rgba(255,180,0,0.08);
+  --color-success:        #12a35c;
+  --color-warning:        #d97706;
+  --color-error:          #dc2626;
+  --shadow-sm: 0 1px 3px rgba(30,35,80,0.08);
+  --shadow-md: 0 4px 16px rgba(30,35,80,0.1);
+  --shadow-lg: 0 12px 40px rgba(30,35,80,0.12);
+  --shadow-glow: 0 0 60px rgba(0,163,224,0.1);
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme]) {
+    --color-bg: #0a0c10; --color-surface: #161b22; --color-surface-2: #1a1f26;
+    --color-surface-offset: #1f2937; --color-surface-dynamic: #21262d;
+    --color-divider: #21262d; --color-border: #30363d;
+    --color-text: #e5e7eb; --color-text-muted: #768390; --color-text-faint: #4a5568;
+    --color-text-inverse: #0a0c10;
+    --color-primary: #00A3E0; --color-primary-hover: #0095cc;
+    --color-primary-active: #007aab; --color-primary-highlight: rgba(0,163,224,0.12);
+    --color-accent: #FFB400; --color-accent-dim: rgba(255,180,0,0.08);
+    --shadow-sm: 0 1px 3px rgba(0,0,0,0.4); --shadow-md: 0 4px 16px rgba(0,0,0,0.5);
+    --shadow-lg: 0 12px 40px rgba(0,0,0,0.6); --shadow-glow: 0 0 60px rgba(0,163,224,0.15);
+  }
+}
+
+/* BASE */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; scroll-padding-top: 80px; -webkit-font-smoothing: antialiased; }
+body { min-height: 100dvh; font-family: var(--font-body); font-size: var(--text-base); color: var(--color-text); background-color: var(--color-bg); line-height: 1.6; }
+img, svg { display: block; max-width: 100%; }
+ul[role="list"] { list-style: none; }
+a { color: inherit; text-decoration: none; }
+button { cursor: pointer; font: inherit; border: none; background: none; }
+h1,h2,h3,h4 { text-wrap: balance; line-height: 1.15; }
+p { text-wrap: pretty; }
+::selection { background: var(--color-primary-highlight); color: var(--color-text); }
+:focus-visible { outline: 2px solid var(--color-primary); outline-offset: 3px; border-radius: var(--radius-sm); }
+@media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; } }
+
+/* SKIP LINK */
+.skip-link { position: absolute; top: -999px; left: var(--space-4); background: var(--color-primary); color: var(--color-text-inverse); padding: var(--space-2) var(--space-4); border-radius: var(--radius-md); font-size: var(--text-sm); font-weight: 600; z-index: 9999; }
+.skip-link:focus { top: var(--space-4); }
+
+/* SCROLLBAR */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: var(--color-bg); }
+::-webkit-scrollbar-thumb { background: var(--color-border); border-radius: var(--radius-full); }
+::-webkit-scrollbar-thumb:hover { background: var(--color-primary); }
+
+/* NAV */
+.nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; display: flex; align-items: center; justify-content: space-between; padding: var(--space-4) var(--space-6); background: oklch(from var(--color-bg) l c h / 0.85); backdrop-filter: blur(16px); border-bottom: 1px solid var(--color-border); transition: background var(--transition-interactive); }
+.nav-logo { display: flex; align-items: center; gap: var(--space-2); font-family: var(--font-display); font-size: 1.25rem; font-weight: 700; letter-spacing: -0.03em; color: var(--color-text); }
+.nav-logo svg { width: 30px; height: 30px; flex-shrink: 0; }
+.nav-logo .logo-accent { color: var(--color-primary); }
+.nav-links { display: flex; align-items: center; gap: var(--space-6); }
+.nav-links a { font-size: var(--text-sm); color: var(--color-text-muted); font-weight: 500; transition: color var(--transition-interactive); }
+.nav-links a:hover { color: var(--color-text); }
+.nav-actions { display: flex; align-items: center; gap: var(--space-3); }
+.btn-ghost { font-size: var(--text-sm); font-weight: 500; color: var(--color-text-muted); padding: var(--space-2) var(--space-4); border-radius: var(--radius-md); transition: color var(--transition-interactive), background var(--transition-interactive); }
+.btn-ghost:hover { color: var(--color-text); background: var(--color-surface-offset); }
+.btn-primary { font-size: var(--text-sm); font-weight: 600; color: #fff; background: var(--color-primary); padding: var(--space-2) var(--space-5); border-radius: var(--radius-md); transition: background var(--transition-interactive), transform var(--transition-interactive); }
+.btn-primary:hover { background: var(--color-primary-hover); transform: translateY(-1px); }
+.btn-primary:active { transform: translateY(0); }
+.theme-toggle { width: 36px; height: 36px; display: flex; align-items: center; justify-content: center; border-radius: var(--radius-md); color: var(--color-text-muted); transition: color var(--transition-interactive), background var(--transition-interactive); }
+.theme-toggle:hover { color: var(--color-text); background: var(--color-surface-offset); }
+.mobile-menu-btn { display: none; align-items: center; justify-content: center; width: 36px; height: 36px; border-radius: var(--radius-md); color: var(--color-text-muted); }
+@media (max-width: 768px) { .nav-links { display: none; } .mobile-menu-btn { display: flex; } }
+
+/* HERO */
+.hero { min-height: 100dvh; display: grid; place-items: center; padding: calc(80px + var(--space-12)) var(--space-6) var(--space-24); position: relative; overflow: hidden; text-align: center; }
+.hero-bg { position: absolute; inset: 0; z-index: 0;
+  background:
+    radial-gradient(ellipse 80% 60% at 50% -10%, rgba(0,163,224,0.12) 0%, transparent 60%),
+    radial-gradient(ellipse 50% 40% at 80% 80%, rgba(255,180,0,0.05) 0%, transparent 50%),
+    var(--color-bg);
+}
+.hero-bg::before { content: ''; position: absolute; inset: 0;
+  background-image: linear-gradient(var(--color-border) 1px, transparent 1px), linear-gradient(90deg, var(--color-border) 1px, transparent 1px);
+  background-size: 60px 60px; opacity: 0.3;
+  mask-image: radial-gradient(ellipse 80% 80% at 50% 0%, black 20%, transparent 70%);
+}
+.hero-content { position: relative; z-index: 1; max-width: 840px; }
+.hero-badge { display: inline-flex; align-items: center; gap: var(--space-2); background: var(--color-primary-highlight); border: 1px solid rgba(0,163,224,0.3); color: var(--color-primary); font-size: var(--text-xs); font-weight: 700; padding: var(--space-1) var(--space-3); border-radius: var(--radius-full); letter-spacing: 0.06em; text-transform: uppercase; margin-bottom: var(--space-6); }
+.hero-badge .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--color-accent); animation: pulse 2s ease infinite; }
+@keyframes pulse { 0%,100% { opacity:1; transform:scale(1); } 50% { opacity:.6; transform:scale(1.3); } }
+.hero-title { font-family: var(--font-display); font-size: var(--text-3xl); font-weight: 800; line-height: 1.05; letter-spacing: -0.03em; color: var(--color-text); margin-bottom: var(--space-6); }
+.hero-title em { font-style: normal; color: var(--color-primary); }
+.hero-title .line2 { display: block; }
+.hero-sub { font-size: var(--text-lg); color: var(--color-text-muted); font-weight: 400; max-width: 56ch; margin: 0 auto var(--space-10); line-height: 1.6; }
+.hero-cta-group { display: flex; align-items: center; justify-content: center; gap: var(--space-3); flex-wrap: wrap; margin-bottom: var(--space-16); }
+.btn-hero { display: inline-flex; align-items: center; gap: var(--space-2); background: var(--color-primary); color: #fff; font-weight: 700; font-size: var(--text-base); padding: var(--space-3) var(--space-8); border-radius: var(--radius-lg); box-shadow: 0 0 32px rgba(0,163,224,0.35); transition: background var(--transition-interactive), box-shadow var(--transition-interactive), transform var(--transition-interactive); }
+.btn-hero:hover { background: var(--color-primary-hover); transform: translateY(-2px); box-shadow: 0 0 48px rgba(0,163,224,0.5); }
+.btn-hero-outline { display: inline-flex; align-items: center; gap: var(--space-2); border: 1px solid var(--color-border); color: var(--color-text-muted); font-size: var(--text-base); font-weight: 500; padding: var(--space-3) var(--space-8); border-radius: var(--radius-lg); transition: border-color var(--transition-interactive), color var(--transition-interactive), background var(--transition-interactive); }
+.btn-hero-outline:hover { border-color: var(--color-primary); color: var(--color-text); background: var(--color-primary-highlight); }
+.hero-stats { display: flex; align-items: center; justify-content: center; gap: var(--space-10); flex-wrap: wrap; }
+.hero-stat { text-align: center; }
+.hero-stat .num { font-family: var(--font-mono); font-size: var(--text-2xl); font-weight: 700; color: var(--color-text); letter-spacing: -0.03em; line-height: 1; }
+.hero-stat .num span { color: var(--color-primary); }
+.hero-stat .lbl { font-size: var(--text-xs); color: var(--color-text-muted); letter-spacing: 0.04em; text-transform: uppercase; margin-top: var(--space-1); }
+.stat-divider { width: 1px; height: 40px; background: var(--color-border); }
+@media (max-width: 480px) { .stat-divider { display: none; } .hero-stats { gap: var(--space-6); } }
+
+/* DASHBOARD PREVIEW */
+.preview-section { padding: var(--space-8) var(--space-6) var(--space-24); max-width: var(--content-wide); margin: 0 auto; }
+.preview-label { text-align: center; font-size: var(--text-xs); font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--color-text-faint); margin-bottom: var(--space-6); }
+.preview-wrap { background: var(--color-surface); border: 1px solid var(--color-border); border-radius: var(--radius-2xl); overflow: hidden; box-shadow: var(--shadow-glow), var(--shadow-lg); padding: var(--space-4); }
+.preview-topbar { display: flex; align-items: center; gap: var(--space-2); padding: var(--space-3) var(--space-4); background: var(--color-surface-offset); border-radius: var(--radius-lg) var(--radius-lg) 0 0; margin-bottom: var(--space-4); }
+.preview-dot { width: 10px; height: 10px; border-radius: 50%; }
+.preview-dot:nth-child(1) { background: #ff5f57; }
+.preview-dot:nth-child(2) { background: #ffbd2e; }
+.preview-dot:nth-child(3) { background: #28ca41; }
+.preview-url { flex: 1; text-align: center; font-size: var(--text-xs); color: var(--color-text-faint); background: var(--color-surface-dynamic); border-radius: var(--radius-sm); padding: var(--space-1) var(--space-4); max-width: 340px; margin: 0 auto; font-family: var(--font-mono); }
+.mock-dashboard { display: grid; grid-template-columns: 200px 1fr; gap: var(--space-3); min-height: 480px; }
+@media (max-width: 768px) { .mock-dashboard { grid-template-columns: 1fr; } }
+.mock-sidebar { background: var(--color-surface-2); border-radius: var(--radius-lg); padding: var(--space-4); }
+.mock-logo { display: flex; align-items: center; gap: var(--space-2); margin-bottom: var(--space-6); padding-bottom: var(--space-4); border-bottom: 1px solid var(--color-divider); }
+.mock-logo-dot { width: 26px; height: 26px; border-radius: var(--radius-sm); background: var(--color-primary); display: grid; place-items: center; }
+.mock-logo-text { font-size: var(--text-xs); font-weight: 700; color: var(--color-text); letter-spacing: -0.01em; }
+.mock-nav-item { display: flex; align-items: center; gap: var(--space-2); font-size: var(--text-xs); color: var(--color-text-muted); padding: var(--space-2) var(--space-3); border-radius: var(--radius-md); margin-bottom: var(--space-1); }
+.mock-nav-item.active { background: var(--color-primary-highlight); color: var(--color-primary); }
+.mock-nav-icon { width: 14px; height: 14px; border-radius: 2px; background: currentColor; opacity: 0.5; flex-shrink: 0; }
+.mock-main { display: flex; flex-direction: column; gap: var(--space-3); }
+.mock-kpis { display: grid; grid-template-columns: repeat(4, 1fr); gap: var(--space-3); }
+@media (max-width: 900px) { .mock-kpis { grid-template-columns: repeat(2, 1fr); } }
+.mock-kpi { background: var(--color-surface-2); border-radius: var(--radius-lg); padding: var(--space-4); border: 1px solid var(--color-border); }
+.mock-kpi-label { font-size: var(--text-xs); color: var(--color-text-muted); margin-bottom: var(--space-2); }
+.mock-kpi-val { font-family: var(--font-mono); font-size: 1.5rem; font-weight: 700; color: var(--color-text); }
+.mock-kpi-delta { font-size: var(--text-xs); color: var(--color-success); margin-top: var(--space-1); font-family: var(--font-mono); }
+.mock-row { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-3); }
+@media (max-width: 640px) { .mock-row { grid-template-columns: 1fr; } }
+.mock-chart-card { background: var(--color-surface-2); border-radius: var(--radius-lg); padding: var(--space-4); border: 1px solid var(--color-border); }
+.mock-chart-title { font-size: var(--text-xs); font-weight: 600; color: var(--color-text-muted); margin-bottom: var(--space-4); text-transform: uppercase; letter-spacing: 0.06em; }
+.mock-bar-chart { display: flex; align-items: flex-end; gap: var(--space-2); height: 80px; }
+.mock-bar { flex: 1; border-radius: var(--radius-sm) var(--radius-sm) 0 0; opacity: 0.8; transition: opacity var(--transition-interactive); }
+.mock-bar:hover { opacity: 1; }
+.mock-funnel { display: flex; flex-direction: column; gap: var(--space-2); }
+.mock-funnel-row { display: flex; align-items: center; gap: var(--space-3); }
+.mock-funnel-label { font-size: var(--text-xs); color: var(--color-text-muted); width: 70px; flex-shrink: 0; }
+.mock-funnel-bar { height: 10px; border-radius: var(--radius-full); }
+.mock-funnel-pct { font-size: var(--text-xs); color: var(--color-text-faint); width: 30px; text-align: right; font-family: var(--font-mono); }
+
+/* SECTION COMMON */
+.section { padding: clamp(var(--space-16), 8vw, var(--space-32)) var(--space-6); }
+.section-inner { max-width: var(--content-wide); margin: 0 auto; }
+.section-narrow { max-width: var(--content-default); margin: 0 auto; }
+.section-label { font-size: var(--text-xs); font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--color-primary); margin-bottom: var(--space-4); }
+.section-title { font-family: var(--font-display); font-size: var(--text-2xl); font-weight: 800; letter-spacing: -0.03em; line-height: 1.1; color: var(--color-text); margin-bottom: var(--space-5); }
+.section-title em { font-style: normal; color: var(--color-primary); }
+.section-sub { font-size: var(--text-base); color: var(--color-text-muted); max-width: 58ch; line-height: 1.7; }
+
+/* FEATURES */
+.features-section { background: var(--color-surface); }
+.features-header { text-align: center; margin-bottom: var(--space-16); }
+.features-header .section-sub { margin: 0 auto; }
+.features-grid { display: grid; grid-template-columns: 1fr 1fr; grid-template-rows: auto auto auto; gap: var(--space-4); }
+@media (max-width: 768px) { .features-grid { grid-template-columns: 1fr; } }
+.feature-card { background: var(--color-bg); border: 1px solid var(--color-border); border-radius: var(--radius-xl); padding: var(--space-8); transition: border-color var(--transition-interactive), box-shadow var(--transition-interactive), transform var(--transition-interactive); position: relative; overflow: hidden; }
+.feature-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 1px; background: linear-gradient(90deg, transparent, var(--color-primary), transparent); opacity: 0; transition: opacity var(--transition-interactive); }
+.feature-card:hover { border-color: rgba(0,163,224,0.4); box-shadow: var(--shadow-md); transform: translateY(-2px); }
+.feature-card:hover::before { opacity: 1; }
+.feature-card.wide { grid-column: 1 / -1; }
+.feature-card.wide .feature-inner { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-12); align-items: center; }
+@media (max-width: 768px) { .feature-card.wide .feature-inner { grid-template-columns: 1fr; } }
+.feature-icon { width: 44px; height: 44px; border-radius: var(--radius-lg); background: var(--color-primary-highlight); border: 1px solid rgba(0,163,224,0.25); display: grid; place-items: center; color: var(--color-primary); margin-bottom: var(--space-5); }
+.feature-icon svg { width: 20px; height: 20px; }
+.feature-title { font-size: var(--text-lg); font-weight: 700; color: var(--color-text); margin-bottom: var(--space-2); letter-spacing: -0.01em; }
+.feature-desc { font-size: var(--text-sm); color: var(--color-text-muted); line-height: 1.7; max-width: 44ch; }
+.feature-tags { display: flex; flex-wrap: wrap; gap: var(--space-2); margin-top: var(--space-5); }
+.feature-tag { font-size: var(--text-xs); font-weight: 600; letter-spacing: 0.04em; padding: var(--space-1) var(--space-3); border-radius: var(--radius-full); background: var(--color-surface-offset); border: 1px solid var(--color-border); color: var(--color-text-muted); }
+.feature-visual { background: var(--color-surface-2); border-radius: var(--radius-lg); border: 1px solid var(--color-border); padding: var(--space-4); overflow: hidden; }
+.mini-chat { display: flex; flex-direction: column; gap: var(--space-3); }
+.mini-msg { padding: var(--space-3) var(--space-4); border-radius: var(--radius-lg); font-size: var(--text-xs); line-height: 1.5; max-width: 80%; }
+.mini-msg.user { background: var(--color-primary); color: #fff; align-self: flex-end; border-radius: var(--radius-lg) var(--radius-lg) var(--radius-sm) var(--radius-lg); }
+.mini-msg.ai { background: var(--color-surface-offset); color: var(--color-text); border-radius: var(--radius-lg) var(--radius-lg) var(--radius-lg) var(--radius-sm); }
+.mini-typing { display: flex; gap: 4px; align-items: center; padding: var(--space-3) var(--space-4); }
+.typing-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--color-primary); animation: typing-bounce 1.2s ease infinite; }
+.typing-dot:nth-child(2) { animation-delay: 0.2s; }
+.typing-dot:nth-child(3) { animation-delay: 0.4s; }
+@keyframes typing-bounce { 0%,80%,100% { transform: translateY(0); } 40% { transform: translateY(-6px); } }
+.branch-list { display: flex; flex-direction: column; gap: var(--space-3); }
+.branch-item { display: flex; align-items: center; justify-content: space-between; padding: var(--space-3) var(--space-4); background: var(--color-surface-offset); border-radius: var(--radius-md); border: 1px solid var(--color-border); }
+.branch-info { display: flex; flex-direction: column; gap: var(--space-1); }
+.branch-name { font-size: var(--text-xs); font-weight: 600; color: var(--color-text); }
+.branch-meta { font-size: var(--text-xs); color: var(--color-text-muted); }
+.branch-status { font-size: var(--text-xs); font-weight: 600; padding: 2px var(--space-2); border-radius: var(--radius-full); }
+.branch-status.online { background: rgba(34,212,122,0.12); color: var(--color-success); }
+.branch-status.warning { background: rgba(245,166,35,0.12); color: var(--color-warning); }
+
+/* HOW IT WORKS */
+.how-section { background: var(--color-bg); }
+.how-steps { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--space-8); margin-top: var(--space-12); }
+@media (max-width: 768px) { .how-steps { grid-template-columns: 1fr; } }
+.how-step { position: relative; padding-top: var(--space-8); }
+.how-step-num { position: absolute; top: 0; left: 0; font-family: var(--font-mono); font-size: 3.5rem; font-weight: 700; color: var(--color-text-faint); line-height: 1; letter-spacing: -0.04em; user-select: none; }
+.how-step-title { font-size: var(--text-lg); font-weight: 700; color: var(--color-text); margin-bottom: var(--space-3); }
+.how-step-desc { font-size: var(--text-sm); color: var(--color-text-muted); line-height: 1.7; }
+
+/* TECH STACK */
+.tech-section { background: var(--color-surface); }
+.tech-grid { display: flex; flex-wrap: wrap; gap: var(--space-3); margin-top: var(--space-10); }
+.tech-pill { display: flex; align-items: center; gap: var(--space-2); background: var(--color-bg); border: 1px solid var(--color-border); border-radius: var(--radius-full); padding: var(--space-2) var(--space-5); font-size: var(--text-sm); font-weight: 500; color: var(--color-text-muted); transition: border-color var(--transition-interactive), color var(--transition-interactive); }
+.tech-pill:hover { border-color: var(--color-primary); color: var(--color-text); }
+.tech-pill img { width: 18px; height: 18px; object-fit: contain; border-radius: 3px; }
+
+/* ROADMAP */
+.roadmap-section { background: var(--color-bg); }
+.roadmap-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--space-6); margin-top: var(--space-12); }
+@media (max-width: 768px) { .roadmap-grid { grid-template-columns: 1fr; } }
+.roadmap-card { background: var(--color-surface); border: 1px solid var(--color-border); border-radius: var(--radius-xl); padding: var(--space-6); }
+.roadmap-phase { font-size: var(--text-xs); font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: var(--space-2); }
+.roadmap-phase.now { color: var(--color-accent); }
+.roadmap-phase.soon { color: var(--color-warning); }
+.roadmap-phase.later { color: var(--color-text-faint); }
+.roadmap-title { font-size: var(--text-lg); font-weight: 700; color: var(--color-text); margin-bottom: var(--space-4); }
+.roadmap-items { list-style: none; display: flex; flex-direction: column; gap: var(--space-3); }
+.roadmap-items li { display: flex; align-items: flex-start; gap: var(--space-3); font-size: var(--text-sm); color: var(--color-text-muted); }
+.roadmap-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--color-border); flex-shrink: 0; margin-top: 6px; }
+.roadmap-dot.done { background: var(--color-accent); }
+.roadmap-dot.doing { background: var(--color-warning); }
+
+/* CTA SECTION */
+.cta-section { background: var(--color-surface); }
+.cta-box { background: var(--color-bg); border: 1px solid var(--color-border); border-radius: var(--radius-2xl); padding: var(--space-16) var(--space-8); text-align: center; position: relative; overflow: hidden; }
+.cta-box::before { content: ''; position: absolute; inset: 0; background: radial-gradient(ellipse 60% 50% at 50% 100%, rgba(0,163,224,0.08) 0%, transparent 70%); pointer-events: none; }
+.cta-title { font-family: var(--font-display); font-size: var(--text-2xl); font-weight: 800; letter-spacing: -0.03em; color: var(--color-text); margin-bottom: var(--space-4); }
+.cta-sub { font-size: var(--text-base); color: var(--color-text-muted); max-width: 50ch; margin: 0 auto var(--space-10); line-height: 1.7; }
+.cta-actions { display: flex; align-items: center; justify-content: center; gap: var(--space-4); flex-wrap: wrap; }
+
+/* FOOTER */
+.footer { background: var(--color-bg); border-top: 1px solid var(--color-border); padding: var(--space-8) var(--space-6); }
+.footer-inner { max-width: var(--content-wide); margin: 0 auto; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: var(--space-4); }
+.footer-logo { display: flex; align-items: center; gap: var(--space-2); font-weight: 700; font-size: var(--text-sm); letter-spacing: -0.02em; }
+.footer-logo .logo-accent { color: var(--color-primary); }
+.footer-links { display: flex; align-items: center; gap: var(--space-6); }
+.footer-links a { font-size: var(--text-sm); color: var(--color-text-muted); transition: color var(--transition-interactive); }
+.footer-links a:hover { color: var(--color-text); }
+.footer-copy { font-size: var(--text-xs); color: var(--color-text-faint); font-family: var(--font-mono); }
+
+/* SCROLL ANIMATIONS */
+.fade-in { opacity: 1; }
+@supports (animation-timeline: scroll()) {
+  .fade-in {
+    opacity: 0;
+    animation: reveal-fade linear both;
+    animation-timeline: view();
+    animation-range: entry 0% entry 80%;
+  }
+  @keyframes reveal-fade { from { opacity: 0; } to { opacity: 1; } }
+}
+</style>
+</head>
+<body>
+<a href="#main" class="skip-link">Skip to content</a>
+
+<!-- NAV -->
+<nav class="nav" aria-label="Main navigation">
+  <a href="#" class="nav-logo" aria-label="VOXIA MaxSales home">
+    <svg width="30" height="30" viewBox="0 0 30 30" fill="none" aria-hidden="true">
+      <rect width="30" height="30" rx="7" fill="var(--color-primary)" opacity="0.15"/>
+      <path d="M7 22L13 10l4 8 3-5 3 7" stroke="var(--color-primary)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+      <circle cx="23" cy="9" r="2" fill="var(--color-accent)"/>
+    </svg>
+    <span>VOXIA <span class="logo-accent">MaxSales</span></span>
+  </a>
+  <nav class="nav-links" aria-label="Page sections">
+    <a href="#features">Features</a>
+    <a href="#how">How it works</a>
+    <a href="#stack">Stack</a>
+    <a href="#roadmap">Roadmap</a>
+  </nav>
+  <div class="nav-actions">
+    <button class="theme-toggle" data-theme-toggle aria-label="Switch to light mode">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+    </button>
+    <a href="https://github.com/ataraxianusa/MaxSales" target="_blank" rel="noopener noreferrer" class="btn-ghost">GitHub</a>
+    <a href="https://ataraxianusa.github.io/MaxSales/" target="_blank" rel="noopener noreferrer" class="btn-primary">Live Demo</a>
+  </div>
+  <button class="mobile-menu-btn" aria-label="Open menu">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+  </button>
+</nav>
+
+<!-- HERO -->
+<main id="main">
+<section class="hero" aria-label="Hero">
+  <div class="hero-bg" aria-hidden="true"></div>
+  <div class="hero-content">
+    <div class="hero-badge"><span class="dot" aria-hidden="true"></span>MVP Now Live</div>
+    <h1 class="hero-title">
+      AI-Powered Sales Intelligence
+      <span class="line2">for <em>Modern</em> Teams</span>
+    </h1>
+    <p class="hero-sub">Unified CRM analytics, competitor intelligence, AI chatbot, and multi-branch orchestration — built for high-velocity sales operations.</p>
+    <div class="hero-cta-group">
+      <a href="https://ataraxianusa.github.io/MaxSales/" target="_blank" rel="noopener noreferrer" class="btn-hero">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+        Try Live Demo
+      </a>
+      <a href="https://github.com/ataraxianusa/MaxSales" target="_blank" rel="noopener noreferrer" class="btn-hero-outline">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg>
+        View Source
+      </a>
+    </div>
+    <div class="hero-stats" role="list">
+      <div class="hero-stat" role="listitem">
+        <div class="num"><span>6</span></div>
+        <div class="lbl">Core Modules</div>
+      </div>
+      <div class="stat-divider" aria-hidden="true"></div>
+      <div class="hero-stat" role="listitem">
+        <div class="num"><span>∞</span></div>
+        <div class="lbl">AI Insights/day</div>
+      </div>
+      <div class="stat-divider" aria-hidden="true"></div>
+      <div class="hero-stat" role="listitem">
+        <div class="num"><span>100</span>%</div>
+        <div class="lbl">Open Source</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- DASHBOARD PREVIEW -->
+<section class="preview-section fade-in" aria-label="Dashboard preview">
+  <p class="preview-label" aria-hidden="true">Live dashboard preview</p>
+  <div class="preview-wrap">
+    <div class="preview-topbar" aria-hidden="true">
+      <div class="preview-dot"></div>
+      <div class="preview-dot"></div>
+      <div class="preview-dot"></div>
+      <div class="preview-url">ataraxianusa.github.io/MaxSales</div>
+    </div>
+    <div class="mock-dashboard" aria-label="Dashboard mockup">
+      <div class="mock-sidebar">
+        <div class="mock-logo">
+          <div class="mock-logo-dot">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
+          </div>
+          <span class="mock-logo-text">MaxSales</span>
+        </div>
+        <div class="mock-nav-item active"><div class="mock-nav-icon"></div>Overview</div>
+        <div class="mock-nav-item"><div class="mock-nav-icon"></div>CRM</div>
+        <div class="mock-nav-item"><div class="mock-nav-icon"></div>Strategy</div>
+        <div class="mock-nav-item"><div class="mock-nav-icon"></div>Competitors</div>
+        <div class="mock-nav-item"><div class="mock-nav-icon"></div>AI Chat</div>
+        <div class="mock-nav-item"><div class="mock-nav-icon"></div>Branches</div>
+      </div>
+      <div class="mock-main">
+        <div class="mock-kpis">
+          <div class="mock-kpi"><div class="mock-kpi-label">Total Leads</div><div class="mock-kpi-val">2,847</div><div class="mock-kpi-delta">↑ +12.4%</div></div>
+          <div class="mock-kpi"><div class="mock-kpi-label">Conversion</div><div class="mock-kpi-val">34.2%</div><div class="mock-kpi-delta">↑ +3.1%</div></div>
+          <div class="mock-kpi"><div class="mock-kpi-label">Revenue</div><div class="mock-kpi-val">$94K</div><div class="mock-kpi-delta">↑ +8.7%</div></div>
+          <div class="mock-kpi"><div class="mock-kpi-label">Active Deals</div><div class="mock-kpi-val">183</div><div class="mock-kpi-delta">↑ +5</div></div>
+        </div>
+        <div class="mock-row">
+          <div class="mock-chart-card">
+            <div class="mock-chart-title">Monthly Revenue</div>
+            <div class="mock-bar-chart" role="img" aria-label="Bar chart showing monthly revenue">
+              <div class="mock-bar" style="height:45%;background:var(--color-primary);opacity:0.5"></div>
+              <div class="mock-bar" style="height:60%;background:var(--color-primary);opacity:0.6"></div>
+              <div class="mock-bar" style="height:50%;background:var(--color-primary);opacity:0.5"></div>
+              <div class="mock-bar" style="height:75%;background:var(--color-primary);opacity:0.7"></div>
+              <div class="mock-bar" style="height:65%;background:var(--color-primary);opacity:0.65"></div>
+              <div class="mock-bar" style="height:90%;background:var(--color-primary)"></div>
+              <div class="mock-bar" style="height:80%;background:var(--color-accent);opacity:0.9"></div>
+            </div>
+          </div>
+          <div class="mock-chart-card">
+            <div class="mock-chart-title">Sales Funnel</div>
+            <div class="mock-funnel" role="img" aria-label="Sales funnel chart">
+              <div class="mock-funnel-row"><span class="mock-funnel-label">Prospect</span><div class="mock-funnel-bar" style="width:90%;background:var(--color-primary)"></div><span class="mock-funnel-pct">90%</span></div>
+              <div class="mock-funnel-row"><span class="mock-funnel-label">Qualified</span><div class="mock-funnel-bar" style="width:65%;background:var(--color-primary);opacity:0.7"></div><span class="mock-funnel-pct">65%</span></div>
+              <div class="mock-funnel-row"><span class="mock-funnel-label">Proposal</span><div class="mock-funnel-bar" style="width:42%;background:var(--color-accent);opacity:0.8"></div><span class="mock-funnel-pct">42%</span></div>
+              <div class="mock-funnel-row"><span class="mock-funnel-label">Closed</span><div class="mock-funnel-bar" style="width:28%;background:var(--color-success)"></div><span class="mock-funnel-pct">28%</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FEATURES -->
+<section class="section features-section fade-in" id="features" aria-label="Features">
+  <div class="section-inner">
+    <div class="features-header">
+      <div class="section-label">Platform Modules</div>
+      <h2 class="section-title">Everything your sales team needs,<br><em>intelligently unified</em></h2>
+      <p class="section-sub">Six purpose-built modules working in concert — from brand positioning to AI-powered deal coaching.</p>
+    </div>
+    <div class="features-grid">
+      <div class="feature-card">
+        <div class="feature-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg></div>
+        <h3 class="feature-title">Brand Intelligence</h3>
+        <p class="feature-desc">AI-driven brand positioning analysis. Understand market perception, track brand equity metrics, and surface actionable differentiation insights.</p>
+        <div class="feature-tags"><span class="feature-tag">Gemini AI</span><span class="feature-tag">NLP</span><span class="feature-tag">Sentiment</span></div>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg></div>
+        <h3 class="feature-title">Sales Strategy Engine</h3>
+        <p class="feature-desc">Dynamic playbook generation based on real-time pipeline data. Recommends next-best-action for each deal stage with probability scoring.</p>
+        <div class="feature-tags"><span class="feature-tag">Predictive</span><span class="feature-tag">Playbooks</span><span class="feature-tag">Scoring</span></div>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></div>
+        <h3 class="feature-title">Unified CRM</h3>
+        <p class="feature-desc">Full contact and deal lifecycle management. Pipeline views, activity tracking, and AI-suggested follow-up timing to maximize close rates.</p>
+        <div class="feature-tags"><span class="feature-tag">Pipeline</span><span class="feature-tag">Contacts</span><span class="feature-tag">Activity</span></div>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></div>
+        <h3 class="feature-title">Competitor Intelligence</h3>
+        <p class="feature-desc">Automated competitive landscape monitoring. Battle card generation, win/loss analysis, and pricing gap alerts — always one step ahead.</p>
+        <div class="feature-tags"><span class="feature-tag">Monitoring</span><span class="feature-tag">Battle Cards</span><span class="feature-tag">Win/Loss</span></div>
+      </div>
+      <div class="feature-card wide">
+        <div class="feature-inner">
+          <div>
+            <div class="feature-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></div>
+            <h3 class="feature-title">AI Sales Chatbot</h3>
+            <p class="feature-desc">Powered by Google Gemini. Answers product questions, qualifies leads, coaches reps on objection handling, and generates follow-up drafts — available 24/7.</p>
+            <div class="feature-tags"><span class="feature-tag">Gemini 2.0</span><span class="feature-tag">Lead Qual</span><span class="feature-tag">24/7</span><span class="feature-tag">Multi-turn</span></div>
+          </div>
+          <div class="feature-visual">
+            <div class="mini-chat" aria-label="AI chatbot conversation example">
+              <div class="mini-msg ai">Hi! I can help you close deals faster. What's your biggest sales challenge right now?</div>
+              <div class="mini-msg user">We lose deals at the proposal stage. Any insights?</div>
+              <div class="mini-msg ai">I've analyzed 47 similar deals. The top 3 drop-off reasons are: pricing clarity, ROI justification, and stakeholder alignment. Want me to generate a tailored proposal template?</div>
+              <div class="mini-typing"><div class="typing-dot"></div><div class="typing-dot"></div><div class="typing-dot"></div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="feature-card wide">
+        <div class="feature-inner">
+          <div>
+            <div class="feature-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg></div>
+            <h3 class="feature-title">Multi-Branch Orchestration</h3>
+            <p class="feature-desc">Centralized command for distributed teams. Real-time performance parity, quota rollup, territory management, and consolidated reporting across all locations.</p>
+            <div class="feature-tags"><span class="feature-tag">Multi-tenant</span><span class="feature-tag">Rollup</span><span class="feature-tag">Territory</span><span class="feature-tag">Consolidated</span></div>
+          </div>
+          <div class="feature-visual">
+            <div class="branch-list" aria-label="Branch status list">
+              <div class="branch-item"><div class="branch-info"><div class="branch-name">📍 Jakarta HQ</div><div class="branch-meta">42 active reps · $1.2M pipeline</div></div><span class="branch-status online">Online</span></div>
+              <div class="branch-item"><div class="branch-info"><div class="branch-name">📍 Surabaya East</div><div class="branch-meta">18 active reps · $680K pipeline</div></div><span class="branch-status online">Online</span></div>
+              <div class="branch-item"><div class="branch-info"><div class="branch-name">📍 Bali Remote</div><div class="branch-meta">9 active reps · $210K pipeline</div></div><span class="branch-status warning">Quota Gap</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- HOW IT WORKS -->
+<section class="section how-section fade-in" id="how" aria-label="How it works">
+  <div class="section-narrow">
+    <div class="section-label">Getting Started</div>
+    <h2 class="section-title">Up and running in <em>minutes</em></h2>
+    <p class="section-sub">No complex onboarding. MaxSales is designed for immediate value from day one.</p>
+    <div class="how-steps">
+      <div class="how-step">
+        <div class="how-step-num" aria-hidden="true">01</div>
+        <h3 class="how-step-title">Connect your data</h3>
+        <p class="how-step-desc">Import existing CRM data via CSV or connect directly through the REST API. Team onboarding takes under 10 minutes.</p>
+      </div>
+      <div class="how-step">
+        <div class="how-step-num" aria-hidden="true">02</div>
+        <h3 class="how-step-title">Configure your AI</h3>
+        <p class="how-step-desc">Set up your Gemini API key and configure the chatbot persona and playbook rules to match your sales methodology.</p>
+      </div>
+      <div class="how-step">
+        <div class="how-step-num" aria-hidden="true">03</div>
+        <h3 class="how-step-title">Ship and iterate</h3>
+        <p class="how-step-desc">Deploy to GitHub Pages instantly. Use the analytics dashboard to identify bottlenecks and optimize your funnel weekly.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TECH STACK -->
+<section class="section tech-section fade-in" id="stack" aria-label="Technology stack">
+  <div class="section-inner">
+    <div class="section-label">Technology Stack</div>
+    <h2 class="section-title">Built on <em>proven</em> foundations</h2>
+    <p class="section-sub">Modern, type-safe, and fully open — every technology choice made for production reliability.</p>
+    <div class="tech-grid" role="list">
+      <span class="tech-pill" role="listitem"><img src="https://cdn.simpleicons.org/react/61DAFB" alt="" width="18" height="18" loading="lazy">React 19</span>
+      <span class="tech-pill" role="listitem"><img src="https://cdn.simpleicons.org/typescript/3178C6" alt="" width="18" height="18" loading="lazy">TypeScript</span>
+      <span class="tech-pill" role="listitem"><img src="https://cdn.simpleicons.org/vite/646CFF" alt="" width="18" height="18" loading="lazy">Vite 6</span>
+      <span class="tech-pill" role="listitem"><img src="https://cdn.simpleicons.org/nodedotjs/339933" alt="" width="18" height="18" loading="lazy">Node.js Express</span>
+      <span class="tech-pill" role="listitem"><img src="https://cdn.simpleicons.org/google/4285F4" alt="" width="18" height="18" loading="lazy">Gemini 2.0 Flash</span>
+      <span class="tech-pill" role="listitem"><img src="https://cdn.simpleicons.org/tailwindcss/06B6D4" alt="" width="18" height="18" loading="lazy">Tailwind CSS</span>
+      <span class="tech-pill" role="listitem"><img src="https://cdn.simpleicons.org/github/ffffff" alt="" width="18" height="18" loading="lazy">GitHub Pages</span>
+      <span class="tech-pill" role="listitem"><img src="https://cdn.simpleicons.org/pnpm/F69220" alt="" width="18" height="18" loading="lazy">pnpm</span>
+    </div>
+  </div>
+</section>
+
+<!-- ROADMAP -->
+<section class="section roadmap-section fade-in" id="roadmap" aria-label="Product roadmap">
+  <div class="section-inner">
+    <div class="section-label">Roadmap</div>
+    <h2 class="section-title">Where we're headed</h2>
+    <p class="section-sub">Transparent, community-driven development. Ship fast, learn faster.</p>
+    <div class="roadmap-grid">
+      <div class="roadmap-card">
+        <div class="roadmap-phase now">Now — MVP</div>
+        <h3 class="roadmap-title">Core Platform</h3>
+        <ul class="roadmap-items">
+          <li><div class="roadmap-dot done" aria-hidden="true"></div>6 core module UI</li>
+          <li><div class="roadmap-dot done" aria-hidden="true"></div>Gemini AI chatbot</li>
+          <li><div class="roadmap-dot done" aria-hidden="true"></div>Mock dashboard analytics</li>
+          <li><div class="roadmap-dot done" aria-hidden="true"></div>GitHub Pages deployment</li>
+          <li><div class="roadmap-dot done" aria-hidden="true"></div>REST API backend</li>
+        </ul>
+      </div>
+      <div class="roadmap-card">
+        <div class="roadmap-phase soon">Next — Beta</div>
+        <h3 class="roadmap-title">Real Data Layer</h3>
+        <ul class="roadmap-items">
+          <li><div class="roadmap-dot doing" aria-hidden="true"></div>PostgreSQL persistence</li>
+          <li><div class="roadmap-dot doing" aria-hidden="true"></div>Auth &amp; multi-user support</li>
+          <li><div class="roadmap-dot" aria-hidden="true"></div>CRM data import/export</li>
+          <li><div class="roadmap-dot" aria-hidden="true"></div>Email &amp; calendar integration</li>
+          <li><div class="roadmap-dot" aria-hidden="true"></div>Mobile responsive polish</li>
+        </ul>
+      </div>
+      <div class="roadmap-card">
+        <div class="roadmap-phase later">Future — v1.0</div>
+        <h3 class="roadmap-title">Scale &amp; Intelligence</h3>
+        <ul class="roadmap-items">
+          <li><div class="roadmap-dot" aria-hidden="true"></div>Fine-tuned sales LLM</li>
+          <li><div class="roadmap-dot" aria-hidden="true"></div>White-label SaaS mode</li>
+          <li><div class="roadmap-dot" aria-hidden="true"></div>Advanced competitor scraping</li>
+          <li><div class="roadmap-dot" aria-hidden="true"></div>Revenue forecasting engine</li>
+          <li><div class="roadmap-dot" aria-hidden="true"></div>API marketplace</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="section cta-section fade-in" aria-label="Call to action">
+  <div class="section-narrow">
+    <div class="cta-box">
+      <h2 class="cta-title">Ready to see it live?</h2>
+      <p class="cta-sub">Explore the full MVP dashboard — no signup, no setup. Click and see your future sales stack in action.</p>
+      <div class="cta-actions">
+        <a href="https://ataraxianusa.github.io/MaxSales/" target="_blank" rel="noopener noreferrer" class="btn-hero">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+          Open Live Demo
+        </a>
+        <a href="mailto:ics@voxia.id" class="btn-hero-outline">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+          Contact ics@voxia.id
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+</main>
+
+<!-- FOOTER -->
+<footer class="footer">
+  <div class="footer-inner">
+    <div class="footer-logo">
+      <svg width="20" height="20" viewBox="0 0 30 30" fill="none" aria-hidden="true"><rect width="30" height="30" rx="7" fill="var(--color-primary)" opacity="0.2"/><path d="M7 22L13 10l4 8 3-5 3 7" stroke="var(--color-primary)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      VOXIA <span class="logo-accent">MaxSales</span>
+    </div>
+    <div class="footer-links">
+      <a href="https://github.com/ataraxianusa/MaxSales" target="_blank" rel="noopener noreferrer">GitHub</a>
+      <a href="https://github.com/ataraxianusa/MaxSales/blob/main/LICENSE" target="_blank" rel="noopener noreferrer">License</a>
+      <a href="mailto:ics@voxia.id">ics@voxia.id</a>
+    </div>
+    <div class="footer-copy">MVP · Built with Gemini AI · © 2026 VOXIA</div>
+  </div>
+</footer>
+
+<script>
+// Theme toggle
+(function(){
+  const t = document.querySelector('[data-theme-toggle]');
+  const r = document.documentElement;
+  let d = matchMedia('(prefers-color-scheme:dark)').matches ? 'dark' : 'light';
+  r.setAttribute('data-theme', d);
+  if (t) {
+    t.addEventListener('click', () => {
+      d = d === 'dark' ? 'light' : 'dark';
+      r.setAttribute('data-theme', d);
+      t.setAttribute('aria-label', 'Switch to ' + (d === 'dark' ? 'light' : 'dark') + ' mode');
+      t.innerHTML = d === 'dark'
+        ? '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>'
+        : '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>';
+    });
+  }
+})();
+
+// Lucide icons
+if (typeof lucide !== 'undefined') lucide.createIcons();
+
+// Scroll animations fallback for browsers without scroll-driven animations
+(function(){
+  if (CSS.supports('animation-timeline', 'scroll()')) return;
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) { e.target.style.opacity = '1'; io.unobserve(e.target); }
+    });
+  }, { threshold: 0.1 });
+  document.querySelectorAll('.fade-in').forEach(e => { e.style.opacity = '0'; e.style.transition = 'opacity 0.6s ease'; io.observe(e); });
+})();
+</script>
+</body>
+</html>
