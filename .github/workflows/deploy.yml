@@ -7,20 +7,19 @@ on:
   workflow_dispatch:
 
 permissions:
-  contents: read
-  pages: write
-  id-token: write
+  contents: write
 
 concurrency:
   group: pages
   cancel-in-progress: false
 
 jobs:
-  build:
-    name: Build
+  build-and-deploy:
+    name: Build & Deploy
     runs-on: ubuntu-latest
+
     steps:
-      - name: Checkout
+      - name: Checkout main
         uses: actions/checkout@v4
 
       - name: Setup Node.js
@@ -32,24 +31,20 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      - name: Build (frontend only)
+      - name: Build React app (base = /MaxSales/)
         run: npx vite build
         env:
-          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY || 'placeholder' }}
+          VITE_GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
 
-      - name: Upload artifact
-        uses: actions/upload-pages-artifact@v3
+      # Deploy built dist/ INTO the gh-pages branch.
+      # clean: false  → preserves existing files on gh-pages (our landing index.html)
+      # folder: dist  → only the built assets are pushed
+      # target-folder: .  → place them at the repo root on gh-pages (Vite base=/MaxSales/
+      #                      means all assets already have /MaxSales/ prefix baked in)
+      - name: Deploy to gh-pages (preserve landing)
+        uses: JamesIves/github-pages-deploy-action@v4
         with:
-          path: ./dist
-
-  deploy:
-    name: Deploy
-    needs: build
-    runs-on: ubuntu-latest
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
-    steps:
-      - name: Deploy to GitHub Pages
-        id: deployment
-        uses: actions/deploy-pages@v4
+          branch: gh-pages
+          folder: dist
+          clean: false
+          commit-message: "ci: deploy React app build [skip ci]"
