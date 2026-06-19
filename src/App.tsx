@@ -4,6 +4,7 @@
  */
 
 import React, { useState, useEffect, useRef } from 'react';
+import ReactMarkdown from 'react-markdown';
 import { AppTab, MarketingAsset, RecommendationStrategy, Contact, CompetitorData, Branch, UnifiedChatSession } from './types';
 import { apiFetch } from './api';
 import {
@@ -675,7 +676,11 @@ export default function App() {
                       ? 'bg-[#00A3E0] text-black font-medium rounded-br-sm'
                       : 'bg-slate-100 dark:bg-gray-900 text-slate-700 dark:text-gray-300 rounded-bl-sm'
                   }`}>
-                    {msg.content}
+                    {msg.role === 'assistant' ? (
+                      <div className="prose prose-xs dark:prose-invert max-w-none [&>p]:mb-1.5 [&>ul]:mb-1.5 [&>ul]:pl-4 [&>li]:mb-0.5 [&>strong]:font-bold [&>table]:text-[10px] [&>th]:text-left [&>th]:pr-3 [&>td]:pr-3">
+                        <ReactMarkdown>{msg.content}</ReactMarkdown>
+                      </div>
+                    ) : msg.content}
                   </div>
                 </div>
               ))
