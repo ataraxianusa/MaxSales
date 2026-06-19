@@ -41,10 +41,14 @@ jobs:
       - name: Rename dist/index.html to app.html
         run: mv dist/index.html dist/app.html
 
+      # Deploy polished static landing page as root index.html
+      - name: Copy landing page to dist/index.html
+        run: cp landing.html dist/index.html
+
       - name: Deploy to gh-pages (preserve landing)
         uses: JamesIves/github-pages-deploy-action@v4
         with:
           branch: gh-pages
           folder: dist
           clean: false
-          commit-message: "ci: deploy React app build [skip ci]"
+          commit-message: "ci: deploy landing page + React app build [skip ci]"

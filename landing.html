@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="id" data-theme="dark">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>MaxSales — Platform CRM & Sales AI</title>
+<meta name="description" content="MaxSales mengintegrasikan Voxia AI, CRM otomatis, intel kompetitor, dan manajemen multi-cabang dalam satu platform."/>
+<meta property="og:title" content="MaxSales — Platform CRM & Sales AI"/>
+<meta property="og:description" content="Platform CRM & Sales AI Paling Cerdas untuk Bisnis Modern."/>
+<meta property="og:type" content="website"/>
+<meta property="og:url" content="https://maxsales.qzz.io/"/>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300..800&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#07090d;--surface:rgba(255,255,255,0.03);--surface2:#0d1117;--surface3:#161b22;
+  --border:rgba(255,255,255,0.06);--border2:rgba(255,255,255,0.04);
+  --text:#e5e7eb;--muted:#94a3b8;--faint:#475569;
+  --primary:#00A3E0;--primary-h:#00d4ff;
+  --accent:#FFB400;--green:#34d399;--red:#f87171;--indigo:#818cf8;
+  --font-body:'Inter',system-ui,sans-serif;
+  --font-mono:'JetBrains Mono',monospace;
+  --ease:cubic-bezier(.16,1,.3,1);
+}
+html{scroll-behavior:smooth;scroll-padding-top:72px;-webkit-font-smoothing:antialiased}
+body{font-family:var(--font-body);color:var(--text);background:var(--bg);min-height:100dvh;overflow-x:hidden;line-height:1.6}
+a{color:inherit;text-decoration:none}
+button{font:inherit;cursor:pointer;border:none;background:none}
+
+/* ─ Glass ─────────────────────────────────────────────── */
+.glass{background:var(--surface);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border:1px solid var(--border)}
+
+/* ─ Animations ────────────────────────────────────────── */
+@keyframes meshFloat{0%,100%{transform:translate(-50%,-50%) scale(1)}25%{transform:translate(-45%,-55%) scale(1.05)}50%{transform:translate(-55%,-45%) scale(.95)}75%{transform:translate(-50%,-40%) scale(1.03)}}
+@keyframes meshFloat2{0%,100%{transform:translate(0,0) scale(1)}33%{transform:translate(20px,-15px) scale(1.08)}66%{transform:translate(-15px,10px) scale(.94)}}
+@keyframes meshFloat3{0%,100%{transform:translate(0,0) scale(1)}50%{transform:translate(-25px,20px) scale(1.1)}}
+@keyframes gentlePulse{0%,100%{opacity:1}50%{opacity:.6}}
+@keyframes staggerReveal{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+
+/* ─ Gradient Text ─────────────────────────────────────── */
+.gradient-text{background:linear-gradient(135deg,#00A3E0,#818cf8);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+
+/* ─ Card Hover ────────────────────────────────────────── */
+.card-hover{transition:transform .25s var(--ease),border-color .25s,box-shadow .25s}
+.card-hover:hover{transform:translateY(-3px);border-color:rgba(0,163,224,.3);box-shadow:0 8px 32px rgba(0,163,224,.08),0 0 0 1px rgba(0,163,224,.1)}
+.glow-border{transition:box-shadow .3s,border-color .3s}
+.glow-border:hover{box-shadow:0 0 20px rgba(0,163,224,.15),0 0 60px rgba(0,163,224,.05);border-color:rgba(0,163,224,.3)}
+
+/* ─ Mock 3D ───────────────────────────────────────────── */
+.mock-3d{transition:transform .4s var(--ease),box-shadow .4s}
+.mock-3d:hover{transform:perspective(1200px) rotateX(2deg) rotateY(-1deg) scale(1.01);box-shadow:0 25px 60px -12px rgba(0,0,0,.5),0 0 40px rgba(0,163,224,.06)}
+
+/* ─ Nav ────────────────────────────────────────────────── */
+.nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:.875rem clamp(1rem,4vw,2rem);transition:all .5s}
+.nav.scrolled{background:rgba(7,9,13,.8);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-bottom:1px solid var(--border);box-shadow:0 1px 3px rgba(0,0,0,.4)}
+.nav-logo{display:flex;align-items:center;gap:.625rem}
+.nav-brand{padding:.35rem .65rem;background:var(--primary);color:#000;font-weight:800;border-radius:.5rem;font-size:.75rem;letter-spacing:.05em;box-shadow:0 4px 12px rgba(0,163,224,.2)}
+.nav-title{font-weight:800;font-size:1rem;color:#fff}
+.nav-links{display:flex;align-items:center;gap:2rem}
+.nav-links a{font-size:.875rem;color:var(--muted);font-weight:500;transition:color .2s}
+.nav-links a:hover{color:#fff}
+.nav-cta{display:inline-flex;align-items:center;gap:.5rem;padding:.6rem 1.25rem;background:var(--primary);color:#000;font-weight:700;border-radius:.75rem;font-size:.875rem;transition:all .3s;box-shadow:0 4px 16px rgba(0,163,224,.25)}
+.nav-cta:hover{background:var(--primary-h);box-shadow:0 6px 24px rgba(0,163,224,.4);transform:scale(1.02)}
+@media(max-width:768px){.nav-links{display:none}}
+
+/* ─ Hero ──────────────────────────────────────────────── */
+.hero{position:relative;min-height:100dvh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:calc(72px + 3rem) 1.5rem 4rem;overflow:hidden}
+.hero-mesh-1{position:absolute;top:33%;left:50%;width:700px;height:700px;background:rgba(0,163,224,.07);border-radius:50%;filter:blur(120px);pointer-events:none;animation:meshFloat 12s ease-in-out infinite}
+.hero-mesh-2{position:absolute;top:25%;left:25%;width:320px;height:320px;background:rgba(99,102,241,.06);border-radius:50%;filter:blur(100px);pointer-events:none;animation:meshFloat2 16s ease-in-out infinite}
+.hero-mesh-3{position:absolute;bottom:33%;right:25%;width:256px;height:256px;background:rgba(0,212,255,.05);border-radius:50%;filter:blur(80px);pointer-events:none;animation:meshFloat3 14s ease-in-out infinite}
+.hero-badge{display:inline-flex;align-items:center;gap:.5rem;padding:.5rem 1rem;border-radius:99px;font-size:.75rem;font-weight:700;letter-spacing:.05rem;color:var(--primary);position:relative;z-index:1;margin-bottom:2rem}
+.hero h1{font-size:clamp(2.5rem,1.5rem+5.5vw,4.5rem);font-weight:800;letter-spacing:-.03em;line-height:1.08;max-width:42rem;margin-bottom:1.5rem;position:relative;z-index:1}
+.hero-sub{font-size:clamp(1rem,.85rem+.6vw,1.2rem);color:var(--muted);max-width:40rem;margin:0 auto 3rem;line-height:1.7;font-weight:500;position:relative;z-index:1}
+.hero-cta{display:flex;align-items:center;justify-content:center;gap:1rem;flex-wrap:wrap;position:relative;z-index:1;margin-bottom:5rem}
+.btn-primary{display:inline-flex;align-items:center;gap:.75rem;padding:1rem 2rem;background:var(--primary);color:#000;font-weight:800;border-radius:1rem;font-size:1rem;transition:all .3s var(--ease);box-shadow:0 8px 32px rgba(0,163,224,.25)}
+.btn-primary:hover{background:var(--primary-h);box-shadow:0 12px 40px rgba(0,163,224,.45);transform:scale(1.02)}
+.btn-ghost{display:inline-flex;align-items:center;gap:.5rem;padding:1rem 2rem;border:1px solid rgba(255,255,255,.1);color:var(--text);font-weight:700;border-radius:1rem;font-size:1rem;transition:all .3s}
+.btn-ghost:hover{border-color:rgba(255,255,255,.2);background:rgba(255,255,255,.03)}
+
+/* ─ Mock Browser ──────────────────────────────────────── */
+.mock-wrap{position:relative;z-index:1;width:100%;max-width:56rem;margin:0 auto}
+.mock-reflection{position:absolute;bottom:0;left:0;right:0;height:80px;background:linear-gradient(to top,rgba(7,9,13,1),rgba(7,9,13,.6),transparent);pointer-events:none;z-index:2}
+.mock-glow{position:absolute;bottom:-2rem;left:50%;transform:translateX(-50%);width:60%;height:4rem;background:rgba(0,163,224,.08);filter:blur(32px);border-radius:50%}
+
+/* ─ Stats ─────────────────────────────────────────────── */
+.stats{padding:6rem 1.5rem}
+.stats-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1.5rem;max-width:56rem;margin:0 auto}
+@media(max-width:768px){.stats-grid{grid-template-columns:repeat(2,1fr)}}
+.stat-card{padding:1.5rem;text-align:center;border-radius:1rem}
+.stat-val{font-size:clamp(1.75rem,1rem+2vw,2.5rem);font-weight:800;font-family:var(--font-mono);margin-bottom:.5rem}
+.stat-lbl{font-size:.75rem;color:var(--muted);font-weight:500}
+
+/* ─ Features ──────────────────────────────────────────── */
+.features{padding:7rem 1.5rem}
+.feat-header{text-align:center;margin-bottom:4rem}
+.feat-label{display:inline-block;padding:.4rem 1rem;border-radius:99px;font-size:.75rem;font-weight:700;color:var(--primary);margin-bottom:1.25rem}
+.feat-title{font-size:clamp(1.75rem,1rem+2vw,3rem);font-weight:800;letter-spacing:-.02em;margin-bottom:1.25rem}
+.feat-sub{color:var(--muted);font-size:clamp(.9rem,.8rem+.3vw,1.05rem);max-width:36rem;margin:0 auto;line-height:1.7}
+.feat-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.25rem;max-width:64rem;margin:0 auto}
+@media(max-width:1024px){.feat-grid{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:640px){.feat-grid{grid-template-columns:1fr}}
+.feat-card{padding:1.5rem;border-radius:1.25rem;opacity:0;animation:staggerReveal .6s var(--ease) forwards}
+.feat-card:nth-child(1){animation-delay:.1s}
+.feat-card:nth-child(2){animation-delay:.2s}
+.feat-card:nth-child(3){animation-delay:.3s}
+.feat-card:nth-child(4){animation-delay:.4s}
+.feat-card:nth-child(5){animation-delay:.5s}
+.feat-card:nth-child(6){animation-delay:.6s}
+.feat-icon{width:2.75rem;height:2.75rem;border-radius:.75rem;display:grid;place-items:center;margin-bottom:1.25rem;transition:all .3s}
+.feat-card:hover .feat-icon{transform:scale(1.1);box-shadow:0 8px 24px rgba(0,163,224,.1)}
+.feat-card h3{font-size:.95rem;font-weight:700;color:#fff;margin-bottom:.625rem}
+.feat-card p{font-size:.8rem;color:var(--muted);line-height:1.7}
+
+/* ─ Business Model ────────────────────────────────────── */
+.models{padding:7rem 1.5rem}
+.models-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.25rem;max-width:56rem;margin:0 auto 3.5rem}
+@media(max-width:768px){.models-grid{grid-template-columns:1fr}}
+.model-card{padding:1.75rem;border-radius:1.25rem;text-align:center}
+.model-icon{width:3rem;height:3rem;border-radius:1rem;display:grid;place-items:center;margin:0 auto 1.25rem;transition:all .3s}
+.model-card:hover .model-icon{transform:scale(1.1)}
+.model-card h3{font-size:1.05rem;font-weight:700;color:#fff;margin-bottom:.625rem}
+.model-card p{font-size:.8rem;color:var(--muted);line-height:1.7}
+.model-tag{margin-top:1.25rem;padding-top:1rem;border-top:1px solid var(--border);font-size:.65rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase}
+.models-cta{text-align:center}
+
+/* ─ Footer ────────────────────────────────────────────── */
+.footer{position:relative;border-top:1px solid var(--border);padding:2.5rem 1.5rem}
+.footer-line{position:absolute;top:0;left:50%;transform:translateX(-50%);width:12rem;height:1px;background:linear-gradient(90deg,transparent,rgba(0,163,224,.4),transparent)}
+.footer-inner{max-width:64rem;margin:0 auto;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:1rem}
+.footer-brand{display:flex;align-items:center;gap:.625rem;font-weight:700;font-size:.9rem;color:var(--muted)}
+.footer-links{display:flex;gap:1.5rem;font-weight:500}
+.footer-links a{font-size:.75rem;color:var(--faint);transition:color .2s}
+.footer-links a:hover{color:var(--text)}
+
+/* ─ Reveal ────────────────────────────────────────────── */
+.reveal{opacity:0;transform:translateY(18px);transition:opacity .55s ease,transform .55s ease}
+.reveal.visible{opacity:1;transform:translateY(0)}
+@media(prefers-reduced-motion:reduce){.reveal{opacity:1;transform:none;transition:none}}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="nav" id="nav">
+  <div class="nav-logo">
+    <span class="nav-brand">VOXIA AI</span>
+    <span class="nav-title">MaxSales</span>
+  </div>
+  <div class="nav-links">
+    <a href="#fitur">Fitur</a>
+    <a href="#statistik">Statistik</a>
+    <a href="#model">Model Bisnis</a>
+  </div>
+  <a href="./app.html" class="nav-cta">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+    Live Demo
+  </a>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-mesh-1" aria-hidden="true"></div>
+  <div class="hero-mesh-2" aria-hidden="true"></div>
+  <div class="hero-mesh-3" aria-hidden="true"></div>
+
+  <div class="hero-badge glass glow-border">
+    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+    Powered by Voxia AI &middot; Versi 2.0 &middot; 2026
+  </div>
+
+  <h1>Platform CRM &amp; Sales AI<br><span class="gradient-text">Paling Cerdas</span><br>untuk Bisnis Modern</h1>
+
+  <p class="hero-sub">MaxSales by VOXIA mengintegrasikan kecerdasan Voxia AI, CRM otomatis, intel kompetitor, dan manajemen multi-cabang dalam satu platform yang siap pakai hari ini.</p>
+
+  <div class="hero-cta">
+    <a href="./app.html" class="btn-primary">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+      LIVE DEMO &mdash; Masuk Dashboard
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+    </a>
+    <a href="#fitur" class="btn-ghost">
+      Lihat Fitur
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 18l6-6-6-6"/></svg>
+    </a>
+  </div>
+
+  <!-- Mock Browser -->
+  <div class="mock-wrap">
+    <div class="mock-3d glass" style="overflow:hidden;border-radius:1rem">
+      <div style="display:flex;align-items:center;gap:.375rem;padding:.75rem 1rem;background:rgba(13,17,23,.8);border-bottom:1px solid var(--border)">
+        <span style="width:10px;height:10px;border-radius:50%;background:rgba(248,113,113,.7)"></span>
+        <span style="width:10px;height:10px;border-radius:50%;background:rgba(251,191,36,.7)"></span>
+        <span style="width:10px;height:10px;border-radius:50%;background:rgba(52,211,153,.7)"></span>
+        <div style="flex:1;margin:0 1rem;padding:.25rem .75rem;background:rgba(0,0,0,.4);border-radius:.5rem;color:var(--faint);font-size:.72rem;font-family:var(--font-mono);text-align:center">ataraxianusa.github.io/MaxSales/</div>
+      </div>
+      <div style="display:flex;height:clamp(12rem,30vw,18rem)">
+        <div style="width:3.5rem;background:rgba(7,9,13,.8);border-right:1px solid var(--border);display:flex;flex-direction:column;align-items:center;padding:1rem 0;gap:.75rem">
+          <div style="width:2rem;height:2rem;border-radius:.75rem;display:grid;place-items:center;font-size:.8rem;background:rgba(0,163,224,.2);color:var(--primary);animation:gentlePulse 3s ease-in-out infinite">🏠</div>
+          <div style="width:2rem;height:2rem;border-radius:.75rem;display:grid;place-items:center;font-size:.8rem;color:var(--faint)">🌸</div>
+          <div style="width:2rem;height:2rem;border-radius:.75rem;display:grid;place-items:center;font-size:.8rem;color:var(--faint)">📍</div>
+          <div style="width:2rem;height:2rem;border-radius:.75rem;display:grid;place-items:center;font-size:.8rem;color:var(--faint)">👥</div>
+          <div style="width:2rem;height:2rem;border-radius:.75rem;display:grid;place-items:center;font-size:.8rem;color:var(--faint)">📊</div>
+          <div style="width:2rem;height:2rem;border-radius:.75rem;display:grid;place-items:center;font-size:.8rem;color:var(--faint)">🌐</div>
+        </div>
+        <div style="flex:1;padding:1rem;display:flex;flex-direction:column;gap:.75rem;overflow:hidden">
+          <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:.5rem">
+            <div style="background:var(--surface);border:1px solid var(--border);border-radius:.75rem;padding:.625rem"><div style="color:var(--primary);font-size:.75rem;font-weight:800;font-family:var(--font-mono)">Rp 184M</div><div style="color:var(--faint);font-size:.6rem;margin-top:.125rem">Revenue</div></div>
+            <div style="background:var(--surface);border:1px solid var(--border);border-radius:.75rem;padding:.625rem"><div style="color:var(--primary);font-size:.75rem;font-weight:800;font-family:var(--font-mono)">3.2K</div><div style="color:var(--faint);font-size:.6rem;margin-top:.125rem">Prospek</div></div>
+            <div style="background:var(--surface);border:1px solid var(--border);border-radius:.75rem;padding:.625rem"><div style="color:var(--primary);font-size:.75rem;font-weight:800;font-family:var(--font-mono)">86%</div><div style="color:var(--faint);font-size:.6rem;margin-top:.125rem">Konversi</div></div>
+            <div style="background:var(--surface);border:1px solid var(--border);border-radius:.75rem;padding:.625rem"><div style="color:var(--primary);font-size:.75rem;font-weight:800;font-family:var(--font-mono)">47</div><div style="color:var(--faint);font-size:.6rem;margin-top:.125rem">Cabang</div></div>
+          </div>
+          <div style="background:var(--surface);border:1px solid var(--border);border-radius:.75rem;padding:.75rem;height:5rem;display:flex;align-items:flex-end;gap:.25rem">
+            <div style="flex:1;border-radius:2px 2px 0 0;height:40%;background:linear-gradient(to top,rgba(0,163,224,.15),rgba(0,163,224,.3))"></div>
+            <div style="flex:1;border-radius:2px 2px 0 0;height:65%;background:linear-gradient(to top,rgba(0,163,224,.18),rgba(0,163,224,.35))"></div>
+            <div style="flex:1;border-radius:2px 2px 0 0;height:45%;background:linear-gradient(to top,rgba(0,163,224,.2),rgba(0,163,224,.38))"></div>
+            <div style="flex:1;border-radius:2px 2px 0 0;height:80%;background:linear-gradient(to top,rgba(0,163,224,.22),rgba(0,163,224,.4))"></div>
+            <div style="flex:1;border-radius:2px 2px 0 0;height:55%;background:linear-gradient(to top,rgba(0,163,224,.25),rgba(0,163,224,.42))"></div>
+            <div style="flex:1;border-radius:2px 2px 0 0;height:90%;background:linear-gradient(to top,rgba(0,163,224,.28),rgba(0,163,224,.45))"></div>
+            <div style="flex:1;border-radius:2px 2px 0 0;height:70%;background:linear-gradient(to top,rgba(0,163,224,.3),rgba(0,163,224,.48))"></div>
+            <div style="flex:1;border-radius:2px 2px 0 0;height:85%;background:linear-gradient(to top,rgba(0,163,224,.32),rgba(0,163,224,.5))"></div>
+            <div style="flex:1;border-radius:2px 2px 0 0;height:60%;background:linear-gradient(to top,rgba(0,163,224,.35),rgba(0,163,224,.52))"></div>
+            <div style="flex:1;border-radius:2px 2px 0 0;height:75%;background:linear-gradient(to top,rgba(0,163,224,.38),rgba(0,163,224,.55))"></div>
+            <div style="flex:1;border-radius:2px 2px 0 0;height:95%;background:linear-gradient(to top,rgba(0,163,224,.4),rgba(0,163,224,.6))"></div>
+            <div style="flex:1;border-radius:2px 2px 0 0;height:88%;background:linear-gradient(135deg,#00A3E0,#00d4ff)"></div>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:.375rem">
+            <div style="display:flex;gap:.5rem;align-items:center"><div style="width:1rem;height:1rem;border-radius:50%;background:rgba(255,255,255,.06)"></div><div style="flex:1;height:.5rem;background:rgba(255,255,255,.04);border-radius:99px"></div><div style="width:2.5rem;height:.5rem;background:rgba(0,163,224,.15);border-radius:99px"></div></div>
+            <div style="display:flex;gap:.5rem;align-items:center"><div style="width:1rem;height:1rem;border-radius:50%;background:rgba(255,255,255,.06)"></div><div style="flex:1;height:.5rem;background:rgba(255,255,255,.04);border-radius:99px"></div><div style="width:2.5rem;height:.5rem;background:rgba(0,163,224,.15);border-radius:99px"></div></div>
+            <div style="display:flex;gap:.5rem;align-items:center"><div style="width:1rem;height:1rem;border-radius:50%;background:rgba(255,255,255,.06)"></div><div style="flex:1;height:.5rem;background:rgba(255,255,255,.04);border-radius:99px"></div><div style="width:2.5rem;height:.5rem;background:rgba(0,163,224,.15);border-radius:99px"></div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="mock-reflection"></div>
+    <div class="mock-glow"></div>
+  </div>
+</section>
+
+<!-- STATS -->
+<section class="stats" id="statistik">
+  <div class="stats-grid">
+    <div class="glass stat-card glow-border">
+      <div class="stat-val gradient-text">10x</div>
+      <div class="stat-lbl">Peningkatan Efisiensi Tim Sales</div>
+    </div>
+    <div class="glass stat-card glow-border">
+      <div class="stat-val gradient-text">98%</div>
+      <div class="stat-lbl">Tingkat Kepuasan Pengguna</div>
+    </div>
+    <div class="glass stat-card glow-border">
+      <div class="stat-val gradient-text">500+</div>
+      <div class="stat-lbl">Bisnis Aktif Terdaftar</div>
+    </div>
+    <div class="glass stat-card glow-border">
+      <div class="stat-val gradient-text">24/7</div>
+      <div class="stat-lbl">Dukungan Voxia AI Non-Stop</div>
+    </div>
+  </div>
+</section>
+
+<!-- FEATURES -->
+<section class="features" id="fitur">
+  <div class="feat-header">
+    <div class="feat-label glass glow-border">FITUR UNGGULAN</div>
+    <h2 class="feat-title">Semua Yang Dibutuhkan Tim Sales</h2>
+    <p class="feat-sub">Satu platform lengkap dengan Voxia AI terintegrasi &mdash; dari prospek pertama hingga closing deal.</p>
+  </div>
+  <div class="feat-grid">
+    <div class="feat-card glass card-hover">
+      <div class="feat-icon" style="background:linear-gradient(135deg,rgba(0,163,224,.2),rgba(99,102,241,.1));color:var(--primary)">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2a7 7 0 0 1 7 7c0 2.38-1.19 4.47-3 5.74V17a1 1 0 0 1-1 1h-6a1 1 0 0 1-1-1v-2.26C6.19 13.47 5 11.38 5 9a7 7 0 0 1 7-7z"/><path d="M9 22h6M10 2v1M14 2v1"/></svg>
+      </div>
+      <h3>AI Sales Advisor</h3>
+      <p>Asisten cerdas berbasis Voxia AI yang membantu strategi penjualan dan analisis prospek secara real-time.</p>
+    </div>
+    <div class="feat-card glass card-hover">
+      <div class="feat-icon" style="background:linear-gradient(135deg,rgba(0,163,224,.2),rgba(99,102,241,.1));color:var(--primary)">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>
+      </div>
+      <h3>CRM Automation</h3>
+      <p>Kelola ribuan kontak dan pipeline prospek dengan scoring otomatis serta tracking konversi terpusat.</p>
+    </div>
+    <div class="feat-card glass card-hover">
+      <div class="feat-icon" style="background:linear-gradient(135deg,rgba(0,163,224,.2),rgba(99,102,241,.1));color:var(--primary)">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 20V10M12 20V4M6 20v-6"/></svg>
+      </div>
+      <h3>Competitor Intelligence</h3>
+      <p>Pantau pergerakan kompetitor dan analisis kesenjangan pasar untuk merebut peluang lebih cepat.</p>
+    </div>
+    <div class="feat-card glass card-hover">
+      <div class="feat-icon" style="background:linear-gradient(135deg,rgba(0,163,224,.2),rgba(99,102,241,.1));color:var(--primary)">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+      </div>
+      <h3>Multi-Cabang</h3>
+      <p>Sinkronisasi data penjualan seluruh jaringan cabang dalam satu dashboard terintegrasi.</p>
+    </div>
+    <div class="feat-card glass card-hover">
+      <div class="feat-icon" style="background:linear-gradient(135deg,rgba(0,163,224,.2),rgba(99,102,241,.1));color:var(--primary)">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+      </div>
+      <h3>Branding Generator</h3>
+      <p>Buat aset promosi berkualitas tinggi dengan Voxia AI dalam hitungan detik &mdash; siap pakai untuk semua kanal.</p>
+    </div>
+    <div class="feat-card glass card-hover">
+      <div class="feat-icon" style="background:linear-gradient(135deg,rgba(0,163,224,.2),rgba(99,102,241,.1));color:var(--primary)">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+      </div>
+      <h3>Strategy Engine</h3>
+      <p>Rekomendasi strategi penjualan berbasis data historis dan tren pasar yang selalu diperbarui.</p>
+    </div>
+  </div>
+</section>
+
+<!-- BUSINESS MODEL -->
+<section class="models" id="model">
+  <div class="feat-header">
+    <div class="feat-label glass glow-border" style="color:var(--green)">MODEL BISNIS</div>
+    <h2 class="feat-title">Fleksibel Sesuai Kebutuhan</h2>
+    <p class="feat-sub">MaxSales dirancang untuk berbagai model bisnis &mdash; pilih yang paling cocok untuk tim dan skala operasi Anda.</p>
+  </div>
+  <div class="models-grid">
+    <div class="model-card glass card-hover">
+      <div class="model-icon" style="background:linear-gradient(135deg,rgba(0,163,224,.2),rgba(0,212,255,.1));color:var(--primary)">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+      </div>
+      <h3>Subscription</h3>
+      <p>Akses penuh ke semua fitur dengan langganan bulanan atau tahunan. Skalakan plan sesuai pertumbuhan bisnis.</p>
+      <div class="model-tag" style="color:var(--primary)">Rekomendasi untuk startup</div>
+    </div>
+    <div class="model-card glass card-hover">
+      <div class="model-icon" style="background:linear-gradient(135deg,rgba(129,140,248,.2),rgba(167,139,250,.1));color:var(--indigo)">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>
+      </div>
+      <h3>Pay-per-use</h3>
+      <p>Bayar sesuai pemakaian &mdash; AI credits, lead scoring, dan analisis kompetitor. Tanpa komitmen jangka panjang.</p>
+      <div class="model-tag" style="color:var(--indigo)">Cocok untuk MVP &amp; validasi</div>
+    </div>
+    <div class="model-card glass card-hover">
+      <div class="model-icon" style="background:linear-gradient(135deg,rgba(251,191,36,.2),rgba(251,146,60,.1));color:var(--accent)">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+      </div>
+      <h3>Enterprise License</h3>
+      <p>Lisensi on-premise atau private cloud untuk korporasi. Dukungan dedicated, SLA, dan kustomisasi penuh.</p>
+      <div class="model-tag" style="color:var(--accent)">Untuk enterprise &amp; BUMN</div>
+    </div>
+  </div>
+  <div class="models-cta">
+    <a href="./app.html" class="btn-primary">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+      LIVE DEMO &mdash; Coba Sekarang
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+    </a>
+    <p style="color:var(--faint);font-size:.75rem;margin-top:1.25rem">Tidak perlu kartu kredit &middot; Langsung aktif &middot; Data demo tersedia</p>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="footer">
+  <div class="footer-line"></div>
+  <div class="footer-inner">
+    <div class="footer-brand">
+      <span class="nav-brand" style="font-size:.65rem;padding:.25rem .5rem">VOXIA AI</span>
+      MaxSales &copy; 2026
+    </div>
+    <div class="footer-links">
+      <a href="#fitur">Fitur</a>
+      <a href="#statistik">Statistik</a>
+      <a href="#model">Model Bisnis</a>
+      <a href="./app.html">Dashboard</a>
+    </div>
+  </div>
+</footer>
+
+<script>
+// Nav scroll effect
+const nav = document.getElementById('nav');
+window.addEventListener('scroll', () => { nav.classList.toggle('scrolled', window.scrollY > 40); });
+
+// Scroll reveal
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(e => { if(e.isIntersecting){ e.target.classList.add('visible'); observer.unobserve(e.target); } });
+}, { threshold: 0.08 });
+document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+</script>
+</body>
+</html>
