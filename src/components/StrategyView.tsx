@@ -5,6 +5,7 @@
 
 import React, { useState } from 'react';
 import { RecommendationStrategy, BlueprintRow } from '../types';
+import { apiFetch } from '../api';
 import {
   Compass,
   ArrowRight,
@@ -102,7 +103,7 @@ export default function StrategyView({
     addToast('Menganalisis profil bisnis & kendala korporat...', 'success');
 
     try {
-      const response = await fetch('/api/generate-strategy', {
+      const response = await apiFetch('/api/generate-strategy', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'

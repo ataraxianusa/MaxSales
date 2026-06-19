@@ -5,6 +5,7 @@
 
 import React, { useState, useEffect, useRef } from 'react';
 import { AppTab, MarketingAsset, RecommendationStrategy, Contact, CompetitorData, Branch, UnifiedChatSession } from './types';
+import { apiFetch } from './api';
 import {
   INITIAL_MARKETING_ASSETS,
   INITIAL_STRATEGY,
@@ -715,9 +716,22 @@ export default function App() {
                     : s
                 ));
 
-                // Simulate Voxia AI response
-                await new Promise(r => setTimeout(r, 1200 + Math.random() * 800));
-                const aiReply = `Terima kasih atas pertanyaan Anda tentang "${userMsg.slice(0, 60)}...". Sebagai Voxia AI, saya sedang menganalisis data Anda dan akan memberikan insight yang relevan untuk meningkatkan performa penjualan Anda.`;
+                // Call real AI via API
+                let aiReply = '';
+                try {
+                  const sessionMsgs = (chatSessions.find(s => s.id === sessionId)?.messages || [])
+                    .map(m => ({ role: m.role === 'assistant' ? 'model' : 'user', parts: m.content }));
+                  sessionMsgs.push({ role: 'user', parts: userMsg });
+
+                  const res = await apiFetch('/api/help-chat', {
+                    method: 'POST',
+                    body: JSON.stringify({ messages: sessionMsgs, context: { activeTab } })
+                  });
+                  const data = await res.json();
+                  aiReply = data.reply || 'Maaf, tidak dapat memproses permintaan Anda.';
+                } catch {
+                  aiReply = `Terima kasih atas pertanyaan Anda tentang "${userMsg.slice(0, 60)}...". Sebagai Voxia AI, saya sedang menganalisis data Anda.`;
+                }
 
                 setChatSessions(prev => prev.map(s =>
                   s.id === sessionId

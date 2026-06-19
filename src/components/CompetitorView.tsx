@@ -5,6 +5,7 @@
 
 import React, { useState } from 'react';
 import { CompetitorData } from '../types';
+import { apiFetch } from '../api';
 import {
   TrendingUp,
   Search,
@@ -63,7 +64,7 @@ export default function CompetitorView({
     addToast('Menghubungkan asisten riset intelijen VOXIA...', 'success');
 
     try {
-      const response = await fetch('/api/analyze-competitor', {
+      const response = await apiFetch('/api/analyze-competitor', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ competitorUrlOrName: competitorQuery })

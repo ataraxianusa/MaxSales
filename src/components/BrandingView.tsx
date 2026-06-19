@@ -5,6 +5,7 @@
 
 import React, { useState, useRef } from 'react';
 import { MarketingAsset } from '../types';
+import { apiFetch } from '../api';
 import {
   Sparkles,
   Layers,
@@ -123,7 +124,7 @@ export default function BrandingView({
     setTimeout(() => setProgressText('Menyusun ad copy persuasif dengan model Gemini 3.5...'), 2400);
 
     try {
-      const response = await fetch('/api/generate-assets', {
+      const response = await apiFetch('/api/generate-assets', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'

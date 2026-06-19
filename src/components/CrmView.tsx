@@ -5,6 +5,7 @@
 
 import React, { useState } from 'react';
 import { Contact, AutomationNode } from '../types';
+import { apiFetch } from '../api';
 import {
   Users,
   Search,
@@ -206,7 +207,7 @@ export default function CrmView({
     addToast('Menghubungkan asisten analisis VOXIA AI...', 'success');
 
     try {
-      const response = await fetch('/api/evaluate-lead-score', {
+      const response = await apiFetch('/api/evaluate-lead-score', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
