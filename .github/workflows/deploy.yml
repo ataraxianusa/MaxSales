@@ -33,6 +33,8 @@ jobs:
 
       - name: Build React app
         run: npx vite build
+        env:
+          VITE_API_URL: ${{ secrets.VITE_API_URL }}
 
       # Rename index.html → app.html so the landing page (index.html on gh-pages)
       # is never overwritten by the React build output.
