@@ -6,7 +6,6 @@
 import express from "express";
 import path from "path";
 import { createServer as createViteServer } from "vite";
-import { GoogleGenAI, Type } from "@google/genai";
 import dotenv from "dotenv";
 
 dotenv.config();
@@ -14,29 +13,46 @@ dotenv.config();
 const app = express();
 app.use(express.json());
 
-const PORT = 3000;
-const apiKey = process.env.GEMINI_API_KEY;
+const PORT = Number(process.env.PORT) || 3000;
+const OPENROUTER_API_KEY = process.env.OPENROUTER_API_KEY;
+const OPENROUTER_MODEL = process.env.OPENROUTER_MODEL || "deepseek/deepseek-chat-v3-0324:free";
 
-// Lazy initialize Gemini client
-let ai: GoogleGenAI | null = null;
-const isRealAiEnabled = !!(apiKey && apiKey !== "MY_GEMINI_API_KEY" && apiKey !== "");
+const isRealAiEnabled = !!(OPENROUTER_API_KEY && OPENROUTER_API_KEY !== "" && OPENROUTER_API_KEY.startsWith("sk-or-"));
 
 if (isRealAiEnabled) {
-  try {
-    ai = new GoogleGenAI({
-      apiKey: apiKey,
-      httpOptions: {
-        headers: {
-          'User-Agent': 'aistudio-build',
-        }
-      }
-    });
-    console.log("VOXIA Backend: Real Gemini AI integration activated.");
-  } catch (err) {
-    console.error("VOXIA Backend: Failed to initialize GoogleGenAI. Using smart simulator instead.", err);
-  }
+  console.log(`VOXIA Backend: OpenRouter AI activated (${OPENROUTER_MODEL}).`);
 } else {
-  console.log("VOXIA Backend: Running in Simulation mode. (Missing GEMINI_API_KEY)");
+  console.log("VOXIA Backend: Running in Simulation mode. (Missing OPENROUTER_API_KEY)");
+}
+
+// OpenRouter call helper (OpenAI-compatible API)
+async function callOpenRouter(
+  messages: { role: string; content: string }[],
+  options?: { temperature?: number; maxTokens?: number }
+): Promise<string> {
+  const response = await fetch("https://openrouter.ai/api/v1/chat/completions", {
+    method: "POST",
+    headers: {
+      "Authorization": `Bearer ${OPENROUTER_API_KEY}`,
+      "Content-Type": "application/json",
+      "HTTP-Referer": "https://maxsales.qzz.io",
+      "X-Title": "MaxSales by VOXIA"
+    },
+    body: JSON.stringify({
+      model: OPENROUTER_MODEL,
+      messages,
+      temperature: options?.temperature ?? 0.7,
+      max_tokens: options?.maxTokens ?? 2048
+    })
+  });
+
+  if (!response.ok) {
+    const errBody = await response.text();
+    throw new Error(`OpenRouter ${response.status}: ${errBody}`);
+  }
+
+  const data = await response.json() as any;
+  return data.choices?.[0]?.message?.content || "";
 }
 
 // Utility to clean model output and parse JSON robustly
@@ -88,7 +104,8 @@ app.get("/api/status", (req, res) => {
   res.json({
     status: "online",
     aiEnabled: isRealAiEnabled,
-    modelName: "gemini-3.5-flash",
+    model: isRealAiEnabled ? OPENROUTER_MODEL : "simulator",
+    provider: isRealAiEnabled ? "OpenRouter" : "local-simulation",
     platform: "VOXIA Sales-Flow One-Stop Platform",
     currentTime: new Date().toISOString()
   });
@@ -161,12 +178,68 @@ app.post("/api/generate-assets", async (req, res) => {
     ]
   };
 
-  if (!isRealAiEnabled || !ai) {
+  if (!isRealAiEnabled) {
     // Simulator flow
     return res.json({
       ...defaultMockResponse,
       mode: "stimulated-local"
     });
+  }
+
+  try {
+    const prompt = `Anda adalah Direktur Kreatif & AI Copywriter Senior VOXIA.
+Hasilkan 3 variasi aset kampanye pemasaran digital berkualitas tinggi dalam bahasa Indonesia untuk:
+- Nama Produk: ${productName}
+- Persona Pengguna Utama: ${persona}
+- Target Pasar / Demografi: ${targetMarket || "Masayarakat umum perkotaan"}
+- Spesifikasi Media / Format Utama: ${mediaSpecs || "Instagram / TikTok feeds"}
+
+Hasilkan respons dalam format JSON STRICT yang memiliki properti:
+{
+  "assets": [
+    {
+      "title": "Judul copy ad utama yang memikat (kurang dari 10 kata)",
+      "copy": "Naskah iklan promosi lengkap, persuasif, menarik (2-3 kalimat)",
+      "ctaText": "Tombol aksi (e.g., 'Beli Sekarang', 'Mulai Konsultasi')",
+      "type": "Jenis media: pilih salah satu dari 'social-post' atau 'image' atau 'video' atau 'copy'",
+      "styleTheme": {
+        "bgGradient": "Pilih gradient Tailwind yang mewah",
+        "primaryColor": "Hex color yang kontras",
+        "accentColor": "Warna aksen pembeda",
+        "textStyle": "Gaya teks Tailwind"
+      }
+    }
+  ]
+}
+
+Berikan response HANYA berupa JSON tanpa penjelasan tambahan agar dapat di-parse secara otomatis.`;
+
+    const raw = await callOpenRouter([
+      { role: "system", content: "Anda selalu merespon dalam format JSON yang valid. Tanpa markdown, tanpa penjelasan." },
+      { role: "user", content: prompt }
+    ], { temperature: 0.8 });
+
+    const parsed = parseGeminiJson(raw, defaultMockResponse);
+    const finalAssets = parsed.assets.map((asset: any, idx: number) => ({
+      id: `ai_asset_${Date.now()}_${idx}`,
+      productName,
+      persona,
+      targetMarket,
+      mediaSpecs,
+      version: 1,
+      ...asset
+    }));
+
+    return res.json({ assets: finalAssets, mode: "live-ai" });
+  } catch (error: any) {
+    console.error("VOXIA Backend error:", error);
+    return res.status(200).json({
+      ...defaultMockResponse,
+      mode: "stimulated-local-error-fallback",
+      message: error.message
+    });
+  }
+});
   }
 
   try {
@@ -268,7 +341,7 @@ app.post("/api/generate-strategy", async (req, res) => {
     aiReasoning: `Berdasarkan kendala utama berupa pemasaran yang kurang terarah dan data anggaran senilai Rp ${budget?.toLocaleString() || "5.000.000"}, kami menyarankan strategi bercabang yang berfokus kuat pada media sosial visual digabungkan dengan automasi penawaran CRM. Fokus ads 45% memastikan aliran prospek baru tetap tinggi, sementara follow-up cepat via WA meningkatkan retensi penjualan.`
   };
 
-  if (!isRealAiEnabled || !ai) {
+  if (!isRealAiEnabled) {
     return res.json({
       ...defaultMockStrategy,
       id: `strat_${Date.now()}`,
@@ -298,7 +371,7 @@ Hasilkan data dalam format JSON STRICT yang memiliki properti persis seperti ber
       "channel": "Nama Media / Saluran Iklan",
       "targetAudience": "Deskripsi target pemirsa spesifik",
       "message": "Pesan utama atau copy andalan",
-      "kpi": "Metrik keberhasilan utama (e.g., Conversion, CAC, CTR, Followers)",
+      "kpi": "Metrik keberhasilan utama",
       "cta": "Call to action yang kuat",
       "details": "Langkah action konkret untuk operasional taktis"
     }
@@ -309,20 +382,17 @@ Hasilkan data dalam format JSON STRICT yang memiliki properti persis seperti ber
     { "name": "Content Creation", "value": 20, "color": "#FFB400" },
     { "name": "Lainnya", "value": 10, "color": "#475569" }
   ],
-  "aiReasoning": "Paragraf ringkasan penjelasan taktis mengapa alokasi ini dirancang demikian sesuai pain points di atas (bahasa Indonesia, mengesankan, logis)"
+  "aiReasoning": "Paragraf ringkasan penjelasan taktis mengapa alokasi ini dirancang demikian"
 }
 
-Ingat: Pastikan properti "budgetAllocation" bernilai total persis 100%. Berikan HANYA respons JSON mentah tanpa penjelasan markdown tambahan agar di-parse lancar.`;
+Pastikan properti "budgetAllocation" bernilai total persis 100%. Berikan HANYA respons JSON mentah.`;
 
-    const response = await ai.models.generateContent({
-      model: "gemini-3.5-flash",
-      contents: prompt,
-      config: {
-        responseMimeType: "application/json"
-      }
-    });
+    const raw = await callOpenRouter([
+      { role: "system", content: "Anda selalu merespon dalam format JSON yang valid. Tanpa markdown, tanpa penjelasan." },
+      { role: "user", content: prompt }
+    ], { temperature: 0.7 });
 
-    const parsed = parseGeminiJson(response.text || "", defaultMockStrategy);
+    const parsed = parseGeminiJson(raw, defaultMockStrategy);
 
     return res.json({
       id: `strat_${Date.now()}`,
@@ -367,7 +437,7 @@ app.post("/api/evaluate-lead-score", async (req, res) => {
     return res.status(400).json({ error: "Contact name is required." });
   }
 
-  if (!isRealAiEnabled || !ai) {
+  if (!isRealAiEnabled) {
     return res.json({
       ...defaultMockScore,
       mode: "stimulated-local"
@@ -376,14 +446,14 @@ app.post("/api/evaluate-lead-score", async (req, res) => {
 
   try {
     const prompt = `Anda adalah Model Analitik Lead-Scoring CRM VOXIA.
-Evaluasi prospek berikut berdasarkan informasinya dan tentukan angka AI Lead Score (1-100) serta berikan penjelasan singkat (1-2 kalimat):
+Evaluasi prospek berikut dan tentukan angka AI Lead Score (1-100) serta penjelasan singkat (1-2 kalimat):
 - Nama Kontak: ${contactName}
 - Email: ${email || "Tidak ada"}
 - No Handphone/WA: ${phone || "Tidak ada"}
-- Catatan Interaksi / Kronologi: ${notes || "Tidak ada catatan aktivitas"}
+- Catatan Interaksi: ${notes || "Tidak ada catatan aktivitas"}
 - Status saat ini: ${status || "Lead"}
 
-Hasilkan respons JSON STRICT dengan format:
+Hasilkan respons JSON STRICT:
 {
   "score": 85,
   "scoreExplanation": "Alasan detail dalam bahasa Indonesia mengenai pemberian skor tersebut, serta saran tindakan CRM berikutnya."
@@ -391,15 +461,12 @@ Hasilkan respons JSON STRICT dengan format:
 
 Kirimkan JSON tanpa teks pembuka/penutup.`;
 
-    const response = await ai.models.generateContent({
-      model: "gemini-3.5-flash",
-      contents: prompt,
-      config: {
-        responseMimeType: "application/json"
-      }
-    });
+    const raw = await callOpenRouter([
+      { role: "system", content: "Anda selalu merespon dalam format JSON yang valid. Tanpa markdown, tanpa penjelasan." },
+      { role: "user", content: prompt }
+    ], { temperature: 0.5 });
 
-    const parsed = parseGeminiJson(response.text || "", defaultMockScore);
+    const parsed = parseGeminiJson(raw, defaultMockScore);
     return res.json({
       score: parsed.score,
       scoreExplanation: parsed.scoreExplanation,
@@ -457,7 +524,7 @@ app.post("/api/analyze-competitor", async (req, res) => {
     ]
   };
 
-  if (!isRealAiEnabled || !ai) {
+  if (!isRealAiEnabled) {
     return res.json({
       ...defaultMockCompetitor,
       mode: "stimulated-local"
@@ -466,10 +533,10 @@ app.post("/api/analyze-competitor", async (req, res) => {
 
   try {
     const prompt = `Anda adalah Ahli Intelijen Pasar & Analisis Kompetitor VOXIA.
-Lakukan analisis mendalam terhadap kompetitor yang dideskripsikan atau berada pada url/nama: "${competitorUrlOrName}".
-Prediksikan bauran saluran iklan mereka (Channel Mix), struktur harga produk mereka secara umum, rasio keterlibatan sosial (Engagement metrics), bauran ad copy kreatif, dan performa mereka.
+Lakukan analisis mendalam terhadap kompetitor: "${competitorUrlOrName}".
+Prediksikan bauran saluran iklan mereka, struktur harga, engagement metrics, dan ad copy.
 
-Hasilkan respons berformat JSON STRICT yang memiliki properti persis seperti berikut:
+Hasilkan respons berformat JSON STRICT:
 {
   "name": "Nama Resmi Kompetitor",
   "channelMix": [
@@ -478,35 +545,32 @@ Hasilkan respons berformat JSON STRICT yang memiliki properti persis seperti ber
     { "name": "Lainnya", "spend": 20, "color": "#FFB400" }
   ],
   "pricingSnapshot": [
-    { "tier": "Nama Paket/Layanan 1", "price": "Harga Estimasi" },
-    { "tier": "Nama Paket/Layanan 2", "price": "Harga Estimasi" }
+    { "tier": "Nama Paket 1", "price": "Harga Estimasi" },
+    { "tier": "Nama Paket 2", "price": "Harga Estimasi" }
   ],
   "metrics": {
-    "engagementRate": "Presentase perkiraan e.g. 3.2%",
-    "adSpendEst": "Kisaran pengeluaran iklan e.g. Rp 10jt - Rp 20jt/bln",
+    "engagementRate": "3.2%",
+    "adSpendEst": "Rp 10jt - Rp 20jt/bln",
     "likesTrend": [200, 240, 280, 310, 290, 350]
   },
   "socialAdSamples": [
     {
-      "headline": "Headline Iklan yang mereka gunakan",
-      "channels": ["Platform tempat iklan tayang"],
-      "copy": "Copywriting iklan persuasif yang mereka pasang",
-      "imgPrompt": "Deskripsi visual iklan / creative design prompt"
+      "headline": "Headline iklan",
+      "channels": ["Platform"],
+      "copy": "Copywriting iklan",
+      "imgPrompt": "Deskripsi visual"
     }
   ]
 }
 
-Ingat, pastikan jumlah "channelMix" value-nya totalnya persis 100%. Keluarkan HANYA JSON.`;
+Pastikan "channelMix" totalnya 100%. Keluarkan HANYA JSON.`;
 
-    const response = await ai.models.generateContent({
-      model: "gemini-3.5-flash",
-      contents: prompt,
-      config: {
-        responseMimeType: "application/json"
-      }
-    });
+    const raw = await callOpenRouter([
+      { role: "system", content: "Anda selalu merespon dalam format JSON yang valid. Tanpa markdown, tanpa penjelasan." },
+      { role: "user", content: prompt }
+    ], { temperature: 0.7 });
 
-    const parsed = parseGeminiJson(response.text || "", defaultMockCompetitor);
+    const parsed = parseGeminiJson(raw, defaultMockCompetitor);
     return res.json({
       ...parsed,
       mode: "live-ai"
@@ -531,7 +595,7 @@ app.post("/api/help-chat", async (req, res) => {
 
   const latestUserText = messages[messages.length - 1].parts;
 
-  if (!isRealAiEnabled || !ai) {
+  if (!isRealAiEnabled) {
     // Return simple intelligent system simulation answers code
     const words = latestUserText.toLowerCase();
     let reply = "Halo! Saya adalah VOXIA AI Assistant. Saya siap membantu Anda mengoptimalkan kampanye, menyusun riset branding, menghitung skor otomatis CRM prospek, hingga sinkronisasi aset antarcabang. Silakan tanyakan apa saja mengenai strategi Sales Flow Anda.";
@@ -555,33 +619,36 @@ app.post("/api/help-chat", async (req, res) => {
   }
 
   try {
-    // Build context-aware chat call with system prompt
-    const chat = ai.chats.create({
-      model: "gemini-3.5-flash",
-      config: {
-        systemInstruction: `Anda adalah VOXIA Sales-Flow Specialist, asisten AI ramah, proaktif, dan ahli dalam bidang penjualan digital, CRM, periklanan, dan manajemen cabang bisnis lokal di Indonesia.
+    const systemPrompt = `Anda adalah VOXIA Sales-Flow Specialist, asisten AI ramah, proaktif, dan ahli dalam bidang penjualan digital, CRM, periklanan, dan manajemen cabang bisnis lokal di Indonesia.
 Jawab pertanyaan dari pebisnis pengguna VOXIA dengan nada yang profesional, berwibawa, penuh strategi, taktis, namun bersahabat.
 Gunakan bahasa Indonesia yang mengalir dengan baik. Selalu kaitkan jawaban dengan kapabilitas dashboard VOXIA apabila relevan:
 - Menu Branding: untuk meluncurkan ad copy andalan & visual terarah berdasarkan foto produk.
 - Menu Strategy: sebagai perancang sales funnel modular visual & kalkulasi pie chart alokasi budget.
-- Menu CRM: alat pelacak database pelanggan yang menghitung AI-Score prospek otomatis & automasi no-code (if-then triggers).
+- Menu CRM: alat pelacak database pelanggan yang menghitung AI-Score prospek otomatis & automasi no-code.
 - Menu Competitor: riset mandiri kanal media pesaing secara visual.
 - Menu Multi-Branch: sinkronisasi aset promosi wilayah HQ ke cabang lokal lewat peta interaktif.
 
-Konteks aktif saat ini dari user: ${JSON.stringify(context || {})}
-Jawab jawaban pendek saksama (kurang dari 150 kata).`
-      }
-    });
+Konteks aktif: ${JSON.stringify(context || {})}
+Jawab dalam kurang dari 150 kata.`;
 
-    // Provide previous chat context if available (excluding the latest one which goes to sendMessage)
-    // Map onto the schema expected by the SDK
-    // Just send the latest user message directly to start the chat, or play it through properly.
-    const response = await chat.sendMessage({
-      message: latestUserText
-    });
+    // Build messages array for OpenRouter
+    const orMessages: { role: string; content: string }[] = [
+      { role: "system", content: systemPrompt }
+    ];
+
+    // Add conversation history (last 10 messages max)
+    const historyMessages = messages.slice(-10);
+    for (const msg of historyMessages) {
+      orMessages.push({
+        role: msg.role === "model" ? "assistant" : "user",
+        content: msg.parts
+      });
+    }
+
+    const reply = await callOpenRouter(orMessages, { temperature: 0.7, maxTokens: 512 });
 
     return res.json({
-      reply: response.text,
+      reply,
       mode: "live-ai"
     });
   } catch (err: any) {
