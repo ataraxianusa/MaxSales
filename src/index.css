@@ -131,3 +131,104 @@ body {
   animation: fadeInUp 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
+/* ── Landing Page Premium Utilities ──────────────────────────────── */
+
+/* Animated gradient mesh for hero background */
+@keyframes meshFloat {
+  0%, 100% { transform: translate(-50%, -50%) scale(1); }
+  25% { transform: translate(-45%, -55%) scale(1.05); }
+  50% { transform: translate(-55%, -45%) scale(0.95); }
+  75% { transform: translate(-50%, -40%) scale(1.03); }
+}
+
+@keyframes meshFloat2 {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  33% { transform: translate(20px, -15px) scale(1.08); }
+  66% { transform: translate(-15px, 10px) scale(0.94); }
+}
+
+@keyframes meshFloat3 {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  50% { transform: translate(-25px, 20px) scale(1.1); }
+}
+
+/* Shimmer sweep for glassmorphism surfaces */
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+/* Gentle pulse for active indicators */
+@keyframes gentlePulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.6; }
+}
+
+/* Glassmorphism utility */
+.glass {
+  background: rgba(255, 255, 255, 0.03);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+/* Gradient text utility */
+.gradient-text {
+  background: linear-gradient(135deg, #00A3E0, #6366f1);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Card hover lift + glow */
+.card-hover {
+  transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1),
+              border-color 0.25s ease,
+              box-shadow 0.25s ease;
+}
+.card-hover:hover {
+  transform: translateY(-3px);
+  border-color: rgba(0, 163, 224, 0.3);
+  box-shadow: 0 8px 32px rgba(0, 163, 224, 0.08), 0 0 0 1px rgba(0, 163, 224, 0.1);
+}
+
+/* Glow border on hover */
+.glow-border {
+  transition: box-shadow 0.3s ease, border-color 0.3s ease;
+}
+.glow-border:hover {
+  box-shadow: 0 0 20px rgba(0, 163, 224, 0.15), 0 0 60px rgba(0, 163, 224, 0.05);
+  border-color: rgba(0, 163, 224, 0.3);
+}
+
+/* 3D mock browser tilt */
+.mock-3d {
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1),
+              box-shadow 0.4s ease;
+}
+.mock-3d:hover {
+  transform: perspective(1200px) rotateX(2deg) rotateY(-1deg) scale(1.01);
+  box-shadow:
+    0 25px 60px -12px rgba(0, 0, 0, 0.5),
+    0 0 40px rgba(0, 163, 224, 0.06);
+}
+
+/* Staggered reveal animation for feature cards */
+@keyframes staggerReveal {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.stagger-1 { animation: staggerReveal 0.6s cubic-bezier(0.16, 1, 0.3, 1) 0.1s forwards; opacity: 0; }
+.stagger-2 { animation: staggerReveal 0.6s cubic-bezier(0.16, 1, 0.3, 1) 0.2s forwards; opacity: 0; }
+.stagger-3 { animation: staggerReveal 0.6s cubic-bezier(0.16, 1, 0.3, 1) 0.3s forwards; opacity: 0; }
+.stagger-4 { animation: staggerReveal 0.6s cubic-bezier(0.16, 1, 0.3, 1) 0.4s forwards; opacity: 0; }
+.stagger-5 { animation: staggerReveal 0.6s cubic-bezier(0.16, 1, 0.3, 1) 0.5s forwards; opacity: 0; }
+.stagger-6 { animation: staggerReveal 0.6s cubic-bezier(0.16, 1, 0.3, 1) 0.6s forwards; opacity: 0; }
+

@@ -121,16 +121,16 @@ function LandingPage({ onEnterDashboard }: { onEnterDashboard: () => void }) {
     <div className="min-h-screen bg-[#07090d] text-gray-200 font-sans overflow-x-hidden">
       {/* ── NAV ────────────────────────────────────────────────────── */}
       <nav
-        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
+        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
           scrolled
-            ? 'bg-[#07090d]/95 backdrop-blur-md border-b border-slate-800/60 shadow-xl'
+            ? 'bg-[#07090d]/80 backdrop-blur-xl border-b border-white/[0.04] shadow-[0_1px_3px_rgba(0,0,0,0.4)]'
             : 'bg-transparent'
         }`}
       >
         <div className="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
           {/* Logo */}
-          <div className="flex items-center gap-2.5">
-            <span className="px-2.5 py-1 bg-[#00A3E0] text-black font-extrabold rounded-lg text-xs tracking-wider leading-none">
+          <div className="flex items-center gap-3">
+            <span className="px-2.5 py-1 bg-[#00A3E0] text-black font-extrabold rounded-lg text-xs tracking-wider leading-none shadow-lg shadow-[#00A3E0]/20">
               VOXIA AI
             </span>
             <span className="text-base font-black text-white tracking-tight hidden sm:inline">
@@ -139,16 +139,16 @@ function LandingPage({ onEnterDashboard }: { onEnterDashboard: () => void }) {
           </div>
 
           {/* Nav Links */}
-          <div className="hidden md:flex items-center gap-6 text-sm font-medium text-slate-400">
-            <a href="#fitur" className="hover:text-white transition-colors">Fitur</a>
-            <a href="#statistik" className="hover:text-white transition-colors">Statistik</a>
-            <a href="#harga" className="hover:text-white transition-colors">Harga</a>
+          <div className="hidden md:flex items-center gap-8 text-sm font-medium text-slate-400">
+            <a href="#fitur" className="hover:text-white transition-colors duration-200">Fitur</a>
+            <a href="#statistik" className="hover:text-white transition-colors duration-200">Statistik</a>
+            <a href="#model" className="hover:text-white transition-colors duration-200">Model Bisnis</a>
           </div>
 
           {/* CTA Nav */}
           <button
             onClick={onEnterDashboard}
-            className="flex items-center gap-2 px-4 py-2 bg-[#00A3E0] hover:bg-[#0092c8] text-black text-sm font-bold rounded-lg transition-all active:scale-95 shadow-lg shadow-[#00A3E0]/20"
+            className="flex items-center gap-2 px-5 py-2.5 bg-[#00A3E0] hover:bg-[#00b8f5] text-black text-sm font-bold rounded-xl transition-all duration-300 active:scale-95 shadow-lg shadow-[#00A3E0]/25 hover:shadow-[#00A3E0]/40 hover:scale-[1.02]"
           >
             <Play size={14} />
             Live Demo
@@ -158,26 +158,26 @@ function LandingPage({ onEnterDashboard }: { onEnterDashboard: () => void }) {
 
       {/* ── HERO ─────────────────────────────────────────────────────── */}
       <section className="relative min-h-screen flex flex-col items-center justify-center text-center px-6 pt-16 overflow-hidden">
-        {/* Atmospheric glow */}
-        <div className="absolute top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-[#00A3E0]/8 rounded-full blur-[100px] pointer-events-none" />
-        <div className="absolute top-1/4 left-1/4 w-64 h-64 bg-indigo-600/6 rounded-full blur-[80px] pointer-events-none" />
-        <div className="absolute bottom-1/4 right-1/4 w-48 h-48 bg-cyan-400/5 rounded-full blur-[60px] pointer-events-none" />
+        {/* Animated gradient mesh background */}
+        <div className="absolute top-1/3 left-1/2 w-[700px] h-[700px] bg-[#00A3E0]/[0.07] rounded-full blur-[120px] pointer-events-none" style={{ animation: 'meshFloat 12s ease-in-out infinite' }} />
+        <div className="absolute top-1/4 left-1/4 w-80 h-80 bg-indigo-600/[0.06] rounded-full blur-[100px] pointer-events-none" style={{ animation: 'meshFloat2 16s ease-in-out infinite' }} />
+        <div className="absolute bottom-1/3 right-1/4 w-64 h-64 bg-cyan-400/[0.05] rounded-full blur-[80px] pointer-events-none" style={{ animation: 'meshFloat3 14s ease-in-out infinite' }} />
 
         {/* Badge */}
-        <div className="inline-flex items-center gap-2 px-3 py-1.5 bg-[#00A3E0]/10 border border-[#00A3E0]/30 rounded-full text-[#00A3E0] text-xs font-bold tracking-wider mb-6 relative z-10">
+        <div className="glass inline-flex items-center gap-2 px-4 py-2 rounded-full text-[#00A3E0] text-xs font-bold tracking-wider mb-8 relative z-10 glow-border">
           <Sparkles size={12} className="animate-pulse" />
           Powered by Voxia AI · Versi 2.0 · 2026
         </div>
 
         {/* Heading */}
-        <h1 className="relative z-10 text-4xl sm:text-5xl md:text-7xl font-black text-white leading-[1.05] max-w-4xl mb-6 tracking-tight">
+        <h1 className="relative z-10 text-4xl sm:text-5xl md:text-7xl font-black text-white leading-[1.08] max-w-4xl mb-8 tracking-tight">
           Platform CRM &amp; Sales AI{' '}
-          <span className="text-[#00A3E0]">Paling Cerdas</span>{' '}
+          <span className="gradient-text">Paling Cerdas</span>{' '}
           untuk Bisnis Modern
         </h1>
 
         {/* Sub */}
-        <p className="relative z-10 text-slate-400 text-base sm:text-lg max-w-2xl mb-10 leading-relaxed font-medium">
+        <p className="relative z-10 text-slate-400 text-base sm:text-lg max-w-2xl mb-12 leading-relaxed font-medium">
           MaxSales by VOXIA mengintegrasikan kecerdasan Voxia AI, CRM otomatis, intel kompetitor, dan
           manajemen multi-cabang dalam satu platform yang siap pakai hari ini.
         </p>
@@ -186,15 +186,15 @@ function LandingPage({ onEnterDashboard }: { onEnterDashboard: () => void }) {
         <div className="relative z-10 flex flex-col sm:flex-row gap-4 justify-center items-center">
           <button
             onClick={onEnterDashboard}
-            className="group flex items-center gap-3 px-8 py-4 bg-[#00A3E0] hover:bg-[#0092c8] text-black font-extrabold rounded-xl text-base transition-all active:scale-95 shadow-2xl shadow-[#00A3E0]/30 hover:shadow-[#00A3E0]/50"
+            className="group flex items-center gap-3 px-8 py-4 bg-[#00A3E0] hover:bg-[#00b8f5] text-black font-extrabold rounded-2xl text-base transition-all duration-300 active:scale-95 shadow-2xl shadow-[#00A3E0]/25 hover:shadow-[#00A3E0]/45 hover:scale-[1.02]"
           >
             <Play size={18} />
             LIVE DEMO — Masuk Dashboard
-            <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />
+            <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform duration-300" />
           </button>
           <a
             href="#fitur"
-            className="flex items-center gap-2 px-8 py-4 border border-slate-700 hover:border-slate-500 text-slate-300 hover:text-white font-bold rounded-xl text-base transition-all"
+            className="flex items-center gap-2 px-8 py-4 border border-white/10 hover:border-white/20 text-slate-300 hover:text-white font-bold rounded-2xl text-base transition-all duration-300 hover:bg-white/[0.03]"
           >
             Lihat Fitur
             <ChevronRight size={16} />
@@ -202,23 +202,23 @@ function LandingPage({ onEnterDashboard }: { onEnterDashboard: () => void }) {
         </div>
 
         {/* Hero screenshot mock */}
-        <div className="relative z-10 mt-16 w-full max-w-4xl mx-auto">
-          <div className="relative rounded-2xl overflow-hidden border border-slate-800 shadow-2xl shadow-black/60 bg-[#0a0c10]">
+        <div className="relative z-10 mt-20 w-full max-w-4xl mx-auto">
+          <div className="mock-3d relative rounded-2xl overflow-hidden border border-white/[0.06] bg-[#0a0c10]">
             {/* Mock browser chrome */}
-            <div className="flex items-center gap-1.5 px-4 py-3 bg-[#0d1117] border-b border-slate-800">
+            <div className="flex items-center gap-1.5 px-4 py-3 bg-[#0d1117] border-b border-white/[0.04]">
               <span className="w-3 h-3 rounded-full bg-rose-500/70" />
               <span className="w-3 h-3 rounded-full bg-amber-500/70" />
               <span className="w-3 h-3 rounded-full bg-emerald-500/70" />
-              <div className="flex-1 mx-4 px-3 py-1 bg-slate-900 rounded text-slate-500 text-xs font-mono">
+              <div className="flex-1 mx-4 px-3 py-1 bg-black/40 rounded-lg text-slate-500 text-xs font-mono">
                 ataraxianusa.github.io/MaxSales/
               </div>
             </div>
             {/* Dashboard preview using CSS art */}
-            <div className="flex h-48 sm:h-64">
+            <div className="flex h-52 sm:h-72">
               {/* Sidebar mock */}
-              <div className="w-14 bg-[#07090d] border-r border-slate-800 flex flex-col items-center py-4 gap-3">
+              <div className="w-14 bg-[#07090d] border-r border-white/[0.04] flex flex-col items-center py-4 gap-3">
                 {['🏠','🌸','📍','👥','📊','🌐'].map((icon, i) => (
-                  <div key={i} className={`w-8 h-8 rounded-lg flex items-center justify-center text-sm ${i === 0 ? 'bg-[#00A3E0]/20 text-[#00A3E0]' : 'text-slate-600'}`}>
+                  <div key={i} className={`w-8 h-8 rounded-xl flex items-center justify-center text-sm transition-all ${i === 0 ? 'bg-[#00A3E0]/20 text-[#00A3E0] shadow-lg shadow-[#00A3E0]/10' : 'text-slate-600 hover:text-slate-400'}`} style={i === 0 ? { animation: 'gentlePulse 3s ease-in-out infinite' } : undefined}>
                     {icon}
                   </div>
                 ))}
@@ -228,7 +228,7 @@ function LandingPage({ onEnterDashboard }: { onEnterDashboard: () => void }) {
                 {/* KPI row */}
                 <div className="grid grid-cols-4 gap-2">
                   {['Rp 184M', '3.2K', '86%', '47'].map((val, i) => (
-                    <div key={i} className="bg-slate-900 rounded-lg p-2.5 border border-slate-800">
+                    <div key={i} className="bg-white/[0.03] rounded-xl p-2.5 border border-white/[0.04]">
                       <div className="text-[#00A3E0] text-xs font-black font-mono">{val}</div>
                       <div className="text-slate-600 text-[9px] mt-0.5">
                         {['Revenue', 'Prospek', 'Konversi', 'Cabang'][i]}
@@ -237,25 +237,27 @@ function LandingPage({ onEnterDashboard }: { onEnterDashboard: () => void }) {
                   ))}
                 </div>
                 {/* Chart mock */}
-                <div className="bg-slate-900 rounded-lg p-3 border border-slate-800 h-16 flex items-end gap-1">
+                <div className="bg-white/[0.03] rounded-xl p-3 border border-white/[0.04] h-20 flex items-end gap-1">
                   {[40,65,45,80,55,90,70,85,60,75,95,88].map((h, i) => (
                     <div
                       key={i}
-                      className="flex-1 rounded-sm"
+                      className="flex-1 rounded-t-sm transition-all"
                       style={{
                         height: `${h}%`,
-                        backgroundColor: i === 11 ? '#00A3E0' : `rgba(0,163,224,${0.2 + i * 0.05})`
+                        background: i === 11
+                          ? 'linear-gradient(to top, #00A3E0, #00d4ff)'
+                          : `linear-gradient(to top, rgba(0,163,224,${0.15 + i * 0.04}), rgba(0,163,224,${0.3 + i * 0.04}))`
                       }}
                     />
                   ))}
                 </div>
                 {/* Table mock */}
-                <div className="space-y-1">
+                <div className="space-y-1.5">
                   {[0,1,2].map(i => (
                     <div key={i} className="flex gap-2 items-center">
-                      <div className="w-4 h-4 rounded-full bg-slate-800" />
-                      <div className="flex-1 h-2 bg-slate-800 rounded" style={{width: `${80 - i * 15}%`}} />
-                      <div className="w-10 h-2 bg-[#00A3E0]/20 rounded" />
+                      <div className="w-4 h-4 rounded-full bg-white/[0.06]" />
+                      <div className="flex-1 h-2 bg-white/[0.04] rounded-full" style={{width: `${80 - i * 15}%`}} />
+                      <div className="w-10 h-2 bg-[#00A3E0]/15 rounded-full" />
                     </div>
                   ))}
                 </div>
@@ -263,7 +265,9 @@ function LandingPage({ onEnterDashboard }: { onEnterDashboard: () => void }) {
             </div>
           </div>
           {/* Glow under screenshot */}
-          <div className="absolute -bottom-6 left-1/2 -translate-x-1/2 w-3/4 h-12 bg-[#00A3E0]/10 blur-2xl rounded-full" />
+          <div className="absolute -bottom-8 left-1/2 -translate-x-1/2 w-3/5 h-16 bg-[#00A3E0]/[0.08] blur-3xl rounded-full" />
+          {/* Reflection gradient */}
+          <div className="absolute bottom-0 left-0 right-0 h-20 bg-gradient-to-t from-[#07090d] via-[#07090d]/60 to-transparent pointer-events-none" />
         </div>
 
         {/* Scroll indicator */}
@@ -274,11 +278,11 @@ function LandingPage({ onEnterDashboard }: { onEnterDashboard: () => void }) {
       </section>
 
       {/* ── STATS ─────────────────────────────────────────────────────── */}
-      <section id="statistik" className="py-16 border-y border-slate-800/50 bg-[#0d1117]/50">
-        <div className="max-w-4xl mx-auto px-6 grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
+      <section id="statistik" className="py-24 px-6">
+        <div className="max-w-5xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-6">
           {stats.map((s, i) => (
-            <div key={i} className="space-y-1">
-              <div className="text-3xl font-black text-[#00A3E0] font-mono">{s.value}</div>
+            <div key={i} className="glass glow-border rounded-2xl p-6 text-center group hover:bg-white/[0.04] transition-all duration-300">
+              <div className="text-3xl md:text-4xl font-black font-mono gradient-text mb-2">{s.value}</div>
               <div className="text-xs text-slate-400 font-medium leading-snug">{s.label}</div>
             </div>
           ))}
@@ -286,13 +290,13 @@ function LandingPage({ onEnterDashboard }: { onEnterDashboard: () => void }) {
       </section>
 
       {/* ── FEATURES ────────────────────────────────────────────────────── */}
-      <section id="fitur" className="py-20 px-6">
+      <section id="fitur" className="py-28 px-6">
         <div className="max-w-6xl mx-auto">
-          <div className="text-center mb-12">
-            <div className="inline-block px-3 py-1 bg-[#00A3E0]/10 text-[#00A3E0] text-xs font-bold rounded-full border border-[#00A3E0]/20 mb-4">
+          <div className="text-center mb-16">
+            <div className="glass inline-block px-4 py-1.5 text-[#00A3E0] text-xs font-bold rounded-full mb-5 glow-border">
               FITUR UNGGULAN
             </div>
-            <h2 className="text-3xl md:text-4xl font-black text-white mb-4">
+            <h2 className="text-3xl md:text-5xl font-black text-white mb-5 tracking-tight">
               Semua Yang Dibutuhkan Tim Sales
             </h2>
             <p className="text-slate-400 max-w-xl mx-auto text-sm leading-relaxed">
@@ -304,12 +308,12 @@ function LandingPage({ onEnterDashboard }: { onEnterDashboard: () => void }) {
             {features.map((f, i) => (
               <div
                 key={i}
-                className="group p-5 rounded-2xl bg-[#0d1117] border border-slate-800 hover:border-[#00A3E0]/40 hover:bg-[#0d1117]/80 transition-all duration-200"
+                className={`glass card-hover rounded-2xl p-6 group stagger-${i + 1}`}
               >
-                <div className="w-10 h-10 rounded-xl bg-[#00A3E0]/10 text-[#00A3E0] flex items-center justify-center mb-4 group-hover:bg-[#00A3E0]/20 transition-colors">
+                <div className="w-11 h-11 rounded-xl bg-gradient-to-br from-[#00A3E0]/20 to-indigo-500/10 text-[#00A3E0] flex items-center justify-center mb-5 group-hover:scale-110 group-hover:shadow-lg group-hover:shadow-[#00A3E0]/10 transition-all duration-300">
                   {f.icon}
                 </div>
-                <h3 className="text-sm font-black text-white mb-2">{f.title}</h3>
+                <h3 className="text-sm font-bold text-white mb-2.5">{f.title}</h3>
                 <p className="text-slate-400 text-xs leading-relaxed font-medium">{f.desc}</p>
               </div>
             ))}
@@ -317,47 +321,96 @@ function LandingPage({ onEnterDashboard }: { onEnterDashboard: () => void }) {
         </div>
       </section>
 
-      {/* ── PRICING TEASER ─────────────────────────────────────────────────────── */}
-      <section id="harga" className="py-20 px-6 bg-[#0a0c10]/60">
-        <div className="max-w-3xl mx-auto text-center">
-          <div className="inline-block px-3 py-1 bg-emerald-500/10 text-emerald-400 text-xs font-bold rounded-full border border-emerald-500/20 mb-4">
-            MULAI GRATIS
+      {/* ── BUSINESS MODEL ──────────────────────────────────────────────────── */}
+      <section id="model" className="py-28 px-6">
+        <div className="max-w-5xl mx-auto">
+          <div className="text-center mb-16">
+            <div className="glass inline-block px-4 py-1.5 text-emerald-400 text-xs font-bold rounded-full mb-5 glow-border">
+              MODEL BISNIS
+            </div>
+            <h2 className="text-3xl md:text-5xl font-black text-white mb-5 tracking-tight">
+              Fleksibel Sesuai Kebutuhan
+            </h2>
+            <p className="text-slate-400 mb-4 text-sm leading-relaxed max-w-lg mx-auto">
+              MaxSales dirancang untuk berbagai model bisnis — pilih yang paling cocok untuk tim dan skala operasi Anda.
+            </p>
           </div>
-          <h2 className="text-3xl md:text-4xl font-black text-white mb-4">
-            Coba MaxSales Tanpa Biaya
-          </h2>
-          <p className="text-slate-400 mb-8 text-sm leading-relaxed max-w-lg mx-auto">
-            Paket Starter tersedia gratis selamanya. Upgrade ke Pro atau Enterprise kapan saja
-            sesuai kebutuhan bisnis Anda.
-          </p>
-          <div className="flex flex-col sm:flex-row gap-3 justify-center">
+
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-5">
+            {/* Model 1: Subscription */}
+            <div className="glass card-hover rounded-2xl p-6 text-center group">
+              <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-[#00A3E0]/20 to-cyan-400/10 text-[#00A3E0] flex items-center justify-center mx-auto mb-5 group-hover:scale-110 transition-all duration-300">
+                <Zap size={22} />
+              </div>
+              <h3 className="text-base font-bold text-white mb-2">Subscription</h3>
+              <p className="text-slate-400 text-xs leading-relaxed">
+                Akses penuh ke semua fitur dengan langganan bulanan atau tahunan. Skalakan plan sesuai pertumbuhan bisnis.
+              </p>
+              <div className="mt-5 pt-4 border-t border-white/[0.04]">
+                <span className="text-[10px] font-bold text-[#00A3E0] uppercase tracking-wider">Rekomendasi untuk startup</span>
+              </div>
+            </div>
+
+            {/* Model 2: Pay-per-use */}
+            <div className="glass card-hover rounded-2xl p-6 text-center group">
+              <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-indigo-500/20 to-purple-400/10 text-indigo-400 flex items-center justify-center mx-auto mb-5 group-hover:scale-110 transition-all duration-300">
+                <Target size={22} />
+              </div>
+              <h3 className="text-base font-bold text-white mb-2">Pay-per-use</h3>
+              <p className="text-slate-400 text-xs leading-relaxed">
+                Bayar sesuai pemakaian — AI credits, lead scoring, dan analisis kompetitor. Tanpa komitmen jangka panjang.
+              </p>
+              <div className="mt-5 pt-4 border-t border-white/[0.04]">
+                <span className="text-[10px] font-bold text-indigo-400 uppercase tracking-wider">Cocok untuk MVP & validasi</span>
+              </div>
+            </div>
+
+            {/* Model 3: Enterprise */}
+            <div className="glass card-hover rounded-2xl p-6 text-center group">
+              <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-amber-500/20 to-orange-400/10 text-amber-400 flex items-center justify-center mx-auto mb-5 group-hover:scale-110 transition-all duration-300">
+                <Building size={22} />
+              </div>
+              <h3 className="text-base font-bold text-white mb-2">Enterprise License</h3>
+              <p className="text-slate-400 text-xs leading-relaxed">
+                Lisensi on-premise atau private cloud untuk korporasi. Dukungan dedicated, SLA, dan kustomisasi penuh.
+              </p>
+              <div className="mt-5 pt-4 border-t border-white/[0.04]">
+                <span className="text-[10px] font-bold text-amber-400 uppercase tracking-wider">Untuk enterprise & BUMN</span>
+              </div>
+            </div>
+          </div>
+
+          {/* CTA */}
+          <div className="text-center mt-14">
             <button
               onClick={onEnterDashboard}
-              className="group flex items-center justify-center gap-3 px-8 py-4 bg-[#00A3E0] hover:bg-[#0092c8] text-black font-extrabold rounded-xl text-base transition-all active:scale-95 shadow-2xl shadow-[#00A3E0]/25"
+              className="group inline-flex items-center gap-3 px-8 py-4 bg-[#00A3E0] hover:bg-[#00b8f5] text-black font-extrabold rounded-2xl text-base transition-all duration-300 active:scale-95 shadow-2xl shadow-[#00A3E0]/25 hover:shadow-[#00A3E0]/45 hover:scale-[1.02]"
             >
               <Play size={16} />
               LIVE DEMO — Coba Sekarang
-              <ArrowRight size={15} className="group-hover:translate-x-1 transition-transform" />
+              <ArrowRight size={15} className="group-hover:translate-x-1 transition-transform duration-300" />
             </button>
+            <p className="text-slate-600 text-xs mt-5">
+              Tidak perlu kartu kredit · Langsung aktif · Data demo tersedia
+            </p>
           </div>
-          <p className="text-slate-600 text-xs mt-4">
-            Tidak perlu kartu kredit · Langsung aktif · Data demo tersedia
-          </p>
         </div>
       </section>
 
       {/* ── FOOTER ──────────────────────────────────────────────────────── */}
-      <footer className="border-t border-slate-800/50 py-8 px-6">
-        <div className="max-w-6xl mx-auto flex flex-col sm:flex-row justify-between items-center gap-4 text-xs text-slate-600">
-          <div className="flex items-center gap-2">
-            <span className="px-2 py-0.5 bg-[#00A3E0] text-black font-extrabold rounded text-[10px]">VOXIA AI</span>
+      <footer className="relative border-t border-white/[0.04] py-10 px-6">
+        {/* Decorative gradient line at top */}
+        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-48 h-px bg-gradient-to-r from-transparent via-[#00A3E0]/40 to-transparent" />
+        <div className="max-w-6xl mx-auto flex flex-col sm:flex-row justify-between items-center gap-5 text-xs text-slate-600">
+          <div className="flex items-center gap-2.5">
+            <span className="px-2 py-0.5 bg-[#00A3E0] text-black font-extrabold rounded-md text-[10px] shadow-md shadow-[#00A3E0]/15">VOXIA AI</span>
             <span className="font-bold text-slate-500">MaxSales © 2026</span>
           </div>
-          <div className="flex gap-4 font-medium">
-            <a href="#fitur" className="hover:text-slate-400 transition-colors">Fitur</a>
-            <a href="#statistik" className="hover:text-slate-400 transition-colors">Statistik</a>
-            <a href="#harga" className="hover:text-slate-400 transition-colors">Harga</a>
-            <button onClick={onEnterDashboard} className="hover:text-[#00A3E0] transition-colors">Dashboard</button>
+          <div className="flex gap-6 font-medium">
+            <a href="#fitur" className="hover:text-slate-300 transition-colors duration-200">Fitur</a>
+            <a href="#statistik" className="hover:text-slate-300 transition-colors duration-200">Statistik</a>
+            <a href="#model" className="hover:text-slate-300 transition-colors duration-200">Model Bisnis</a>
+            <button onClick={onEnterDashboard} className="hover:text-[#00A3E0] transition-colors duration-200">Dashboard</button>
           </div>
         </div>
       </footer>
@@ -478,14 +531,14 @@ export default function App() {
         {/* Top Header Bar */}
         <header className="sticky top-0 z-30 flex items-center justify-between px-4 sm:px-6 h-14 bg-white dark:bg-[#07090d] border-b border-slate-200 dark:border-gray-850 shadow-sm flex-shrink-0">
           <div className="flex items-center gap-3">
-            {/* Back to landing button for mobile (header) */}
+            {/* Back to landing button */}
             <button
               onClick={handleBackToLanding}
-              className="md:hidden flex items-center gap-1.5 text-xs font-semibold text-slate-500 hover:text-[#00A3E0] transition-colors px-2 py-1 rounded-lg hover:bg-[#00A3E0]/10"
+              className="flex items-center gap-1.5 text-xs font-semibold text-slate-500 hover:text-[#00A3E0] transition-colors px-2 py-1 rounded-lg hover:bg-[#00A3E0]/10"
               title="Kembali ke Beranda"
             >
               <Home size={15} />
-              <span>Beranda</span>
+              <span className="hidden sm:inline">Beranda</span>
             </button>
             <div className="hidden md:block">
               <h2 className="text-sm font-bold text-slate-800 dark:text-gray-200 capitalize">
