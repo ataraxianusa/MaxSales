@@ -31,10 +31,8 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      - name: Build React app (base = /MaxSales/)
+      - name: Build React app
         run: npx vite build
-        env:
-          VITE_GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
 
       # Rename index.html → app.html so the landing page (index.html on gh-pages)
       # is never overwritten by the React build output.
