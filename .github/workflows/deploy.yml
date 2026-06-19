@@ -41,10 +41,6 @@ jobs:
       - name: Rename dist/index.html to app.html
         run: mv dist/index.html dist/app.html
 
-      # Copy the landing page (root index.html) into dist/ so it gets deployed to gh-pages
-      - name: Copy landing page to dist
-        run: cp index.html dist/index.html
-
       - name: Deploy to gh-pages (preserve landing)
         uses: JamesIves/github-pages-deploy-action@v4
         with:
