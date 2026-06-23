@@ -69,8 +69,9 @@ export default function CompetitorWarRoom({ dna, competitors, setCompetitors }: 
       });
       const data = await response.json();
       
+      const newId = `comp-${Date.now()}`;
       const newCompetitor: CompetitorIntel = {
-        id: `comp-${Date.now()}`,
+        id: newId,
         name,
         location: location || "Kota Terdekat",
         averagePrice: averagePrice || "Rp 200.000 - Rp 350.000",
@@ -85,6 +86,7 @@ export default function CompetitorWarRoom({ dna, competitors, setCompetitors }: 
       const updated = [newCompetitor, ...competitors];
       setCompetitors(updated);
       setActiveIntelCompetitor(newCompetitor);
+      setRatings(prev => ({ ...prev, [newId]: { price: 7, quality: 6, marketing: 5, service: 6, unique: 5 } }));
       
       // Reset forms
       setName("");
@@ -109,8 +111,9 @@ export default function CompetitorWarRoom({ dna, competitors, setCompetitors }: 
       return;
     }
 
+    const newId = `comp-${Date.now()}`;
     const newCompetitor: CompetitorIntel = {
-      id: `comp-${Date.now()}`,
+      id: newId,
       name,
       location: location || "Butik Sebelah",
       averagePrice: averagePrice || "Rp 300.000",
@@ -125,6 +128,7 @@ export default function CompetitorWarRoom({ dna, competitors, setCompetitors }: 
     const updated = [newCompetitor, ...competitors];
     setCompetitors(updated);
     setActiveIntelCompetitor(newCompetitor);
+    setRatings(prev => ({ ...prev, [newId]: { price: 7, quality: 6, marketing: 5, service: 6, unique: 5 } }));
 
     // Reset
     setName("");

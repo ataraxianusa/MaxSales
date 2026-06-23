@@ -91,13 +91,12 @@ export default function ContentGenerator({ dna }: ContentGeneratorProps) {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           dna,
-          dynamic: {
-            promo,
-            hook,
-            cta: cta === "Custom" ? customCta : cta,
-            urgency,
-            promoPrice
-          }
+          headline: promo,
+          normalPrice,
+          promoPrice,
+          hook,
+          cta: cta === "Custom" ? customCta : cta,
+          urgency
         })
       });
       const data = await response.json();

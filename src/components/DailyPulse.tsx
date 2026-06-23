@@ -33,8 +33,8 @@ export default function DailyPulse({ dna }: DailyPulseProps) {
         })
       });
       const data = await response.json();
-      if (data.morningBriefing) {
-        setBriefing(data.morningBriefing);
+      if (data.briefing) {
+        setBriefing(data.briefing);
       }
     } catch (err) {
       console.error(err);

@@ -1,4 +1,5 @@
 import React from "react";
+import ReactMarkdown from "react-markdown";
 import { MessageSquare, X, Send, Bot, User, ArrowUpRight, HelpCircle, AlertCircle, Loader2 } from "lucide-react";
 import { BusinessCanvasData } from "../types";
 
@@ -209,13 +210,19 @@ export default function FloatingChatbot({ dna }: FloatingChatbotProps) {
                     </div>
                   )}
                   
-                  <div className={`max-w-[80%] rounded px-3 py-2 text-xs leading-relaxed ${
+                  <div className={`max-w-[85%] rounded-lg px-4 py-2.5 text-xs leading-relaxed ${
                     isBot 
-                      ? "bg-neutral-100 dark:bg-[#161616] text-neutral-800 dark:text-[#E2E2E2]" 
-                      : "bg-neutral-900 dark:bg-white text-white dark:text-black font-medium"
+                      ? "bg-neutral-100 dark:bg-[#1A1A1A] text-neutral-800 dark:text-[#E2E2E2] border border-neutral-200/50 dark:border-[#2A2A2A]" 
+                      : "bg-neutral-900 dark:bg-white text-white dark:text-black font-medium shadow-sm"
                   }`}>
-                    {msg.text}
-                    <div className={`text-[8px] font-mono mt-1 text-right ${isBot ? "text-neutral-400 dark:text-[#7F7F7F]" : "text-neutral-300 dark:text-neutral-600"}`}>
+                    {isBot ? (
+                      <div className="text-xs leading-relaxed [&_p]:my-1 [&_p:first-child]:mt-0 [&_p:last-child]:mb-0 [&_ul]:my-1 [&_ul]:pl-4 [&_ol]:my-1 [&_ol]:pl-4 [&_li]:my-0.5 [&_li]:list-disc [&_ol_li]:list-decimal [&_strong]:font-bold [&_strong]:text-neutral-900 dark:[&_strong]:text-white [&_code]:bg-neutral-200/60 dark:[&_code]:bg-[#2A2A2A] [&_code]:px-1.5 [&_code]:py-0.5 [&_code]:rounded [&_code]:text-[10px] [&_code]:font-mono [&_pre]:bg-neutral-200/60 dark:[&_pre]:bg-[#222] [&_pre]:p-3 [&_pre]:rounded-lg [&_pre]:text-[10px] [&_pre]:font-mono [&_pre]:mt-1.5 [&_pre]:mb-1.5 [&_pre]:overflow-x-auto [&_hr]:border-t [&_hr]:border-neutral-300 dark:[&_hr]:border-[#333] [&_hr]:my-2 [&_a]:text-emerald-600 dark:[&_a]:text-emerald-400 [&_a]:underline [&_a]:hover:no-underline [&_blockquote]:border-l-2 [&_blockquote]:border-neutral-400 dark:[&_blockquote]:border-neutral-600 [&_blockquote]:pl-3 [&_blockquote]:my-1.5 [&_blockquote]:italic [&_blockquote]:text-neutral-600 dark:[&_blockquote]:text-neutral-400 [&_h1]:text-sm [&_h1]:font-bold [&_h1]:my-1.5 [&_h2]:text-xs [&_h2]:font-bold [&_h2]:my-1 [&_h3]:text-xs [&_h3]:font-semibold [&_h3]:my-1">
+                        <ReactMarkdown>{msg.text}</ReactMarkdown>
+                      </div>
+                    ) : (
+                      <p className="text-xs">{msg.text}</p>
+                    )}
+                    <div className={`text-[8px] font-mono mt-1.5 text-right ${isBot ? "text-neutral-400 dark:text-[#7F7F7F]" : "text-neutral-300 dark:text-neutral-600"}`}>
                       {msg.timestamp.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
                     </div>
                   </div>

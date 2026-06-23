@@ -520,6 +520,36 @@ export default function BusinessCanvas({ canvas, setCanvas, onSave, isSetupWizar
                 ))}
               </select>
             </div>
+
+            {/* activeSocialMedia — used by AI Strategy Forge */}
+            <div className="md:col-span-2">
+              <label className="block text-xs font-semibold text-neutral-700 dark:text-neutral-300 mb-2">
+                Media Sosial Aktif *
+                <span className="text-[9px] text-neutral-400 dark:text-[#737373] font-normal ml-1">
+                  (Digunakan AI untuk strategi konten & promosi)
+                </span>
+              </label>
+              <div className="flex flex-wrap gap-1.5 text-[11px]">
+                {["Instagram", "TikTok", "Facebook", "WhatsApp", "YouTube", "Shopee", "Tokopedia", "Lazada", "Twitter/X", "Pinterest", "Telegram", "Threads"].map(sm => {
+                  const isSelected = canvas.activeSocialMedia?.includes(sm);
+                  return (
+                    <button
+                      key={sm}
+                      id={`inp-dna-activeSocialMedia-${sm.toLowerCase()}`}
+                      type="button"
+                      onClick={() => handleArrayToggle("activeSocialMedia", sm)}
+                      className={`px-3 py-1 rounded transition-all border ${
+                        isSelected
+                          ? "bg-neutral-950 text-white dark:bg-[#E5E5E5] dark:text-black border-transparent font-medium"
+                          : "bg-transparent border-neutral-300 dark:border-[#262626] text-neutral-500 hover:border-neutral-400 dark:hover:border-[#3F3F46]"
+                      }`}
+                    >
+                      {sm}
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
           </div>
         )}
 
