@@ -553,6 +553,11 @@ export default function App() {
 
       </main>
 
+      {/* Floating Smart Virtual Assistant — Dashboard only, with DNA context */}
+      {currentTab === "dashboard" && isLoggedIn && isDnaFilled && (
+        <FloatingChatbot dna={canvas} />
+      )}
+
       {/* SME friendly Accessible footer */}
       <footer className="py-8 border-t mt-16 text-center text-[11px] font-mono tracking-wider text-neutral-400 dark:text-[#737373] border-neutral-200 dark:border-[#262626] bg-white dark:bg-[#050505]">
         <div className="max-w-7xl mx-auto px-6 sm:px-8 flex flex-col sm:flex-row items-center justify-between gap-4">
@@ -576,9 +581,6 @@ export default function App() {
           <span>Hak Cipta © 2026 • MaxxSales</span>
         </div>
       </footer>
-
-      {/* Floating Smart Virtual Assistant Co-pilot */}
-      <FloatingChatbot dna={canvas} />
 
     </div>
   );
