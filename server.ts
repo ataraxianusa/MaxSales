@@ -415,7 +415,7 @@ ${JSON.stringify({
 
     for (const msg of messages.slice(-10)) {
       const text = msg.parts || msg.content || "";
-      const role = msg.role === "model" ? "assistant" : "user";
+      const role = msg.role === "model" || msg.role === "assistant" ? "assistant" : "user";
       if (text.trim()) {
         orMessages.push({ role, content: text });
       }

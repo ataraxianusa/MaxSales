@@ -57,14 +57,22 @@ export default function FloatingChatbot({ dna }: FloatingChatbotProps) {
     setLoading(true);
 
     try {
+      // Build conversation history for the backend
+      const chatHistory = messages.slice(-6).map(m => ({
+        role: m.sender === "bot" ? "assistant" : "user",
+        content: m.text
+      }));
+
       const response = await fetch("/api/chat", {
         method: "POST",
         headers: {
           "Content-Type": "application/json"
         },
         body: JSON.stringify({
-          message: textToSend,
-          history: messages.slice(-8).map(m => ({ sender: m.sender, text: m.text })),
+          messages: [
+            ...chatHistory,
+            { role: "user", content: textToSend }
+          ],
           dna: {
             brand: dna.brand,
             productName: dna.productName,
