@@ -40,8 +40,14 @@ export default function CustomerInsight({ dna, segments, setSegments }: Customer
   // AI analysis states
   const [aiAnalysis, setAiAnalysis] = React.useState<AIAnalysisResult | null>(null);
   const [aiLoading, setAiLoading] = React.useState(false);
+  const [aiError, setAiError] = React.useState<string | null>(null);
 
   const ltvResult = aov * frequency * lifespan;
+
+  // Clear AI error when segments change
+  React.useEffect(() => {
+    setAiError(null);
+  }, [segments]);
 
   const addNewSegment = () => {
     if (!segName.trim()) {
@@ -68,18 +74,26 @@ export default function CustomerInsight({ dna, segments, setSegments }: Customer
 
   const fetchAIAnalysis = async () => {
     setAiLoading(true);
+    setAiError(null);
     try {
       const response = await fetch(`${API_BASE}/api/analyze-segments`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ dna, segments })
       });
+      if (!response.ok) {
+        const errData = await response.json().catch(() => null);
+        throw new Error(errData?.error || `Server error (${response.status})`);
+      }
       const data = await response.json();
       if (data.insights) {
         setAiAnalysis(data.insights);
+      } else {
+        throw new Error("Format respons AI tidak valid.");
       }
-    } catch (err) {
+    } catch (err: any) {
       console.error(err);
+      setAiError(err.message || "Gagal menghubungi AI. Coba lagi nanti.");
     } finally {
       setAiLoading(false);
     }
@@ -503,6 +517,13 @@ export default function CustomerInsight({ dna, segments, setSegments }: Customer
               <div className="flex items-center justify-center py-6 space-x-2">
                 <Loader2 className="w-4 h-4 animate-spin text-neutral-400" />
                 <span className="text-xs text-neutral-400">AI sedang menganalisis segmentasi Anda...</span>
+              </div>
+            )}
+
+            {aiError && !aiLoading && (
+              <div className="p-3 rounded border border-red-200 dark:border-red-900/30 bg-red-50 dark:bg-red-950/20 text-red-600 dark:text-red-400 text-[11px] flex items-start space-x-2">
+                <AlertTriangle className="w-3.5 h-3.5 mt-0.5 shrink-0" />
+                <span>{aiError}</span>
               </div>
             )}
 
