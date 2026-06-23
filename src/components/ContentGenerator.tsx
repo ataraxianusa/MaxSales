@@ -1,5 +1,6 @@
 import React from "react";
 import { BusinessCanvasData, GeneratedContentText } from "../types";
+import { API_BASE } from "../api";
 import { Image as ImageIcon, Upload, Download, Copy, RefreshCw, Layers, Eye, Smartphone, Check, Loader2 } from "lucide-react";
 
 interface ContentGeneratorProps {
@@ -86,7 +87,7 @@ export default function ContentGenerator({ dna }: ContentGeneratorProps) {
   const triggerAIContentGeneration = async () => {
     setLoading(true);
     try {
-      const response = await fetch("/api/generate-content-text", {
+      const response = await fetch(`${API_BASE}/api/generate-content-text`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({

@@ -1,5 +1,6 @@
 import React from "react";
 import { CompetitorIntel, BusinessCanvasData, defaultCompetitors } from "../types";
+import { API_BASE } from "../api";
 import { Shield, ShieldAlert, Target, Zap, Plus, Award, AlertTriangle, Cpu, Loader2 } from "lucide-react";
 import { Radar, RadarChart, PolarGrid, PolarAngleAxis, PolarRadiusAxis, ResponsiveContainer, Legend, Tooltip } from "recharts";
 
@@ -56,7 +57,7 @@ export default function CompetitorWarRoom({ dna, competitors, setCompetitors }: 
     }
     setLoading(true);
     try {
-      const response = await fetch("/api/analyze-competitor", {
+      const response = await fetch(`${API_BASE}/api/analyze-competitor`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({

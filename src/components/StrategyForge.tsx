@@ -1,5 +1,6 @@
 import React from "react";
 import { StrategyArea, BusinessCanvasData } from "../types";
+import { API_BASE } from "../api";
 import { Zap, Shield, Sparkles, Copy, CheckCircle2, Loader2, Coins } from "lucide-react";
 
 interface StrategyForgeProps {
@@ -18,7 +19,7 @@ export default function StrategyForge({ dna }: StrategyForgeProps) {
   const fetchStrategy = async (optLevel: "Konservatif" | "Moderat" | "Agresif") => {
     setLoading(true);
     try {
-      const response = await fetch("/api/strategy-forge", {
+      const response = await fetch(`${API_BASE}/api/strategy-forge`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({

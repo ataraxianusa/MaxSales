@@ -2,6 +2,7 @@ import React from "react";
 import ReactMarkdown from "react-markdown";
 import { MessageSquare, X, Send, Bot, User, ArrowUpRight, HelpCircle, AlertCircle, Loader2 } from "lucide-react";
 import { BusinessCanvasData } from "../types";
+import { API_BASE } from "../api";
 
 interface Message {
   id: string;
@@ -64,7 +65,7 @@ export default function FloatingChatbot({ dna }: FloatingChatbotProps) {
         content: m.text
       }));
 
-      const response = await fetch("/api/chat", {
+      const response = await fetch(`${API_BASE}/api/chat`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json"

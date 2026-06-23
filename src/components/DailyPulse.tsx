@@ -1,5 +1,6 @@
 import React from "react";
 import { BusinessCanvasData, DailyPulseData } from "../types";
+import { API_BASE } from "../api";
 import { Sparkles, CheckSquare, Square, TrendingUp, RefreshCw, BarChart2, Target, Users, Bell, ChevronRight, Loader2 } from "lucide-react";
 
 interface DailyPulseProps {
@@ -24,7 +25,7 @@ export default function DailyPulse({ dna }: DailyPulseProps) {
   const fetchBriefing = async () => {
     setLoading(true);
     try {
-      const response = await fetch("/api/daily-pulse", {
+      const response = await fetch(`${API_BASE}/api/daily-pulse`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
