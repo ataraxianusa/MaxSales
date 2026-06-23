@@ -60,22 +60,22 @@ export default function LandingPage({ onEnterDashboard, brandName, darkMode, set
         {/* Hero Section */}
         <div className="text-center max-w-4xl mx-auto mb-16 animate-fade-in">
           
-          <div className="inline-flex items-center space-x-2 px-3 py-1 rounded bg-neutral-100 dark:bg-[#111111] border border-neutral-200 dark:border-[#262626] mb-4">
+          <div className="inline-flex items-center space-x-2 px-3 py-1 rounded bg-neutral-100 dark:bg-[#111111] border border-neutral-200 dark:border-[#262626] mb-4 opacity-0 animate-fade-in" style={{ animationDelay: '0.1s' }}>
             <Sparkles className="w-3.5 h-3.5 text-neutral-650 dark:text-[#A3A3A3]" />
             <span className="text-[10px] font-bold font-mono tracking-widest text-neutral-600 dark:text-[#A3A3A3] uppercase">
               AI BUSINESS BRAIN SYSTEM FOR SME PIONEERS
             </span>
           </div>
 
-          <h1 className="text-4xl sm:text-5xl lg:text-6xl font-light tracking-tight mb-5 leading-tight text-neutral-900 dark:text-white">
+          <h1 className="text-4xl sm:text-5xl lg:text-6xl font-light tracking-tight mb-5 leading-tight text-neutral-900 dark:text-white opacity-0 animate-fade-in" style={{ animationDelay: '0.3s' }}>
             Ubah Produk Biasa Jadi 
-            <span className="block font-semibold text-neutral-800 dark:text-[#E5E5E5] mt-1.5">
+            <span className="block font-semibold mt-1.5 bg-clip-text text-transparent bg-gradient-to-r from-emerald-500 via-cyan-400 to-blue-600 dark:from-emerald-300 dark:via-cyan-300 dark:to-blue-400 animate-gradient-shift">
               Penjualan Maksimal (MaxxSales)
             </span>
           </h1>
 
-          <p className="text-sm sm:text-base text-neutral-500 dark:text-[#A3A3A3] mb-6 leading-relaxed font-sans max-w-2xl mx-auto">
-            MaxxSales bertindak sebagai <strong className="text-neutral-800 dark:text-white font-semibold">AI Business Brain</strong> Anda untuk memodelkan DNA produk, mengintai kompetitor lokal secara rahasia, memetakan segmentasi pembeli sejati, meramu 11 pilar taktis penjualan, hingga melahirkan materi flier promosi langsung dengan visual overlay foto produk Anda.
+          <p className="text-sm sm:text-base text-neutral-500 dark:text-[#A3A3A3] mb-6 leading-relaxed font-sans max-w-2xl mx-auto opacity-0 animate-fade-in-up" style={{ animationDelay: '0.5s' }}>
+            MaxxSales adalah <strong className="bg-clip-text text-transparent bg-gradient-to-r from-emerald-600 to-blue-700 dark:from-emerald-300 dark:to-blue-300 font-semibold">Sistem Operasi Pertumbuhan Bisnis</strong> berbasis AI yang mengubah data bisnis, intelijen pasar, dan wawasan kompetitor menjadi strategi, konten, dan tindakan yang mendorong pertumbuhan bisnis setiap hari.
           </p>
 
 
@@ -351,105 +351,105 @@ export default function LandingPage({ onEnterDashboard, brandName, darkMode, set
           <div className="grid grid-cols-1 md:grid-cols-6 gap-6">
             
             {/* Pilar 1: DNA Business Canvas */}
-            <div className="md:col-span-3 rounded-xl p-6 border transition-all bg-white dark:bg-[#111111] border-neutral-200 dark:border-[#262626] hover:border-neutral-450 dark:hover:border-neutral-700 flex flex-col justify-between">
+            <div className="group cursor-pointer md:col-span-3 rounded-xl p-6 border transition-all duration-300 ease-out bg-white dark:bg-[#111111] border-neutral-200 dark:border-[#262626] hover:-translate-y-1 hover:shadow-lg hover:shadow-emerald-500/10 dark:hover:shadow-[0_0_12px_3px_rgba(52,211,153,0.25),0_0_40px_12px_rgba(52,211,153,0.12),0_0_80px_25px_rgba(52,211,153,0.06)] hover:border-emerald-400/50 dark:hover:border-emerald-400/70 flex flex-col justify-between">
               <div>
-                <div className="w-10 h-10 rounded border border-neutral-200 dark:border-[#262626] bg-neutral-50 dark:bg-[#171717] text-neutral-800 dark:text-white mb-4 flex items-center justify-center">
-                  <ShieldCheck className="w-5 h-5 text-emerald-500" />
+                <div className="neon-icon-emerald w-10 h-10 rounded border border-neutral-200 dark:border-[#262626] bg-neutral-50 dark:bg-[#171717] text-neutral-800 dark:text-white mb-4 flex items-center justify-center transition-all duration-300 group-hover:scale-110 group-hover:bg-emerald-500/10 dark:group-hover:bg-emerald-500/25 group-hover:border-emerald-400/60 dark:group-hover:border-emerald-400/80 group-hover:-rotate-6 group-hover:shadow-sm group-hover:shadow-emerald-500/20">
+                  <ShieldCheck className="w-5 h-5 text-emerald-500 transition-all duration-300 group-hover:text-emerald-400 dark:group-hover:text-emerald-200 group-hover:scale-110" />
                 </div>
-                <h3 className="text-lg font-semibold tracking-tight text-neutral-900 dark:text-white mb-2">Pilar 1: DNA Business Canvas (Fondasi)</h3>
+                <h3 className="text-lg font-semibold tracking-tight text-neutral-900 dark:text-white mb-2 transition-colors duration-300 group-hover:text-emerald-700 dark:group-hover:text-emerald-200">Pilar 1: DNA Business Canvas (Fondasi)</h3>
                 <p className="text-xs text-neutral-500 dark:text-[#A3A3A3] leading-relaxed mb-4">
                   Data dasar berisi identitas bisnis terdalam Anda mulai dari spesifikasi fisik produk, target segmentasi mikro, pola logistik, hingga preferensi media sosial sasaran. DNA ini yang melandasi keakuratan seluruh fitur pintar lainnya.
                 </p>
               </div>
-              <div className="pt-3 border-t border-neutral-100 dark:border-[#1A1A1A] flex items-center justify-between text-[10px] font-mono text-neutral-400 dark:text-[#525252]">
-                <span>Sekali Isi, Pakai Selamanya</span>
-                <span className="text-neutral-900 dark:text-white font-semibold uppercase tracking-wider">DNA INTEGRASI</span>
+              <div className="pt-3 border-t border-neutral-100 dark:border-[#1A1A1A] flex items-center justify-between text-[10px] font-mono text-neutral-400 dark:text-[#525252] transition-all duration-300 group-hover:border-emerald-200/50 dark:group-hover:border-emerald-500/40">
+                <span className="transition-all duration-300 group-hover:translate-x-1 group-hover:text-emerald-500/70 dark:group-hover:text-emerald-300/80">Sekali Isi, Pakai Selamanya</span>
+                <span className="text-neutral-900 dark:text-white font-semibold uppercase tracking-wider transition-all duration-300 group-hover:text-emerald-600 dark:group-hover:text-emerald-300 dark:group-hover:drop-shadow-[0_0_6px_rgba(52,211,153,0.5)] group-hover:tracking-[0.15em]">DNA INTEGRASI</span>
               </div>
             </div>
 
             {/* Pilar 2: Competitor War Room */}
-            <div className="md:col-span-3 rounded-xl p-6 border transition-all bg-white dark:bg-[#111111] border-neutral-200 dark:border-[#262626] hover:border-neutral-450 dark:hover:border-neutral-700 flex flex-col justify-between">
+            <div className="group cursor-pointer md:col-span-3 rounded-xl p-6 border transition-all duration-300 ease-out bg-white dark:bg-[#111111] border-neutral-200 dark:border-[#262626] hover:-translate-y-1 hover:shadow-lg hover:shadow-red-500/10 dark:hover:shadow-[0_0_12px_3px_rgba(248,113,113,0.25),0_0_40px_12px_rgba(248,113,113,0.12),0_0_80px_25px_rgba(248,113,113,0.06)] hover:border-red-400/50 dark:hover:border-red-400/70 flex flex-col justify-between">
               <div>
-                <div className="w-10 h-10 rounded border border-neutral-200 dark:border-[#262626] bg-neutral-50 dark:bg-[#171717] text-neutral-850 dark:text-white mb-4 flex items-center justify-center">
-                  <Target className="w-5 h-5 text-red-500" />
+                <div className="neon-icon-red w-10 h-10 rounded border border-neutral-200 dark:border-[#262626] bg-neutral-50 dark:bg-[#171717] text-neutral-850 dark:text-white mb-4 flex items-center justify-center transition-all duration-300 group-hover:scale-110 group-hover:bg-red-500/10 dark:group-hover:bg-red-500/25 group-hover:border-red-400/60 dark:group-hover:border-red-400/80 group-hover:shadow-sm group-hover:shadow-red-500/20">
+                  <Target className="w-5 h-5 text-red-500 transition-all duration-300 group-hover:text-red-400 dark:group-hover:text-red-200 group-hover:scale-110" />
                 </div>
-                <h3 className="text-lg font-semibold tracking-tight text-neutral-900 dark:text-white mb-2">Pilar 2: Competitor War Room</h3>
+                <h3 className="text-lg font-semibold tracking-tight text-neutral-900 dark:text-white mb-2 transition-colors duration-300 group-hover:text-red-700 dark:group-hover:text-red-200">Pilar 2: Competitor War Room</h3>
                 <p className="text-xs text-neutral-500 dark:text-[#A3A3A3] leading-relaxed mb-4">
                   Petakan kekuatan, kelemahan, peluang, dan ancaman (SWOT) dari kompetitor lokal terdekat maupun kelas berat. Bandingkan strategi keunggulan produk Anda langsung berdampingan (head-to-head) untuk mencari celah perang harga dan kemasan.
                 </p>
               </div>
-              <div className="pt-3 border-t border-neutral-100 dark:border-[#1A1A1A] flex items-center justify-between text-[10px] font-mono text-neutral-400 dark:text-[#525252]">
-                <span>SWOT Manual & AI-Insights</span>
-                <span className="text-neutral-900 dark:text-white font-semibold uppercase tracking-wider">PERTANDINGAN PASAR</span>
+              <div className="pt-3 border-t border-neutral-100 dark:border-[#1A1A1A] flex items-center justify-between text-[10px] font-mono text-neutral-400 dark:text-[#525252] transition-all duration-300 group-hover:border-red-200/50 dark:group-hover:border-red-500/40">
+                <span className="transition-all duration-300 group-hover:translate-x-1 group-hover:text-red-500/70 dark:group-hover:text-red-300/80">SWOT Manual & AI-Insights</span>
+                <span className="text-neutral-900 dark:text-white font-semibold uppercase tracking-wider transition-all duration-300 group-hover:text-red-600 dark:group-hover:text-red-300 dark:group-hover:drop-shadow-[0_0_6px_rgba(248,113,113,0.5)] group-hover:tracking-[0.15em]">PERTANDINGAN PASAR</span>
               </div>
             </div>
 
             {/* Pilar 3: Customer Insight */}
-            <div className="md:col-span-2 rounded-xl p-6 border transition-all bg-white dark:bg-[#111111] border-neutral-200 dark:border-[#262626] hover:border-neutral-450 dark:hover:border-neutral-700 flex flex-col justify-between">
+            <div className="group cursor-pointer md:col-span-2 rounded-xl p-6 border transition-all duration-300 ease-out bg-white dark:bg-[#111111] border-neutral-200 dark:border-[#262626] hover:-translate-y-1 hover:shadow-lg hover:shadow-emerald-500/10 dark:hover:shadow-[0_0_12px_3px_rgba(52,211,153,0.25),0_0_40px_12px_rgba(52,211,153,0.12),0_0_80px_25px_rgba(52,211,153,0.06)] hover:border-emerald-400/50 dark:hover:border-emerald-400/70 flex flex-col justify-between">
               <div>
-                <div className="w-10 h-10 rounded border border-neutral-200 dark:border-[#262626] bg-neutral-50 dark:bg-[#171717] text-neutral-800 dark:text-white mb-4 flex items-center justify-center">
-                  <TrendingUp className="w-5 h-5 text-emerald-400" />
+                <div className="neon-icon-emerald w-10 h-10 rounded border border-neutral-200 dark:border-[#262626] bg-neutral-50 dark:bg-[#171717] text-neutral-800 dark:text-white mb-4 flex items-center justify-center transition-all duration-300 group-hover:scale-110 group-hover:bg-emerald-500/10 dark:group-hover:bg-emerald-500/25 group-hover:border-emerald-400/60 dark:group-hover:border-emerald-400/80 group-hover:shadow-sm group-hover:shadow-emerald-500/20">
+                  <TrendingUp className="w-5 h-5 text-emerald-400 transition-all duration-300 group-hover:text-emerald-300 dark:group-hover:text-emerald-200 group-hover:scale-110" />
                 </div>
-                <h3 className="text-md font-semibold tracking-tight text-neutral-900 dark:text-white mb-2">Pilar 3: Customer Insight & LTV</h3>
+                <h3 className="text-md font-semibold tracking-tight text-neutral-900 dark:text-white mb-2 transition-colors duration-300 group-hover:text-emerald-700 dark:group-hover:text-emerald-200">Pilar 3: Customer Insight & LTV</h3>
                 <p className="text-[11px] text-neutral-500 dark:text-[#A3A3A3] leading-relaxed">
                   Bagi pembeli Anda ke dalam 4 modul segmentasi psikografis yang akurat. Disertai kalkulator LTV (Lifetime Value) dan modul prediksi Churn Risk pelanggan agar Anda tahu kapan harus melancarkan promosi retensi khusus.
                 </p>
               </div>
-              <div className="pt-3 mt-4 border-t border-neutral-100 dark:border-[#1A1A1A] flex items-center justify-between text-[10px] font-mono text-neutral-400 dark:text-[#525252]">
-                <span>CRM & RETENTION GUARD</span>
+              <div className="pt-3 mt-4 border-t border-neutral-100 dark:border-[#1A1A1A] flex items-center justify-between text-[10px] font-mono text-neutral-400 dark:text-[#525252] transition-all duration-300 group-hover:border-emerald-200/50 dark:group-hover:border-emerald-500/40">
+                <span className="transition-all duration-300 group-hover:translate-x-1 group-hover:text-emerald-500/70 dark:group-hover:text-emerald-300/80">CRM & RETENTION GUARD</span>
               </div>
             </div>
 
             {/* Pilar 4: Strategy Fusion */}
-            <div className="md:col-span-2 rounded-xl p-6 border transition-all bg-white dark:bg-[#111111] border-neutral-200 dark:border-[#262626] hover:border-neutral-450 dark:hover:border-neutral-700 flex flex-col justify-between">
+            <div className="group cursor-pointer md:col-span-2 rounded-xl p-6 border transition-all duration-300 ease-out bg-white dark:bg-[#111111] border-neutral-200 dark:border-[#262626] hover:-translate-y-1 hover:shadow-lg hover:shadow-purple-500/10 dark:hover:shadow-[0_0_12px_3px_rgba(192,132,252,0.25),0_0_40px_12px_rgba(192,132,252,0.12),0_0_80px_25px_rgba(192,132,252,0.06)] hover:border-purple-400/50 dark:hover:border-purple-400/70 flex flex-col justify-between">
               <div>
-                <div className="w-10 h-10 rounded border border-neutral-200 dark:border-[#262626] bg-neutral-50 dark:bg-[#171717] text-neutral-800 dark:text-white mb-4 flex items-center justify-center">
-                  <Zap className="w-5 h-5 text-purple-400" />
+                <div className="neon-icon-purple w-10 h-10 rounded border border-neutral-200 dark:border-[#262626] bg-neutral-50 dark:bg-[#171717] text-neutral-800 dark:text-white mb-4 flex items-center justify-center transition-all duration-300 group-hover:scale-110 group-hover:bg-purple-500/10 dark:group-hover:bg-purple-500/25 group-hover:border-purple-400/60 dark:group-hover:border-purple-400/80 group-hover:rotate-6 group-hover:shadow-sm group-hover:shadow-purple-500/20">
+                  <Zap className="w-5 h-5 text-purple-400 transition-all duration-300 group-hover:text-purple-300 dark:group-hover:text-purple-200 group-hover:scale-110" />
                 </div>
-                <h3 className="text-md font-semibold tracking-tight text-neutral-900 dark:text-white mb-2">Pilar 4: Strategy Fusion AI</h3>
+                <h3 className="text-md font-semibold tracking-tight text-neutral-900 dark:text-white mb-2 transition-colors duration-300 group-hover:text-purple-700 dark:group-hover:text-purple-200">Pilar 4: Strategy Fusion AI</h3>
                 <p className="text-[11px] text-neutral-500 dark:text-[#A3A3A3] leading-relaxed">
                   Gabungkan parameter dari seluruh DNA Anda untuk melahirkan 11 pilar rekomendasi strategi operasional konkret. Pilih tingkat optimisme bisnis Anda: Konservatif hemat modal, Moderat berhati-hati, atau Agresif penuh ekspansi.
                 </p>
               </div>
-              <div className="pt-3 mt-4 border-t border-neutral-100 dark:border-[#1A1A1A] flex items-center justify-between text-[10px] font-mono text-neutral-400 dark:text-[#525252]">
-                <span>11 UNSUR STRATEGIS</span>
+              <div className="pt-3 mt-4 border-t border-neutral-100 dark:border-[#1A1A1A] flex items-center justify-between text-[10px] font-mono text-neutral-400 dark:text-[#525252] transition-all duration-300 group-hover:border-purple-200/50 dark:group-hover:border-purple-500/40">
+                <span className="transition-all duration-300 group-hover:translate-x-1 group-hover:text-purple-500/70 dark:group-hover:text-purple-300/80">11 UNSUR STRATEGIS</span>
               </div>
             </div>
 
             {/* Pilar 5: Content Generator / Overlay */}
-            <div className="md:col-span-2 rounded-xl p-6 border transition-all bg-white dark:bg-[#111111] border-neutral-200 dark:border-[#262626] hover:border-neutral-450 dark:hover:border-neutral-700 flex flex-col justify-between">
+            <div className="group cursor-pointer md:col-span-2 rounded-xl p-6 border transition-all duration-300 ease-out bg-white dark:bg-[#111111] border-neutral-200 dark:border-[#262626] hover:-translate-y-1 hover:shadow-lg hover:shadow-cyan-500/10 dark:hover:shadow-[0_0_12px_3px_rgba(34,211,238,0.25),0_0_40px_12px_rgba(34,211,238,0.12),0_0_80px_25px_rgba(34,211,238,0.06)] hover:border-cyan-400/50 dark:hover:border-cyan-400/70 flex flex-col justify-between">
               <div>
-                <div className="w-10 h-10 rounded border border-neutral-200 dark:border-[#262626] bg-neutral-50 dark:bg-[#171717] text-neutral-800 dark:text-white mb-4 flex items-center justify-center">
-                  <Image className="w-5 h-5 text-cyan-400" />
+                <div className="neon-icon-cyan w-10 h-10 rounded border border-neutral-200 dark:border-[#262626] bg-neutral-50 dark:bg-[#171717] text-neutral-800 dark:text-white mb-4 flex items-center justify-center transition-all duration-500 group-hover:scale-110 group-hover:bg-cyan-500/10 dark:group-hover:bg-cyan-500/25 group-hover:border-cyan-400/60 dark:group-hover:border-cyan-400/80 group-hover:rotate-[360deg] group-hover:shadow-sm group-hover:shadow-cyan-500/20">
+                  <Image className="w-5 h-5 text-cyan-400 transition-all duration-300 group-hover:text-cyan-300 dark:group-hover:text-cyan-200 group-hover:scale-110" />
                 </div>
-                <h3 className="text-md font-semibold tracking-tight text-neutral-900 dark:text-white mb-2">Pilar 5: Content Design Overlay</h3>
+                <h3 className="text-md font-semibold tracking-tight text-neutral-900 dark:text-white mb-2 transition-colors duration-300 group-hover:text-cyan-700 dark:group-hover:text-cyan-200">Pilar 5: Content Design Overlay</h3>
                 <p className="text-[11px] text-neutral-500 dark:text-[#A3A3A3] leading-relaxed">
                   Upload jepretan foto produk polos dari smartphone Anda, ketik nominal promo/CTA yang dimau, dan biarkan sistem merender 4 variasi visual overlay tangguh secara client-side gratis (Feed, Stories, katalog WA, disertai caption).
                 </p>
               </div>
-              <div className="pt-3 mt-4 border-t border-neutral-100 dark:border-[#1A1A1A] flex items-center justify-between text-[10px] font-mono text-neutral-400 dark:text-[#525252]">
-                <span>OVERLAY BANNER INSTAN</span>
+              <div className="pt-3 mt-4 border-t border-neutral-100 dark:border-[#1A1A1A] flex items-center justify-between text-[10px] font-mono text-neutral-400 dark:text-[#525252] transition-all duration-300 group-hover:border-cyan-200/50 dark:group-hover:border-cyan-500/40">
+                <span className="transition-all duration-300 group-hover:translate-x-1 group-hover:text-cyan-500/70 dark:group-hover:text-cyan-300/80">OVERLAY BANNER INSTAN</span>
               </div>
             </div>
 
             {/* Secondary Highlight: Daily Sales Pulse */}
-            <div className="md:col-span-6 rounded-xl p-6 border transition-all bg-[#0F0F0F] border-[#262626] flex flex-col md:flex-row items-center justify-between gap-6">
+            <div className="group cursor-pointer md:col-span-6 rounded-xl p-6 border transition-all duration-300 ease-out bg-[#0F0F0F] border-[#262626] hover:border-emerald-400/60 dark:hover:shadow-[0_0_12px_3px_rgba(52,211,153,0.25),0_0_40px_12px_rgba(52,211,153,0.12),0_0_80px_25px_rgba(52,211,153,0.06)] flex flex-col md:flex-row items-center justify-between gap-6">
               <div className="flex-1">
                 <div className="flex items-center space-x-2.5 mb-2">
-                  <span className="px-2 py-0.5 rounded bg-[#262626] border border-neutral-800 text-[9px] font-mono text-[#A3A3A3] font-bold uppercase tracking-wider">DAILY HEARTBEAT CORE</span>
-                  <h4 className="text-sm font-bold text-white uppercase tracking-tight">Kunci Konsistensi: Daily Sales Pulse Checklist</h4>
+                  <span className="px-2 py-0.5 rounded bg-[#262626] border border-neutral-800 text-[9px] font-mono text-[#A3A3A3] font-bold uppercase tracking-wider transition-all duration-300 group-hover:bg-emerald-500/25 group-hover:border-emerald-400/50 group-hover:text-emerald-200 group-hover:shadow-[0_0_8px_2px_rgba(52,211,153,0.15)]">DAILY HEARTBEAT CORE</span>
+                  <h4 className="text-sm font-bold text-white uppercase tracking-tight transition-colors duration-300 group-hover:text-emerald-200">Kunci Konsistensi: Daily Sales Pulse Checklist</h4>
                 </div>
-                <p className="text-xs text-[#A3A3A3] leading-relaxed">
+                <p className="text-xs text-[#A3A3A3] leading-relaxed transition-colors duration-300 group-hover:text-neutral-100">
                   Awali pagi hari Anda dengan briefing performa pasar yang energik. Dapatkan checklist daftar aktivitas penjualan (action items) taktis harian terkomputerisasi. Cukup centang aktivitas yang selesai untuk melacak kemapanan pencapaian target omzet Anda.
                 </p>
               </div>
               <button
                 id="btn-pulse-preview-landing"
                 onClick={onEnterDashboard}
-                className="w-full md:w-auto px-5 py-2.5 rounded text-xs font-semibold bg-[#E5E5E5] text-black hover:bg-white flex items-center justify-center space-x-1.5 shrink-0"
+                className="w-full md:w-auto px-5 py-2.5 rounded text-xs font-semibold bg-[#E5E5E5] text-black hover:bg-white flex items-center justify-center space-x-1.5 shrink-0 transition-all duration-300 group-hover:scale-105 group-hover:bg-white group-hover:shadow-[0_0_10px_3px_rgba(255,255,255,0.25)]"
               >
                 <span>Buka Daily Pulse Anda</span>
-                <ArrowRight className="w-3.5 h-3.5" />
+                <ArrowRight className="w-3.5 h-3.5 transition-all duration-300 group-hover:translate-x-1" />
               </button>
             </div>
 
