@@ -2,8 +2,8 @@ import React from "react";
 import { Sparkles, Sun, Moon, BookOpen, Layers, Layout, Menu, X, User } from "lucide-react";
 
 interface HeaderProps {
-  currentTab: string;
-  setTab: (tab: string) => void;
+  currentTab: "landing" | "login" | "dashboard" | "docs";
+  setTab: (tab: "landing" | "login" | "dashboard" | "docs") => void;
   darkMode: boolean;
   setDarkMode: (value: boolean) => void;
   brandName?: string;
@@ -44,9 +44,19 @@ export default function Header({ currentTab, setTab, darkMode, setDarkMode, bran
               onClick={() => setDarkMode(!darkMode)}
               title={darkMode ? "Ubah ke Mode Terang" : "Ubah ke Mode Gelap"}
               aria-label={darkMode ? "Ubah ke Mode Terang" : "Ubah ke Mode Gelap"}
-              className="p-2 rounded-full transition-colors focus:outline-none text-neutral-500 dark:text-[#A3A3A3] hover:text-neutral-900 dark:hover:text-white hover:bg-neutral-100 dark:hover:bg-[#1A1A1A]"
+              className="flex items-center space-x-1.5 px-3 py-1.5 rounded-full border transition-all text-xs font-mono font-bold tracking-wide focus:outline-none bg-neutral-100 border-neutral-200 hover:border-neutral-350 text-neutral-800 dark:bg-[#151515] dark:border-[#262626] dark:hover:border-[#383838] dark:text-[#E5E5E5] shadow-xs cursor-pointer"
             >
-              {darkMode ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />}
+              {darkMode ? (
+                <>
+                  <Sun className="w-3.5 h-3.5 text-amber-500" />
+                  <span className="hidden leading-none xs:inline text-[9px] font-extrabold uppercase text-amber-500">TERANG</span>
+                </>
+              ) : (
+                <>
+                  <Moon className="w-3.5 h-3.5 text-indigo-500 animate-pulse" />
+                  <span className="hidden leading-none xs:inline text-[9px] font-extrabold uppercase text-indigo-500">GELAP</span>
+                </>
+              )}
             </button>
 
             {isLoggedIn && onLogout && (

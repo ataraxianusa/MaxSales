@@ -28,7 +28,9 @@ import {
   Image, 
   MonitorSmartphone, 
   Sparkles,
-  BookOpen
+  BookOpen,
+  Sun,
+  Moon
 } from "lucide-react";
 
 export default function App() {
@@ -36,7 +38,7 @@ export default function App() {
   const [darkMode, setDarkMode] = React.useState<boolean>(true);
 
   // App routing state: "landing" | "login" | "dashboard"
-  const [currentTab, setTab] = React.useState<"landing" | "login" | "dashboard">("landing");
+  const [currentTab, setTab] = React.useState<"landing" | "login" | "dashboard" | "docs">("landing");
 
   // Authentication & wizard state
   const [isLoggedIn, setIsLoggedIn] = React.useState<boolean>(() => {
@@ -219,7 +221,7 @@ export default function App() {
       {/* Dynamic Header Component */}
       <Header 
         currentTab={currentTab} 
-        setTab={(tab: string) => setTab(tab as "landing" | "login" | "dashboard")} 
+        setTab={setTab} 
         darkMode={darkMode} 
         setDarkMode={setDarkMode}
         brandName={canvas.brand}
@@ -240,15 +242,9 @@ export default function App() {
                 setTab("login");
               }
             }} 
-            onEnterDocs={() => {
-              // Redirect to onboarding login to explore
-              if (isLoggedIn) {
-                setTab("dashboard");
-              } else {
-                setTab("login");
-              }
-            }}
             brandName={canvas.brand}
+            darkMode={darkMode}
+            setDarkMode={setDarkMode}
           />
         )}
 
@@ -310,6 +306,30 @@ export default function App() {
                         className="text-[9px] font-mono hover:underline font-bold text-neutral-500 dark:text-[#A3A3A3] uppercase tracking-wider block mx-auto"
                       >
                         ✎ Sesuaikan DNA (Statis)
+                      </button>
+                    </div>
+                  </div>
+
+                  {/* HIGHLY VISIBLE INTERACTIVE THEME SWITCHER CARD */}
+                  <div className="p-3 rounded border bg-neutral-50/50 dark:bg-[#111111] border-neutral-200 dark:border-[#262626] flex items-center justify-between shadow-xs">
+                    <div className="flex items-center space-x-2">
+                      {darkMode ? <Moon className="w-3.5 h-3.5 text-indigo-400" /> : <Sun className="w-3.5 h-3.5 text-amber-500" />}
+                      <span className="text-[10px] font-mono font-bold uppercase text-neutral-550 dark:text-[#A3A3A3]">TEMA VISUAL</span>
+                    </div>
+                    <div className="inline-flex items-center p-0.5 rounded-full bg-neutral-200 dark:bg-[#1c1c1c] border border-neutral-300 dark:border-[#2b2b2b]">
+                      <button
+                        onClick={() => setDarkMode(false)}
+                        className={`p-1 rounded-full transition-all cursor-pointer ${!darkMode ? "bg-white text-amber-500 shadow-xs" : "text-neutral-400 hover:text-neutral-900"}`}
+                        title="Ubah ke Mode Terang"
+                      >
+                        <Sun className="w-3.5 h-3.5" />
+                      </button>
+                      <button
+                        onClick={() => setDarkMode(true)}
+                        className={`p-1 rounded-full transition-all cursor-pointer ${darkMode ? "bg-neutral-800 text-indigo-400 shadow-xs" : "text-neutral-500 hover:text-neutral-900"}`}
+                        title="Ubah ke Mode Gelap"
+                      >
+                        <Moon className="w-3.5 h-3.5" />
                       </button>
                     </div>
                   </div>
@@ -553,7 +573,7 @@ export default function App() {
               Dashboard
             </button>
           </div>
-          <span>Hak Cipta © 2026 • Hosting $0 Bebas Biaya</span>
+          <span>Hak Cipta © 2026 • MaxxSales</span>
         </div>
       </footer>
 
