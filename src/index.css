@@ -1,3 +1,155 @@
 @import "tailwindcss";
 
 @variant dark (&:where(.dark, .dark *));
+
+@keyframes fade-in-up {
+  from {
+    opacity: 0;
+    transform: translateY(24px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes gradient-shift {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+@keyframes glow-pulse {
+  0%, 100% {
+    filter: brightness(1);
+  }
+  50% {
+    filter: brightness(1.15);
+  }
+}
+
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-4px);
+  }
+}
+
+@keyframes icon-ring {
+  0% {
+    box-shadow: 0 0 0 0 rgba(52, 211, 153, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 8px rgba(52, 211, 153, 0);
+  }
+}
+
+@keyframes slide-label {
+  from {
+    transform: translateX(0);
+    opacity: 0.5;
+  }
+  to {
+    transform: translateX(4px);
+    opacity: 1;
+  }
+}
+
+/* ===== DARK MODE NEON GLOW EFFECTS ===== */
+
+/* Neon icon glow pulse — emerald */
+@keyframes neon-icon-emerald {
+  0%, 100% {
+    box-shadow: 0 0 8px 2px rgba(52, 211, 153, 0.4), 0 0 25px 8px rgba(52, 211, 153, 0.2), 0 0 50px 15px rgba(52, 211, 153, 0.08);
+  }
+  50% {
+    box-shadow: 0 0 12px 5px rgba(52, 211, 153, 0.6), 0 0 35px 12px rgba(52, 211, 153, 0.35), 0 0 65px 20px rgba(52, 211, 153, 0.12);
+  }
+}
+
+/* Neon icon glow pulse — red */
+@keyframes neon-icon-red {
+  0%, 100% {
+    box-shadow: 0 0 8px 2px rgba(248, 113, 113, 0.4), 0 0 25px 8px rgba(248, 113, 113, 0.2), 0 0 50px 15px rgba(248, 113, 113, 0.08);
+  }
+  50% {
+    box-shadow: 0 0 12px 5px rgba(248, 113, 113, 0.6), 0 0 35px 12px rgba(248, 113, 113, 0.35), 0 0 65px 20px rgba(248, 113, 113, 0.12);
+  }
+}
+
+/* Neon icon glow pulse — purple */
+@keyframes neon-icon-purple {
+  0%, 100% {
+    box-shadow: 0 0 8px 2px rgba(192, 132, 252, 0.4), 0 0 25px 8px rgba(192, 132, 252, 0.2), 0 0 50px 15px rgba(192, 132, 252, 0.08);
+  }
+  50% {
+    box-shadow: 0 0 12px 5px rgba(192, 132, 252, 0.6), 0 0 35px 12px rgba(192, 132, 252, 0.35), 0 0 65px 20px rgba(192, 132, 252, 0.12);
+  }
+}
+
+/* Neon icon glow pulse — cyan */
+@keyframes neon-icon-cyan {
+  0%, 100% {
+    box-shadow: 0 0 8px 2px rgba(34, 211, 238, 0.4), 0 0 25px 8px rgba(34, 211, 238, 0.2), 0 0 50px 15px rgba(34, 211, 238, 0.08);
+  }
+  50% {
+    box-shadow: 0 0 12px 5px rgba(34, 211, 238, 0.6), 0 0 35px 12px rgba(34, 211, 238, 0.35), 0 0 65px 20px rgba(34, 211, 238, 0.12);
+  }
+}
+
+.dark .group:hover .neon-icon-emerald {
+  animation: neon-icon-emerald 2.5s ease-in-out infinite;
+}
+
+.dark .group:hover .neon-icon-red {
+  animation: neon-icon-red 2.5s ease-in-out infinite;
+}
+
+.dark .group:hover .neon-icon-purple {
+  animation: neon-icon-purple 2.5s ease-in-out infinite;
+}
+
+.dark .group:hover .neon-icon-cyan {
+  animation: neon-icon-cyan 2.5s ease-in-out infinite;
+}
+
+.animate-fade-in-up {
+  animation: fade-in-up 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.animate-fade-in {
+  animation: fade-in 0.6s ease-out forwards;
+}
+
+.animate-gradient-shift {
+  background-size: 200% 200%;
+  animation: gradient-shift 4s ease infinite;
+}
+
+.animate-glow-pulse {
+  animation: glow-pulse 3s ease-in-out infinite;
+}
+
+/* Staggered delays for children */
+.animate-stagger-1 { animation-delay: 0.1s; }
+.animate-stagger-2 { animation-delay: 0.2s; }
+.animate-stagger-3 { animation-delay: 0.3s; }
+.animate-stagger-4 { animation-delay: 0.4s; }
+.animate-stagger-5 { animation-delay: 0.5s; }
