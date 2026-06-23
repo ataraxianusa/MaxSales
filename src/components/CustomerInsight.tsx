@@ -1,5 +1,6 @@
 import React from "react";
 import { CustomerSegment, BusinessCanvasData } from "../types";
+import { API_BASE } from "../api";
 import { Users, HeartCrack, Plus, Award, Loader2, Coins, Cpu, CheckCircle2, AlertTriangle, TrendingUp, Lightbulb, BarChart3 } from "lucide-react";
 import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, Cell } from "recharts";
 import { motion } from "motion/react";
@@ -68,7 +69,7 @@ export default function CustomerInsight({ dna, segments, setSegments }: Customer
   const fetchAIAnalysis = async () => {
     setAiLoading(true);
     try {
-      const response = await fetch("/api/analyze-segments", {
+      const response = await fetch(`${API_BASE}/api/analyze-segments`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ dna, segments })
