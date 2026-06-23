@@ -128,15 +128,24 @@ app.post("/api/generate-content-text", async (req, res) => {
   try {
     const prompt = `Anda adalah AI Copywriter untuk bisnis UKM fashion Indonesia.
 Buat konten promosi dalam Bahasa Indonesia untuk produk berikut:
+
+Profil Produk:
 - Nama Produk: ${dna?.productName || "Produk"}
 - Brand: ${dna?.brand || "Brand"}
+- Kategori: ${dna?.category || "Fashion"}
+- Kualitas: ${dna?.quality || "Premium"}
+- Keunggulan: ${dna?.advantages?.split(",")?.[0] || "Kualitas terbaik"}
+- Kemasan: ${dna?.packaging || "-"}
+
+Promo:
 - Headline Promo: ${headline || "Promo Spesial"}
 - Harga Normal: Rp ${(normalPrice || 399000).toLocaleString()}
 - Harga Promo: Rp ${(promoPrice || 299000).toLocaleString()}
 - Hook/Selling Point: ${hook || "Kualitas terbaik"}
 - CTA: ${cta || "Beli Sekarang"}
 - Urgensi: ${urgency || "Terbatas"}
-- Target Market: ${dna?.genders?.join(", ") || "Semua"}, ${dna?.ages?.join(", ") || "Dewasa"}
+
+Target Market: ${dna?.genders?.join(", ") || "Semua"}, usia ${dna?.ages?.join(", ") || "Dewasa"}
 
 JSON format:
 {
@@ -262,10 +271,19 @@ app.post("/api/daily-pulse", async (req, res) => {
   try {
     const prompt = `Anda adalah Asisten Pribadi AI untuk pemilik bisnis UKM Indonesia.
 Buat morning briefing harian yang singkat, energetik, dan memotivasi dalam Bahasa Indonesia untuk:
+
+Profil Bisnis:
 - Nama Brand: ${dna?.brand || "Brand UKM"}
 - Produk: ${dna?.productName || "Produk"}
-- Target: ${dna?.targetMonthlyRevenue ? `Rp ${dna.targetMonthlyRevenue.toLocaleString()}/bulan` : "Rp 50.000.000"}
+- Kategori: ${dna?.category || "Fashion"}
+- Keunggulan: ${dna?.advantages?.split(",")?.[0] || "Produk berkualitas"}
+- Target Revenue: ${dna?.targetMonthlyRevenue ? `Rp ${dna.targetMonthlyRevenue.toLocaleString()}/bulan` : "Rp 50.000.000"}
+- Media Aktif: ${dna?.activeSocialMedia?.join(", ") || "Instagram, TikTok"}
+
+Kompetitor:
 - Kompetitor Utama: ${dna?.biggestCompetitor || "Kompetitor"}
+- Kelebihan Kompetitor: ${dna?.competitorStrengths || "-"}
+- Kelemahan Kompetitor: ${dna?.competitorWeaknesses || "-"}
 
 JSON format:
 {
@@ -297,7 +315,7 @@ HANYA JSON, tanpa penjelasan.`;
 
 // 4. ANALYZE COMPETITOR — SWOT analysis for CompetitorWarRoom
 app.post("/api/analyze-competitor", async (req, res) => {
-  const { competitorName, dna } = req.body;
+  const { competitorName, dna, location, averagePrice, activeChannels } = req.body;
 
   if (!competitorName) {
     return res.status(400).json({ error: "Competitor name is required." });
@@ -319,11 +337,21 @@ app.post("/api/analyze-competitor", async (req, res) => {
 
   try {
     const prompt = `Anda adalah Analis Kompetitor AI untuk bisnis UKM Indonesia.
-Lakukan analisis SWOT untuk kompetitor berikut:
-- Nama Kompetitor: ${competitorName}
-- Produk Kita: ${dna?.productName || "Produk"}
-- Brand Kita: ${dna?.brand || "Brand"}
-- Harga Kita: Rp ${dna?.normalPrice || 399000}
+Lakukan analisis SWOT dengan perbandingan berikut:
+
+Kompetitor:
+- Nama: ${competitorName}
+- Lokasi: ${location || "tidak diketahui"}
+- Harga Rata-rata: ${averagePrice || "tidak diketahui"}
+- Kanal Aktif: ${activeChannels?.length ? activeChannels.join(", ") : "tidak diketahui"}
+
+Bisnis Kita:
+- Produk: ${dna?.productName || "Produk"}
+- Brand: ${dna?.brand || "Brand"}
+- Kategori: ${dna?.category || "Fashion"}
+- Harga: Rp ${dna?.normalPrice || 399000}
+- Kualitas: ${dna?.quality || "Premium"}
+- Keunggulan: ${dna?.advantages || "Kualitas unggul"}
 
 JSON format:
 {
@@ -354,6 +382,92 @@ HANYA JSON, tanpa penjelasan.`;
   } catch (error: any) {
     console.error("MaxxSales Competitor Error:", error);
     return res.json({ ...defaultCompetitorIntel, mode: "stimulated-local-error", message: error.message });
+  }
+});
+
+// 6. ANALYZE SEGMENTS — AI Customer Segment Analysis for CustomerInsight
+app.post("/api/analyze-segments", async (req, res) => {
+  const { dna, segments } = req.body;
+
+  if (!Array.isArray(segments) || segments.length === 0) {
+    return res.status(400).json({ error: "Segments list is required." });
+  }
+
+  const defaultInsights = {
+    insights: {
+      summary: `Analisis dari ${segments.length} segmen pelanggan ${dna?.brand || "bisnis Anda"}. Setiap segmen memiliki karakteristik unik yang memerlukan pendekatan berbeda.`,
+      recommendations: [
+        "Fokus retensi pada segmen High-Risk dengan program loyalty diskon",
+        "Tingkatkan AOV segmen Medium-Risk dengan bundling produk",
+        "Manfaatkan kanal utama masing-masing segmen untuk campaign tertarget",
+        "Optimalkan customer experience untuk segmen Low-Risk agar jadi brand advocate",
+        "Gunakan data frekuensi beli untuk scheduling promo yang tepat"
+      ],
+      segments: segments.map((s: any) => ({
+        name: s.name,
+        estimatedLtv: `Rp ${(s.avgTransaction * 2 * 12).toLocaleString()}`,
+        churnRisk: s.risk,
+        recommendation: `Optimalkan interaksi via ${s.channel} dengan konten personal dan follow-up terjadwal.`
+      }))
+    },
+    mode: "stimulated-local"
+  };
+
+  if (!isRealAiEnabled) {
+    return res.json(defaultInsights);
+  }
+
+  try {
+    const segmentsJson = JSON.stringify(segments.map((s: any) => ({
+      nama: s.name,
+      persentase: s.percentage,
+      kanal: s.channel,
+      rataTransaksi: s.avgTransaction,
+      frekuensi: s.frequency,
+      resiko: s.risk
+    })));
+
+    const prompt = `Anda adalah Analis Data Pelanggan AI untuk UKM fashion Indonesia.
+Analisis data segmentasi pelanggan berikut:
+
+Profil Bisnis:
+- Brand: ${dna?.brand || "Brand"}
+- Produk: ${dna?.productName || "Produk"}
+- Kategori: ${dna?.category || "Fashion"}
+- Harga Produk: Rp ${(dna?.normalPrice || 399000).toLocaleString()}
+- Target Revenue: Rp ${(dna?.targetMonthlyRevenue || 50000000).toLocaleString()}/bln
+- Target Market: ${dna?.genders?.join(", ") || "Semua"}, usia ${dna?.ages?.join(", ") || "Dewasa"}
+
+Data Segmen (JSON):
+${segmentsJson}
+
+Beri analisis per-segmen: estimasi LTV bulanan, resiko churn, dan rekomendasi strategi retensi dalam Bahasa Indonesia.
+
+JSON format:
+{
+  "summary": "ringkasan analisis keseluruhan 2-3 kalimat",
+  "recommendations": ["rekomendasi 1", "rekomendasi 2", "rekomendasi 3", "rekomendasi 4", "rekomendasi 5"],
+  "segments": [
+    {
+      "name": "nama segmen",
+      "estimatedLtv": "estimasi LTV dalam Rp",
+      "churnRisk": "Low/Medium/High",
+      "recommendation": "rekomendasi khusus 1-2 kalimat"
+    }
+  ]
+}
+HANYA JSON, tanpa penjelasan.`;
+
+    const raw = await callOpenRouter([
+      { role: "system", content: JSON_SYSTEM },
+      { role: "user", content: prompt }
+    ], { temperature: 0.7, maxTokens: 1024 });
+
+    const parsed = parseJsonResponse(raw, defaultInsights.insights);
+    return res.json({ insights: parsed, mode: "live-ai" });
+  } catch (error: any) {
+    console.error("MaxxSales Segment Analysis Error:", error);
+    return res.json({ ...defaultInsights, mode: "stimulated-local-error", message: error.message });
   }
 });
 

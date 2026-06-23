@@ -1,11 +1,26 @@
 import React from "react";
 import { CustomerSegment, BusinessCanvasData } from "../types";
-import { Users, HeartCrack, Plus, Award, Loader2, Coins } from "lucide-react";
+import { Users, HeartCrack, Plus, Award, Loader2, Coins, Cpu, CheckCircle2, AlertTriangle, TrendingUp, Lightbulb, BarChart3 } from "lucide-react";
+import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, Cell } from "recharts";
+import { motion } from "motion/react";
 
 interface CustomerInsightProps {
   dna: BusinessCanvasData;
   segments: CustomerSegment[];
   setSegments: (list: CustomerSegment[]) => void;
+}
+
+interface AISegmentInsight {
+  name: string;
+  estimatedLtv: string;
+  churnRisk: string;
+  recommendation: string;
+}
+
+interface AIAnalysisResult {
+  summary: string;
+  recommendations: string[];
+  segments: AISegmentInsight[];
 }
 
 export default function CustomerInsight({ dna, segments, setSegments }: CustomerInsightProps) {
@@ -20,6 +35,10 @@ export default function CustomerInsight({ dna, segments, setSegments }: Customer
   const [segChannel, setSegChannel] = React.useState("WhatsApp DM");
   const [segAvgSpend, setSegAvgSpend] = React.useState(dna.normalPrice || 399000);
   const [segRisk, setSegRisk] = React.useState<"Low" | "Medium" | "High">("Low");
+
+  // AI analysis states
+  const [aiAnalysis, setAiAnalysis] = React.useState<AIAnalysisResult | null>(null);
+  const [aiLoading, setAiLoading] = React.useState(false);
 
   const ltvResult = aov * frequency * lifespan;
 
@@ -44,6 +63,31 @@ export default function CustomerInsight({ dna, segments, setSegments }: Customer
   const deleteSegment = (index: number) => {
     const updated = segments.filter((_, i) => i !== index);
     setSegments(updated);
+  };
+
+  const fetchAIAnalysis = async () => {
+    setAiLoading(true);
+    try {
+      const response = await fetch("/api/analyze-segments", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ dna, segments })
+      });
+      const data = await response.json();
+      if (data.insights) {
+        setAiAnalysis(data.insights);
+      }
+    } catch (err) {
+      console.error(err);
+    } finally {
+      setAiLoading(false);
+    }
+  };
+
+  // Helper: parse estimatedLtv string like "Rp8,400,000/tahun" or "Rp36.000.000" to number
+  const parseLTV = (val: string): number => {
+    const cleaned = val.replace(/[^0-9]/g, "");
+    return Number(cleaned) || 0;
   };
 
   const getRiskBadgeColor = (risk: string) => {
@@ -205,6 +249,106 @@ export default function CustomerInsight({ dna, segments, setSegments }: Customer
             </div>
           </div>
 
+          {/* LTV Bar Chart - visible only after AI analysis */}
+          {aiAnalysis && !aiLoading && (
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.45, ease: [0.25, 0.1, 0.25, 1] }}
+              className="p-5 rounded border bg-white dark:bg-[#111111] border-neutral-200 dark:border-[#262626] space-y-4"
+            >
+              <motion.div
+                initial={{ opacity: 0, x: -8 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ duration: 0.3, delay: 0.15 }}
+                className="flex items-center space-x-2 border-b pb-2 border-neutral-200 dark:border-[#262626]"
+              >
+                <BarChart3 className="w-3.5 h-3.5 text-neutral-500" />
+                <h4 className="text-[10px] font-bold uppercase tracking-wider text-neutral-950 dark:text-white font-mono">
+                  Perbandingan LTV per Segmen
+                </h4>
+              </motion.div>
+              <motion.div
+                initial={{ opacity: 0, scale: 0.95 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ duration: 0.4, delay: 0.25, ease: [0.25, 0.1, 0.25, 1] }}
+                className="w-full h-52"
+              >
+                <ResponsiveContainer width="100%" height="100%">
+                  <BarChart
+                    data={aiAnalysis.segments.map(s => ({
+                      name: s.name,
+                      LTV: parseLTV(s.estimatedLtv),
+                      label: s.estimatedLtv
+                    }))}
+                    margin={{ top: 5, right: 10, left: 0, bottom: 5 }}
+                  >
+                    <XAxis 
+                      dataKey="name" 
+                      tick={{ fontSize: 10, fill: '#737373' }}
+                      axisLine={{ stroke: '#262626' }}
+                      tickLine={false}
+                    />
+                    <YAxis 
+                      tick={{ fontSize: 10, fill: '#737373' }}
+                      axisLine={false}
+                      tickLine={false}
+                      tickFormatter={(v: number) => `Rp${(v/1000000).toFixed(0)}jt`}
+                    />
+                    <Tooltip
+                      contentStyle={{
+                        backgroundColor: '#1A1A1A',
+                        border: '1px solid #262626',
+                        borderRadius: '6px',
+                        fontSize: '11px',
+                        color: '#E5E5E5'
+                      }}
+                      formatter={(_: any, __: any, props: any) => [props.payload.label, 'LTV']}
+                    />
+                    <Bar
+                      dataKey="LTV"
+                      radius={[3, 3, 0, 0]}
+                      maxBarSize={40}
+                      animationBegin={350}
+                      animationDuration={600}
+                      animationEasing="ease-out"
+                    >
+                      {aiAnalysis.segments.map((_, idx) => {
+                        const colors = ['#3B82F6', '#10B981', '#F59E0B', '#8B5CF6', '#EF4444', '#06B6D4', '#EC4899', '#84CC16'];
+                        return <Cell key={idx} fill={colors[idx % colors.length]} />;
+                      })}
+                    </Bar>
+                  </BarChart>
+                </ResponsiveContainer>
+              </motion.div>
+              <motion.div
+                initial="hidden"
+                animate="visible"
+                variants={{
+                  visible: { transition: { staggerChildren: 0.07, delayChildren: 0.5 } }
+                }}
+                className="flex flex-wrap gap-2 justify-center"
+              >
+                {aiAnalysis.segments.map((seg, idx) => {
+                  const colors = ['bg-blue-500', 'bg-emerald-500', 'bg-amber-500', 'bg-violet-500', 'bg-red-500', 'bg-cyan-500', 'bg-pink-500', 'bg-lime-500'];
+                  return (
+                    <motion.span
+                      key={idx}
+                      variants={{
+                        hidden: { opacity: 0, y: 8 },
+                        visible: { opacity: 1, y: 0, transition: { duration: 0.25 } }
+                      }}
+                      className="flex items-center space-x-1 text-[9px] font-mono text-neutral-500"
+                    >
+                      <span className={`w-2 h-2 rounded-sm ${colors[idx % colors.length]}`} />
+                      <span>{seg.name}</span>
+                    </motion.span>
+                  );
+                })}
+              </motion.div>
+            </motion.div>
+          )}
+
           {/* CRM Action Matrix Recommendation block */}
           <div className="p-5 rounded border bg-neutral-50 dark:bg-[#111111] border-neutral-200 dark:border-[#262626] text-neutral-800 dark:text-white space-y-3.5">
             <h4 className="text-[10px] font-bold uppercase tracking-wider text-neutral-950 dark:text-white font-mono flex items-center space-x-1.5 border-b pb-2 border-neutral-200 dark:border-[#262626]">
@@ -315,6 +459,95 @@ export default function CustomerInsight({ dna, segments, setSegments }: Customer
               💡 <strong className="font-semibold text-neutral-950 dark:text-white font-mono">Matematika Bisnis:</strong> Jika LTV Anda adalah <strong>Rp {(ltvResult/1000).toFixed(0)}rb</strong>, Anda boleh beriklan aman (Customer Acquisition Cost / CAC) hingga <strong>Rp {(ltvResult*0.25/1000).toFixed(0)}rb</strong> per pembeli baru agar tetap untung optimal (Aturan CAC &lt; 1/3 LTV).
             </div>
 
+          </div>
+
+          {/* AI Analysis Section */}
+          <div className="p-6 rounded border bg-white dark:bg-[#111111] border-neutral-200 dark:border-[#262626] space-y-4">
+            <div className="flex items-center justify-between border-b pb-3 border-neutral-200 dark:border-[#262626]">
+              <div className="flex items-center space-x-2">
+                <div className="p-2 rounded bg-neutral-100 dark:bg-[#262626] text-neutral-850 dark:text-neutral-200">
+                  <Cpu className="w-4 h-4" />
+                </div>
+                <div>
+                  <h3 className="text-xs font-bold font-mono uppercase tracking-wider text-neutral-900 dark:text-white">Analisis AI Segmentasi</h3>
+                  <p className="text-[10px] text-neutral-400">Rekomendasi LTV & churn otomatis.</p>
+                </div>
+              </div>
+              <button
+                onClick={fetchAIAnalysis}
+                disabled={aiLoading || segments.length === 0}
+                className="py-1.5 px-3 rounded text-[10px] font-semibold bg-neutral-950 text-white dark:bg-[#E5E5E5] dark:text-black hover:bg-neutral-900 dark:hover:bg-white transition-colors disabled:opacity-40 disabled:cursor-not-allowed flex items-center space-x-1"
+              >
+                {aiLoading ? (
+                  <>
+                    <Loader2 className="w-3 h-3 animate-spin" />
+                    <span>Menganalisis...</span>
+                  </>
+                ) : (
+                  <>
+                    <Lightbulb className="w-3 h-3" />
+                    <span>AI Analisis</span>
+                  </>
+                )}
+              </button>
+            </div>
+
+            {segments.length === 0 && !aiAnalysis && (
+              <p className="text-[11px] text-neutral-400 text-center py-4">
+                Tambahkan minimal 1 segmen pelanggan lalu klik "AI Analisis" untuk rekomendasi otomatis.
+              </p>
+            )}
+
+            {aiLoading && (
+              <div className="flex items-center justify-center py-6 space-x-2">
+                <Loader2 className="w-4 h-4 animate-spin text-neutral-400" />
+                <span className="text-xs text-neutral-400">AI sedang menganalisis segmentasi Anda...</span>
+              </div>
+            )}
+
+            {aiAnalysis && !aiLoading && (
+              <div className="space-y-3">
+                {/* Summary */}
+                <div className="p-3 rounded border border-neutral-200 dark:border-[#262626] bg-neutral-50 dark:bg-[#1A1A1A]">
+                  <p className="text-[11px] text-neutral-700 dark:text-neutral-300 leading-relaxed">
+                    {aiAnalysis.summary}
+                  </p>
+                </div>
+
+                {/* Per-segment insights */}
+                {aiAnalysis.segments.map((seg, idx) => (
+                  <div key={idx} className="p-3 rounded border border-neutral-200 dark:border-[#262626] bg-white dark:bg-[#1A1A1A] space-y-1.5">
+                    <div className="flex items-center justify-between">
+                      <span className="text-xs font-bold text-neutral-900 dark:text-white">{seg.name}</span>
+                      <span className="text-[10px] font-mono text-neutral-500">LTV: {seg.estimatedLtv}</span>
+                    </div>
+                    <div className="flex items-center space-x-2">
+                      <AlertTriangle className="w-3 h-3 text-neutral-400" />
+                      <span className="text-[10px] text-neutral-500">Resiko Churn: <strong className="text-neutral-700 dark:text-neutral-300">{seg.churnRisk}</strong></span>
+                    </div>
+                    <p className="text-[10px] text-neutral-500 dark:text-[#A3A3A3] leading-relaxed flex items-start space-x-1.5">
+                      <CheckCircle2 className="w-3 h-3 mt-0.5 shrink-0 text-emerald-500" />
+                      <span>{seg.recommendation}</span>
+                    </p>
+                  </div>
+                ))}
+
+                {/* Global recommendations */}
+                {aiAnalysis.recommendations.length > 0 && (
+                  <div className="p-3 rounded border border-neutral-200 dark:border-[#262626] bg-neutral-50 dark:bg-[#1A1A1A] space-y-2">
+                    <span className="text-[10px] font-bold font-mono uppercase tracking-wider text-neutral-500">Rekomendasi Strategis</span>
+                    <ul className="space-y-1.5">
+                      {aiAnalysis.recommendations.map((rec, idx) => (
+                        <li key={idx} className="text-[11px] text-neutral-700 dark:text-neutral-300 flex items-start space-x-1.5">
+                          <TrendingUp className="w-3 h-3 mt-0.5 shrink-0 text-neutral-500" />
+                          <span>{rec}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                )}
+              </div>
+            )}
           </div>
 
         </div>

@@ -23,13 +23,13 @@ export default function StrategyForge({ dna }: StrategyForgeProps) {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           dna,
-          level: optLevel
+          optimismLevel: optLevel
         })
       });
       const data = await response.json();
-      if (data.areas) {
-        setAreas(data.areas);
-        setStrategyIntro(data.intro);
+      if (data.pillars) {
+        setAreas(data.pillars);
+        setStrategyIntro(data.synopsis || data.intro || "");
       }
     } catch (err) {
       console.error(err);
