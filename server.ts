@@ -1,6 +1,9 @@
 /**
  * @license
  * SPDX-License-Identifier: Apache-2.0
+ *
+ * MaxxSales MVP Backend — Express + OpenRouter AI
+ * Model: openai/gpt-oss-120b:free
  */
 
 import express from "express";
@@ -15,14 +18,14 @@ app.use(express.json());
 
 const PORT = Number(process.env.PORT) || 3000;
 const OPENROUTER_API_KEY = process.env.OPENROUTER_API_KEY;
-const OPENROUTER_MODEL = process.env.OPENROUTER_MODEL || "deepseek/deepseek-chat-v3-0324:free";
+const OPENROUTER_MODEL = process.env.OPENROUTER_MODEL || "openai/gpt-oss-120b:free";
 
 const isRealAiEnabled = !!(OPENROUTER_API_KEY && OPENROUTER_API_KEY.startsWith("sk-or-"));
 
 if (isRealAiEnabled) {
-  console.log(`VOXIA Backend: OpenRouter AI activated (${OPENROUTER_MODEL}).`);
+  console.log(`MaxxSales Backend: OpenRouter AI activated (${OPENROUTER_MODEL}).`);
 } else {
-  console.log("VOXIA Backend: Running in Simulation mode. (Missing OPENROUTER_API_KEY)");
+  console.log("MaxxSales Backend: Running in Simulation mode. (Missing OPENROUTER_API_KEY)");
 }
 
 // OpenRouter call helper (OpenAI-compatible API)
@@ -36,7 +39,7 @@ async function callOpenRouter(
       "Authorization": `Bearer ${OPENROUTER_API_KEY}`,
       "Content-Type": "application/json",
       "HTTP-Referer": "https://maxsales.qzz.io",
-      "X-Title": "MaxSales by VOXIA"
+      "X-Title": "MaxxSales by VOXIA"
     },
     body: JSON.stringify({
       model: OPENROUTER_MODEL,
@@ -88,7 +91,7 @@ function parseJsonResponse(rawText: string, fallbackJson: any): any {
 // System prompt for JSON-only responses
 const JSON_SYSTEM = "Anda selalu merespon dalam format JSON yang valid. Tanpa markdown, tanpa penjelasan tambahan.";
 
-// -- API ROUTES --
+// ── API ROUTES ──
 
 app.get("/api/status", (_req, res) => {
   res.json({
@@ -96,61 +99,57 @@ app.get("/api/status", (_req, res) => {
     aiEnabled: isRealAiEnabled,
     model: isRealAiEnabled ? OPENROUTER_MODEL : "simulator",
     provider: isRealAiEnabled ? "OpenRouter" : "local-simulation",
-    platform: "VOXIA Sales-Flow One-Stop Platform",
+    platform: "MaxxSales MVP — AI Business Brain",
     currentTime: new Date().toISOString()
   });
 });
 
-// 1. BRANDING - ASSET GENERATION
-app.post("/api/generate-assets", async (req, res) => {
-  const { productName, persona, targetMarket, mediaSpecs } = req.body;
-
-  if (!productName || !persona) {
-    return res.status(400).json({ error: "Product name and Persona are required inputs." });
-  }
+// 1. GENERATE CONTENT TEXT — for ContentGenerator (captions, headlines, hashtags)
+app.post("/api/generate-content-text", async (req, res) => {
+  const { dna, headline, promoPrice, normalPrice, hook, cta, urgency } = req.body;
 
   const defaultMockResponse = {
-    assets: [
-      {
-        id: "mock_asset_1", productName, persona, targetMarket, mediaSpecs,
-        title: `Gaya Hidup Masa Kini Bersama VOXIA ${productName}`,
-        copy: `Untuk Anda yang aktif di perkotaan dan menyukai efisiensi kelas dunia. Didesain khusus mencakup seluruh kebutuhan ${persona} masa kini. Jangan lewatkan penawaran terbatas khusus minggu ini.`,
-        ctaText: "Mulai Sekarang", type: "social-post",
-        styleTheme: { bgGradient: "from-slate-900 to-indigo-950", primaryColor: "#0A3D62", accentColor: "#FFB400", textStyle: "font-sans leading-relaxed tracking-normal" },
-        version: 1
-      },
-      {
-        id: "mock_asset_2", productName, persona, targetMarket, mediaSpecs,
-        title: `${productName}: Keseimbangan Sempurna Aktivitas Anda`,
-        copy: `Menemukan keseimbangan terbaik di tengah dinamika hidup di perkotaan menjadi semakin mudah. Dibuat dengan formula ramah pengguna untuk target pasar ${targetMarket || "umum"}. Gunakan diskon peluncuran 15% hari ini!`,
-        ctaText: "Dapatkan Sekarang", type: "image",
-        styleTheme: { bgGradient: "from-cyan-900 via-sky-950 to-blue-905", primaryColor: "#00A3E0", accentColor: "#0A3D62", textStyle: "font-sans font-medium" },
-        version: 1
-      },
-      {
-        id: "mock_asset_3", productName, persona, targetMarket, mediaSpecs,
-        title: "Temukan Solusi Cerdas Anda",
-        copy: `Kenapa memilih yang biasa jika VOXIA ${productName} bisa memberikan kinerja optimal 10x lipat? Dirancang presisi demi melayani ${persona} secara tak terbatas.`,
-        ctaText: "Tonton Promo Video", type: "video",
-        styleTheme: { bgGradient: "from-zinc-900 to-slate-800", primaryColor: "#FFB400", accentColor: "#00A3E0", textStyle: "font-mono" },
-        version: 1
-      }
-    ]
+    headline: headline || "Promo Spesial Akhir Pekan!",
+    subheadline: `Dapatkan produk berkualitas dengan harga spesial!`,
+    priceDisplay: `Rp ${(normalPrice || 399000).toLocaleString()}`,
+    promoDisplay: `Rp ${(promoPrice || 299000).toLocaleString()}`,
+    ctaText: cta || "Beli Sekarang",
+    urgencyText: urgency || "Terbatas!",
+    caption: `Promo spesial untuk Anda! ${headline || "Jangan lewatkan kesempatan ini"} harga spesial hanya Rp ${(promoPrice || 299000).toLocaleString()} (dari Rp ${(normalPrice || 399000).toLocaleString()}). ${hook || "Cocok untuk daily look Anda!"} Yuk order sekarang! #Promo #Sale #Fashion`,
+    hashtags: ["#Promo", "#Sale", "#Fashion", "#Diskon", "#Belanja"],
+    watermark: "MaxxSales AI",
+    mode: "stimulated-local"
   };
 
   if (!isRealAiEnabled) {
-    return res.json({ ...defaultMockResponse, mode: "stimulated-local" });
+    return res.json(defaultMockResponse);
   }
 
   try {
-    const prompt = `Anda adalah Direktur Kreatif & AI Copywriter Senior VOXIA.
-Hasilkan 3 variasi aset kampanye pemasaran digital berkualitas tinggi dalam bahasa Indonesia untuk:
-- Nama Produk: ${productName}
-- Persona Pengguna Utama: ${persona}
-- Target Pasar: ${targetMarket || "Masyarakat umum perkotaan"}
-- Spesifikasi Media: ${mediaSpecs || "Instagram / TikTok feeds"}
+    const prompt = `Anda adalah AI Copywriter untuk bisnis UKM fashion Indonesia.
+Buat konten promosi dalam Bahasa Indonesia untuk produk berikut:
+- Nama Produk: ${dna?.productName || "Produk"}
+- Brand: ${dna?.brand || "Brand"}
+- Headline Promo: ${headline || "Promo Spesial"}
+- Harga Normal: Rp ${(normalPrice || 399000).toLocaleString()}
+- Harga Promo: Rp ${(promoPrice || 299000).toLocaleString()}
+- Hook/Selling Point: ${hook || "Kualitas terbaik"}
+- CTA: ${cta || "Beli Sekarang"}
+- Urgensi: ${urgency || "Terbatas"}
+- Target Market: ${dna?.genders?.join(", ") || "Semua"}, ${dna?.ages?.join(", ") || "Dewasa"}
 
-JSON format: { "assets": [{ "title": "judul <10 kata", "copy": "naskah persuasif 2-3 kalimat", "ctaText": "tombol aksi", "type": "social-post|image|video", "styleTheme": { "bgGradient": "tailwind gradient", "primaryColor": "#hex", "accentColor": "#hex", "textStyle": "tailwind font class" } }] }
+JSON format:
+{
+  "headline": "judul promosi maksimal 8 kata",
+  "subheadline": "sub-judul maksimal 12 kata",
+  "priceDisplay": "Rp X.XXX",
+  "promoDisplay": "Rp X.XXX",
+  "ctaText": "teks tombol aksi",
+  "urgencyText": "teks urgensi singkat",
+  "caption": "caption promosi 2-3 kalimat bahasa Indonesia",
+  "hashtags": ["#hashtag1", "#hashtag2", "#hashtag3", "#hashtag4", "#hashtag5"],
+  "watermark": "MaxxSales AI"
+}
 HANYA JSON, tanpa penjelasan.`;
 
     const raw = await callOpenRouter([
@@ -159,182 +158,275 @@ HANYA JSON, tanpa penjelasan.`;
     ], { temperature: 0.8 });
 
     const parsed = parseJsonResponse(raw, defaultMockResponse);
-    const finalAssets = (parsed.assets || []).map((a: any, i: number) => ({
-      id: `ai_asset_${Date.now()}_${i}`, productName, persona, targetMarket, mediaSpecs, version: 1, ...a
-    }));
-
-    return res.json({ assets: finalAssets, mode: "live-ai" });
+    return res.json({ ...parsed, mode: "live-ai" });
   } catch (error: any) {
-    console.error("VOXIA Branding Error:", error);
-    return res.status(200).json({ ...defaultMockResponse, mode: "stimulated-local-error-fallback", message: error.message });
+    console.error("MaxxSales Content Text Error:", error);
+    return res.json({ ...defaultMockResponse, mode: "stimulated-local-error", message: error.message });
   }
 });
 
-// 2. STRATEGY - ENGINE RECOMMENDATION WIZARD
-app.post("/api/generate-strategy", async (req, res) => {
-  const { businessName, industry, painPoints, budget, timeline } = req.body;
+// 2. STRATEGY FORGE — Generate 11-pillar strategy based on DNA + risk level
+app.post("/api/strategy-forge", async (req, res) => {
+  const { dna, optimismLevel } = req.body;
 
-  const defaultMockStrategy = {
-    blueprint: [
-      { channel: "Instagram & TikTok Organic Content", targetAudience: "Generasi muda urban 18-30 tahun", message: `Tunjukkan kemudahan hidup dengan ${businessName}.`, kpi: "20% peningkatan Engagement", cta: "Kunjungi Profil", details: "Video reels 15 detik 3x seminggu." },
-      { channel: "Facebook & Instagram Retargeting", targetAudience: "Pengunjung website yang belum transaksi", message: "Amankan penawaran spesial sekarang!", kpi: "3.5x ROAS", cta: "Belanja Sekarang", details: "Katalog dinamis dengan jaminan garansi." },
-      { channel: "WhatsApp Broadcast", targetAudience: "Database prospek hangat", message: `Halo! Berikut strategi khusus ${businessName}.`, kpi: "+25% Conversion Rate", cta: "Hubungi Agent", details: "Seri pesan bertahap hari 1-3-5." }
+  const defaultStrategy = {
+    synopsis: `Strategi bisnis untuk ${dna?.productName || "produk Anda"} dengan pendekatan ${optimismLevel || "Moderat"}. Fokus pada penguatan brand, optimalisasi media sosial, dan retensi pelanggan.`,
+    pillars: [
+      {
+        areaName: "Brand Awareness",
+        title: "Penguatan Brand di Media Digital",
+        description: "Bangun kesadaran merek melalui konten visual berkualitas di Instagram dan TikTok.",
+        actionSteps: ["Buat konten reels 3x seminggu", "Gunakan konsistensi warna brand", "Kolaborasi dengan micro-influencer"]
+      },
+      {
+        areaName: "Sales Pipeline",
+        title: "Optimasi Sales Funnel",
+        description: "Perkuat jalur konversi dari awareness hingga pembelian.",
+        actionSteps: ["Buat landing page produk", "Pasang tombol CTA di setiap konten", "Siapkan promo terbatas"]
+      },
+      {
+        areaName: "Customer Retention",
+        title: "Program Retensi Pelanggan",
+        description: "Tingkatkan loyalitas pelanggan dengan program membership dan reward.",
+        actionSteps: ["Buat program poin reward", "Kirim newsletter mingguan", "Adakan flash sale khusus member"]
+      }
     ],
-    budgetAllocation: [
-      { name: "Direct Ads (FB/IG)", value: 45, color: "#0A3D62" },
-      { name: "KOL / Influencer", value: 25, color: "#00A3E0" },
-      { name: "CRM & WA Automation", value: 20, color: "#FFB400" },
-      { name: "Search & SEO", value: 10, color: "#475569" }
-    ],
-    aiReasoning: `Strategi bercabang berfokus pada media sosial visual + automasi CRM. Ads 45% menjaga aliran prospek, follow-up WA meningkatkan retensi.`
+    mode: "stimulated-local"
   };
 
   if (!isRealAiEnabled) {
-    return res.json({ ...defaultMockStrategy, id: `strat_${Date.now()}`, businessName, industry, painPoints: painPoints || [], budget: budget || 10000000, timeline: timeline || "1 Bulan", createdAt: new Date().toISOString(), mode: "stimulated-local" });
+    return res.json(defaultStrategy);
   }
 
   try {
-    const prompt = `Anda adalah Konsultan Strategi Bisnis AI VOXIA.
-Blueprint Kampanye Pemasaran Digital untuk:
-- Bisnis: ${businessName} | Industri: ${industry}
-- Pain Points: ${Array.isArray(painPoints) ? painPoints.join(", ") : painPoints || "N/A"}
-- Anggaran: Rp ${budget?.toLocaleString() || "Negosiasi"} | Timeline: ${timeline || "1 Bulan"}
+    const levelDesc = optimismLevel === "Konservatif" ? "aman dan terukur" :
+                      optimismLevel === "Agresif" ? "ekspansif dan berani" :
+                      "seimbang antara risiko dan pertumbuhan";
 
-JSON: { "blueprint": [{ "channel": "nama saluran", "targetAudience": "deskripsi", "message": "pesan utama", "kpi": "metrik", "cta": "aksi", "details": "langkah taktis" }], "budgetAllocation": [{ "name": "label", "value": persen, "color": "#hex" }], "aiReasoning": "penjelasan strategis" }
-Total budgetAllocation harus 100%. HANYA JSON.`;
+    const prompt = `Anda adalah Konsultan Strategi Bisnis AI untuk UKM Indonesia.
+Buat strategi bisnis 11 pilar untuk bisnis berikut:
+- Produk: ${dna?.productName || "Produk"}
+- Brand: ${dna?.brand || "Brand"}
+- Kategori: ${dna?.category || "Fashion"}
+- Target Market: ${dna?.genders?.join(", ") || "Semua"}, usia ${dna?.ages?.join(", ") || "Dewasa"}
+- Revenue Target: Rp ${(dna?.targetMonthlyRevenue || 50000000).toLocaleString()}/bulan
+- Harga: Rp ${dna?.normalPrice || 399000}
+- Margin: ${dna?.marginRange || "30-50%"}
+- Channel: ${dna?.activeSocialMedia?.join(", ") || "Instagram, TikTok, WhatsApp"}
+
+Tingkat Optimisme: ${optimismLevel || "Moderat"} (${levelDesc})
+
+JSON format:
+{
+  "synopsis": "ringkasan strategi 2-3 kalimat dalam Bahasa Indonesia",
+  "pillars": [
+    {
+      "areaName": "nama area strategi",
+      "title": "judul strategi",
+      "description": "deskripsi 1-2 kalimat",
+      "actionSteps": ["langkah 1", "langkah 2", "langkah 3"]
+    }
+  ]
+}
+HANYA JSON, tanpa penjelasan. Minimal 5 pillars, maksimal 11 pillars.`;
 
     const raw = await callOpenRouter([
       { role: "system", content: JSON_SYSTEM },
       { role: "user", content: prompt }
     ], { temperature: 0.7 });
 
-    const parsed = parseJsonResponse(raw, defaultMockStrategy);
-    return res.json({ id: `strat_${Date.now()}`, businessName, industry, painPoints: painPoints || [], budget: budget || 10000000, timeline: timeline || "1 Bulan", createdAt: new Date().toISOString(), blueprint: parsed.blueprint, budgetAllocation: parsed.budgetAllocation, aiReasoning: parsed.aiReasoning, mode: "live-ai" });
+    const parsed = parseJsonResponse(raw, defaultStrategy);
+    return res.json({ synopsis: parsed.synopsis, pillars: parsed.pillars, mode: "live-ai" });
   } catch (error: any) {
-    console.error("VOXIA Strategy Error:", error);
-    return res.status(200).json({ ...defaultMockStrategy, id: `strat_${Date.now()}`, businessName, industry, painPoints: painPoints || [], budget: budget || 10000000, timeline: timeline || "1 Bulan", createdAt: new Date().toISOString(), mode: "stimulated-local-error-fallback", message: error.message });
+    console.error("MaxxSales Strategy Error:", error);
+    return res.json({ ...defaultStrategy, mode: "stimulated-local-error", message: error.message });
   }
 });
 
-// 3. CRM - EVALUATE LEAD SCORE
-app.post("/api/evaluate-lead-score", async (req, res) => {
-  const { contactName, email, phone, notes, status } = req.body;
+// 3. DAILY PULSE — Morning briefing for DailyPulse component
+app.post("/api/daily-pulse", async (req, res) => {
+  const { dna } = req.body;
 
-  const defaultMockScore = { score: 78, scoreExplanation: "Prospek menunjukkan minat tinggi. Direkomendasikan follow-up dengan penawaran kupon." };
-
-  if (!contactName) return res.status(400).json({ error: "Contact name is required." });
-
-  if (!isRealAiEnabled) return res.json({ ...defaultMockScore, mode: "stimulated-local" });
-
-  try {
-    const prompt = `Evaluasi prospek CRM VOXIA dan tentukan AI Lead Score (1-100):
-- Nama: ${contactName} | Email: ${email || "-"} | WA: ${phone || "-"}
-- Catatan: ${notes || "-"} | Status: ${status || "Lead"}
-
-JSON: { "score": angka, "scoreExplanation": "alasan + saran tindakan" (bahasa Indonesia) }
-HANYA JSON.`;
-
-    const raw = await callOpenRouter([
-      { role: "system", content: JSON_SYSTEM },
-      { role: "user", content: prompt }
-    ], { temperature: 0.5 });
-
-    const parsed = parseJsonResponse(raw, defaultMockScore);
-    return res.json({ score: parsed.score, scoreExplanation: parsed.scoreExplanation, mode: "live-ai" });
-  } catch (err: any) {
-    console.error("VOXIA Lead Score Error:", err);
-    return res.json({ ...defaultMockScore, mode: "stimulated-local-error", message: err.message });
-  }
-});
-
-// 4. COMPETITOR - SCRAPE & BREAKDOWN ANALYSIS
-app.post("/api/analyze-competitor", async (req, res) => {
-  const { competitorUrlOrName } = req.body;
-
-  if (!competitorUrlOrName) return res.status(400).json({ error: "Competitor Url or Name is required." });
-
-  const defaultMockCompetitor = {
-    name: competitorUrlOrName,
-    channelMix: [{ name: "Paid Ads (Meta)", spend: 50, color: "#0A3D62" }, { name: "TikTok Ads", spend: 30, color: "#00A3E0" }, { name: "SEO & Content", spend: 12, color: "#FFB400" }, { name: "Email Marketing", spend: 8, color: "#475569" }],
-    pricingSnapshot: [{ tier: "Paket Dasar", price: "Rp 199.000/bln" }, { tier: "Paket Profesional", price: "Rp 499.000/bln" }, { tier: "Enterprise", price: "Rp 1.250.000/bln" }],
-    metrics: { engagementRate: "4.8%", adSpendEst: "Rp 15-25jt/bln", likesTrend: [400, 480, 520, 610, 590, 720] },
-    socialAdSamples: [
-      { headline: "Capek Manajemen Prospek Manual?", channels: ["Meta", "Instagram"], copy: "Gabung sekarang dan potong waktu admin CRM hingga 70%!", imgPrompt: "Sleek modern office workflow UI" },
-      { headline: "Solusi All-in-One Paling Hemat", channels: ["TikTok", "Google"], copy: "Satu solusi serba lengkap! Klik untuk diskon 20%!", imgPrompt: "Happy merchant using smartphone" }
-    ]
+  const defaultPulse = {
+    briefing: `Selamat pagi, ${dna?.brand || "Pejuang UKM"}! Hari ini adalah kesempatan baru untuk mengembangkan bisnis Anda. Fokus pada interaksi dengan pelanggan di Instagram dan TikTok. Ingat, konsistensi adalah kunci! Semangat! 💪`,
+    leadsCount: 5,
+    competitorUpdate: `${dna?.biggestCompetitor || "Kompetitor"} sedang aktif promo di media sosial. Evaluasi strategi harga Anda.`,
+    salesPercentage: 42,
+    mode: "stimulated-local"
   };
 
-  if (!isRealAiEnabled) return res.json({ ...defaultMockCompetitor, mode: "stimulated-local" });
+  if (!isRealAiEnabled) {
+    return res.json(defaultPulse);
+  }
 
   try {
-    const prompt = `Analisis kompetitor: "${competitorUrlOrName}".
-Prediksikan channel mix, pricing, engagement, dan ad samples.
+    const prompt = `Anda adalah Asisten Pribadi AI untuk pemilik bisnis UKM Indonesia.
+Buat morning briefing harian yang singkat, energetik, dan memotivasi dalam Bahasa Indonesia untuk:
+- Nama Brand: ${dna?.brand || "Brand UKM"}
+- Produk: ${dna?.productName || "Produk"}
+- Target: ${dna?.targetMonthlyRevenue ? `Rp ${dna.targetMonthlyRevenue.toLocaleString()}/bulan` : "Rp 50.000.000"}
+- Kompetitor Utama: ${dna?.biggestCompetitor || "Kompetitor"}
 
-JSON: { "name": "nama", "channelMix": [{ "name": "label", "spend": persen, "color": "#hex" }], "pricingSnapshot": [{ "tier": "nama", "price": "harga" }], "metrics": { "engagementRate": "%", "adSpendEst": "range", "likesTrend": [6 angka] }, "socialAdSamples": [{ "headline": "judul", "channels": ["platform"], "copy": "naskah", "imgPrompt": "deskripsi" }] }
-ChannelMix total 100%. HANYA JSON.`;
+JSON format:
+{
+  "briefing": "pesan semangat 2-3 kalimat, personal, energetik, dengan emoji",
+  "leadsCount": angka random 3-12,
+  "competitorUpdate": "update singkat tentang aktivitas kompetitor",
+  "salesPercentage": angka random 30-70
+}
+HANYA JSON, tanpa penjelasan.`;
+
+    const raw = await callOpenRouter([
+      { role: "system", content: JSON_SYSTEM },
+      { role: "user", content: prompt }
+    ], { temperature: 0.8 });
+
+    const parsed = parseJsonResponse(raw, defaultPulse);
+    return res.json({
+      briefing: parsed.briefing,
+      leadsCount: parsed.leadsCount || defaultPulse.leadsCount,
+      competitorUpdate: parsed.competitorUpdate || defaultPulse.competitorUpdate,
+      salesPercentage: parsed.salesPercentage || defaultPulse.salesPercentage,
+      mode: "live-ai"
+    });
+  } catch (error: any) {
+    console.error("MaxxSales Daily Pulse Error:", error);
+    return res.json({ ...defaultPulse, mode: "stimulated-local-error", message: error.message });
+  }
+});
+
+// 4. ANALYZE COMPETITOR — SWOT analysis for CompetitorWarRoom
+app.post("/api/analyze-competitor", async (req, res) => {
+  const { competitorName, dna } = req.body;
+
+  if (!competitorName) {
+    return res.status(400).json({ error: "Competitor name is required." });
+  }
+
+  const defaultCompetitorIntel = {
+    name: competitorName,
+    strengths: "Memiliki lokasi strategis dan pelanggan setia.",
+    weaknesses: "Kurang aktif di media sosial dan promosi digital.",
+    opportunities: "Bisa memperluas pasar melalui TikTok Shop.",
+    threats: "Ancaman dari brand serupa dengan harga lebih murah.",
+    estimatedRevenue: "Rp 50-100jt/bulan",
+    mode: "stimulated-local"
+  };
+
+  if (!isRealAiEnabled) {
+    return res.json(defaultCompetitorIntel);
+  }
+
+  try {
+    const prompt = `Anda adalah Analis Kompetitor AI untuk bisnis UKM Indonesia.
+Lakukan analisis SWOT untuk kompetitor berikut:
+- Nama Kompetitor: ${competitorName}
+- Produk Kita: ${dna?.productName || "Produk"}
+- Brand Kita: ${dna?.brand || "Brand"}
+- Harga Kita: Rp ${dna?.normalPrice || 399000}
+
+JSON format:
+{
+  "name": "${competitorName}",
+  "strengths": "kekuatan kompetitor 1-2 kalimat (Indonesia)",
+  "weaknesses": "kelemahan kompetitor 1-2 kalimat (Indonesia)",
+  "opportunities": "peluang yang bisa kita manfaatkan 1-2 kalimat (Indonesia)",
+  "threats": "ancaman dari kompetitor 1-2 kalimat (Indonesia)",
+  "estimatedRevenue": "estimasi revenue"
+}
+HANYA JSON, tanpa penjelasan.`;
 
     const raw = await callOpenRouter([
       { role: "system", content: JSON_SYSTEM },
       { role: "user", content: prompt }
     ], { temperature: 0.7 });
 
-    const parsed = parseJsonResponse(raw, defaultMockCompetitor);
-    return res.json({ ...parsed, mode: "live-ai" });
-  } catch (err: any) {
-    console.error("VOXIA Competitor Error:", err);
-    return res.json({ ...defaultMockCompetitor, mode: "stimulated-local-error", message: err.message });
+    const parsed = parseJsonResponse(raw, defaultCompetitorIntel);
+    return res.json({
+      name: parsed.name || competitorName,
+      strengths: parsed.strengths,
+      weaknesses: parsed.weaknesses,
+      opportunities: parsed.opportunities,
+      threats: parsed.threats,
+      estimatedRevenue: parsed.estimatedRevenue,
+      mode: "live-ai"
+    });
+  } catch (error: any) {
+    console.error("MaxxSales Competitor Error:", error);
+    return res.json({ ...defaultCompetitorIntel, mode: "stimulated-local-error", message: error.message });
   }
 });
 
-// 5. CHATBOT HELP - AI ADVISOR EXPLAIN
-app.post("/api/help-chat", async (req, res) => {
-  const { messages, context } = req.body;
+// 5. CHAT — AI Co-pilot / FloatingChatbot
+app.post("/api/chat", async (req, res) => {
+  const { messages, dna } = req.body;
 
   if (!Array.isArray(messages) || messages.length === 0) {
     return res.status(400).json({ error: "Messages list is required." });
   }
 
-  const latestUserText = messages[messages.length - 1].parts;
+  const latestUserText = messages[messages.length - 1]?.parts || messages[messages.length - 1]?.content || "";
 
   if (!isRealAiEnabled) {
     const words = latestUserText.toLowerCase();
-    let reply = "Halo! Saya VOXIA AI Assistant. Saya siap membantu mengoptimalkan kampanye, branding, CRM scoring, dan manajemen cabang. Silakan tanyakan apa saja!";
+    let reply = "Halo! Saya AI Co-pilot MaxxSales. Saya siap membantu Anda mengelola bisnis dengan fitur: DNA Business Canvas, Competitor War Room, Customer Insight, Strategy Fusion, Content Generator, dan Daily Sales Pulse. Silakan tanya apa saja!";
 
-    if (words.includes("skor") || words.includes("crm") || words.includes("score")) {
-      reply = "Skor AI VOXIA dihitung real-time berdasarkan frekuensi interaksi, riwayat klik WA, dan nilai transaksi potensial. Prospek skor >80 direkomendasikan langsung didorong automasi penawaran.";
-    } else if (words.includes("branding") || words.includes("asset") || words.includes("aset")) {
-      reply = "Gunakan tab 'Branding' untuk membuat ad copy & visual dalam sekejap. Isi nama produk dan persona audiens, lalu klik 'Generate'!";
-    } else if (words.includes("strategy") || words.includes("blueprint") || words.includes("strategi")) {
-      reply = "Wizard Strategi VOXIA dalam 4 tahap: pain points, funnel visual, tabel kanal promosi, dan alokasi budget pie chart.";
-    } else if (words.includes("competitor") || words.includes("kompetitor")) {
-      reply = "Masukkan nama/URL kompetitor di menu 'Competitor' untuk analisis anggaran iklan, ad copy, dan bauran media.";
-    } else if (words.includes("cabang") || words.includes("branch")) {
-      reply = "Fitur 'Branches' mempermudah multi-wilayah. Pantau leads nasional dan sinkronisasi kampanye lewat peta interaktif.";
+    if (words.includes("dna") || words.includes("canvas") || words.includes("bisnis")) {
+      reply = "DNA Business Canvas adalah fondasi data bisnis Anda. Isi produk, target market, media channel, dan kompetitor untuk mengaktifkan semua fitur AI.";
+    } else if (words.includes("kompetitor") || words.includes("competitor")) {
+      reply = "Competitor War Room memungkinkan Anda menganalisis SWOT kompetitor, membandingkan brand dengan radar chart, dan menyusun strategi persaingan.";
+    } else if (words.includes("customer") || words.includes("pelanggan") || words.includes("ltv") || words.includes("selemen")) {
+      reply = "Customer Insight membantu Anda mengelompokkan pelanggan, menghitung Customer Lifetime Value (LTV), dan menyusun strategi retensi.";
+    } else if (words.includes("strategi") || words.includes("strategy") || words.includes("forge")) {
+      reply = "Strategy Fusion adalah AI Co-Pilot yang menghasilkan 11 pilar strategi bisnis berdasarkan DNA dan tingkat optimisme Anda.";
+    } else if (words.includes("content") || words.includes("konten") || words.includes("promo") || words.includes("caption")) {
+      reply = "Content Generator membuat overlay promo pada foto produk Anda dengan AI-generated caption dan hashtag. Pilih format Feed, Story, atau WhatsApp!";
+    } else if (words.includes("pulse") || words.includes("harian") || words.includes("daily")) {
+      reply = "Daily Sales Pulse adalah dashboard harian Anda — briefing pagi, checklist tugas, KPI revenue, radar leads, dan market alerts.";
     }
 
     return res.json({ reply, mode: "stimulated-local" });
   }
 
   try {
-    const systemPrompt = `Anda adalah VOXIA Sales-Flow Specialist, asisten AI ahli penjualan digital, CRM, periklanan, dan manajemen cabang bisnis Indonesia.
-Nada: profesional, taktis, bersahabat. Gunakan bahasa Indonesia. Jawab <150 kata.
-Kaitkan dengan kapabilitas VOXIA: Branding (ad copy), Strategy (funnel + budget), CRM (AI-Score + automasi), Competitor (riset kanal), Multi-Branch (peta interaktif).
-Konteks: ${JSON.stringify(context || {})}`;
+    const systemPrompt = `Anda adalah MaxxSales AI Co-pilot, asisten AI untuk pemilik UKM Indonesia yang membantu mengelola bisnis dan penjualan.
+
+Fitur MaxxSales:
+1. DNA Business Canvas: Data bisnis inti (produk, target market, channel, kompetitor)
+2. Competitor War Room: Analisis SWOT + radar chart perbandingan brand
+3. Customer Insight: Segmentasi pelanggan + kalkulator LTV
+4. Strategy Fusion: Generator 11 pilar strategi bisnis
+5. Content Generator: Overlay promo + AI caption untuk foto produk
+6. Daily Sales Pulse: Dashboard harian + briefing + KPI
+
+Nada: profesional, ramah, solutif. Gunakan bahasa Indonesia. Jawab <150 kata.
+
+Konteks Bisnis:
+${JSON.stringify({
+  brand: dna?.brand,
+  product: dna?.productName,
+  targetRevenue: dna?.targetMonthlyRevenue,
+  targetMarket: dna?.genders
+}, null, 2)}`;
 
     const orMessages: { role: string; content: string }[] = [
       { role: "system", content: systemPrompt }
     ];
 
     for (const msg of messages.slice(-10)) {
-      orMessages.push({ role: msg.role === "model" ? "assistant" : "user", content: msg.parts });
+      const text = msg.parts || msg.content || "";
+      const role = msg.role === "model" ? "assistant" : "user";
+      if (text.trim()) {
+        orMessages.push({ role, content: text });
+      }
     }
 
     const reply = await callOpenRouter(orMessages, { temperature: 0.7, maxTokens: 512 });
     return res.json({ reply, mode: "live-ai" });
   } catch (err: any) {
-    console.error("VOXIA Chat Error:", err);
+    console.error("MaxxSales Chat Error:", err);
     return res.status(200).json({
-      reply: `Maaf, kendala koneksi AI. ${latestUserText.includes("skor") ? "Lead Score membantu memprioritaskan kontak berdasarkan analisis otomatis." : "Mari rancang strategi penjualan terbaik di VOXIA."}`,
+      reply: "Maaf, terjadi kendala koneksi AI. Silakan coba lagi nanti. Sementara itu, Anda bisa terus menggunakan fitur-fitur MaxxSales lainnya!",
       mode: "stimulated-local-error",
       message: err.message
     });
@@ -354,14 +446,15 @@ if (process.env.NODE_ENV === "production") {
     appType: "spa"
   }).then((vite) => {
     app.use(vite.middlewares);
-    console.log("VOXIA: Vite dev middleware attached successfully.");
+    console.log("MaxxSales: Vite dev middleware attached successfully.");
   }).catch((err) => {
-    console.error("VOXIA: Failed to inject Vite Dev middleware:", err);
+    console.error("MaxxSales: Failed to inject Vite Dev middleware:", err);
   });
 }
 
 app.listen(PORT, "0.0.0.0", () => {
   console.log(`===========================================================`);
-  console.log(`🚀 VOXIA Sales-Flow started on http://localhost:${PORT}`);
+  console.log(`🚀 MaxxSales MVP started on http://localhost:${PORT}`);
+  console.log(`   Model: ${isRealAiEnabled ? OPENROUTER_MODEL : "Simulation"}`);
   console.log(`===========================================================`);
 });
