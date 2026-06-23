@@ -1,5 +1,7 @@
 import React from "react";
 import ReactMarkdown from "react-markdown";
+import remarkGfm from "remark-gfm";
+import rehypeRaw from "rehype-raw";
 import { MessageSquare, X, Send, Bot, User, ArrowUpRight, HelpCircle, AlertCircle, Loader2 } from "lucide-react";
 import { BusinessCanvasData } from "../types";
 import { API_BASE } from "../api";
@@ -218,7 +220,7 @@ export default function FloatingChatbot({ dna }: FloatingChatbotProps) {
                   }`}>
                     {isBot ? (
                       <div className="text-xs leading-relaxed overflow-x-auto [&_p]:my-1 [&_p:first-child]:mt-0 [&_p:last-child]:mb-0 [&_ul]:my-1 [&_ul]:pl-4 [&_ol]:my-1 [&_ol]:pl-4 [&_li]:my-0.5 [&_li]:list-disc [&_ol_li]:list-decimal [&_strong]:font-bold [&_strong]:text-neutral-900 dark:[&_strong]:text-white [&_code]:bg-neutral-200/60 dark:[&_code]:bg-[#2A2A2A] [&_code]:px-1.5 [&_code]:py-0.5 [&_code]:rounded [&_code]:text-[10px] [&_code]:font-mono [&_pre]:bg-neutral-200/60 dark:[&_pre]:bg-[#222] [&_pre]:p-3 [&_pre]:rounded-lg [&_pre]:text-[10px] [&_pre]:font-mono [&_pre]:mt-1.5 [&_pre]:mb-1.5 [&_pre]:overflow-x-auto [&_hr]:border-t [&_hr]:border-neutral-300 dark:[&_hr]:border-[#333] [&_hr]:my-2 [&_a]:text-emerald-600 dark:[&_a]:text-emerald-400 [&_a]:underline [&_a]:hover:no-underline [&_blockquote]:border-l-2 [&_blockquote]:border-neutral-400 dark:[&_blockquote]:border-neutral-600 [&_blockquote]:pl-3 [&_blockquote]:my-1.5 [&_blockquote]:italic [&_blockquote]:text-neutral-600 dark:[&_blockquote]:text-neutral-400 [&_h1]:text-sm [&_h1]:font-bold [&_h1]:my-1.5 [&_h2]:text-xs [&_h2]:font-bold [&_h2]:my-1 [&_h3]:text-xs [&_h3]:font-semibold [&_h3]:my-1 [&_table]:min-w-full [&_table]:table-auto [&_table]:border-collapse [&_table]:my-2 [&_table]:text-xs [&_thead]:bg-neutral-200/60 dark:[&_thead]:bg-[#222] [&_th]:px-2 [&_th]:py-1 [&_th]:text-left [&_th]:font-bold [&_th]:whitespace-nowrap [&_th]:border [&_th]:border-neutral-300 dark:[&_th]:border-[#333] [&_td]:px-2 [&_td]:py-1 [&_td]:border [&_td]:border-neutral-300 dark:[&_td]:border-[#333] [&_td]:whitespace-normal [&_td]:break-words [&_tr]:border-b [&_tr]:border-neutral-300 dark:[&_tr]:border-[#333] [&_tr]:even:bg-neutral-100/50 dark:[&_tr]:even:bg-[#141414]">
-                        <ReactMarkdown>{msg.text}</ReactMarkdown>
+                        <ReactMarkdown remarkPlugins={[remarkGfm]} rehypePlugins={[rehypeRaw]}>{msg.text}</ReactMarkdown>
                       </div>
                     ) : (
                       <p className="text-xs">{msg.text}</p>
