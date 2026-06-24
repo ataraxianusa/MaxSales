@@ -1,15 +1,14 @@
 import React from "react";
-import { BusinessCanvasData, GeneratedContentText } from "../types";
+import { GeneratedContentText } from "../types";
 import { API_BASE } from "../api";
+import { useChain } from "../store/ChainContext";
+import AIFeedback from "./AIFeedback";
 import { Image as ImageIcon, Upload, Download, Copy, RefreshCw, Layers, Eye, Smartphone, Check, Loader2 } from "lucide-react";
-
-interface ContentGeneratorProps {
-  dna: BusinessCanvasData;
-}
 
 type AspectRatioType = "feed" | "story" | "whatsapp";
 
-export default function ContentGenerator({ dna }: ContentGeneratorProps) {
+export default function ContentGenerator() {
+  const { dna, segments, strategyOutput } = useChain();
   // Input states
   const [promo, setPromo] = React.useState("Flash Sale 30% Terbatazs!");
   const [hook, setHook] = React.useState("Model sutra asli yang adem dipakai seharian!");
@@ -87,6 +86,10 @@ export default function ContentGenerator({ dna }: ContentGeneratorProps) {
   const triggerAIContentGeneration = async () => {
     setLoading(true);
     try {
+      const highRiskSegments = segments
+        .filter((s) => s.risk === "High")
+        .map((s) => ({ name: s.name, behavior: s.channel }));
+
       const response = await fetch(`${API_BASE}/api/generate-content-text`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -97,8 +100,10 @@ export default function ContentGenerator({ dna }: ContentGeneratorProps) {
           promoPrice,
           hook,
           cta: cta === "Custom" ? customCta : cta,
-          urgency
-        })
+          urgency,
+          targetSegments: highRiskSegments,
+          activeStrategies: strategyOutput?.pillars?.slice(0, 3).map((p) => p.title) ?? [],
+        }),
       });
       const data = await response.json();
       if (data) {
@@ -111,9 +116,10 @@ export default function ContentGenerator({ dna }: ContentGeneratorProps) {
     }
   };
 
-  // Canvas drawing effect triggered on state changes
+  // Canvas drawing effect with debounce to prevent re-render cascade
   React.useEffect(() => {
-    drawCanvas();
+    const timer = setTimeout(() => drawCanvas(), 300);
+    return () => clearTimeout(timer);
   }, [generatedText, imageSrc, activeFormat, promoPrice, normalPrice]);
 
   const drawCanvas = () => {
@@ -520,6 +526,8 @@ export default function ContentGenerator({ dna }: ContentGeneratorProps) {
                   <div className="mt-3 text-neutral-400 dark:text-neutral-500 font-mono text-[9px]">
                     {generatedText.hashtags.join(" ")}
                   </div>
+
+                  <AIFeedback promptType="content" responseId={`content-${Date.now()}`} />
                 </div>
               </div>
 

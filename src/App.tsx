@@ -10,7 +10,8 @@ import ContentGenerator from "./components/ContentGenerator";
 import DailyPulse from "./components/DailyPulse";
 import FloatingChatbot from "./components/FloatingChatbot";
 import UserTour from "./components/UserTour";
-
+import { ChainProvider, useChain } from "./store/ChainContext";
+import { useDNAAutoUpdate } from "./hooks/useDNAAutoUpdate";
 import { 
   BusinessCanvasData, 
   CompetitorIntel, 
@@ -19,7 +20,6 @@ import {
   defaultCompetitors, 
   defaultSegments 
 } from "./types";
-
 import { 
   Layers, 
   Target, 
@@ -30,8 +30,46 @@ import {
   Sparkles,
   BookOpen,
   Sun,
-  Moon
+  Moon,
+  AlertTriangle,
+  X
 } from "lucide-react";
+
+function DNANotificationBanner() {
+  const { dna, dailyRecords, updateDna } = useChain();
+  const suggestion = useDNAAutoUpdate(dna, dailyRecords, updateDna);
+  const [dismissed, setDismissed] = React.useState(false);
+
+  if (!suggestion || dismissed) return null;
+
+  return (
+    <div className="max-w-7xl mx-auto px-6 sm:px-8 pt-4">
+      <div className="p-4 rounded border bg-amber-500/10 border-amber-500/30 flex items-start gap-3">
+        <AlertTriangle className="w-4 h-4 text-amber-500 shrink-0 mt-0.5" />
+        <div className="flex-1">
+          <p className="text-xs text-amber-700 dark:text-amber-300">{suggestion.message}</p>
+          <div className="flex gap-2 mt-2">
+            <button
+              onClick={suggestion.action}
+              className="px-3 py-1 rounded text-[10px] font-mono font-bold bg-amber-500 text-black hover:bg-amber-600 transition-colors"
+            >
+              Update Sekarang
+            </button>
+            <button
+              onClick={() => setDismissed(true)}
+              className="px-3 py-1 rounded text-[10px] font-mono border border-amber-500/30 text-amber-600 dark:text-amber-400 hover:bg-amber-500/10 transition-colors"
+            >
+              Nanti
+            </button>
+          </div>
+        </div>
+        <button onClick={() => setDismissed(true)} className="text-amber-500/50 hover:text-amber-500 transition-colors">
+          <X className="w-3.5 h-3.5" />
+        </button>
+      </div>
+    </div>
+  );
+}
 
 export default function App() {
   // Theme state
@@ -261,6 +299,16 @@ export default function App() {
 
         {/* DASHBOARD ROUTE */}
         {currentTab === "dashboard" && isLoggedIn && (
+          <ChainProvider
+            competitors={competitors}
+            segments={segments}
+            dna={canvas}
+            streakCount={streak.count}
+            setCompetitors={setCompetitors}
+            setSegments={setSegments}
+            setDna={setCanvas}
+          >
+          <DNANotificationBanner />
           <div className="max-w-7xl mx-auto px-6 sm:px-8 py-10 animate-fade-in">
             
             {/* If Business Canvas DNA is not filled once, force wizard entry */}
@@ -531,17 +579,17 @@ export default function App() {
 
                   {/* FEATURE 3. STRATEGY FUSION TAB */}
                   {dashTab === "strategy" && (
-                    <StrategyForge dna={canvas} />
+                    <StrategyForge />
                   )}
 
                   {/* FEATURE 4. CONTENT GENERATOR OVERLAY TAB */}
                   {dashTab === "content" && (
-                    <ContentGenerator dna={canvas} />
+                    <ContentGenerator />
                   )}
 
                   {/* FEATURE 5. DAILY SALES PULSE TAB */}
                   {dashTab === "pulse" && (
-                    <DailyPulse dna={canvas} />
+                    <DailyPulse />
                   )}
 
                 </div>
@@ -549,6 +597,7 @@ export default function App() {
               </div>
             )}
           </div>
+          </ChainProvider>
         )}
 
       </main>

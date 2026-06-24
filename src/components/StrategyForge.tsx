@@ -1,20 +1,21 @@
 import React from "react";
-import { StrategyArea, BusinessCanvasData } from "../types";
+import { StrategyArea } from "../types";
 import { API_BASE } from "../api";
-import { Zap, Shield, Sparkles, Copy, CheckCircle2, Loader2, Coins } from "lucide-react";
+import { useChain } from "../store/ChainContext";
+import AIFeedback from "./AIFeedback";
+import { Zap, Shield, Sparkles, Copy, CheckCircle2, Loader2 } from "lucide-react";
 
-interface StrategyForgeProps {
-  dna: BusinessCanvasData;
-}
-
-export default function StrategyForge({ dna }: StrategyForgeProps) {
+export default function StrategyForge() {
+  const { dna, competitors, strategyOutput, setStrategyOutput } = useChain();
   const [level, setLevel] = React.useState<"Konservatif" | "Moderat" | "Agresif">("Moderat");
   const [loading, setLoading] = React.useState(false);
   const [strategyIntro, setStrategyIntro] = React.useState(
-    "STRATEGI AMAN BERKELANJUTAN: Pelayanan prima dipadu dengan retensi loyalitas seimbang."
+    strategyOutput?.synopsis || "STRATEGI AMAN BERKELANJUTAN: Pelayanan prima dipadu dengan retensi loyalitas seimbang."
   );
-  const [areas, setAreas] = React.useState<StrategyArea[]>([]);
+  const [areas, setAreas] = React.useState<StrategyArea[]>(strategyOutput?.pillars || []);
   const [copiedText, setCopiedText] = React.useState(false);
+
+  const cacheRef = React.useRef({ dnaHash: "", competitorsHash: "" });
 
   const fetchStrategy = async (optLevel: "Konservatif" | "Moderat" | "Agresif") => {
     setLoading(true);
@@ -24,13 +25,15 @@ export default function StrategyForge({ dna }: StrategyForgeProps) {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           dna,
-          optimismLevel: optLevel
-        })
+          optimismLevel: optLevel,
+          competitors: competitors.filter((c) => c.name.trim()),
+        }),
       });
       const data = await response.json();
       if (data.pillars) {
         setAreas(data.pillars);
         setStrategyIntro(data.synopsis || data.intro || "");
+        setStrategyOutput({ pillars: data.pillars, synopsis: data.synopsis || "" });
       }
     } catch (err) {
       console.error(err);
@@ -40,13 +43,20 @@ export default function StrategyForge({ dna }: StrategyForgeProps) {
     }
   };
 
-  // Initial load
   React.useEffect(() => {
+    const newDnaHash = JSON.stringify(dna);
+    const newCompHash = JSON.stringify(competitors);
+    if (newDnaHash === cacheRef.current.dnaHash && newCompHash === cacheRef.current.competitorsHash) {
+      return;
+    }
+    cacheRef.current.dnaHash = newDnaHash;
+    cacheRef.current.competitorsHash = newCompHash;
     fetchStrategy(level);
-  }, []);
+  }, [dna, level, competitors]);
 
   const handleLevelChange = (newLevel: "Konservatif" | "Moderat" | "Agresif") => {
     setLevel(newLevel);
+    cacheRef.current.dnaHash = "";
     fetchStrategy(newLevel);
   };
 
@@ -56,12 +66,12 @@ export default function StrategyForge({ dna }: StrategyForgeProps) {
     areas.forEach((area, i) => {
       summaryText += `${i + 1}. [${area.areaName}] - ${area.title}\n`;
       summaryText += `   Deskripsi: ${area.description}\n`;
-      area.actionSteps.forEach(step => {
+      area.actionSteps.forEach((step) => {
         summaryText += `   - [ ] ${step}\n`;
       });
       summaryText += `\n`;
     });
-    
+
     navigator.clipboard.writeText(summaryText);
     setCopiedText(true);
     setTimeout(() => setCopiedText(false), 2000);
@@ -69,7 +79,6 @@ export default function StrategyForge({ dna }: StrategyForgeProps) {
 
   return (
     <div className="space-y-6">
-      
       {/* Intro section */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between pb-4 border-b border-neutral-200 dark:border-[#262626] gap-4">
         <div>
@@ -78,10 +87,10 @@ export default function StrategyForge({ dna }: StrategyForgeProps) {
             <span>Strategy Fusion Co-Pilot</span>
           </h2>
           <p className="text-xs text-neutral-500 dark:text-[#A3A3A3]">
-            AI menggabungkan seluruh isian DNA Canvas Anda untuk menggodok area strategis taktis guna menembus pertahanan market lokal.
+            AI menggabungkan DNA, data kompetitor, dan segmen pelanggan Anda untuk menggodok strategi taktis.
           </p>
         </div>
-        
+
         <div className="flex items-center space-x-2">
           <button
             id="btn-copy-strategy-plan"
@@ -96,14 +105,16 @@ export default function StrategyForge({ dna }: StrategyForgeProps) {
 
       {/* Optimism Level Buttons */}
       <div className="p-5 rounded border bg-white dark:bg-[#111111] border-neutral-200 dark:border-[#262626] space-y-4">
-        <span className="text-[10px] font-bold font-mono text-neutral-450 dark:text-[#737373] uppercase tracking-wider block">Tingkat Optimisme Risiko Bisnis (Modulasi AI)</span>
-        
+        <span className="text-[10px] font-bold font-mono text-neutral-450 dark:text-[#737373] uppercase tracking-wider block">
+          Tingkat Optimisme Risiko Bisnis (Modulasi AI)
+        </span>
+
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
           {[
             { key: "Konservatif", desc: "Aman, Tanpa Modal Iklan", icon: Shield },
             { key: "Moderat", desc: "Seimbang & Terukur", icon: Sparkles },
-            { key: "Agresif", desc: "Masif, Ekspansi Maksimal", icon: Zap }
-          ].map(lvl => {
+            { key: "Agresif", desc: "Masif, Ekspansi Maksimal", icon: Zap },
+          ].map((lvl) => {
             const IconComp = lvl.icon;
             const isActive = level === lvl.key;
             return (
@@ -122,7 +133,9 @@ export default function StrategyForge({ dna }: StrategyForgeProps) {
                   <IconComp className="w-3.5 h-3.5" />
                   <span>{lvl.key}</span>
                 </div>
-                <p className={`text-[10px] ${isActive ? "text-neutral-350 dark:text-neutral-700" : "text-neutral-400 dark:text-neutral-500"} line-clamp-1`}>{lvl.desc}</p>
+                <p className={`text-[10px] ${isActive ? "text-neutral-350 dark:text-neutral-700" : "text-neutral-400 dark:text-neutral-500"} line-clamp-1`}>
+                  {lvl.desc}
+                </p>
               </button>
             );
           })}
@@ -133,11 +146,12 @@ export default function StrategyForge({ dna }: StrategyForgeProps) {
       {loading ? (
         <div className="p-20 text-center rounded border bg-white dark:bg-[#111111] border-neutral-200 dark:border-[#262626] flex flex-col items-center justify-center space-y-3">
           <Loader2 className="w-6 h-6 text-neutral-900 dark:text-white animate-spin" />
-          <p className="text-[11px] text-neutral-550 dark:text-neutral-450 font-mono text-center max-w-md">Bekerja di server proxy... AI sedang menganalisis keunggulan {dna.productName || "UKM"} Anda...</p>
+          <p className="text-[11px] text-neutral-550 dark:text-neutral-450 font-mono text-center max-w-md">
+            Bekerja di server proxy... AI sedang menganalisis keunggulan {dna.productName || "UKM"} Anda beserta {competitors.length} kompetitor...
+          </p>
         </div>
       ) : (
         <div className="space-y-6">
-          
           {/* Top Intro card */}
           <div className="p-4 rounded border bg-neutral-50 dark:bg-[#1A1A1A] border-neutral-201 dark:border-[#262626] text-xs text-neutral-750 dark:text-neutral-300">
             <strong className="font-bold flex items-center space-x-1.5 text-neutral-950 dark:text-white uppercase text-[9px] tracking-wider mb-1.5 font-mono">
@@ -145,12 +159,13 @@ export default function StrategyForge({ dna }: StrategyForgeProps) {
               <span>SINOPSIS POLA STRATEGI {level.toUpperCase()}</span>
             </strong>
             <p className="leading-relaxed">{strategyIntro}</p>
+            <AIFeedback promptType="strategy" responseId={`strategy-${level}-${Date.now()}`} />
           </div>
 
           {/* Strategy Areas grid */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
             {areas.map((area, idx) => (
-              <div 
+              <div
                 key={idx}
                 className="p-5 rounded border bg-white dark:bg-[#111111] border-neutral-200 dark:border-[#262626] flex flex-col justify-between transition-colors hover:border-neutral-400 dark:hover:border-neutral-700"
               >
@@ -166,7 +181,9 @@ export default function StrategyForge({ dna }: StrategyForgeProps) {
                 </div>
 
                 <div className="border-t pt-3 border-neutral-150 dark:border-[#262626] space-y-2.5">
-                  <span className="text-[9px] font-bold font-mono uppercase text-neutral-450 dark:text-[#737373] block tracking-wide">Langkah Action Items:</span>
+                  <span className="text-[9px] font-bold font-mono uppercase text-neutral-450 dark:text-[#737373] block tracking-wide">
+                    Langkah Action Items:
+                  </span>
                   <ul className="space-y-2 text-[11px] leading-relaxed text-neutral-700 dark:text-neutral-300">
                     {area.actionSteps.map((step, sIdx) => (
                       <li key={sIdx} className="flex items-start space-x-1.5">
@@ -179,10 +196,8 @@ export default function StrategyForge({ dna }: StrategyForgeProps) {
               </div>
             ))}
           </div>
-
         </div>
       )}
-
     </div>
   );
 }
