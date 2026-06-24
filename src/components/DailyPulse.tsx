@@ -4,6 +4,7 @@ import { API_BASE } from "../api";
 import { useChain } from "../store/ChainContext";
 import AIFeedback from "./AIFeedback";
 import { Sparkles, CheckSquare, TrendingUp, RefreshCw, BarChart2, Target, Users, Bell, ChevronRight, Loader2 } from "lucide-react";
+import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, Cell, ReferenceLine } from "recharts";
 
 export default function DailyPulse() {
   const { dna, strategyOutput, dailyRecords, addPulseRecord, streakCount } = useChain();
@@ -32,6 +33,80 @@ export default function DailyPulse() {
     localStorage.setItem("maxx_sales_yesterday_revenue", String(yesterdayRevenue));
     localStorage.setItem("maxx_sales_today_target", String(todayTarget));
   }, [yesterdayRevenue, todayTarget]);
+
+  // Derived calculations
+  const doneCount = items.filter((x) => x.done).length;
+  const progressPercent = Math.round((doneCount / items.length) * 100);
+  const monthlyTarget = dna.targetMonthlyRevenue || 50000000;
+  const dailyAvgTarget = Math.round(monthlyTarget / 30);
+  const dailyAchievement = todayTarget > 0 ? Math.round((yesterdayRevenue / todayTarget) * 100) : 0;
+
+  // Chart period state
+  type ChartPeriod = "week" | "month" | "year" | "all";
+  const [chartPeriod, setChartPeriod] = React.useState<ChartPeriod>("week");
+
+  // Aggregate revenue data from dailyRecords
+  const chartData = React.useMemo(() => {
+    const now = new Date();
+    const today = now.toISOString().split("T")[0];
+
+    // Add today's data if input exists
+    const allRecords = [...dailyRecords];
+    if (yesterdayRevenue > 0) {
+      const yesterday = new Date(now);
+      yesterday.setDate(yesterday.getDate() - 1);
+      const yesterdayStr = yesterday.toISOString().split("T")[0];
+      if (!allRecords.find(r => r.date === yesterdayStr)) {
+        allRecords.push({
+          date: yesterdayStr,
+          briefing: "",
+          completedCount: 0,
+          pendingItems: [],
+          activeStrategies: [],
+          streakCount: 0,
+          yesterdayRevenue,
+          todayTarget,
+          dailyAchievement,
+        });
+      }
+    }
+
+    // Filter by period
+    let filtered = allRecords;
+    if (chartPeriod === "week") {
+      const weekAgo = new Date(now);
+      weekAgo.setDate(weekAgo.getDate() - 7);
+      filtered = allRecords.filter(r => new Date(r.date) >= weekAgo);
+    } else if (chartPeriod === "month") {
+      const monthAgo = new Date(now);
+      monthAgo.setDate(monthAgo.getDate() - 30);
+      filtered = allRecords.filter(r => new Date(r.date) >= monthAgo);
+    } else if (chartPeriod === "year") {
+      const yearAgo = new Date(now);
+      yearAgo.setFullYear(yearAgo.getFullYear() - 1);
+      filtered = allRecords.filter(r => new Date(r.date) >= yearAgo);
+    }
+
+    // Sort by date
+    filtered.sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
+
+    // Map to chart format
+    return filtered.map(r => {
+      const d = new Date(r.date);
+      const label = chartPeriod === "week"
+        ? d.toLocaleDateString("id-ID", { weekday: "short" })
+        : chartPeriod === "month"
+        ? `${d.getDate()}/${d.getMonth() + 1}`
+        : chartPeriod === "year"
+        ? d.toLocaleDateString("id-ID", { month: "short" })
+        : r.date;
+      return {
+        name: label,
+        omzet: r.yesterdayRevenue || 0,
+        target: r.todayTarget || dailyAvgTarget,
+      };
+    });
+  }, [dailyRecords, chartPeriod, yesterdayRevenue, todayTarget, dailyAchievement, dailyAvgTarget]);
 
   const fetchBriefing = async () => {
     setLoading(true);
@@ -77,13 +152,6 @@ export default function DailyPulse() {
   const toggleItem = (id: string) => {
     setItems(items.map((it) => (it.id === id ? { ...it, done: !it.done } : it)));
   };
-
-  const doneCount = items.filter((x) => x.done).length;
-  const progressPercent = Math.round((doneCount / items.length) * 100);
-
-  const monthlyTarget = dna.targetMonthlyRevenue || 50000000;
-  const dailyAvgTarget = Math.round(monthlyTarget / 30);
-  const dailyAchievement = todayTarget > 0 ? Math.round((yesterdayRevenue / todayTarget) * 100) : 0;
 
   return (
     <div className="space-y-6">
@@ -254,31 +322,99 @@ export default function DailyPulse() {
             </div>
           </div>
 
-          {/* New Leads radar summary */}
+          {/* Revenue Visualization Chart */}
           <div className="p-5 rounded border bg-white dark:bg-[#111111] border-neutral-200 dark:border-[#262626] space-y-3">
-            <div className="flex items-center space-x-1.5 border-b pb-2 border-neutral-100 dark:border-[#1A1A1A]">
-              <Users className="w-4 h-4 text-neutral-500" />
-              <h4 className="text-[10px] font-bold uppercase tracking-widest font-mono text-neutral-900 dark:text-[#A3A3A3]">Radar Leads Pemesanan</h4>
+            <div className="flex items-center justify-between border-b pb-2 border-neutral-100 dark:border-[#1A1A1A]">
+              <div className="flex items-center space-x-1.5">
+                <BarChart2 className="w-4 h-4 text-neutral-500" />
+                <h4 className="text-[10px] font-bold uppercase tracking-widest font-mono text-neutral-900 dark:text-[#A3A3A3]">Visualisasi Omzet</h4>
+              </div>
             </div>
 
-            <div className="space-y-3">
-              {[
-                { name: "Andriani (Ibu Muda)", status: "WA Pending Chat", item: "Gamis Sutra", time: "2 mnt lalu" },
-                { name: "Dewi S (Reseller)", status: "Bundle Offer", item: "Buy 10 packs", time: "10 mnt lalu" },
-                { name: "Rina Kartika (Impulse)", status: "Ready to Pay", item: "Voucher Claim", time: "1 jam lalu" },
-              ].map((ld, i) => (
-                <div key={i} className="flex items-center justify-between text-xs pb-2.5 border-b border-neutral-100 dark:border-[#1A1A1A] last:border-0 last:pb-0">
-                  <div>
-                    <span className="font-semibold text-neutral-800 dark:text-neutral-200 block">{ld.name}</span>
-                    <span className="text-[10px] text-neutral-400 dark:text-[#737373] font-mono">
-                      {ld.item} • {ld.time}
-                    </span>
-                  </div>
-                  <span className="text-[9px] font-mono px-2 py-0.5 rounded bg-neutral-100 dark:bg-[#1A1A1A] text-neutral-650 dark:text-[#A3A3A3] border border-neutral-200 dark:border-[#262626] uppercase font-bold">
-                    {ld.status}
-                  </span>
-                </div>
+            {/* Period filter */}
+            <div className="flex gap-1">
+              {([
+                { key: "week" as ChartPeriod, label: "Minggu" },
+                { key: "month" as ChartPeriod, label: "Bulan" },
+                { key: "year" as ChartPeriod, label: "Tahun" },
+                { key: "all" as ChartPeriod, label: "Semua" },
+              ]).map(p => (
+                <button
+                  key={p.key}
+                  onClick={() => setChartPeriod(p.key)}
+                  className={`px-2 py-1 rounded text-[9px] font-mono transition-colors ${
+                    chartPeriod === p.key
+                      ? "bg-neutral-950 text-white dark:bg-[#E5E5E5] dark:text-black font-bold"
+                      : "bg-transparent border border-neutral-200 dark:border-[#262626] text-neutral-500 hover:border-neutral-400"
+                  }`}
+                >
+                  {p.label}
+                </button>
               ))}
+            </div>
+
+            {/* Bar Chart */}
+            {chartData.length > 0 ? (
+              <div className="h-[180px] w-full">
+                <ResponsiveContainer width="100%" height="100%">
+                  <BarChart data={chartData} margin={{ top: 5, right: 5, left: -10, bottom: 5 }}>
+                    <XAxis
+                      dataKey="name"
+                      tick={{ fill: '#737373', fontSize: 8, fontFamily: 'monospace' }}
+                      axisLine={false}
+                      tickLine={false}
+                    />
+                    <YAxis
+                      tick={{ fill: '#525252', fontSize: 8, fontFamily: 'monospace' }}
+                      axisLine={false}
+                      tickLine={false}
+                      tickFormatter={(v) => v >= 1000000 ? `${(v/1000000).toFixed(0)}jt` : v >= 1000 ? `${(v/1000).toFixed(0)}rb` : v}
+                    />
+                    <Tooltip
+                      contentStyle={{
+                        backgroundColor: '#161616',
+                        borderColor: '#262626',
+                        fontSize: '10px',
+                        fontFamily: 'monospace',
+                        color: 'white',
+                        borderRadius: '4px'
+                      }}
+                      formatter={(value: number) => [`Rp ${value.toLocaleString("id-ID")}`, '']}
+                    />
+                    <ReferenceLine
+                      y={dailyAvgTarget}
+                      stroke="#525252"
+                      strokeDasharray="3 3"
+                      label={{ value: "Target", fill: '#737373', fontSize: 8, fontFamily: 'monospace', position: 'right' }}
+                    />
+                    <Bar dataKey="omzet" radius={[3, 3, 0, 0]} maxBarSize={32}>
+                      {chartData.map((entry, index) => (
+                        <Cell
+                          key={index}
+                          fill={entry.omzet >= entry.target ? "#10b981" : "#f59e0b"}
+                        />
+                      ))}
+                    </Bar>
+                  </BarChart>
+                </ResponsiveContainer>
+              </div>
+            ) : (
+              <div className="h-[180px] flex items-center justify-center text-[10px] font-mono text-neutral-400 dark:text-[#737373]">
+                Mulai input omzet harian untuk melihat grafik
+              </div>
+            )}
+
+            {/* Legend */}
+            <div className="flex items-center gap-3 text-[9px] font-mono text-neutral-400 dark:text-[#737373]">
+              <span className="flex items-center gap-1">
+                <span className="w-2 h-2 rounded-sm bg-emerald-500" /> Over Target
+              </span>
+              <span className="flex items-center gap-1">
+                <span className="w-2 h-2 rounded-sm bg-amber-500" /> Under Target
+              </span>
+              <span className="flex items-center gap-1">
+                <span className="w-2 h-0.5 bg-neutral-500 border-dashed" /> Target DNA
+              </span>
             </div>
           </div>
 
