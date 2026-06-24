@@ -20,10 +20,25 @@ export default function DailyPulse() {
     { id: "5", text: "Pantau perang promo diskon Zahra Store (kompetitor utama)", done: false, category: "Competitor" },
   ]);
 
+  // Revenue tracking state
+  const [yesterdayRevenue, setYesterdayRevenue] = React.useState<number>(() => {
+    return Number(localStorage.getItem("maxx_sales_yesterday_revenue")) || 0;
+  });
+  const [todayTarget, setTodayTarget] = React.useState<number>(() => {
+    return Number(localStorage.getItem("maxx_sales_today_target")) || Math.round((dna.targetMonthlyRevenue || 50000000) / 30);
+  });
+
+  React.useEffect(() => {
+    localStorage.setItem("maxx_sales_yesterday_revenue", String(yesterdayRevenue));
+    localStorage.setItem("maxx_sales_today_target", String(todayTarget));
+  }, [yesterdayRevenue, todayTarget]);
+
   const fetchBriefing = async () => {
     setLoading(true);
     try {
       const yesterday = dailyRecords[dailyRecords.length - 1];
+      const dailyAchievement = todayTarget > 0 ? Math.round((yesterdayRevenue / todayTarget) * 100) : 0;
+
       const response = await fetch(`${API_BASE}/api/daily-pulse`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -32,6 +47,9 @@ export default function DailyPulse() {
           completedCount: items.filter((x) => x.done).length,
           activeStrategies: strategyOutput?.pillars?.map((p) => p.title) ?? [],
           pendingItems: yesterday?.pendingItems ?? [],
+          yesterdayRevenue,
+          todayTarget,
+          dailyAchievement,
         }),
       });
       const data = await response.json();
@@ -44,6 +62,9 @@ export default function DailyPulse() {
           pendingItems: items.filter((x) => !x.done).map((x) => x.text),
           activeStrategies: strategyOutput?.pillars?.map((p) => p.title) ?? [],
           streakCount: streakCount,
+          yesterdayRevenue,
+          todayTarget,
+          dailyAchievement,
         });
       }
     } catch (err) {
@@ -60,9 +81,9 @@ export default function DailyPulse() {
   const doneCount = items.filter((x) => x.done).length;
   const progressPercent = Math.round((doneCount / items.length) * 100);
 
-  const revenueGoal = dna.targetMonthlyRevenue || 50000000;
-  const achievedRevenue = Math.round(revenueGoal * 0.42);
-  const percentageAchieved = 42;
+  const monthlyTarget = dna.targetMonthlyRevenue || 50000000;
+  const dailyAvgTarget = Math.round(monthlyTarget / 30);
+  const dailyAchievement = todayTarget > 0 ? Math.round((yesterdayRevenue / todayTarget) * 100) : 0;
 
   return (
     <div className="space-y-6">
@@ -174,37 +195,63 @@ export default function DailyPulse() {
 
         {/* RIGHT COLUMN: REVENUE KPI & RADAR ALERTS (4 Columns) */}
         <div className="lg:col-span-4 space-y-6">
-          {/* Target Revenue Progress Box */}
+          {/* Revenue Tracking Input */}
           <div className="p-5 rounded border bg-white dark:bg-[#111111] border-neutral-200 dark:border-[#262626] space-y-4">
             <div className="flex items-center space-x-1.5 text-neutral-550 border-b pb-2 border-neutral-100 dark:border-[#1A1A1A]">
               <Target className="w-4 h-4 text-neutral-500 dark:text-[#737373]" />
-              <h4 className="text-[10px] font-bold uppercase tracking-widest font-mono text-neutral-900 dark:text-[#A3A3A3]">Pencapaian Target Omzet</h4>
+              <h4 className="text-[10px] font-bold uppercase tracking-widest font-mono text-neutral-900 dark:text-[#A3A3A3]">Pencapaian Omzet</h4>
             </div>
 
-            <div className="space-y-1">
-              <span className="text-[9px] text-neutral-400 dark:text-[#737373] font-mono block uppercase">Target Bulan Ini (DNA)</span>
-              <strong className="text-base font-bold font-mono text-neutral-900 dark:text-white">Rp {revenueGoal.toLocaleString("id-ID")}</strong>
-            </div>
-
-            <div className="p-4 rounded bg-neutral-900 text-white dark:bg-[#171717] border border-transparent dark:border-[#262626] text-center space-y-1">
-              <span className="text-[9px] font-mono uppercase text-neutral-450 dark:text-[#737373]">AKUMULASI CLOSING SEKARANG</span>
-              <p className="text-md font-black text-white dark:text-[#E5E5E5] font-mono">Rp {achievedRevenue.toLocaleString("id-ID")}</p>
-              <div className="flex justify-between items-center text-[9px] font-mono px-2 pt-1.5 mt-1 border-t border-neutral-800 dark:border-[#262626] text-neutral-400">
-                <span>Rasio:</span>
-                <span className="text-white font-bold">{percentageAchieved}% Tercapai</span>
+            <div className="grid grid-cols-2 gap-3">
+              <div>
+                <label className="text-[9px] font-mono font-semibold text-neutral-450 dark:text-[#737373] block mb-1 uppercase">Omzet Kemarin (Rp)</label>
+                <input
+                  type="number"
+                  value={yesterdayRevenue || ""}
+                  onChange={(e) => setYesterdayRevenue(Number(e.target.value))}
+                  placeholder="0"
+                  className="w-full text-sm px-3 py-2 rounded border bg-transparent border-neutral-300 dark:border-neutral-800 focus:border-neutral-900 dark:focus:border-white focus:outline-none font-mono"
+                />
+              </div>
+              <div>
+                <label className="text-[9px] font-mono font-semibold text-neutral-450 dark:text-[#737373] block mb-1 uppercase">Target Hari Ini (Rp)</label>
+                <input
+                  type="number"
+                  value={todayTarget || ""}
+                  onChange={(e) => setTodayTarget(Number(e.target.value))}
+                  placeholder="0"
+                  className="w-full text-sm px-3 py-2 rounded border bg-transparent border-neutral-300 dark:border-neutral-800 focus:border-neutral-900 dark:focus:border-white focus:outline-none font-mono"
+                />
               </div>
             </div>
 
-            <ul className="space-y-2 text-[10px] font-mono text-neutral-450 dark:text-[#737373]">
-              <li className="flex items-center justify-between">
-                <span>Sisa Kekurangan:</span>
-                <strong className="font-semibold text-neutral-700 dark:text-neutral-300">Rp {(revenueGoal - achievedRevenue).toLocaleString("id-ID")}</strong>
-              </li>
-              <li className="flex items-center justify-between pb-1">
-                <span>Prediksi Akhir Bulan:</span>
-                <strong className="text-neutral-900 dark:text-white font-bold">✓ 89% Peluang</strong>
-              </li>
-            </ul>
+            <div className="p-4 rounded bg-neutral-900 text-white dark:bg-[#171717] border border-transparent dark:border-[#262626] text-center space-y-1">
+              <span className="text-[9px] font-mono uppercase text-neutral-450 dark:text-[#737373]">PENCAPAIAN KEMARIN</span>
+              <p className="text-2xl font-black font-mono">
+                {dailyAchievement}%
+                {yesterdayRevenue > 0 && (
+                  <span className={`text-xs ml-2 ${dailyAchievement >= 100 ? 'text-emerald-400' : 'text-amber-400'}`}>
+                    {dailyAchievement >= 100 ? '✓ Over Target' : '⚡ Kejar Target!'}
+                  </span>
+                )}
+              </p>
+            </div>
+
+            <div className="space-y-1.5">
+              <div className="flex justify-between text-[9px] font-mono text-neutral-450 dark:text-[#737373]">
+                <span>Avg harian DNA: Rp {dailyAvgTarget.toLocaleString("id-ID")}</span>
+                <span>× 30 hari</span>
+              </div>
+              <div className="w-full bg-neutral-100 dark:bg-neutral-800 h-2 rounded-full overflow-hidden">
+                <div
+                  className={`h-2 rounded-full transition-all duration-500 ${dailyAchievement >= 100 ? 'bg-emerald-500' : 'bg-amber-500'}`}
+                  style={{ width: `${Math.min(dailyAchievement, 100)}%` }}
+                />
+              </div>
+              <p className="text-[9px] font-mono text-neutral-400 dark:text-[#737373]">
+                Target Bulanan: Rp {monthlyTarget.toLocaleString("id-ID")}
+              </p>
+            </div>
           </div>
 
           {/* New Leads radar summary */}

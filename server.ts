@@ -277,7 +277,7 @@ HANYA JSON, tanpa penjelasan. Minimal 5 pillars, maksimal 11 pillars.`;
 
 // 3. DAILY PULSE — Morning briefing for DailyPulse component
 app.post("/api/daily-pulse", async (req, res) => {
-  const { dna, completedCount, activeStrategies, pendingItems } = req.body;
+  const { dna, completedCount, activeStrategies, pendingItems, yesterdayRevenue, todayTarget, dailyAchievement } = req.body;
 
   const defaultPulse = {
     briefing: `Selamat pagi, ${dna?.brand || "Pejuang UKM"}! Hari ini adalah kesempatan baru untuk mengembangkan bisnis Anda. Fokus pada interaksi dengan pelanggan di Instagram dan TikTok. Ingat, konsistensi adalah kunci! Semangat! 💪`,
@@ -320,11 +320,17 @@ Strategi Aktif: ${strategiesList}
 Progress Kemarin: ${completedCount || 0} item selesai
 Item Belum Selesai: ${pendingList}
 
+PENCAPAIAN OMZET:
+- Omzet Kemarin: Rp ${(yesterdayRevenue || 0).toLocaleString()}
+- Target Hari Ini: Rp ${(todayTarget || 0).toLocaleString()}
+- Rasio: ${dailyAchievement || 0}%
+
 INSTRUKSI:
 1. Prioritaskan item yang BELUM selesai dari hari sebelumnya
 2. Sebutkan strategi yang sedang aktif hari ini
 3. Beri 1 quick win actionable tip
-4. Beri semangat untuk melanjutkan streak
+4. Jika pencapaian < 80%, sarankan strategi closing. Jika > 100%, beri selamat dan sarankan eskalasi
+5. Beri semangat untuk melanjutkan streak
 
 JSON format:
 {

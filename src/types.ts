@@ -121,6 +121,9 @@ export interface DailyPulseRecord {
   pendingItems: string[];
   activeStrategies: string[];
   streakCount: number;
+  yesterdayRevenue: number;
+  todayTarget: number;
+  dailyAchievement: number;
 }
 
 export interface FeedbackLog {
