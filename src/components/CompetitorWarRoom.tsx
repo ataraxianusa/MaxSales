@@ -330,7 +330,7 @@ export default function CompetitorWarRoom({ dna, competitors, setCompetitors }: 
         </div>
 
         {/* Right Columns: SWOT Analysis Matrix & battlefield insights */}
-        <div className="lg:col-span-2 space-y-6">
+        <div className="lg:col-span-2 space-y-6 min-w-0 overflow-hidden">
           
           {activeIntelCompetitor ? (
             <div className="space-y-6">
@@ -397,7 +397,7 @@ export default function CompetitorWarRoom({ dna, competitors, setCompetitors }: 
                       </span>
                     </div>
 
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6 items-center">
+                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 items-center">
                       
                       {/* Recharts Radar Chart Container */}
                       <div className="h-[250px] w-full flex items-center justify-center bg-neutral-50 dark:bg-[#0A0A0A] rounded border border-neutral-150 dark:border-[#1F1F1F] relative p-1 overflow-hidden">
@@ -530,7 +530,7 @@ export default function CompetitorWarRoom({ dna, competitors, setCompetitors }: 
               })()}
 
               {/* Complete SWOT Matrix Grid */}
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 overflow-hidden">
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 overflow-hidden">
                 
                 {/* 1. STRENGTHS */}
                 <div className="p-4 rounded border border-neutral-200 dark:border-[#262626] bg-neutral-50 dark:bg-[#111111] space-y-2 overflow-hidden">
@@ -557,7 +557,7 @@ export default function CompetitorWarRoom({ dna, competitors, setCompetitors }: 
                 </div>
 
                 {/* 3. OPPORTUNITIES */}
-                <div className="p-4 rounded border border-neutral-200 dark:border-[#262626] bg-neutral-50 dark:bg-[#111111] space-y-2 col-span-1 md:col-span-2 overflow-hidden">
+                <div className="p-4 rounded border border-neutral-200 dark:border-[#262626] bg-neutral-50 dark:bg-[#111111] space-y-2 col-span-1 lg:col-span-2 overflow-hidden">
                   <span className="text-[10px] font-bold font-mono text-neutral-850 dark:text-[#E5E5E5] uppercase tracking-widest flex items-center space-x-1.5">
                     <Zap className="w-3.5 h-3.5 text-neutral-400 shrink-0" />
                     <span className="truncate">O - OPPORTUNITY (PELUANG ANDA)</span>
@@ -569,7 +569,7 @@ export default function CompetitorWarRoom({ dna, competitors, setCompetitors }: 
                 </div>
 
                 {/* 4. THREATS */}
-                <div className="p-4 rounded border border-neutral-200 dark:border-[#262626] bg-neutral-50 dark:bg-[#111111] space-y-2 col-span-1 md:col-span-2 overflow-hidden">
+                <div className="p-4 rounded border border-neutral-200 dark:border-[#262626] bg-neutral-50 dark:bg-[#111111] space-y-2 col-span-1 lg:col-span-2 overflow-hidden">
                   <span className="text-[10px] font-bold font-mono text-neutral-850 dark:text-[#E5E5E5] uppercase tracking-widest flex items-center space-x-1.5">
                     <AlertTriangle className="w-3.5 h-3.5 text-neutral-400 shrink-0" />
                     <span className="truncate">T - THREAT (ANCAMAN KITA)</span>

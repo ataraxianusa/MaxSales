@@ -50,7 +50,20 @@ export default function UserTour({ currentTab, setTab }: UserTourProps) {
   const tourSteps: TourStep[] = [
     {
       id: 1,
-      title: "Pilar 1: DNA & Merek Aktif",
+      title: "Pilar 1: Daily Sales Pulse",
+      focusTab: "pulse",
+      selector: "#btn-dash-tab-pulse",
+      conceptName: "Checklist Disiplin Harian & Streak",
+      conceptDesc: "Penjualan yang hebat tidak lahir dalam semalam, melainkan dari konsistensi harian. Daily Sales Pulse menantang Anda menyelesaikan checklist taktis penjualan demi meningkatkan Level dan mengumpulkan poin XP usaha Anda.",
+      learnMoreTerm: "Gamifikasi Penjualan",
+      learnMoreDefinition: "Penerapan elemen permainan (seperti tantangan harian, level, poin XP, dan streak hari beruntun) ke dalam aktivitas bisnis agar operasional terasa menyenangkan dan memotivasi.",
+      practicalTips: "Pastikan Anda mengklik Check-in di penanda Streak harian setiap hari untuk menjaga reputasi dan melipatgandakan poin XP bisnis Anda!",
+      icon: Flame,
+      badgeColor: "bg-amber-500/10 text-amber-500 border border-amber-500/20"
+    },
+    {
+      id: 2,
+      title: "Pilar 2: DNA & Merek Aktif",
       focusTab: "competitor",
       selector: "#brand-overview-card",
       conceptName: "Fondasi Kampanye Penjualan",
@@ -62,8 +75,8 @@ export default function UserTour({ currentTab, setTab }: UserTourProps) {
       badgeColor: "bg-blue-500/10 text-blue-500 border border-blue-500/20"
     },
     {
-      id: 2,
-      title: "Pilar 2: Competitor War Room",
+      id: 3,
+      title: "Pilar 3: Competitor War Room",
       focusTab: "competitor",
       selector: "#btn-dash-tab-competitor",
       conceptName: "Intelijen Pesaing (SWOT)",
@@ -75,8 +88,8 @@ export default function UserTour({ currentTab, setTab }: UserTourProps) {
       badgeColor: "bg-red-500/10 text-red-500 border border-red-500/20"
     },
     {
-      id: 3,
-      title: "Pilar 3: Customer Insight",
+      id: 4,
+      title: "Pilar 4: Customer Insight",
       focusTab: "customer",
       selector: "#btn-dash-tab-customer",
       conceptName: "Profil Pembeli Ideal & LTV",
@@ -88,8 +101,8 @@ export default function UserTour({ currentTab, setTab }: UserTourProps) {
       badgeColor: "bg-emerald-500/10 text-emerald-500 border border-emerald-500/20"
     },
     {
-      id: 4,
-      title: "Pilar 4: Strategy Fusion",
+      id: 5,
+      title: "Pilar 5: Strategy Fusion",
       focusTab: "strategy",
       selector: "#btn-dash-tab-strategy",
       conceptName: "Kolaborasi Strategi Terpadu",
@@ -101,8 +114,8 @@ export default function UserTour({ currentTab, setTab }: UserTourProps) {
       badgeColor: "bg-purple-500/10 text-purple-500 border border-purple-500/20"
     },
     {
-      id: 5,
-      title: "Pilar 5: Content Generator",
+      id: 6,
+      title: "Pilar 6: Content Generator",
       focusTab: "content",
       selector: "#btn-dash-tab-content",
       conceptName: "Alat Desain Konten Mandiri",
@@ -112,19 +125,6 @@ export default function UserTour({ currentTab, setTab }: UserTourProps) {
       practicalTips: "Upload foto produk dengan pencahayaan terang dan gunakan kontras frame gelap agar tulisan promosi Anda terlihat jelas saat dibagikan.",
       icon: Image,
       badgeColor: "bg-cyan-500/10 text-cyan-500 border border-cyan-500/20"
-    },
-    {
-      id: 6,
-      title: "Pilar 6: Daily Sales Pulse",
-      focusTab: "pulse",
-      selector: "#btn-dash-tab-pulse",
-      conceptName: "Checklist Disiplin Harian & Streak",
-      conceptDesc: "Penjualan yang hebat tidak lahir dalam semalam, melainkan dari konsistensi harian. Daily Sales Pulse menantang Anda menyelesaikan checklist taktis penjualan demi meningkatkan Level dan mengumpulkan poin XP usaha Anda.",
-      learnMoreTerm: "Gamifikasi Penjualan",
-      learnMoreDefinition: "Penerapan elemen permainan (seperti tantangan harian, level, poin XP, dan streak hari beruntun) ke dalam aktivitas bisnis agar operasional terasa menyenangkan dan memotivasi.",
-      practicalTips: "Pastikan Anda mengklik Check-in di penanda Streak harian setiap hari untuk menjaga reputasi dan melipatgandakan poin XP bisnis Anda!",
-      icon: Flame,
-      badgeColor: "bg-amber-500/10 text-amber-500 border border-amber-500/20"
     },
     {
       id: 7,
