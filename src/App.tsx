@@ -89,7 +89,7 @@ export default function App() {
 
   // Dashboard Sub-navigation Tab
   // "competitor" | "customer" | "strategy" | "content" | "pulse"
-  const [dashTab, setDashTab] = React.useState<"competitor" | "customer" | "strategy" | "content" | "pulse">("competitor");
+  const [dashTab, setDashTab] = React.useState<"competitor" | "customer" | "strategy" | "content" | "pulse">("pulse");
 
   // If user is already logged in, automatically proceed to dashboard if they want to enter
   React.useEffect(() => {
@@ -470,11 +470,11 @@ export default function App() {
                     {/* Integrated Tab Buttons with Checkboxes */}
                     <div className="space-y-1" role="tablist">
                       {[
+                        { key: "pulse" as const, label: "Daily Sales Pulse", desc: "Evaluasi & Checklist", icon: Sparkles },
                         { key: "competitor" as const, label: "Competitor War Room", desc: "SWOT & Radar Kompetitor", icon: Target },
                         { key: "customer" as const, label: "Customer Insight", desc: "Profil & LTV Pelanggan", icon: TrendingUp },
                         { key: "strategy" as const, label: "Strategy Fusion", desc: "11 Saluran Promosi AI", icon: Zap },
-                        { key: "content" as const, label: "Content Generator", desc: "Poster Iklan Visual", icon: Image },
-                        { key: "pulse" as const, label: "Daily Sales Pulse", desc: "Evaluasi & Checklist", icon: Sparkles }
+                        { key: "content" as const, label: "Content Generator", desc: "Poster Iklan Visual", icon: Image }
                       ].map((tab, idx) => {
                         const IconComp = tab.icon;
                         const isActive = dashTab === tab.key;
