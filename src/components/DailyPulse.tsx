@@ -34,6 +34,31 @@ export default function DailyPulse() {
     localStorage.setItem("maxx_sales_today_target", String(todayTarget));
   }, [yesterdayRevenue, todayTarget]);
 
+  // Auto-save revenue to dailyRecords when user inputs data
+  React.useEffect(() => {
+    if (yesterdayRevenue <= 0) return;
+    const now = new Date();
+    const yesterday = new Date(now);
+    yesterday.setDate(yesterday.getDate() - 1);
+    const yesterdayStr = yesterday.toISOString().split("T")[0];
+
+    const existing = dailyRecords.find(r => r.date === yesterdayStr);
+    if (existing) return; // Already saved
+
+    const achievement = todayTarget > 0 ? Math.round((yesterdayRevenue / todayTarget) * 100) : 0;
+    addPulseRecord({
+      date: yesterdayStr,
+      briefing: "",
+      completedCount: 0,
+      pendingItems: [],
+      activeStrategies: [],
+      streakCount: streakCount,
+      yesterdayRevenue,
+      todayTarget,
+      dailyAchievement: achievement,
+    });
+  }, [yesterdayRevenue, todayTarget]);
+
   // Derived calculations
   const doneCount = items.filter((x) => x.done).length;
   const progressPercent = Math.round((doneCount / items.length) * 100);
