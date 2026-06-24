@@ -109,6 +109,27 @@ export interface DailyPulseData {
   actionItems: { id: string; text: string; done: boolean; category: string }[];
 }
 
+export interface StrategyOutput {
+  pillars: StrategyArea[];
+  synopsis: string;
+}
+
+export interface DailyPulseRecord {
+  date: string;
+  briefing: string;
+  completedCount: number;
+  pendingItems: string[];
+  activeStrategies: string[];
+  streakCount: number;
+}
+
+export interface FeedbackLog {
+  promptType: "strategy" | "pulse" | "content";
+  responseId: string;
+  vote: "useful" | "not";
+  timestamp: string;
+}
+
 // Initial default data for Demo/Onboarding
 export const defaultCanvasData = (): BusinessCanvasData => ({
   productName: "Gamis Premium Sutra El-Zahra",

@@ -81,7 +81,7 @@ app.get("/api/status", (c) => {
 
 // 1. GENERATE CONTENT TEXT
 app.post("/api/generate-content-text", async (c) => {
-  const { dna, headline, promoPrice, normalPrice, hook, cta, urgency } = await c.req.json();
+  const { dna, headline, promoPrice, normalPrice, hook, cta, urgency, targetSegments, activeStrategies } = await c.req.json();
 
   const fallback = {
     headline: headline || "Promo Spesial!",
@@ -99,6 +99,14 @@ app.post("/api/generate-content-text", async (c) => {
   const model = c.env.OPENROUTER_MODEL || "openai/gpt-oss-120b:free";
   if (!apiKey) return c.json({ ...fallback, mode: "simulated" });
 
+  const segmentContext = Array.isArray(targetSegments) && targetSegments.length > 0
+    ? targetSegments.map((s: any) => `- ${s.name}: Kanal ${s.behavior || '-'}`).join("\n")
+    : "";
+
+  const strategyContext = Array.isArray(activeStrategies) && activeStrategies.length > 0
+    ? activeStrategies.join(", ")
+    : "";
+
   try {
     const raw = await callOpenRouter(apiKey, model, [
       { role: "system", content: JSON_SYS },
@@ -112,7 +120,10 @@ app.post("/api/generate-content-text", async (c) => {
 - Headline: ${headline || "Promo"}
 - Harga Normal: Rp${normalPrice || 399000}
 - Harga Promo: Rp${promoPrice || 299000}
+${segmentContext ? `\nSegmen Prioritas:\n${segmentContext}` : ""}
+${strategyContext ? `\nStrategi Aktif: ${strategyContext}` : ""}
 
+INSTRUKSI: Fokus retensi untuk segmen high churn risk jika ada data. Sertakan hashtag relevan.
 JSON: {"headline":"judul max 8 kata","subheadline":"sub max 12 kata","priceDisplay":"Rp X.XXX","promoDisplay":"Rp Y.XXX","ctaText":"aksi","urgencyText":"urgensi","caption":"caption 2-3 kalimat","hashtags":["#tag1","#tag2","#tag3","#tag4","#tag5"],"watermark":"MaxxSales AI"} HANYA JSON.` }
     ], { temperature: 0.8 });
 
@@ -125,7 +136,7 @@ JSON: {"headline":"judul max 8 kata","subheadline":"sub max 12 kata","priceDispl
 
 // 2. STRATEGY FORGE
 app.post("/api/strategy-forge", async (c) => {
-  const { dna, optimismLevel } = await c.req.json();
+  const { dna, optimismLevel, competitors } = await c.req.json();
 
   const fallback = {
     synopsis: `Strategi ${dna?.productName || "produk"} - ${optimismLevel || "Moderat"}. Fokus penguatan brand.`,
@@ -135,6 +146,12 @@ app.post("/api/strategy-forge", async (c) => {
   const apiKey = c.env.OPENROUTER_API_KEY;
   const model = c.env.OPENROUTER_MODEL || "openai/gpt-oss-120b:free";
   if (!apiKey) return c.json({ ...fallback, mode: "simulated" });
+
+  const competitorIntel = Array.isArray(competitors) && competitors.length > 0
+    ? competitors.filter((c: any) => c.name?.trim()).map((c: any) =>
+        `- ${c.name}: Harga ${c.averagePrice || '-'}, Kekuatan: ${c.strengths || '-'}, Kelemahan: ${c.weaknesses || '-'}`
+      ).join("\n")
+    : "- Tidak ada data kompetitor";
 
   try {
     const raw = await callOpenRouter(apiKey, model, [
@@ -152,6 +169,11 @@ app.post("/api/strategy-forge", async (c) => {
 - Channel: ${dna?.activeSocialMedia?.join(",") || "Instagram, TikTok"}
 - Optimisme: ${optimismLevel || "Moderat"}
 
+Intel Kompetitor:
+${competitorIntel}
+
+INSTRUKSI: Prioritaskan strategi yang mengeksploitasi kelemahan kompetitor.
+
 JSON: {"synopsis":"ringkasan 2-3 kalimat Bahasa Indonesia","pillars":[{"areaName":"area strategi","title":"judul","description":"deskripsi","actionSteps":["langkah 1","langkah 2","langkah 3"]}]}
 Minimal 5 pillars, maksimal 11 pillars. HANYA JSON.` }
     ], { temperature: 0.7 });
@@ -165,7 +187,7 @@ Minimal 5 pillars, maksimal 11 pillars. HANYA JSON.` }
 
 // 3. DAILY PULSE
 app.post("/api/daily-pulse", async (c) => {
-  const { dna } = await c.req.json();
+  const { dna, completedCount, activeStrategies, pendingItems } = await c.req.json();
 
   const fallback = {
     briefing: `Selamat pagi, ${dna?.brand || "Pejuang UKM"}! Fokus interaksi pelanggan hari ini! 💪`,
@@ -177,6 +199,14 @@ app.post("/api/daily-pulse", async (c) => {
   const apiKey = c.env.OPENROUTER_API_KEY;
   const model = c.env.OPENROUTER_MODEL || "openai/gpt-oss-120b:free";
   if (!apiKey) return c.json({ ...fallback, mode: "simulated" });
+
+  const strategiesList = Array.isArray(activeStrategies) && activeStrategies.length > 0
+    ? activeStrategies.join(", ")
+    : "belum ada strategi aktif";
+
+  const pendingList = Array.isArray(pendingItems) && pendingItems.length > 0
+    ? pendingItems.join("; ")
+    : "semua tugas sudah selesai";
 
   try {
     const raw = await callOpenRouter(apiKey, model, [
@@ -191,6 +221,16 @@ app.post("/api/daily-pulse", async (c) => {
 - Kompetitor: ${dna?.biggestCompetitor || "Kompetitor"}
 - Kelebihan Kompetitor: ${dna?.competitorStrengths || "-"}
 - Kelemahan Kompetitor: ${dna?.competitorWeaknesses || "-"}
+
+Strategi Aktif: ${strategiesList}
+Progress Kemarin: ${completedCount || 0} item selesai
+Item Belum Selesai: ${pendingList}
+
+INSTRUKSI:
+1. Prioritaskan item yang BELUM selesai dari hari sebelumnya
+2. Sebutkan strategi yang sedang aktif hari ini
+3. Beri 1 quick win actionable tip
+4. Beri semangat untuk melanjutkan streak
 
 JSON: {"briefing":"pesan semangat 2-3 kalimat personal + emoji","leadsCount":angka 3-12,"competitorUpdate":"update aktivitas kompetitor 1-2 kalimat","salesPercentage":angka 30-70}
 HANYA JSON.` }
