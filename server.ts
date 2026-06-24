@@ -106,7 +106,7 @@ app.get("/api/status", (_req, res) => {
 
 // 1. GENERATE CONTENT TEXT — for ContentGenerator (captions, headlines, hashtags)
 app.post("/api/generate-content-text", async (req, res) => {
-  const { dna, headline, promoPrice, normalPrice, hook, cta, urgency } = req.body;
+  const { dna, headline, promoPrice, normalPrice, hook, cta, urgency, targetSegments, activeStrategies } = req.body;
 
   const defaultMockResponse = {
     headline: headline || "Promo Spesial Akhir Pekan!",
@@ -126,6 +126,14 @@ app.post("/api/generate-content-text", async (req, res) => {
   }
 
   try {
+    const segmentContext = Array.isArray(targetSegments) && targetSegments.length > 0
+      ? targetSegments.map((s: any) => `- ${s.name}: Kanal ${s.behavior || '-'}`).join("\n")
+      : "";
+
+    const strategyContext = Array.isArray(activeStrategies) && activeStrategies.length > 0
+      ? activeStrategies.join(", ")
+      : "";
+
     const prompt = `Anda adalah AI Copywriter untuk bisnis UKM fashion Indonesia.
 Buat konten promosi dalam Bahasa Indonesia untuk produk berikut:
 
@@ -146,6 +154,10 @@ Promo:
 - Urgensi: ${urgency || "Terbatas"}
 
 Target Market: ${dna?.genders?.join(", ") || "Semua"}, usia ${dna?.ages?.join(", ") || "Dewasa"}
+${segmentContext ? `\nSegmen Prioritas Retensi:\n${segmentContext}` : ""}
+${strategyContext ? `\nStrategi Aktif: ${strategyContext}` : ""}
+
+INSTRUKSI: Buat caption yang fokus retensi untuk segmen high churn risk jika ada data segmen. Sertakan hashtag relevan.
 
 JSON format:
 {
@@ -176,7 +188,7 @@ HANYA JSON, tanpa penjelasan.`;
 
 // 2. STRATEGY FORGE — Generate 11-pillar strategy based on DNA + risk level
 app.post("/api/strategy-forge", async (req, res) => {
-  const { dna, optimismLevel } = req.body;
+  const { dna, optimismLevel, competitors } = req.body;
 
   const defaultStrategy = {
     synopsis: `Strategi bisnis untuk ${dna?.productName || "produk Anda"} dengan pendekatan ${optimismLevel || "Moderat"}. Fokus pada penguatan brand, optimalisasi media sosial, dan retensi pelanggan.`,
@@ -212,6 +224,12 @@ app.post("/api/strategy-forge", async (req, res) => {
                       optimismLevel === "Agresif" ? "ekspansif dan berani" :
                       "seimbang antara risiko dan pertumbuhan";
 
+    const competitorIntel = Array.isArray(competitors) && competitors.length > 0
+      ? competitors.filter((c: any) => c.name?.trim()).map((c: any) =>
+          `- ${c.name}: Harga ${c.averagePrice || '-'}, Kekuatan: ${c.strengths || '-'}, Kelemahan: ${c.weaknesses || '-'}`
+        ).join("\n")
+      : "- Tidak ada data kompetitor";
+
     const prompt = `Anda adalah Konsultan Strategi Bisnis AI untuk UKM Indonesia.
 Buat strategi bisnis 11 pilar untuk bisnis berikut:
 - Produk: ${dna?.productName || "Produk"}
@@ -223,7 +241,12 @@ Buat strategi bisnis 11 pilar untuk bisnis berikut:
 - Margin: ${dna?.marginRange || "30-50%"}
 - Channel: ${dna?.activeSocialMedia?.join(", ") || "Instagram, TikTok, WhatsApp"}
 
+Intel Kompetitor:
+${competitorIntel}
+
 Tingkat Optimisme: ${optimismLevel || "Moderat"} (${levelDesc})
+
+INSTRUKSI: Prioritaskan strategi yang mengeksploitasi kelemahan kompetitor. Jika ada data kompetitor, gunakan untuk gap analysis.
 
 JSON format:
 {
@@ -254,7 +277,7 @@ HANYA JSON, tanpa penjelasan. Minimal 5 pillars, maksimal 11 pillars.`;
 
 // 3. DAILY PULSE — Morning briefing for DailyPulse component
 app.post("/api/daily-pulse", async (req, res) => {
-  const { dna } = req.body;
+  const { dna, completedCount, activeStrategies, pendingItems } = req.body;
 
   const defaultPulse = {
     briefing: `Selamat pagi, ${dna?.brand || "Pejuang UKM"}! Hari ini adalah kesempatan baru untuk mengembangkan bisnis Anda. Fokus pada interaksi dengan pelanggan di Instagram dan TikTok. Ingat, konsistensi adalah kunci! Semangat! 💪`,
@@ -269,6 +292,14 @@ app.post("/api/daily-pulse", async (req, res) => {
   }
 
   try {
+    const strategiesList = Array.isArray(activeStrategies) && activeStrategies.length > 0
+      ? activeStrategies.join(", ")
+      : "belum ada strategi aktif";
+
+    const pendingList = Array.isArray(pendingItems) && pendingItems.length > 0
+      ? pendingItems.join("; ")
+      : "semua tugas sudah selesai";
+
     const prompt = `Anda adalah Asisten Pribadi AI untuk pemilik bisnis UKM Indonesia.
 Buat morning briefing harian yang singkat, energetik, dan memotivasi dalam Bahasa Indonesia untuk:
 
@@ -284,6 +315,16 @@ Kompetitor:
 - Kompetitor Utama: ${dna?.biggestCompetitor || "Kompetitor"}
 - Kelebihan Kompetitor: ${dna?.competitorStrengths || "-"}
 - Kelemahan Kompetitor: ${dna?.competitorWeaknesses || "-"}
+
+Strategi Aktif: ${strategiesList}
+Progress Kemarin: ${completedCount || 0} item selesai
+Item Belum Selesai: ${pendingList}
+
+INSTRUKSI:
+1. Prioritaskan item yang BELUM selesai dari hari sebelumnya
+2. Sebutkan strategi yang sedang aktif hari ini
+3. Beri 1 quick win actionable tip
+4. Beri semangat untuk melanjutkan streak
 
 JSON format:
 {
