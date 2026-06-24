@@ -235,7 +235,7 @@ export default function App() {
     localStorage.setItem("maxx_sales_dna", JSON.stringify(canvas));
     setIsDnaFilled(true);
     localStorage.setItem("maxx_sales_dna_filled", "true");
-    setDashTab("competitor"); // Default to Feature 1 as per flow
+    setDashTab("pulse"); // Default ke DailyPulse (posisi #1)
   };
 
   const handleLogout = () => {
@@ -249,7 +249,7 @@ export default function App() {
     if (window.confirm("Buka kembali form edit DNA Business Canvas? Anda dapat menyesuaikan Nama Produk, Harga, Keunggulan, dan Target Market.")) {
       setIsDnaFilled(false);
       localStorage.removeItem("maxx_sales_dna_filled");
-      setDashTab("competitor");
+      setDashTab("pulse");
     }
   };
 
