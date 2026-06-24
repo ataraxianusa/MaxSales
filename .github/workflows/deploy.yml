@@ -36,6 +36,9 @@ jobs:
         env:
           VITE_API_URL: ${{ secrets.VITE_API_URL }}
 
+      - name: Copy index.html to app.html for dashboard route
+        run: cp dist/index.html dist/app.html
+
       - name: Deploy to gh-pages
         uses: JamesIves/github-pages-deploy-action@v4
         with:
