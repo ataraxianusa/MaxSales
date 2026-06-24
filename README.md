@@ -1,6 +1,6 @@
 # MaxxSales — AI-Powered Sales Flow Platform
 
-> **MVP** · AI Business Brain for Indonesian SMEs / UKM — OpenRouter-powered sales intelligence, competitor analysis, customer segmentation, content generation, and daily strategy briefings.
+> **MVP** · AI Business Brain for Indonesian Entrepreneurs / Pengusaha — OpenRouter-powered sales intelligence, competitor analysis, customer segmentation, content generation, and daily strategy briefings.
 
 [![Deploy to GitHub Pages](https://github.com/ataraxianusa/MaxSales/actions/workflows/deploy.yml/badge.svg)](https://github.com/ataraxianusa/MaxSales/actions/workflows/deploy.yml)
 [![Live Site](https://img.shields.io/badge/Live%20Site-maxsales.qzz.io-blue)](https://maxsales.qzz.io)
