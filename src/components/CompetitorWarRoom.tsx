@@ -530,51 +530,51 @@ export default function CompetitorWarRoom({ dna, competitors, setCompetitors }: 
               })()}
 
               {/* Complete SWOT Matrix Grid */}
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 overflow-hidden">
                 
                 {/* 1. STRENGTHS */}
-                <div className="p-4 rounded border border-neutral-200 dark:border-[#262626] bg-neutral-50 dark:bg-[#111111] space-y-2">
+                <div className="p-4 rounded border border-neutral-200 dark:border-[#262626] bg-neutral-50 dark:bg-[#111111] space-y-2 overflow-hidden">
                   <span className="text-[10px] font-bold font-mono text-neutral-850 dark:text-[#E5E5E5] uppercase tracking-widest flex items-center space-x-1.5">
-                    <Shield className="w-3.5 h-3.5 text-neutral-400" />
-                    <span>S - STRENGTH (KEKUATAN)</span>
+                    <Shield className="w-3.5 h-3.5 text-neutral-400 shrink-0" />
+                    <span className="truncate">S - STRENGTH (KEKUATAN)</span>
                   </span>
-                  <p className="text-xs leading-relaxed text-neutral-700 dark:text-[#A3A3A3]">
+                  <p className="text-xs leading-relaxed text-neutral-700 dark:text-[#A3A3A3] break-words">
                     {activeIntelCompetitor.strengths}
                   </p>
                   <span className="text-[9px] block font-mono text-neutral-400 dark:text-[#737373]">Analisis: Jangan banting harga jika kekuatan mereka adalah margin modal besar.</span>
                 </div>
 
                 {/* 2. WEAKNESSES */}
-                <div className="p-4 rounded border border-neutral-200 dark:border-[#262626] bg-neutral-50 dark:bg-[#111111] space-y-2">
+                <div className="p-4 rounded border border-neutral-200 dark:border-[#262626] bg-neutral-50 dark:bg-[#111111] space-y-2 overflow-hidden">
                   <span className="text-[10px] font-bold font-mono text-neutral-850 dark:text-[#E5E5E5] uppercase tracking-widest flex items-center space-x-1.5">
-                    <ShieldAlert className="w-3.5 h-3.5 text-neutral-400" />
-                    <span>W - WEAKNESS (KELEMAHAN)</span>
+                    <ShieldAlert className="w-3.5 h-3.5 text-neutral-400 shrink-0" />
+                    <span className="truncate">W - WEAKNESS (KELEMAHAN)</span>
                   </span>
-                  <p className="text-xs leading-relaxed text-neutral-700 dark:text-[#A3A3A3]">
+                  <p className="text-xs leading-relaxed text-neutral-700 dark:text-[#A3A3A3] break-words">
                     {activeIntelCompetitor.weaknesses}
                   </p>
                   <span className="text-[9px] block font-mono text-neutral-900 dark:text-white font-bold">✓ Serbu bagian ini! Ini adalah celah masuk utama kampanye Anda.</span>
                 </div>
 
                 {/* 3. OPPORTUNITIES */}
-                <div className="p-4 rounded border border-neutral-200 dark:border-[#262626] bg-neutral-50 dark:bg-[#111111] space-y-2 col-span-1 md:col-span-2">
+                <div className="p-4 rounded border border-neutral-200 dark:border-[#262626] bg-neutral-50 dark:bg-[#111111] space-y-2 col-span-1 md:col-span-2 overflow-hidden">
                   <span className="text-[10px] font-bold font-mono text-neutral-850 dark:text-[#E5E5E5] uppercase tracking-widest flex items-center space-x-1.5">
-                    <Zap className="w-3.5 h-3.5 text-neutral-400" />
-                    <span>O - OPPORTUNITY (PELUANG ANDA)</span>
+                    <Zap className="w-3.5 h-3.5 text-neutral-400 shrink-0" />
+                    <span className="truncate">O - OPPORTUNITY (PELUANG ANDA)</span>
                   </span>
-                  <p className="text-xs leading-relaxed text-neutral-805 dark:text-white font-semibold">
+                  <p className="text-xs leading-relaxed text-neutral-805 dark:text-white font-semibold break-words">
                     {activeIntelCompetitor.opportunities}
                   </p>
                   <span className="text-[9px] block font-mono text-neutral-450 dark:text-[#737373]">Ide Tindakan: Gunakan Content Generator untuk merebut interaksi video pendek yang luput dari mereka.</span>
                 </div>
 
                 {/* 4. THREATS */}
-                <div className="p-4 rounded border border-neutral-200 dark:border-[#262626] bg-neutral-50 dark:bg-[#111111] space-y-2 col-span-1 md:col-span-2">
+                <div className="p-4 rounded border border-neutral-200 dark:border-[#262626] bg-neutral-50 dark:bg-[#111111] space-y-2 col-span-1 md:col-span-2 overflow-hidden">
                   <span className="text-[10px] font-bold font-mono text-neutral-850 dark:text-[#E5E5E5] uppercase tracking-widest flex items-center space-x-1.5">
-                    <AlertTriangle className="w-3.5 h-3.5 text-neutral-400" />
-                    <span>T - THREAT (ANCAMAN KITA)</span>
+                    <AlertTriangle className="w-3.5 h-3.5 text-neutral-400 shrink-0" />
+                    <span className="truncate">T - THREAT (ANCAMAN KITA)</span>
                   </span>
-                  <p className="text-xs leading-relaxed text-neutral-700 dark:text-[#A3A3A3]">
+                  <p className="text-xs leading-relaxed text-neutral-700 dark:text-[#A3A3A3] break-words">
                     {activeIntelCompetitor.threats}
                   </p>
                 </div>
