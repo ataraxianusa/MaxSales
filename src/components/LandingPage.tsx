@@ -101,11 +101,11 @@ export default function LandingPage({ onEnterDashboard, brandName, darkMode, set
           </div>
 
           {/* 2-Column Hero Grid */}
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-center">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-10 items-stretch">
             
             {/* LEFT COLUMN: Text Content */}
             <div className="text-center lg:text-left">
-              <h1 className="text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-extrabold tracking-tight leading-[1.08] mb-5 text-white opacity-0 animate-fade-in" style={{ animationDelay: '0.15s' }}>
+              <h1 className="text-4xl sm:text-5xl lg:text-5xl xl:text-6xl font-extrabold tracking-tight leading-[1.08] mb-5 text-white opacity-0 animate-fade-in" style={{ animationDelay: '0.15s' }}>
             Ubah Data Bisnis Jadi
             <br />
             <span className="bg-clip-text text-transparent bg-gradient-to-r from-emerald-400 via-emerald-300 to-cyan-400 animate-gradient-shift">
@@ -114,10 +114,10 @@ export default function LandingPage({ onEnterDashboard, brandName, darkMode, set
             {' '}Tanpa Ribet Teori
           </h1>
 
-          <p className="text-sm sm:text-base text-neutral-400 mb-8 leading-relaxed opacity-0 animate-fade-in-up" style={{ animationDelay: '0.3s' }}>
-            <strong className="text-white font-semibold">MaxxSales</strong> adalah Sistem Operasi Pertumbuhan Bisnis berbasis AI yang dirancang khusus untuk{' '}
-            <strong className="text-emerald-400 font-semibold">Pengusaha Taktis</strong> — 
-            mengubah data penjualan, intelijen kompetitor, dan insight pasar menjadi langkah eksekusi harian yang langsung bisa dikerjakan. Bukan teori. Bukan dashboard kosong. <span className="text-white/80 font-medium">Ini kokpit komando bisnis Anda.</span>
+          <p className="text-sm text-neutral-400 mb-6 leading-relaxed max-w-md opacity-0 animate-fade-in-up" style={{ animationDelay: '0.3s' }}>
+            <strong className="text-white font-semibold">MaxxSales</strong> — Sistem Operasi Pertumbuhan Bisnis berbasis AI untuk{' '}
+            <strong className="text-emerald-400 font-semibold">Pengusaha Taktis</strong>.{' '}
+            Ubah data penjualan & intelijen pasar jadi langkah eksekusi harian. Bukan teori, bukan dashboard kosong — <span className="text-white/80 font-medium">ini kokpit komando bisnis Anda.</span>
           </p>
 
 
@@ -127,7 +127,7 @@ export default function LandingPage({ onEnterDashboard, brandName, darkMode, set
             <button
               id="cta-start-dashboard"
               onClick={onEnterDashboard}
-              className="group relative w-full sm:w-auto px-8 py-3.5 rounded-xl text-sm font-bold transition-all duration-300 bg-gradient-to-r from-emerald-500 to-emerald-600 hover:from-emerald-400 hover:to-emerald-500 text-black shadow-lg shadow-emerald-500/25 hover:shadow-emerald-500/40 hover:scale-[1.03] active:scale-[0.98] flex items-center justify-center gap-2 overflow-hidden"
+              className="group relative w-full sm:w-auto px-7 py-3 rounded-xl text-sm font-bold transition-all duration-300 bg-gradient-to-r from-emerald-500 to-emerald-600 hover:from-emerald-400 hover:to-emerald-500 text-black shadow-lg shadow-emerald-500/25 hover:shadow-emerald-500/40 hover:scale-[1.03] active:scale-[0.98] flex items-center justify-center gap-2 overflow-hidden"
             >
               {/* Shimmer sweep */}
               <span className="absolute inset-0 w-full h-full bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700 ease-in-out" />
@@ -142,7 +142,7 @@ export default function LandingPage({ onEnterDashboard, brandName, darkMode, set
               className="w-full sm:w-auto px-6 py-3.5 rounded-xl text-sm font-semibold transition-all duration-300 border border-neutral-700 hover:border-neutral-500 text-neutral-300 hover:text-white hover:bg-white/5 flex items-center justify-center gap-2"
             >
               <MonitorSmartphone className="w-4 h-4" />
-              Lihat Pratinjau Dasbor
+              Lihat Pratinjau
             </button>
           </div>
 
@@ -174,40 +174,40 @@ export default function LandingPage({ onEnterDashboard, brandName, darkMode, set
               initial={{ opacity: 0, x: 20 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ delay: 0.5, duration: 0.6 }}
-              className="rounded-2xl border border-neutral-800 bg-[#0c0c0c] overflow-hidden shadow-xl shadow-black/30"
+              className="rounded-2xl border border-neutral-800 bg-[#0c0c0c] overflow-hidden shadow-xl shadow-black/30 flex flex-col"
             >
               {/* Card header */}
-              <div className="px-4 py-3 border-b border-neutral-800 flex items-center justify-between bg-[#111111] flex-wrap gap-2">
-                <div className="flex items-center gap-2">
+              <div className="px-5 py-4 border-b border-neutral-800 flex items-center justify-between bg-[#111111] flex-wrap gap-2">
+                <div className="flex items-center gap-2.5">
                   <motion.span
-                    animate={{ y: [0, -3, 0] }}
+                    animate={{ y: [0, -4, 0] }}
                     transition={{ duration: 2.5, repeat: Infinity, ease: "easeInOut" }}
-                    className="text-base"
+                    className="text-xl"
                   >
                     🚀
                   </motion.span>
                   <div>
-                    <h3 className="text-xs sm:text-sm font-bold text-white leading-tight">Tugas Hari Ini, Juragan!</h3>
-                    <p className="text-[9px] text-neutral-500 font-mono">Daily Pulse · Checklist Eksekusi</p>
+                    <h3 className="text-sm sm:text-base font-bold text-white leading-tight">Tugas Hari Ini, Juragan!</h3>
+                    <p className="text-[10px] text-neutral-500 font-mono">Daily Pulse · Checklist Eksekusi</p>
                   </div>
                 </div>
                 <motion.span
                   whileHover={{ scale: 1.05 }}
-                  className="px-2 py-0.5 rounded-full text-[8px] font-mono font-bold bg-emerald-500/15 text-emerald-400 border border-emerald-500/25 whitespace-nowrap"
+                  className="px-2.5 py-1 rounded-full text-[9px] font-mono font-bold bg-emerald-500/15 text-emerald-400 border border-emerald-500/25 whitespace-nowrap"
                 >
                   🔥 STREAK 4 HARI
                 </motion.span>
               </div>
 
-              {/* Checklist body — compact */}
-              <div className="p-3 sm:p-4 space-y-2">
+              {/* Checklist body — balanced */}
+              <div className="p-4 sm:p-5 space-y-3 flex-1">
                 {checklist.map((item) => (
                   <motion.label
                     key={item.id}
                     whileHover={{ scale: 1.01, x: 2 }}
                     whileTap={{ scale: 0.99 }}
                     onClick={() => toggleChecklist(item.id)}
-                    className={`flex items-start gap-2.5 p-2.5 rounded-lg cursor-pointer transition-all border ${
+                    className={`flex items-start gap-3 p-3 rounded-xl cursor-pointer transition-all border ${
                       item.done
                         ? "bg-emerald-500/5 border-emerald-500/15 hover:bg-emerald-500/10"
                         : "border-neutral-800 bg-[#0a0a0a] hover:bg-amber-500/5 hover:border-amber-500/20"
@@ -216,39 +216,40 @@ export default function LandingPage({ onEnterDashboard, brandName, darkMode, set
                     <motion.div
                       animate={item.done ? { scale: [1, 1.2, 1] } : {}}
                       transition={{ duration: 0.3 }}
-                      className={`mt-0.5 w-3.5 h-3.5 rounded border flex items-center justify-center shrink-0 transition-colors ${
+                      className={`mt-0.5 w-4 h-4 rounded border flex items-center justify-center shrink-0 transition-colors ${
                         item.done
                           ? "bg-emerald-500 border-emerald-500"
                           : "border-neutral-700 bg-transparent group-hover:border-emerald-500/40"
                       }`}
                     >
-                      {item.done && <Check className="w-2.5 h-2.5 text-black" />}
+                      {item.done && <Check className="w-3 h-3 text-black" />}
                     </motion.div>
-                    <div className="min-w-0">
-                      <span className={`text-xs leading-snug transition-all ${
+                    <div>
+                      <span className={`text-sm transition-all ${
                         item.done
                           ? "text-neutral-500 line-through group-hover:text-emerald-200/80"
-                          : "text-neutral-200 font-medium group-hover:text-amber-200"
+                          : "text-white font-medium group-hover:text-amber-200"
                       }`}>
                         {item.label}
                       </span>
+                      <p className="text-[10px] text-neutral-500 mt-0.5">{item.desc}</p>
                     </div>
                   </motion.label>
                 ))}
               </div>
 
               {/* Card footer */}
-              <div className="px-4 py-2.5 border-t border-neutral-800 bg-[#0f0f0f] flex items-center justify-between">
-                <span className="text-[9px] font-mono text-neutral-500">
-                  ✅ {checklist.filter(i => i.done).length}/{checklist.length} tugas
+              <div className="px-5 py-3 border-t border-neutral-800 bg-[#0f0f0f] flex items-center justify-between">
+                <span className="text-[10px] font-mono text-neutral-500">
+                  ✅ {checklist.filter(i => i.done).length}/{checklist.length} tugas selesai hari ini
                 </span>
                 <motion.span
                   key={checklist.filter(i => i.done).length}
                   animate={{ scale: [1, 1.15, 1] }}
                   transition={{ duration: 0.4 }}
-                  className="text-[9px] font-mono text-emerald-500 font-bold"
+                  className="text-[10px] font-mono text-emerald-500 font-bold"
                 >
-                  +{checklist.filter(i => i.done).length * 25} XP
+                  +{checklist.filter(i => i.done).length * 25} XP HARI INI
                 </motion.span>
               </div>
             </motion.div>
@@ -256,42 +257,37 @@ export default function LandingPage({ onEnterDashboard, brandName, darkMode, set
         </div>
 
         {/* ═══════════════════════════════════════════════ */}
-        {/* 2. VISUAL SHOWCASE: AMUNISI KOMUNIKASI          */}
+        {/* 2. SHOWCASE: AMUNISI + DASHBOARD PREVIEW       */}
         {/* ═══════════════════════════════════════════════ */}
-        <div id="visual-showcase" className="max-w-5xl mx-auto mb-20 scroll-mt-24">
+        <div id="visual-showcase" className="max-w-6xl mx-auto mb-20 scroll-mt-24">
           <motion.div
             initial={{ opacity: 0, y: 24 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-80px" }}
             transition={{ duration: 0.6 }}
-            className="text-center mb-8"
+            className="text-center mb-6"
           >
             <span className="text-[10px] font-bold font-mono tracking-[0.15em] text-emerald-500 uppercase block mb-2">
               ✦ Show, Don't Just Tell ✦
             </span>
             <h2 className="text-xl sm:text-2xl font-bold text-white">
-              Amunisi Komunikasi Siap Pakai
+              Tools Andalan Bisnis Anda
             </h2>
-            <p className="text-xs text-neutral-400 max-w-lg mx-auto mt-1.5">
-              Siaran WhatsApp & caption Instagram siap copas —{' '}
-              <strong className="text-emerald-400">diperbarui otomatis setiap pagi</strong> oleh AI.
-            </p>
           </motion.div>
 
-          {/* Amunisi Komunikasi */}
-          <div className="max-w-2xl mx-auto">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-5 items-start">
 
-            {/* --- Amunisi Komunikasi Card --- */}
+            {/* LEFT: Amunisi Komunikasi */}
             <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
+              initial={{ opacity: 0, x: -20 }}
+              whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true, margin: "-60px" }}
               transition={{ duration: 0.5 }}
-              whileHover={{ y: -4, boxShadow: "0 20px 40px -12px rgba(34,211,238,0.12)" }}
-              className="rounded-2xl border border-cyan-500/20 bg-[#0c0c0c] overflow-hidden shadow-xl shadow-black/30 transition-shadow duration-300"
+              whileHover={{ y: -3 }}
+              className="rounded-2xl border border-cyan-500/20 bg-[#0c0c0c] overflow-hidden shadow-xl shadow-black/30"
             >
               {/* Card header */}
-              <div className="px-4 sm:px-5 py-4 border-b border-neutral-800 flex items-center gap-2.5 bg-[#111111]">
+              <div className="px-5 py-3.5 border-b border-neutral-800 flex items-center gap-2.5 bg-[#111111]">
                 <motion.span
                   animate={{ rotate: [0, -8, 8, 0] }}
                   transition={{ duration: 3, repeat: Infinity, ease: "easeInOut", delay: 0.5 }}
@@ -314,25 +310,17 @@ export default function LandingPage({ onEnterDashboard, brandName, darkMode, set
                 >
                   <div className="px-3 py-2 bg-[#111111] border-b border-neutral-800 flex items-center gap-1.5">
                     <span className="w-2 h-2 rounded-full bg-green-500"></span>
-                    <span className="text-[9px] font-mono font-bold text-neutral-400 uppercase tracking-wider">
-                      Siaran WhatsApp
-                    </span>
+                    <span className="text-[9px] font-mono font-bold text-neutral-400 uppercase tracking-wider">Siaran WhatsApp</span>
                   </div>
                   <div className="p-3">
                     <p className="text-[11px] text-neutral-300 leading-relaxed font-sans">
                       <span className="text-amber-400 font-semibold">🔥 PROMO GILA HARI INI! 🔥</span><br />
                       Juragan, khusus hari ini: beli <strong className="text-white">2 Sosis Bakar Premium</strong> gratis <strong className="text-white">1 Es Teh Segar</strong>!<br /><br />
-                      📍 Depan Indomaret Jl. Kenangan<br />
-                      ⏰ Jam 15:00 - 18:00 sore ini<br /><br />
-                      <em className="text-neutral-500">Stok terbatas. Kabarin temenmu!</em>
+                      📍 Depan Indomaret Jl. Kenangan<br />⏰ Jam 15:00 - 18:00 sore ini
                     </p>
-                    <motion.button
-                      whileTap={{ scale: 0.96 }}
-                      onClick={() => handleCopy("wa")}
+                    <motion.button whileTap={{ scale: 0.96 }} onClick={() => handleCopy("wa")}
                       className={`mt-2.5 w-full py-2 rounded-lg text-[10px] font-mono font-bold transition-all flex items-center justify-center gap-1.5 ${
-                        copiedWa
-                          ? "bg-emerald-500/20 text-emerald-400 border border-emerald-500/30"
-                          : "bg-cyan-500/15 text-cyan-400 border border-cyan-500/25 hover:bg-cyan-500/25"
+                        copiedWa ? "bg-emerald-500/20 text-emerald-400 border border-emerald-500/30" : "bg-cyan-500/15 text-cyan-400 border border-cyan-500/25 hover:bg-cyan-500/25"
                       }`}
                     >
                       {copiedWa ? <><Check className="w-3 h-3" /> Tersalin!</> : <><Copy className="w-3 h-3" /> Salin Teks Siaran</>}
@@ -347,23 +335,16 @@ export default function LandingPage({ onEnterDashboard, brandName, darkMode, set
                 >
                   <div className="px-3 py-2 bg-[#111111] border-b border-neutral-800 flex items-center gap-1.5">
                     <span className="w-2 h-2 rounded-full bg-purple-500"></span>
-                    <span className="text-[9px] font-mono font-bold text-neutral-400 uppercase tracking-wider">
-                      Caption Instagram
-                    </span>
+                    <span className="text-[9px] font-mono font-bold text-neutral-400 uppercase tracking-wider">Caption Instagram</span>
                   </div>
                   <div className="p-3">
                     <p className="text-[11px] text-neutral-300 leading-relaxed font-sans">
                       Siapa bilang jajan enak harus mahal? 🤔<br /><br />
-                      <strong className="text-white">Sosis Bakar MaxxSales</strong> — daging sapi asli, bukan tepung isi angin. Dijamin nagih dari gigitan pertama! 🥩✨<br /><br />
-                      <span className="text-neutral-400">#JajanEnak #SosisBakarPremium #KulinerLokal</span>
+                      <strong className="text-white">Sosis Bakar MaxxSales</strong> — daging sapi asli, bukan tepung isi angin. Dijamin nagih dari gigitan pertama! 🥩✨
                     </p>
-                    <motion.button
-                      whileTap={{ scale: 0.96 }}
-                      onClick={() => handleCopy("ig")}
+                    <motion.button whileTap={{ scale: 0.96 }} onClick={() => handleCopy("ig")}
                       className={`mt-2.5 w-full py-2 rounded-lg text-[10px] font-mono font-bold transition-all flex items-center justify-center gap-1.5 ${
-                        copiedIg
-                          ? "bg-emerald-500/20 text-emerald-400 border border-emerald-500/30"
-                          : "bg-purple-500/15 text-purple-400 border border-purple-500/25 hover:bg-purple-500/25"
+                        copiedIg ? "bg-emerald-500/20 text-emerald-400 border border-emerald-500/30" : "bg-purple-500/15 text-purple-400 border border-purple-500/25 hover:bg-purple-500/25"
                       }`}
                     >
                       {copiedIg ? <><Check className="w-3 h-3" /> Tersalin!</> : <><Copy className="w-3 h-3" /> Salin Caption</>}
@@ -373,34 +354,26 @@ export default function LandingPage({ onEnterDashboard, brandName, darkMode, set
               </div>
 
               {/* Card footer */}
-              <div className="px-4 sm:px-5 py-3 border-t border-neutral-800 bg-[#0f0f0f]">
-                <motion.p
-                  animate={{ opacity: [0.6, 1, 0.6] }}
-                  transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
-                  className="text-[10px] text-neutral-500 font-mono text-center"
-                >
+              <div className="px-5 py-3 border-t border-neutral-800 bg-[#0f0f0f]">
+                <motion.p animate={{ opacity: [0.6, 1, 0.6] }} transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+                  className="text-[10px] text-neutral-500 font-mono text-center">
                   ⚡ Template diperbarui otomatis setiap pagi oleh AI
                 </motion.p>
               </div>
             </motion.div>
-          </div>
-        </div>
 
-        {/* 4. DYNAMIC INTERACTIVE DASHBOARD ANIMATION PREVIEW */}
-        <div className="max-w-4xl mx-auto mb-20">
-          <div className="text-center mb-6">
-            <span className="text-[9px] font-bold font-mono tracking-widest text-emerald-500 dark:text-emerald-450 uppercase block">
-              ✦ INTUITIVE LIVE PREVIEW ✦
-            </span>
-            <h3 className="text-lg font-bold text-neutral-800 dark:text-neutral-200">
-              Sekilas Cockpit Taktis Dashboard Jualan MaxxSales
-            </h3>
-            <p className="text-xs text-neutral-550 dark:text-[#8E8E8E] font-sans">
-              Klik tab di bawah simulasi ini untuk melihat cuplikan layar antarmuka dashboard jualan Anda
-            </p>
-          </div>
-
-          <div className="border border-neutral-250 dark:border-[#222222] bg-neutral-50/50 dark:bg-[#0c0c0c] rounded-2xl shadow-xl overflow-hidden">
+            {/* RIGHT: Dashboard Preview */}
+            <motion.div
+              initial={{ opacity: 0, x: 20 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true, margin: "-60px" }}
+              transition={{ duration: 0.5, delay: 0.15 }}
+              className="border border-neutral-800 bg-[#0c0c0c] rounded-2xl shadow-xl shadow-black/30 overflow-hidden"
+            >
+              <div className="bg-[#111111] border-b border-neutral-800 px-4 py-3 flex items-center justify-between">
+                <span className="text-[9px] font-bold font-mono tracking-widest text-emerald-500 uppercase">✦ Preview Dashboard</span>
+                <span className="flex items-center gap-1"><span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-ping"></span><span className="text-[8px] font-mono text-neutral-500 uppercase">Live</span></span>
+              </div>
             {/* Window Browser Chrome Header bar */}
             <div className="bg-neutral-100 dark:bg-[#121212] border-b border-neutral-250 dark:border-[#1E1E1E] px-4 py-3 flex items-center justify-between">
               <div className="flex items-center space-x-1.5">
@@ -626,6 +599,8 @@ export default function LandingPage({ onEnterDashboard, brandName, darkMode, set
               </div>
 
             </div>
+
+            </motion.div>
 
           </div>
         </div>
