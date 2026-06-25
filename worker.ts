@@ -1,5 +1,11 @@
 import { Hono } from "hono";
 import { cors } from "hono/cors";
+import {
+  generateTacticalBriefing,
+  generateFallbackBriefing,
+  type TacticalBriefingInput,
+  type LlmCaller,
+} from "./src/tactical-briefing";
 
 type Bindings = {
   OPENROUTER_API_KEY: string;
@@ -400,6 +406,35 @@ app.post("/api/chat", async (c) => {
     return c.json({ reply, mode: "live-ai" });
   } catch {
     return c.json({ reply: "Maaf, kendala koneksi AI. Silakan coba lagi.", mode: "error" });
+  }
+});
+
+// 7. TACTICAL BRIEFING — 3-Chain Prompt
+app.post("/api/tactical-briefing", async (c) => {
+  const input = await c.req.json<TacticalBriefingInput>();
+
+  const apiKey = c.env.OPENROUTER_API_KEY;
+  const model = c.env.OPENROUTER_MODEL || "openai/gpt-oss-120b:free";
+
+  if (!apiKey) {
+    return c.json({ ...generateFallbackBriefing(input), mode: "simulated" });
+  }
+
+  try {
+    const llmAdapter: LlmCaller = async (messages, options) => {
+      const content = await callOpenRouter(apiKey, model, messages, options);
+      return { content, tokensUsed: 0 };
+    };
+
+    const briefing = await generateTacticalBriefing(input, llmAdapter);
+    return c.json({ ...briefing, mode: "live-ai" });
+  } catch (err: any) {
+    console.error("Tactical Briefing Worker Error:", err);
+    return c.json({
+      ...generateFallbackBriefing(input),
+      mode: "error",
+      message: err?.message,
+    });
   }
 });
 
