@@ -57,6 +57,8 @@ export interface TacticalBriefingInput {
     targetMonthlyRevenue: number;
     activeSocialMedia: string[];
     businessContact: string;
+    peakHours: string;
+    topConvertingChannel: string;
   };
   warRoom: WarRoomBrief;
   customerInsight: CustomerInsightBrief;
@@ -104,6 +106,7 @@ ATURAN KETAT:
 - DILARANG menyebut "UMKM", "UKM", "Usaha Kecil", "Mikro", atau istilah pengkerdilan lainnya.
 - Gunakan "Pengusaha", "Pelaku Usaha", "Bisnis Anda", atau sebut langsung nama brand.
 - Lihat data kompetitor & pelanggan, lalu temukan celah paling konkret.
+- Perhitungkan jam sibuk dan channel konversi tertinggi dalam analisis celah.
 - Jelaskan dampaknya ke uang: "Jika tidak dibereskan, Anda kehilangan Rp X/minggu."
 - Bahasa Indonesia lugas. Maksimal 3 kalimat.
 
@@ -118,6 +121,7 @@ ATURAN KETAT:
 - Setiap langkah WAJIB dimulai dengan KATA KERJA AKTIF: Cek, Hubungi, Kirim, Foto, Hitung, Catat, Tanya, Buat, Siapkan, Bandingkan.
 - Hanya 2-3 langkah. Masing-masing maksimal 12 kata.
 - Langkah harus bisa diselesaikan dalam 1-2 hari ke depan.
+- Prioritaskan eksekusi di jam sibuk dan channel dengan konversi tertinggi.
 - Tidak ada bullet "pertimbangkan" atau "evaluasi" — harus tindakan konkret.
 
 Output HARUS JSON:
@@ -184,6 +188,8 @@ Produk: ${dna.productName} (${dna.category})
 Harga: Rp ${dna.normalPrice.toLocaleString()}
 Target Omzet: Rp ${dna.targetMonthlyRevenue.toLocaleString()}/bln
 Keunggulan: ${dna.advantages}
+Jam Sibuk: ${dna.peakHours || "09:00-11:00 & 19:00-21:00"}
+Channel Konversi Tertinggi: ${dna.topConvertingChannel || "WhatsApp DM"}
 
 ${buildCompetitorBlock(warRoom)}
 
@@ -206,9 +212,11 @@ function buildExecutionPlannerPrompt(
 Dampak ke Omzet: ${gap.revenueImpact}
 
 Channel Aktif: ${input.dna.activeSocialMedia.join(", ")}
+Jam Sibuk: ${input.dna.peakHours || "09:00-11:00 & 19:00-21:00"}
+Channel Konversi Tertinggi: ${input.dna.topConvertingChannel || "WhatsApp DM"}
 ${input.daily ? `Item Belum Selesai Kemarin: ${input.daily.pendingItems.join("; ") || "tidak ada"}` : ""}
 
-Tugas: Berikan 2-3 langkah eksekusi konkret (KATA KERJA AKTIF) untuk 1-2 hari ke depan.`;
+Tugas: Berikan 2-3 langkah eksekusi konkret (KATA KERJA AKTIF) untuk 1-2 hari ke depan. Prioritaskan di ${input.dna.topConvertingChannel || "channel konversi tertinggi"} pada jam ${input.dna.peakHours || "sibuk"}.`;
 }
 
 function buildCommsWriterPrompt(
@@ -260,10 +268,10 @@ export function generateFallbackBriefing(
 
   return {
     markdown: `### 1. 🎯 Celah Bisnis Hari Ini
-${dna.brand} belum memanfaatkan celah "${topComp.blindSpot}" dari ${topComp.name}. Kompetitor Anda ${topComp.biggestWeakness}, sementara pelanggan menginginkan ${customerInsight.topDesire}. Jika tidak digarap minggu ini, potensi omzet Rp ${(dna.targetMonthlyRevenue * 0.12).toLocaleString()} melayang ke kompetitor.
+${dna.brand} belum memanfaatkan celah "${topComp.blindSpot}" dari ${topComp.name}. Kompetitor Anda ${topComp.biggestWeakness}, sementara pelanggan menginginkan ${customerInsight.topDesire}. Jam sibuk ${dna.peakHours || "pagi & malam"} adalah window terbaik untuk eksekusi via ${dna.topConvertingChannel || "WhatsApp"}. Jika tidak digarap minggu ini, potensi omzet Rp ${(dna.targetMonthlyRevenue * 0.12).toLocaleString()} melayang ke kompetitor.
 
 ### 2. ⚡ Langkah Eksekusi Strategis
-1. **Cek** semua DM dan komentar di ${dna.activeSocialMedia[0] ?? "Instagram"} yang belum dibalas — reply personal dengan penawaran.
+1. **Cek** semua DM di ${dna.topConvertingChannel || "WhatsApp"} pada jam ${dna.peakHours?.split("&")[0]?.trim() || "09:00-11:00"} — reply personal dengan penawaran.
 2. **Hubungi** 5 pelanggan repeat-order via chat personal, tawarkan early access produk baru.
 3. **Foto** 3 varian produk dengan pencahayaan natural untuk konten story besok pagi.
 

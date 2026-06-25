@@ -52,6 +52,10 @@ export interface BusinessCanvasData {
   websiteUrl: string;
   customOtherMedia: string;
 
+  // Sub-Tab 6: Performa Real-Time
+  peakHours: string;
+  topConvertingChannel: string;
+
   // Sub-Tab 5: Kompetitor Ringkasan
   localCompetitorCount: string;
   biggestCompetitor: string;
@@ -178,6 +182,8 @@ export const defaultCanvasData = (): BusinessCanvasData => ({
   businessContact: "08123456789 (Admin Rania)",
   websiteUrl: "www.elzahramuslimah.com",
   customOtherMedia: "Brosur PDF di grup WA premium",
+  peakHours: "09:00-11:00 & 19:00-21:00",
+  topConvertingChannel: "WhatsApp DM",
   localCompetitorCount: "3-5",
   biggestCompetitor: "Zahra Muslimah Store",
   competitorStrengths: "Harga sedikit lebih murah, stok barang fisik sangat banyak di toko utama.",
