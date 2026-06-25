@@ -154,12 +154,21 @@ export default function DailyPulse() {
     // Section 2: parse numbered action items with **Verb** pattern
     const stepLines = sec2.split("\n").filter(l => /^\d+\.\s/.test(l.trim()));
     const steps = stepLines.map((line, i) => {
-      const cleaned = line.replace(/^\d+\.\s+/, "").trim();
+      const cleaned = line
+        .replace(/^\d+\.\s+/, "")          // strip "1. "
+        .replace(/\*\*(.+?)\*\*/g, "$1")   // strip **bold**
+        .replace(/\*(.+?)\*/g, "$1")        // strip *italic*
+        .replace(/`(.+?)`/g, "$1")          // strip `code`
+        .trim();
+
+      // Extract the first word as category hint
+      const firstWord = cleaned.split(/\s+/)[0]?.replace(/[.:,;!?]/g, "") || "Eksekusi";
+
       return {
         id: `tactical-${i}`,
         text: cleaned,
         done: false,
-        category: "Eksekusi",
+        category: firstWord,
       };
     });
 
