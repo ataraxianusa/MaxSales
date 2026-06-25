@@ -618,7 +618,7 @@ export default function App() {
       {/* SME friendly Accessible footer */}
       <footer className="py-8 border-t mt-16 text-center text-[11px] font-mono tracking-wider text-neutral-400 dark:text-[#737373] border-neutral-200 dark:border-[#262626] bg-white dark:bg-[#050505]">
         <div className="max-w-7xl mx-auto px-6 sm:px-8 flex flex-col sm:flex-row items-center justify-between gap-4">
-          <span>MaxxSales Cloud Core • Mitra Solusi Digital UKM</span>
+          <span>MaxxSales Cloud Core • Mitra Solusi Digital Pengusaha</span>
           <div className="flex space-x-6">
             <button id="foot-btn-landing" onClick={() => setTab("landing")} className="hover:text-neutral-900 dark:hover:text-white transition-colors">Landing</button>
             <button 

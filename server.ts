@@ -140,7 +140,7 @@ app.post("/api/generate-content-text", async (req, res) => {
       ? activeStrategies.join(", ")
       : "";
 
-    const prompt = `Anda adalah AI Copywriter untuk bisnis UKM fashion Indonesia.
+    const prompt = `Anda adalah AI Copywriter untuk bisnis Pengusaha fashion Indonesia.
 Buat konten promosi dalam Bahasa Indonesia untuk produk berikut:
 
 Profil Produk:
@@ -236,7 +236,7 @@ app.post("/api/strategy-forge", async (req, res) => {
         ).join("\n")
       : "- Tidak ada data kompetitor";
 
-    const prompt = `Anda adalah Konsultan Strategi Bisnis AI untuk UKM Indonesia.
+    const prompt = `Anda adalah Konsultan Strategi Bisnis AI untuk Pengusaha Indonesia.
 Buat strategi bisnis 11 pilar untuk bisnis berikut:
 - Produk: ${dna?.productName || "Produk"}
 - Brand: ${dna?.brand || "Brand"}
@@ -286,7 +286,7 @@ app.post("/api/daily-pulse", async (req, res) => {
   const { dna, completedCount, activeStrategies, pendingItems, yesterdayRevenue, todayTarget, dailyAchievement } = req.body;
 
   const defaultPulse = {
-    briefing: `Selamat pagi, ${dna?.brand || "Pejuang UKM"}! Hari ini adalah kesempatan baru untuk mengembangkan bisnis Anda. Fokus pada interaksi dengan pelanggan di Instagram dan TikTok. Ingat, konsistensi adalah kunci! Semangat! 💪`,
+    briefing: `Selamat pagi, ${dna?.brand || "Pejuang Bisnis"}! Hari ini adalah kesempatan baru untuk mengembangkan bisnis Anda. Fokus pada interaksi dengan pelanggan di Instagram dan TikTok. Ingat, konsistensi adalah kunci! Semangat! 💪`,
     leadsCount: 5,
     competitorUpdate: `${dna?.biggestCompetitor || "Kompetitor"} sedang aktif promo di media sosial. Evaluasi strategi harga Anda.`,
     salesPercentage: 42,
@@ -306,11 +306,11 @@ app.post("/api/daily-pulse", async (req, res) => {
       ? pendingItems.join("; ")
       : "semua tugas sudah selesai";
 
-    const prompt = `Anda adalah Asisten Pribadi AI untuk pemilik bisnis UKM Indonesia.
+    const prompt = `Anda adalah Asisten Pribadi AI untuk Pengusaha Indonesia.
 Buat morning briefing harian yang singkat, energetik, dan memotivasi dalam Bahasa Indonesia untuk:
 
 Profil Bisnis:
-- Nama Brand: ${dna?.brand || "Brand UKM"}
+- Nama Brand: ${dna?.brand || "Brand Anda"}
 - Produk: ${dna?.productName || "Produk"}
 - Kategori: ${dna?.category || "Fashion"}
 - Keunggulan: ${dna?.advantages?.split(",")?.[0] || "Produk berkualitas"}
@@ -389,7 +389,7 @@ app.post("/api/analyze-competitor", async (req, res) => {
   }
 
   try {
-    const prompt = `Anda adalah Analis Kompetitor AI untuk bisnis UKM Indonesia.
+    const prompt = `Anda adalah Analis Kompetitor AI untuk Pengusaha Indonesia.
 Lakukan analisis SWOT dengan perbandingan berikut:
 
 Kompetitor:
@@ -480,7 +480,7 @@ app.post("/api/analyze-segments", async (req, res) => {
       resiko: s.risk
     })));
 
-    const prompt = `Anda adalah Analis Data Pelanggan AI untuk UKM fashion Indonesia.
+    const prompt = `Anda adalah Analis Data Pelanggan AI untuk Pengusaha fashion Indonesia.
 Analisis data segmentasi pelanggan berikut:
 
 Profil Bisnis:
@@ -582,7 +582,7 @@ app.post("/api/chat", async (req, res) => {
   }
 
   try {
-    const systemPrompt = `Anda adalah MaxxSales AI Co-pilot, asisten AI untuk pemilik UKM Indonesia yang membantu mengelola bisnis dan penjualan.
+    const systemPrompt = `Anda adalah MaxxSales AI Co-pilot, asisten AI untuk Pengusaha Indonesia yang membantu mengelola bisnis dan penjualan.
 
 Fitur MaxxSales:
 1. DNA Business Canvas: Data bisnis inti (produk, target market, channel, kompetitor)

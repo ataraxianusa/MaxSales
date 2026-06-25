@@ -29,7 +29,7 @@ export default function Login({ onLoginSuccess }: LoginProps) {
   };
 
   const handleQuickLogin = () => {
-    setEmail("ukm.sukses@maxxsales.com");
+    setEmail("pengusaha.sukses@maxxsales.com");
     setPassword("password123");
   };
 
@@ -49,7 +49,7 @@ export default function Login({ onLoginSuccess }: LoginProps) {
             Masuk ke <span className="font-semibold text-neutral-800 dark:text-[#E5E5E5]">MaxxSales AI</span>
           </h2>
           <p className="text-[11px] text-neutral-400 dark:text-[#737373] mt-1 font-mono uppercase tracking-wider">
-            Sistem Saraf AI Penjualan UKM
+            Sistem Saraf AI Penjualan untuk Pengusaha
           </p>
         </div>
 
@@ -57,7 +57,7 @@ export default function Login({ onLoginSuccess }: LoginProps) {
         <div className="p-3.5 mb-6 rounded border border-neutral-200 dark:border-[#262626] bg-neutral-50 dark:bg-[#171717] text-[11px] text-neutral-600 dark:text-[#A3A3A3] space-y-2">
           <div className="flex items-center space-x-1.5 font-bold tracking-wide uppercase text-neutral-850 dark:text-white font-mono text-[9px]">
             <ShieldCheck className="w-3.5 h-3.5 text-emerald-500" />
-            <span>Akses Masuk Cepat UMKM</span>
+            <span>Akses Masuk Cepat</span>
           </div>
           <p className="leading-relaxed">
             Gunakan email bebas atau klik tombol pengisian otomatis untuk mencicipi demo siap pakai.
@@ -88,7 +88,7 @@ export default function Login({ onLoginSuccess }: LoginProps) {
               <input
                 id="inp-login-email"
                 type="email"
-                placeholder="misal: ukm@namausaha.com"
+                placeholder="misal: pengusaha@namausaha.com"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 className="w-full text-xs pl-9 pr-4 py-2.5 rounded border bg-transparent border-neutral-300 dark:border-[#262626] focus:border-neutral-900 dark:focus:border-white focus:outline-none text-neutral-900 dark:text-white"

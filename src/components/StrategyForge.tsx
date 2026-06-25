@@ -147,7 +147,7 @@ export default function StrategyForge() {
         <div className="p-20 text-center rounded border bg-white dark:bg-[#111111] border-neutral-200 dark:border-[#262626] flex flex-col items-center justify-center space-y-3">
           <Loader2 className="w-6 h-6 text-neutral-900 dark:text-white animate-spin" />
           <p className="text-[11px] text-neutral-550 dark:text-neutral-450 font-mono text-center max-w-md">
-            Bekerja di server proxy... AI sedang menganalisis keunggulan {dna.productName || "UKM"} Anda beserta {competitors.length} kompetitor...
+            Bekerja di server proxy... AI sedang menganalisis keunggulan {dna.productName || "Pengusaha"} Anda beserta {competitors.length} kompetitor...
           </p>
         </div>
       ) : (
