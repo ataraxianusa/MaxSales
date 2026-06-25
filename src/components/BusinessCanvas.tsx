@@ -1,6 +1,6 @@
 import React from "react";
 import { BusinessCanvasData, defaultCanvasData } from "../types";
-import { Info, Save, RotateCcw, AlertTriangle, Layers, Target, Coins, Share2, Eye } from "lucide-react";
+import { Info, Save, RotateCcw, AlertTriangle, Layers, Target, Coins, Share2, TrendingUp, Eye } from "lucide-react";
 
 interface BusinessCanvasProps {
   canvas: BusinessCanvasData;
@@ -9,7 +9,7 @@ interface BusinessCanvasProps {
   isSetupWizard?: boolean;
 }
 
-type SubTabType = "produk" | "target" | "pola" | "media" | "kompetitor";
+type SubTabType = "produk" | "target" | "pola" | "media" | "performa" | "kompetitor";
 
 export default function BusinessCanvas({ canvas, setCanvas, onSave, isSetupWizard = false }: BusinessCanvasProps) {
   const [activeSubTab, setActiveSubTab] = React.useState<SubTabType>("produk");
@@ -88,12 +88,13 @@ export default function BusinessCanvas({ canvas, setCanvas, onSave, isSetupWizar
       </div>
 
       {/* Sub-Tabs Grid Selector */}
-      <div className="grid grid-cols-2 sm:grid-cols-5 gap-2 border-b pb-2 border-neutral-200 dark:border-[#262626]">
+      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-2 border-b pb-2 border-neutral-200 dark:border-[#262626]">
         {[
           { key: "produk", label: "Produk & Spesifikasi", icon: Layers },
           { key: "target", label: "Target Market", icon: Target },
           { key: "pola", label: "Pola & Finansial", icon: Coins },
           { key: "media", label: "Media & Channel", icon: Share2 },
+          { key: "performa", label: "Performa Real-Time", icon: TrendingUp },
           { key: "kompetitor", label: "Kompetitor", icon: Eye }
         ].map(tb => {
           const IconComp = tb.icon;
@@ -549,6 +550,49 @@ export default function BusinessCanvas({ canvas, setCanvas, onSave, isSetupWizar
                   );
                 })}
               </div>
+            </div>
+          </div>
+        )}
+
+        {/* SUBTAB 6: PERFORMA REAL-TIME */}
+        {activeSubTab === "performa" && (
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+            <div>
+              <label className="block text-xs font-semibold text-neutral-700 dark:text-neutral-300 mb-1.5">
+                ⏰ Jam Sibuk Transaksi
+              </label>
+              <input
+                id="inp-dna-peakHours"
+                type="text"
+                placeholder="misal: 09:00-11:00 & 19:00-21:00"
+                value={canvas.peakHours}
+                onChange={e => updateField("peakHours", e.target.value)}
+                className="w-full text-xs px-3.5 py-2.5 rounded border bg-transparent border-neutral-300 dark:border-[#262626] focus:border-neutral-900 dark:focus:border-white focus:outline-none"
+              />
+              <p className="text-[10px] text-neutral-400 dark:text-[#737373] mt-1">Jam di mana pelanggan paling sering bertransaksi. AI akan mengarahkan eksekusi ke window ini.</p>
+            </div>
+
+            <div>
+              <label className="block text-xs font-semibold text-neutral-700 dark:text-neutral-300 mb-1.5">
+                📡 Channel Konversi Tertinggi
+              </label>
+              <select
+                id="inp-dna-topConvertingChannel"
+                value={canvas.topConvertingChannel}
+                onChange={e => updateField("topConvertingChannel", e.target.value)}
+                className="w-full text-xs px-3.5 py-2.5 rounded border bg-neutral-50 dark:bg-[#171717] border-neutral-300 dark:border-[#262626] focus:border-neutral-900 dark:focus:border-white text-neutral-850 dark:text-[#E5E5E5] focus:outline-none"
+              >
+                {["WhatsApp DM", "Instagram DM", "TikTok Comment", "Shopee Chat", "Tokopedia Chat", "Website / Landing Page", "Offline / Toko Fisik", "Lainnya"].map(ch => (
+                  <option key={ch} value={ch}>{ch}</option>
+                ))}
+              </select>
+              <p className="text-[10px] text-neutral-400 dark:text-[#737373] mt-1">Channel yang menghasilkan closingan tertinggi. AI akan arahkan rekomendasi ke channel ini.</p>
+            </div>
+
+            <div className="md:col-span-2 p-4 rounded bg-emerald-50 dark:bg-[#0a1a10] border border-emerald-200 dark:border-emerald-900/30">
+              <p className="text-[11px] leading-relaxed text-emerald-750 dark:text-emerald-300">
+                <strong>💡 Kenapa ini penting:</strong> Data jam sibuk dan channel konversi membuat AI bisa memberikan rekomendasi yang presisi — tahu <em>kapan</em> dan <em>di mana</em> eksekusi paling efektif, bukan sekedar saran generik.
+              </p>
             </div>
           </div>
         )}
