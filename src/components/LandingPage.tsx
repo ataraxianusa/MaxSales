@@ -57,38 +57,216 @@ export default function LandingPage({ onEnterDashboard, brandName, darkMode, set
 
       <div className="max-w-7xl mx-auto px-6 sm:px-8 py-12 md:py-16 relative z-10">
         
-        {/* Hero Section */}
-        <div className="text-center max-w-4xl mx-auto mb-16 animate-fade-in">
+        {/* 1. HERO: FOKUS 3 DETIK PERTAMA PAHAM */}
+        <div className="relative max-w-5xl mx-auto mb-10 pt-4 animate-fade-in">
           
-          <div className="inline-flex items-center space-x-2 px-3 py-1 rounded bg-neutral-100 dark:bg-[#111111] border border-neutral-200 dark:border-[#262626] mb-4 opacity-0 animate-fade-in" style={{ animationDelay: '0.1s' }}>
-            <Sparkles className="w-3.5 h-3.5 text-neutral-650 dark:text-[#A3A3A3]" />
-            <span className="text-[10px] font-bold font-mono tracking-widest text-neutral-600 dark:text-[#A3A3A3] uppercase">
-              AI BUSINESS BRAIN SYSTEM FOR SME PIONEERS
-            </span>
+          <div className="flex justify-center mb-6 opacity-0 animate-fade-in">
+            <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-emerald-500/10 border border-emerald-500/30 backdrop-blur-sm">
+              <span className="relative flex h-2 w-2">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+              </span>
+              <span className="text-[10px] font-bold font-mono tracking-[0.15em] text-emerald-400 uppercase">
+                Sistem Operasi Pertumbuhan Bisnis · AI-Powered
+              </span>
+            </div>
           </div>
 
-          <h1 className="text-4xl sm:text-5xl lg:text-6xl font-light tracking-tight mb-5 leading-tight text-neutral-900 dark:text-white opacity-0 animate-fade-in" style={{ animationDelay: '0.3s' }}>
-            Ubah Produk Biasa Jadi 
-            <span className="block font-semibold mt-1.5 bg-clip-text text-transparent bg-gradient-to-r from-emerald-500 via-cyan-400 to-blue-600 dark:from-emerald-300 dark:via-cyan-300 dark:to-blue-400 animate-gradient-shift">
-              Penjualan Maksimal (MaxxSales)
+          <h1 className="text-center text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-extrabold tracking-tight leading-[1.08] mb-5 text-white opacity-0 animate-fade-in" style={{ animationDelay: '0.15s' }}>
+            Ubah Data Bisnis Jadi
+            <br />
+            <span className="bg-clip-text text-transparent bg-gradient-to-r from-emerald-400 via-emerald-300 to-cyan-400 animate-gradient-shift">
+              Omset Harian
             </span>
+            {' '}Tanpa Ribet Teori
           </h1>
 
-          <p className="text-sm sm:text-base text-neutral-500 dark:text-[#A3A3A3] mb-6 leading-relaxed font-sans max-w-2xl mx-auto opacity-0 animate-fade-in-up" style={{ animationDelay: '0.5s' }}>
-            MaxxSales adalah <strong className="bg-clip-text text-transparent bg-gradient-to-r from-emerald-600 to-blue-700 dark:from-emerald-300 dark:to-blue-300 font-semibold">Sistem Operasi Pertumbuhan Bisnis</strong> berbasis AI yang mengubah data bisnis, intelijen pasar, dan wawasan kompetitor menjadi strategi, konten, dan tindakan yang mendorong pertumbuhan bisnis setiap hari.
+          <p className="text-center text-sm sm:text-base text-neutral-400 max-w-2xl mx-auto mb-8 leading-relaxed opacity-0 animate-fade-in-up" style={{ animationDelay: '0.3s' }}>
+            <strong className="text-white font-semibold">MaxxSales</strong> adalah Sistem Operasi Pertumbuhan Bisnis berbasis AI yang dirancang khusus untuk{' '}
+            <strong className="text-emerald-400 font-semibold">Pengusaha Taktis</strong> — 
+            mengubah data penjualan, intelijen kompetitor, dan insight pasar menjadi langkah eksekusi harian yang langsung bisa dikerjakan. Bukan teori. Bukan dashboard kosong. <span className="text-white/80 font-medium">Ini kokpit komando bisnis Anda.</span>
           </p>
 
 
 
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
+          {/* CTA Buttons */}
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-3 opacity-0 animate-fade-in-up" style={{ animationDelay: '0.45s' }}>
             <button
               id="cta-start-dashboard"
               onClick={onEnterDashboard}
-              className="w-full sm:w-auto px-8 py-3.5 rounded-lg text-sm font-semibold transition-all shadow-sm text-white dark:text-black bg-neutral-950 hover:bg-neutral-850 dark:bg-[#E5E5E5] dark:hover:bg-white flex items-center justify-center space-x-2"
+              className="group relative w-full sm:w-auto px-8 py-3.5 rounded-xl text-sm font-bold transition-all duration-300 bg-gradient-to-r from-emerald-500 to-emerald-600 hover:from-emerald-400 hover:to-emerald-500 text-black shadow-lg shadow-emerald-500/25 hover:shadow-emerald-500/40 hover:scale-[1.03] active:scale-[0.98] flex items-center justify-center gap-2 overflow-hidden"
             >
-              <span>Masuk ke Dashboard Bisnis Anda</span>
-              <ArrowRight className="w-4 h-4" />
+              <span className="relative z-10 flex items-center gap-2">
+                Mulai Rancang Strategi Hari Ini
+                <ArrowRight className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1" />
+              </span>
             </button>
+            <button
+              id="cta-explore-preview"
+              onClick={() => document.getElementById('visual-showcase')?.scrollIntoView({ behavior: 'smooth' })}
+              className="w-full sm:w-auto px-6 py-3.5 rounded-xl text-sm font-semibold transition-all duration-300 border border-neutral-700 hover:border-neutral-500 text-neutral-300 hover:text-white hover:bg-white/5 flex items-center justify-center gap-2"
+            >
+              <MonitorSmartphone className="w-4 h-4" />
+              Lihat Pratinjau Dasbor
+            </button>
+          </div>
+
+          {/* Trust micro-signals */}
+          <div className="flex flex-wrap items-center justify-center gap-6 mt-8 text-[11px] text-neutral-500 font-mono opacity-0 animate-fade-in" style={{ animationDelay: '0.6s' }}>
+            <span className="flex items-center gap-1.5">
+              <ShieldCheck className="w-3.5 h-3.5 text-emerald-500" /> Coba Prototype Gratis
+            </span>
+            <span className="flex items-center gap-1.5">
+              <Clock className="w-3.5 h-3.5 text-emerald-500" /> Siap Pakai dalam 5 Menit
+            </span>
+            <span className="flex items-center gap-1.5">
+              <UserCheck className="w-3.5 h-3.5 text-emerald-500" /> Untuk Pengusaha, Bukan Akademisi
+            </span>
+          </div>
+        </div>
+
+        {/* ═══════════════════════════════════════════════ */}
+        {/* 2. VISUAL SHOWCASE: DAILY PULSE + AMUNISI       */}
+        {/* ═══════════════════════════════════════════════ */}
+        <div id="visual-showcase" className="max-w-5xl mx-auto mb-20 scroll-mt-24">
+          <div className="text-center mb-8">
+            <span className="text-[10px] font-bold font-mono tracking-[0.15em] text-emerald-500 uppercase block mb-2">
+              ✦ Show, Don't Just Tell ✦
+            </span>
+            <h2 className="text-xl sm:text-2xl font-bold text-white">
+              Lihat Langsung Kokpit Harian Bisnis Anda
+            </h2>
+            <p className="text-xs text-neutral-400 max-w-lg mx-auto mt-1.5">
+              Di bawah ini adalah tiruan tampilan modul <strong className="text-emerald-400">Daily Pulse</strong> — 
+              pusat komando aktivitas penjualan harian Anda, lengkap dengan amunisi komunikasi siap pakai.
+            </p>
+          </div>
+
+          {/* Mockup Grid: Daily Pulse + Amunisi Komunikasi */}
+          <div className="grid grid-cols-1 lg:grid-cols-5 gap-5">
+            
+            {/* --- Daily Pulse Checklist Card (3 cols) --- */}
+            <div className="lg:col-span-3 rounded-2xl border border-neutral-800 bg-[#0c0c0c] overflow-hidden shadow-xl shadow-black/30">
+              {/* Card header */}
+              <div className="px-5 py-4 border-b border-neutral-800 flex items-center justify-between bg-[#111111]">
+                <div className="flex items-center gap-2.5">
+                  <span className="text-lg">🚀</span>
+                  <div>
+                    <h3 className="text-sm font-bold text-white leading-tight">Tugas Hari Ini, Juragan!</h3>
+                    <p className="text-[10px] text-neutral-500 font-mono">Daily Pulse · Checklist Eksekusi</p>
+                  </div>
+                </div>
+                <span className="px-2.5 py-1 rounded-full text-[9px] font-mono font-bold bg-emerald-500/15 text-emerald-400 border border-emerald-500/25">
+                  🔥 STREAK 4 HARI
+                </span>
+              </div>
+
+              {/* Checklist body */}
+              <div className="p-5 space-y-3">
+                {/* Item 1 — done */}
+                <label className="flex items-start gap-3 p-3 rounded-xl bg-emerald-500/5 border border-emerald-500/15 cursor-pointer transition-all hover:bg-emerald-500/10 group">
+                  <input type="checkbox" defaultChecked className="mt-0.5 w-4 h-4 rounded border-emerald-500/40 bg-transparent text-emerald-500 focus:ring-0 focus:ring-offset-0 cursor-pointer accent-emerald-500" />
+                  <div>
+                    <span className="text-sm text-neutral-300 line-through group-hover:text-emerald-200/80 transition-colors">
+                      Amankan stok produk terlaris hari ini
+                    </span>
+                    <p className="text-[10px] text-neutral-500 mt-0.5">Cek stok sosis & bumbu sebelum jam sibuk sore</p>
+                  </div>
+                </label>
+
+                {/* Item 2 — done */}
+                <label className="flex items-start gap-3 p-3 rounded-xl bg-emerald-500/5 border border-emerald-500/15 cursor-pointer transition-all hover:bg-emerald-500/10 group">
+                  <input type="checkbox" defaultChecked className="mt-0.5 w-4 h-4 rounded border-emerald-500/40 bg-transparent text-emerald-500 focus:ring-0 focus:ring-offset-0 cursor-pointer accent-emerald-500" />
+                  <div>
+                    <span className="text-sm text-neutral-300 line-through group-hover:text-emerald-200/80 transition-colors">
+                      Kirim siaran WA promo gratis ongkir ke grup pelanggan
+                    </span>
+                    <p className="text-[10px] text-neutral-500 mt-0.5">Gunakan template "Amunisi Komunikasi" di sebelah →</p>
+                  </div>
+                </label>
+
+                {/* Item 3 — pending */}
+                <label className="flex items-start gap-3 p-3 rounded-xl border border-neutral-800 bg-[#0a0a0a] cursor-pointer transition-all hover:bg-amber-500/5 hover:border-amber-500/20 group">
+                  <input type="checkbox" className="mt-0.5 w-4 h-4 rounded border-neutral-700 bg-transparent text-emerald-500 focus:ring-0 focus:ring-offset-0 cursor-pointer accent-emerald-500" />
+                  <div>
+                    <span className="text-sm text-white font-medium group-hover:text-amber-200 transition-colors">
+                      Review laporan penjualan & siapkan target besok
+                    </span>
+                    <p className="text-[10px] text-neutral-500 mt-0.5">Bandingkan dengan radar kompetitor di War Room</p>
+                  </div>
+                </label>
+              </div>
+
+              {/* Card footer */}
+              <div className="px-5 py-3 border-t border-neutral-800 bg-[#0f0f0f] flex items-center justify-between">
+                <span className="text-[10px] font-mono text-neutral-500">✅ 2/3 tugas selesai hari ini</span>
+                <span className="text-[10px] font-mono text-emerald-500 font-bold">+50 XP HARI INI</span>
+              </div>
+            </div>
+
+            {/* --- Amunisi Komunikasi Card (2 cols) --- */}
+            <div className="lg:col-span-2 rounded-2xl border border-cyan-500/20 bg-[#0c0c0c] overflow-hidden shadow-xl shadow-black/30">
+              {/* Card header */}
+              <div className="px-5 py-4 border-b border-neutral-800 flex items-center gap-2.5 bg-[#111111]">
+                <span className="text-lg">💬</span>
+                <div>
+                  <h3 className="text-sm font-bold text-white leading-tight">Amunisi Komunikasi</h3>
+                  <p className="text-[10px] text-neutral-500 font-mono">Template Siaran · Siap Copas</p>
+                </div>
+              </div>
+
+              {/* Templates body */}
+              <div className="p-4 space-y-3">
+                {/* WA Blast template */}
+                <div className="rounded-xl border border-neutral-800 bg-[#0a0a0a] overflow-hidden">
+                  <div className="px-3 py-2 bg-[#111111] border-b border-neutral-800 flex items-center gap-1.5">
+                    <span className="w-2 h-2 rounded-full bg-green-500"></span>
+                    <span className="text-[9px] font-mono font-bold text-neutral-400 uppercase tracking-wider">
+                      Siaran WhatsApp
+                    </span>
+                  </div>
+                  <div className="p-3">
+                    <p className="text-[11px] text-neutral-300 leading-relaxed font-sans">
+                      <span className="text-amber-400 font-semibold">🔥 PROMO GILA HARI INI! 🔥</span><br />
+                      Juragan, khusus hari ini: beli <strong className="text-white">2 Sosis Bakar Premium</strong> gratis <strong className="text-white">1 Es Teh Segar</strong>!<br /><br />
+                      📍 Depan Indomaret Jl. Kenangan<br />
+                      ⏰ Jam 15:00 - 18:00 sore ini<br /><br />
+                      <em className="text-neutral-500">Stok terbatas. Kabarin temenmu!</em>
+                    </p>
+                    <button className="mt-2.5 w-full py-2 rounded-lg text-[10px] font-mono font-bold bg-cyan-500/15 text-cyan-400 border border-cyan-500/25 hover:bg-cyan-500/25 transition-all flex items-center justify-center gap-1.5">
+                      📋 Salin Teks Siaran
+                    </button>
+                  </div>
+                </div>
+
+                {/* Social caption template */}
+                <div className="rounded-xl border border-neutral-800 bg-[#0a0a0a] overflow-hidden">
+                  <div className="px-3 py-2 bg-[#111111] border-b border-neutral-800 flex items-center gap-1.5">
+                    <span className="w-2 h-2 rounded-full bg-purple-500"></span>
+                    <span className="text-[9px] font-mono font-bold text-neutral-400 uppercase tracking-wider">
+                      Caption Instagram
+                    </span>
+                  </div>
+                  <div className="p-3">
+                    <p className="text-[11px] text-neutral-300 leading-relaxed font-sans">
+                      Siapa bilang jajan enak harus mahal? 🤔<br /><br />
+                      <strong className="text-white">Sosis Bakar MaxxSales</strong> — daging sapi asli, bukan tepung isi angin. Dijamin nagih dari gigitan pertama! 🥩✨<br /><br />
+                      <span className="text-neutral-400">#JajanEnak #SosisBakarPremium #KulinerLokal</span>
+                    </p>
+                    <button className="mt-2.5 w-full py-2 rounded-lg text-[10px] font-mono font-bold bg-purple-500/15 text-purple-400 border border-purple-500/25 hover:bg-purple-500/25 transition-all flex items-center justify-center gap-1.5">
+                      📋 Salin Caption
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+              {/* Card footer */}
+              <div className="px-5 py-3 border-t border-neutral-800 bg-[#0f0f0f]">
+                <p className="text-[10px] text-neutral-500 font-mono text-center">
+                  ⚡ Template diperbarui otomatis setiap pagi oleh AI
+                </p>
+              </div>
+            </div>
           </div>
         </div>
 
