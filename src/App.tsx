@@ -87,6 +87,10 @@ export default function App() {
     return localStorage.getItem("maxx_sales_dna_filled") === "true";
   });
 
+  const [dnaWasEverFilled, setDnaWasEverFilled] = React.useState<boolean>(() => {
+    return localStorage.getItem("maxx_sales_dna_filled") !== null;
+  });
+
   // Dashboard Sub-navigation Tab
   // "competitor" | "customer" | "strategy" | "content" | "pulse"
   const [dashTab, setDashTab] = React.useState<"competitor" | "customer" | "strategy" | "content" | "pulse">("pulse");
@@ -234,6 +238,7 @@ export default function App() {
   const handleSaveDNAFromWizard = () => {
     localStorage.setItem("maxx_sales_dna", JSON.stringify(canvas));
     setIsDnaFilled(true);
+    setDnaWasEverFilled(true);
     localStorage.setItem("maxx_sales_dna_filled", "true");
     setDashTab("pulse"); // Default ke DailyPulse (posisi #1)
   };
@@ -318,13 +323,15 @@ export default function App() {
                 {/* Onboarding Welcome Badge */}
                 <div className="p-6 rounded border bg-neutral-50 dark:bg-[#111111] border-neutral-200 dark:border-[#262626] text-center space-y-2">
                   <span className="text-[9px] font-bold font-mono text-emerald-500 uppercase tracking-widest block">
-                    ★ INITIAL ONBOARDING STAGE
+                    ★ {dnaWasEverFilled ? "EDIT MODE — DNA SUDAH ADA" : "INITIAL ONBOARDING STAGE"}
                   </span>
                   <h2 className="text-2xl font-light tracking-tight text-neutral-900 dark:text-white">
-                    Lengkapi DNA Business Canvas Anda
+                    {dnaWasEverFilled ? "Sesuaikan DNA Business Canvas" : "Lengkapi DNA Business Canvas Anda"}
                   </h2>
                   <p className="text-xs text-neutral-500 dark:text-[#A3A3A3] max-w-xl mx-auto">
-                    Masukkan spesifikasi dasar produk, harga, keunggulan utama, dan segmentasi target market Anda sekali saja untuk mengaktifkan seluruh taktik analisis dari 5 Fitur Utama.
+                    {dnaWasEverFilled
+                      ? "Ubah spesifikasi produk, harga, atau target market. Perubahan langsung tersimpan otomatis — klik tombol apabila sudah selesai menyesuaikan."
+                      : "Masukkan spesifikasi dasar produk, harga, keunggulan utama, dan segmentasi target market Anda sekali saja untuk mengaktifkan seluruh taktik analisis dari 6 Fitur Utama."}
                   </p>
                 </div>
 
@@ -333,10 +340,11 @@ export default function App() {
                   setCanvas={setCanvas} 
                   onSave={handleSaveDNAFromWizard} 
                   isSetupWizard={true}
+                  isReEditing={dnaWasEverFilled}
                 />
               </div>
             ) : (
-              /* The 5 main features unlocked interface */
+              /* The 6 main features unlocked interface */
               <div className="flex flex-col lg:flex-row gap-8">
                 
                 {/* Sidebar Navigation Panel for 5 main features */}

@@ -7,11 +7,12 @@ interface BusinessCanvasProps {
   setCanvas: (data: BusinessCanvasData) => void;
   onSave: () => void;
   isSetupWizard?: boolean;
+  isReEditing?: boolean;
 }
 
 type SubTabType = "produk" | "target" | "pola" | "media" | "performa" | "kompetitor";
 
-export default function BusinessCanvas({ canvas, setCanvas, onSave, isSetupWizard = false }: BusinessCanvasProps) {
+export default function BusinessCanvas({ canvas, setCanvas, onSave, isSetupWizard = false, isReEditing = false }: BusinessCanvasProps) {
   const [activeSubTab, setActiveSubTab] = React.useState<SubTabType>("produk");
 
   const updateField = (field: keyof BusinessCanvasData, value: any) => {
@@ -74,7 +75,7 @@ export default function BusinessCanvas({ canvas, setCanvas, onSave, isSetupWizar
             }`}
           >
             <Save className="w-3.5 h-3.5" />
-            <span>{isSetupWizard ? "Aktifkan 5 Fitur Utama" : "Simpan DNA"}</span>
+            <span>{isReEditing ? "Simpan Perubahan DNA" : isSetupWizard ? "Aktifkan 6 Fitur Utama" : "Simpan DNA"}</span>
           </button>
         </div>
       </div>
@@ -83,7 +84,9 @@ export default function BusinessCanvas({ canvas, setCanvas, onSave, isSetupWizar
       <div className="p-3.5 rounded border border-neutral-200 dark:border-[#262626] bg-neutral-50 dark:bg-[#111111] text-xs text-neutral-600 dark:text-[#A3A3A3] flex items-start space-x-2.5">
         <Info className="w-4 h-4 text-neutral-500 dark:text-[#737373] shrink-0 mt-0.5" />
         <p>
-          <strong className="font-semibold text-neutral-805 dark:text-white">Penting:</strong> Isi kolom di bawah ini semaksimal mungkin sesuai keunikan UKM Anda. Data di sub-tab ini akan direferensikan saat AI menyusun visual banner overlay (Fitur Content Generator) dan 11 pilar rencana taktis (Fitur Strategy Forge).
+          <strong className="font-semibold text-neutral-805 dark:text-white">Penting:</strong> {isReEditing
+            ? "Sesuaikan data bisnis Anda. Setiap perubahan langsung tersimpan otomatis. Klik tombol di bawah bila sudah selesai."
+            : "Isi kolom di bawah ini semaksimal mungkin sesuai keunikan bisnis Anda. Data di sub-tab ini akan direferensikan saat AI menyusun 3-chain briefing taktis, visual banner, dan 11 pilar strategi."}
         </p>
       </div>
 
