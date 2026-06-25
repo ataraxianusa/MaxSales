@@ -1,12 +1,13 @@
 import React from "react";
-import { 
-  Sparkles, 
-  ArrowRight, 
-  ShieldCheck, 
-  Target, 
-  Zap, 
-  Image, 
-  TrendingUp, 
+import { motion } from "motion/react";
+import {
+  Sparkles,
+  ArrowRight,
+  ShieldCheck,
+  Target,
+  Zap,
+  Image,
+  TrendingUp,
   MonitorSmartphone,
   Sun,
   Moon,
@@ -14,7 +15,9 @@ import {
   CheckSquare,
   Award,
   Clock,
-  UserCheck
+  UserCheck,
+  Check,
+  Copy
 } from "lucide-react";
 
 interface LandingPageProps {
@@ -28,6 +31,31 @@ export default function LandingPage({ onEnterDashboard, brandName, darkMode, set
   // Mockup dashboard tab auto-cycler
   const [activeMockTab, setActiveMockTab] = React.useState<number>(0);
   const [isAutoPlaying, setIsAutoPlaying] = React.useState<boolean>(true);
+
+  // Interactive checklist state for Visual Showcase
+  const [checklist, setChecklist] = React.useState([
+    { id: 1, label: "Amankan stok produk terlaris hari ini", desc: "Cek stok sosis & bumbu sebelum jam sibuk sore", done: true },
+    { id: 2, label: "Kirim siaran WA promo gratis ongkir ke grup pelanggan", desc: 'Gunakan template "Amunisi Komunikasi" di sebelah →', done: true },
+    { id: 3, label: "Review laporan penjualan & siapkan target besok", desc: "Bandingkan dengan radar kompetitor di War Room", done: false },
+  ]);
+
+  // Copy-to-clipboard feedback states
+  const [copiedWa, setCopiedWa] = React.useState(false);
+  const [copiedIg, setCopiedIg] = React.useState(false);
+
+  const handleCopy = (type: "wa" | "ig") => {
+    if (type === "wa") {
+      setCopiedWa(true);
+      setTimeout(() => setCopiedWa(false), 1800);
+    } else {
+      setCopiedIg(true);
+      setTimeout(() => setCopiedIg(false), 1800);
+    }
+  };
+
+  const toggleChecklist = (id: number) => {
+    setChecklist(prev => prev.map(item => item.id === id ? { ...item, done: !item.done } : item));
+  };
 
   React.useEffect(() => {
     if (!isAutoPlaying) return;
@@ -58,7 +86,7 @@ export default function LandingPage({ onEnterDashboard, brandName, darkMode, set
       <div className="max-w-7xl mx-auto px-6 sm:px-8 py-12 md:py-16 relative z-10">
         
         {/* 1. HERO: FOKUS 3 DETIK PERTAMA PAHAM */}
-        <div className="relative max-w-5xl mx-auto mb-10 pt-4 animate-fade-in">
+        <div className="relative max-w-6xl mx-auto mb-10 pt-4">
           
           <div className="flex justify-center mb-6 opacity-0 animate-fade-in">
             <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-emerald-500/10 border border-emerald-500/30 backdrop-blur-sm">
@@ -72,7 +100,12 @@ export default function LandingPage({ onEnterDashboard, brandName, darkMode, set
             </div>
           </div>
 
-          <h1 className="text-center text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-extrabold tracking-tight leading-[1.08] mb-5 text-white opacity-0 animate-fade-in" style={{ animationDelay: '0.15s' }}>
+          {/* 2-Column Hero Grid */}
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-center">
+            
+            {/* LEFT COLUMN: Text Content */}
+            <div className="text-center lg:text-left">
+              <h1 className="text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-extrabold tracking-tight leading-[1.08] mb-5 text-white opacity-0 animate-fade-in" style={{ animationDelay: '0.15s' }}>
             Ubah Data Bisnis Jadi
             <br />
             <span className="bg-clip-text text-transparent bg-gradient-to-r from-emerald-400 via-emerald-300 to-cyan-400 animate-gradient-shift">
@@ -81,7 +114,7 @@ export default function LandingPage({ onEnterDashboard, brandName, darkMode, set
             {' '}Tanpa Ribet Teori
           </h1>
 
-          <p className="text-center text-sm sm:text-base text-neutral-400 max-w-2xl mx-auto mb-8 leading-relaxed opacity-0 animate-fade-in-up" style={{ animationDelay: '0.3s' }}>
+          <p className="text-sm sm:text-base text-neutral-400 mb-8 leading-relaxed opacity-0 animate-fade-in-up" style={{ animationDelay: '0.3s' }}>
             <strong className="text-white font-semibold">MaxxSales</strong> adalah Sistem Operasi Pertumbuhan Bisnis berbasis AI yang dirancang khusus untuk{' '}
             <strong className="text-emerald-400 font-semibold">Pengusaha Taktis</strong> — 
             mengubah data penjualan, intelijen kompetitor, dan insight pasar menjadi langkah eksekusi harian yang langsung bisa dikerjakan. Bukan teori. Bukan dashboard kosong. <span className="text-white/80 font-medium">Ini kokpit komando bisnis Anda.</span>
@@ -90,12 +123,14 @@ export default function LandingPage({ onEnterDashboard, brandName, darkMode, set
 
 
           {/* CTA Buttons */}
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-3 opacity-0 animate-fade-in-up" style={{ animationDelay: '0.45s' }}>
+          <div className="flex flex-col sm:flex-row items-center lg:items-start gap-3 opacity-0 animate-fade-in-up" style={{ animationDelay: '0.45s' }}>
             <button
               id="cta-start-dashboard"
               onClick={onEnterDashboard}
               className="group relative w-full sm:w-auto px-8 py-3.5 rounded-xl text-sm font-bold transition-all duration-300 bg-gradient-to-r from-emerald-500 to-emerald-600 hover:from-emerald-400 hover:to-emerald-500 text-black shadow-lg shadow-emerald-500/25 hover:shadow-emerald-500/40 hover:scale-[1.03] active:scale-[0.98] flex items-center justify-center gap-2 overflow-hidden"
             >
+              {/* Shimmer sweep */}
+              <span className="absolute inset-0 w-full h-full bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700 ease-in-out" />
               <span className="relative z-10 flex items-center gap-2">
                 Mulai Rancang Strategi Hari Ini
                 <ArrowRight className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1" />
@@ -112,103 +147,158 @@ export default function LandingPage({ onEnterDashboard, brandName, darkMode, set
           </div>
 
           {/* Trust micro-signals */}
-          <div className="flex flex-wrap items-center justify-center gap-6 mt-8 text-[11px] text-neutral-500 font-mono opacity-0 animate-fade-in" style={{ animationDelay: '0.6s' }}>
-            <span className="flex items-center gap-1.5">
-              <ShieldCheck className="w-3.5 h-3.5 text-emerald-500" /> Coba Prototype Gratis
-            </span>
-            <span className="flex items-center gap-1.5">
-              <Clock className="w-3.5 h-3.5 text-emerald-500" /> Siap Pakai dalam 5 Menit
-            </span>
-            <span className="flex items-center gap-1.5">
-              <UserCheck className="w-3.5 h-3.5 text-emerald-500" /> Untuk Pengusaha, Bukan Akademisi
-            </span>
+          <motion.div
+            initial={{ opacity: 0, y: 12 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.6, duration: 0.5 }}
+            className="flex flex-wrap items-center justify-center lg:justify-start gap-4 sm:gap-6 mt-8 text-[11px] text-neutral-500 font-mono"
+          >
+            {[
+              { icon: ShieldCheck, text: "Coba Prototype Gratis" },
+              { icon: Clock, text: "Siap Pakai dalam 5 Menit" },
+              { icon: UserCheck, text: "Untuk Pengusaha, Bukan Akademisi" },
+            ].map((item, i) => (
+              <motion.span
+                key={i}
+                whileHover={{ scale: 1.05, color: "#a3e635" }}
+                className="flex items-center gap-1.5 cursor-default transition-colors"
+              >
+                <item.icon className="w-3.5 h-3.5 text-emerald-500" /> {item.text}
+              </motion.span>
+            ))}
+          </motion.div>
+            </div>
+
+            {/* RIGHT COLUMN: Daily Pulse Mockup */}
+            <motion.div
+              initial={{ opacity: 0, x: 20 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ delay: 0.5, duration: 0.6 }}
+              className="rounded-2xl border border-neutral-800 bg-[#0c0c0c] overflow-hidden shadow-xl shadow-black/30"
+            >
+              {/* Card header */}
+              <div className="px-4 py-3 border-b border-neutral-800 flex items-center justify-between bg-[#111111] flex-wrap gap-2">
+                <div className="flex items-center gap-2">
+                  <motion.span
+                    animate={{ y: [0, -3, 0] }}
+                    transition={{ duration: 2.5, repeat: Infinity, ease: "easeInOut" }}
+                    className="text-base"
+                  >
+                    🚀
+                  </motion.span>
+                  <div>
+                    <h3 className="text-xs sm:text-sm font-bold text-white leading-tight">Tugas Hari Ini, Juragan!</h3>
+                    <p className="text-[9px] text-neutral-500 font-mono">Daily Pulse · Checklist Eksekusi</p>
+                  </div>
+                </div>
+                <motion.span
+                  whileHover={{ scale: 1.05 }}
+                  className="px-2 py-0.5 rounded-full text-[8px] font-mono font-bold bg-emerald-500/15 text-emerald-400 border border-emerald-500/25 whitespace-nowrap"
+                >
+                  🔥 STREAK 4 HARI
+                </motion.span>
+              </div>
+
+              {/* Checklist body — compact */}
+              <div className="p-3 sm:p-4 space-y-2">
+                {checklist.map((item) => (
+                  <motion.label
+                    key={item.id}
+                    whileHover={{ scale: 1.01, x: 2 }}
+                    whileTap={{ scale: 0.99 }}
+                    onClick={() => toggleChecklist(item.id)}
+                    className={`flex items-start gap-2.5 p-2.5 rounded-lg cursor-pointer transition-all border ${
+                      item.done
+                        ? "bg-emerald-500/5 border-emerald-500/15 hover:bg-emerald-500/10"
+                        : "border-neutral-800 bg-[#0a0a0a] hover:bg-amber-500/5 hover:border-amber-500/20"
+                    } group`}
+                  >
+                    <motion.div
+                      animate={item.done ? { scale: [1, 1.2, 1] } : {}}
+                      transition={{ duration: 0.3 }}
+                      className={`mt-0.5 w-3.5 h-3.5 rounded border flex items-center justify-center shrink-0 transition-colors ${
+                        item.done
+                          ? "bg-emerald-500 border-emerald-500"
+                          : "border-neutral-700 bg-transparent group-hover:border-emerald-500/40"
+                      }`}
+                    >
+                      {item.done && <Check className="w-2.5 h-2.5 text-black" />}
+                    </motion.div>
+                    <div className="min-w-0">
+                      <span className={`text-xs leading-snug transition-all ${
+                        item.done
+                          ? "text-neutral-500 line-through group-hover:text-emerald-200/80"
+                          : "text-neutral-200 font-medium group-hover:text-amber-200"
+                      }`}>
+                        {item.label}
+                      </span>
+                    </div>
+                  </motion.label>
+                ))}
+              </div>
+
+              {/* Card footer */}
+              <div className="px-4 py-2.5 border-t border-neutral-800 bg-[#0f0f0f] flex items-center justify-between">
+                <span className="text-[9px] font-mono text-neutral-500">
+                  ✅ {checklist.filter(i => i.done).length}/{checklist.length} tugas
+                </span>
+                <motion.span
+                  key={checklist.filter(i => i.done).length}
+                  animate={{ scale: [1, 1.15, 1] }}
+                  transition={{ duration: 0.4 }}
+                  className="text-[9px] font-mono text-emerald-500 font-bold"
+                >
+                  +{checklist.filter(i => i.done).length * 25} XP
+                </motion.span>
+              </div>
+            </motion.div>
           </div>
         </div>
 
         {/* ═══════════════════════════════════════════════ */}
-        {/* 2. VISUAL SHOWCASE: DAILY PULSE + AMUNISI       */}
+        {/* 2. VISUAL SHOWCASE: AMUNISI KOMUNIKASI          */}
         {/* ═══════════════════════════════════════════════ */}
         <div id="visual-showcase" className="max-w-5xl mx-auto mb-20 scroll-mt-24">
-          <div className="text-center mb-8">
+          <motion.div
+            initial={{ opacity: 0, y: 24 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-80px" }}
+            transition={{ duration: 0.6 }}
+            className="text-center mb-8"
+          >
             <span className="text-[10px] font-bold font-mono tracking-[0.15em] text-emerald-500 uppercase block mb-2">
               ✦ Show, Don't Just Tell ✦
             </span>
             <h2 className="text-xl sm:text-2xl font-bold text-white">
-              Lihat Langsung Kokpit Harian Bisnis Anda
+              Amunisi Komunikasi Siap Pakai
             </h2>
             <p className="text-xs text-neutral-400 max-w-lg mx-auto mt-1.5">
-              Di bawah ini adalah tiruan tampilan modul <strong className="text-emerald-400">Daily Pulse</strong> — 
-              pusat komando aktivitas penjualan harian Anda, lengkap dengan amunisi komunikasi siap pakai.
+              Siaran WhatsApp & caption Instagram siap copas —{' '}
+              <strong className="text-emerald-400">diperbarui otomatis setiap pagi</strong> oleh AI.
             </p>
-          </div>
+          </motion.div>
 
-          {/* Mockup Grid: Daily Pulse + Amunisi Komunikasi */}
-          <div className="grid grid-cols-1 lg:grid-cols-5 gap-5">
-            
-            {/* --- Daily Pulse Checklist Card (3 cols) --- */}
-            <div className="lg:col-span-3 rounded-2xl border border-neutral-800 bg-[#0c0c0c] overflow-hidden shadow-xl shadow-black/30">
+          {/* Amunisi Komunikasi */}
+          <div className="max-w-2xl mx-auto">
+
+            {/* --- Amunisi Komunikasi Card --- */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-60px" }}
+              transition={{ duration: 0.5 }}
+              whileHover={{ y: -4, boxShadow: "0 20px 40px -12px rgba(34,211,238,0.12)" }}
+              className="rounded-2xl border border-cyan-500/20 bg-[#0c0c0c] overflow-hidden shadow-xl shadow-black/30 transition-shadow duration-300"
+            >
               {/* Card header */}
-              <div className="px-5 py-4 border-b border-neutral-800 flex items-center justify-between bg-[#111111]">
-                <div className="flex items-center gap-2.5">
-                  <span className="text-lg">🚀</span>
-                  <div>
-                    <h3 className="text-sm font-bold text-white leading-tight">Tugas Hari Ini, Juragan!</h3>
-                    <p className="text-[10px] text-neutral-500 font-mono">Daily Pulse · Checklist Eksekusi</p>
-                  </div>
-                </div>
-                <span className="px-2.5 py-1 rounded-full text-[9px] font-mono font-bold bg-emerald-500/15 text-emerald-400 border border-emerald-500/25">
-                  🔥 STREAK 4 HARI
-                </span>
-              </div>
-
-              {/* Checklist body */}
-              <div className="p-5 space-y-3">
-                {/* Item 1 — done */}
-                <label className="flex items-start gap-3 p-3 rounded-xl bg-emerald-500/5 border border-emerald-500/15 cursor-pointer transition-all hover:bg-emerald-500/10 group">
-                  <input type="checkbox" defaultChecked className="mt-0.5 w-4 h-4 rounded border-emerald-500/40 bg-transparent text-emerald-500 focus:ring-0 focus:ring-offset-0 cursor-pointer accent-emerald-500" />
-                  <div>
-                    <span className="text-sm text-neutral-300 line-through group-hover:text-emerald-200/80 transition-colors">
-                      Amankan stok produk terlaris hari ini
-                    </span>
-                    <p className="text-[10px] text-neutral-500 mt-0.5">Cek stok sosis & bumbu sebelum jam sibuk sore</p>
-                  </div>
-                </label>
-
-                {/* Item 2 — done */}
-                <label className="flex items-start gap-3 p-3 rounded-xl bg-emerald-500/5 border border-emerald-500/15 cursor-pointer transition-all hover:bg-emerald-500/10 group">
-                  <input type="checkbox" defaultChecked className="mt-0.5 w-4 h-4 rounded border-emerald-500/40 bg-transparent text-emerald-500 focus:ring-0 focus:ring-offset-0 cursor-pointer accent-emerald-500" />
-                  <div>
-                    <span className="text-sm text-neutral-300 line-through group-hover:text-emerald-200/80 transition-colors">
-                      Kirim siaran WA promo gratis ongkir ke grup pelanggan
-                    </span>
-                    <p className="text-[10px] text-neutral-500 mt-0.5">Gunakan template "Amunisi Komunikasi" di sebelah →</p>
-                  </div>
-                </label>
-
-                {/* Item 3 — pending */}
-                <label className="flex items-start gap-3 p-3 rounded-xl border border-neutral-800 bg-[#0a0a0a] cursor-pointer transition-all hover:bg-amber-500/5 hover:border-amber-500/20 group">
-                  <input type="checkbox" className="mt-0.5 w-4 h-4 rounded border-neutral-700 bg-transparent text-emerald-500 focus:ring-0 focus:ring-offset-0 cursor-pointer accent-emerald-500" />
-                  <div>
-                    <span className="text-sm text-white font-medium group-hover:text-amber-200 transition-colors">
-                      Review laporan penjualan & siapkan target besok
-                    </span>
-                    <p className="text-[10px] text-neutral-500 mt-0.5">Bandingkan dengan radar kompetitor di War Room</p>
-                  </div>
-                </label>
-              </div>
-
-              {/* Card footer */}
-              <div className="px-5 py-3 border-t border-neutral-800 bg-[#0f0f0f] flex items-center justify-between">
-                <span className="text-[10px] font-mono text-neutral-500">✅ 2/3 tugas selesai hari ini</span>
-                <span className="text-[10px] font-mono text-emerald-500 font-bold">+50 XP HARI INI</span>
-              </div>
-            </div>
-
-            {/* --- Amunisi Komunikasi Card (2 cols) --- */}
-            <div className="lg:col-span-2 rounded-2xl border border-cyan-500/20 bg-[#0c0c0c] overflow-hidden shadow-xl shadow-black/30">
-              {/* Card header */}
-              <div className="px-5 py-4 border-b border-neutral-800 flex items-center gap-2.5 bg-[#111111]">
-                <span className="text-lg">💬</span>
+              <div className="px-4 sm:px-5 py-4 border-b border-neutral-800 flex items-center gap-2.5 bg-[#111111]">
+                <motion.span
+                  animate={{ rotate: [0, -8, 8, 0] }}
+                  transition={{ duration: 3, repeat: Infinity, ease: "easeInOut", delay: 0.5 }}
+                  className="text-lg"
+                >
+                  💬
+                </motion.span>
                 <div>
                   <h3 className="text-sm font-bold text-white leading-tight">Amunisi Komunikasi</h3>
                   <p className="text-[10px] text-neutral-500 font-mono">Template Siaran · Siap Copas</p>
@@ -216,9 +306,12 @@ export default function LandingPage({ onEnterDashboard, brandName, darkMode, set
               </div>
 
               {/* Templates body */}
-              <div className="p-4 space-y-3">
+              <div className="p-3 sm:p-4 space-y-3">
                 {/* WA Blast template */}
-                <div className="rounded-xl border border-neutral-800 bg-[#0a0a0a] overflow-hidden">
+                <motion.div
+                  whileHover={{ scale: 1.02, borderColor: "rgba(34,211,238,0.4)" }}
+                  className="rounded-xl border border-neutral-800 bg-[#0a0a0a] overflow-hidden transition-colors"
+                >
                   <div className="px-3 py-2 bg-[#111111] border-b border-neutral-800 flex items-center gap-1.5">
                     <span className="w-2 h-2 rounded-full bg-green-500"></span>
                     <span className="text-[9px] font-mono font-bold text-neutral-400 uppercase tracking-wider">
@@ -233,14 +326,25 @@ export default function LandingPage({ onEnterDashboard, brandName, darkMode, set
                       ⏰ Jam 15:00 - 18:00 sore ini<br /><br />
                       <em className="text-neutral-500">Stok terbatas. Kabarin temenmu!</em>
                     </p>
-                    <button className="mt-2.5 w-full py-2 rounded-lg text-[10px] font-mono font-bold bg-cyan-500/15 text-cyan-400 border border-cyan-500/25 hover:bg-cyan-500/25 transition-all flex items-center justify-center gap-1.5">
-                      📋 Salin Teks Siaran
-                    </button>
+                    <motion.button
+                      whileTap={{ scale: 0.96 }}
+                      onClick={() => handleCopy("wa")}
+                      className={`mt-2.5 w-full py-2 rounded-lg text-[10px] font-mono font-bold transition-all flex items-center justify-center gap-1.5 ${
+                        copiedWa
+                          ? "bg-emerald-500/20 text-emerald-400 border border-emerald-500/30"
+                          : "bg-cyan-500/15 text-cyan-400 border border-cyan-500/25 hover:bg-cyan-500/25"
+                      }`}
+                    >
+                      {copiedWa ? <><Check className="w-3 h-3" /> Tersalin!</> : <><Copy className="w-3 h-3" /> Salin Teks Siaran</>}
+                    </motion.button>
                   </div>
-                </div>
+                </motion.div>
 
                 {/* Social caption template */}
-                <div className="rounded-xl border border-neutral-800 bg-[#0a0a0a] overflow-hidden">
+                <motion.div
+                  whileHover={{ scale: 1.02, borderColor: "rgba(168,85,247,0.4)" }}
+                  className="rounded-xl border border-neutral-800 bg-[#0a0a0a] overflow-hidden transition-colors"
+                >
                   <div className="px-3 py-2 bg-[#111111] border-b border-neutral-800 flex items-center gap-1.5">
                     <span className="w-2 h-2 rounded-full bg-purple-500"></span>
                     <span className="text-[9px] font-mono font-bold text-neutral-400 uppercase tracking-wider">
@@ -253,20 +357,32 @@ export default function LandingPage({ onEnterDashboard, brandName, darkMode, set
                       <strong className="text-white">Sosis Bakar MaxxSales</strong> — daging sapi asli, bukan tepung isi angin. Dijamin nagih dari gigitan pertama! 🥩✨<br /><br />
                       <span className="text-neutral-400">#JajanEnak #SosisBakarPremium #KulinerLokal</span>
                     </p>
-                    <button className="mt-2.5 w-full py-2 rounded-lg text-[10px] font-mono font-bold bg-purple-500/15 text-purple-400 border border-purple-500/25 hover:bg-purple-500/25 transition-all flex items-center justify-center gap-1.5">
-                      📋 Salin Caption
-                    </button>
+                    <motion.button
+                      whileTap={{ scale: 0.96 }}
+                      onClick={() => handleCopy("ig")}
+                      className={`mt-2.5 w-full py-2 rounded-lg text-[10px] font-mono font-bold transition-all flex items-center justify-center gap-1.5 ${
+                        copiedIg
+                          ? "bg-emerald-500/20 text-emerald-400 border border-emerald-500/30"
+                          : "bg-purple-500/15 text-purple-400 border border-purple-500/25 hover:bg-purple-500/25"
+                      }`}
+                    >
+                      {copiedIg ? <><Check className="w-3 h-3" /> Tersalin!</> : <><Copy className="w-3 h-3" /> Salin Caption</>}
+                    </motion.button>
                   </div>
-                </div>
+                </motion.div>
               </div>
 
               {/* Card footer */}
-              <div className="px-5 py-3 border-t border-neutral-800 bg-[#0f0f0f]">
-                <p className="text-[10px] text-neutral-500 font-mono text-center">
+              <div className="px-4 sm:px-5 py-3 border-t border-neutral-800 bg-[#0f0f0f]">
+                <motion.p
+                  animate={{ opacity: [0.6, 1, 0.6] }}
+                  transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+                  className="text-[10px] text-neutral-500 font-mono text-center"
+                >
                   ⚡ Template diperbarui otomatis setiap pagi oleh AI
-                </p>
+                </motion.p>
               </div>
-            </div>
+            </motion.div>
           </div>
         </div>
 
