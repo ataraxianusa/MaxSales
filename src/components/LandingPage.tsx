@@ -34,9 +34,9 @@ export default function LandingPage({ onEnterDashboard, brandName, darkMode, set
 
   // Interactive checklist state for Visual Showcase
   const [checklist, setChecklist] = React.useState([
-    { id: 1, label: "Amankan stok produk terlaris hari ini", desc: "Cek stok sosis & bumbu sebelum jam sibuk sore", done: true },
-    { id: 2, label: "Kirim siaran WA promo gratis ongkir ke grup pelanggan", desc: 'Gunakan template "Amunisi Komunikasi" di sebelah →', done: true },
-    { id: 3, label: "Review laporan penjualan & siapkan target besok", desc: "Bandingkan dengan radar kompetitor di War Room", done: false },
+    { id: 1, label: "Cek stok produk terlaris & pastikan cukup sampai tutup", desc: "Sosis, bumbu, gas — semua aman sebelum jam sibuk sore", done: true },
+    { id: 2, label: "Kirim siaran WA promo ke 5 grup pelanggan teraktif", desc: 'Gunakan template "Amunisi Komunikasi" — tinggal salin & kirim', done: true },
+    { id: 3, label: "Hubungi 3 pelanggan loyal & tawarkan promo spesial", desc: "Cek database Customer Insight, pilih yang LTV tertinggi", done: false },
   ]);
 
   // Copy-to-clipboard feedback states
@@ -105,19 +105,21 @@ export default function LandingPage({ onEnterDashboard, brandName, darkMode, set
             
             {/* LEFT COLUMN: Text Content */}
             <div className="text-center lg:text-left">
-              <h1 className="text-4xl sm:text-5xl lg:text-5xl xl:text-6xl font-extrabold tracking-tight leading-[1.08] mb-5 text-white opacity-0 animate-fade-in" style={{ animationDelay: '0.15s' }}>
+              <h1 className="text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-black tracking-tighter leading-[1.02] mb-3 text-white opacity-0 animate-fade-in" style={{ animationDelay: '0.15s' }}>
             Ubah Data Bisnis Jadi
             <br />
             <span className="bg-clip-text text-transparent bg-gradient-to-r from-emerald-400 via-emerald-300 to-cyan-400 animate-gradient-shift">
               Omset Harian
             </span>
-            {' '}Tanpa Ribet Teori
           </h1>
 
-          <p className="text-sm text-neutral-400 mb-6 leading-relaxed max-w-md opacity-0 animate-fade-in-up" style={{ animationDelay: '0.3s' }}>
-            <strong className="text-white font-semibold">MaxxSales</strong> — Sistem Operasi Pertumbuhan Bisnis berbasis AI untuk{' '}
-            <strong className="text-emerald-400 font-semibold">Pengusaha Taktis</strong>.{' '}
-            Ubah data penjualan & intelijen pasar jadi langkah eksekusi harian. Bukan teori, bukan dashboard kosong — <span className="text-white/80 font-medium">ini kokpit komando bisnis Anda.</span>
+          <p className="text-sm sm:text-base lg:text-lg text-emerald-400/90 font-semibold mb-2 opacity-0 animate-fade-in-up" style={{ animationDelay: '0.25s' }}>
+            Sistem Operasi Pertumbuhan Bisnis Berbasis AI untuk Pengusaha Taktis
+          </p>
+
+          <p className="text-sm text-neutral-500 mb-6 leading-relaxed max-w-md opacity-0 animate-fade-in-up" style={{ animationDelay: '0.35s' }}>
+            Tanpa teori rumit. Tanpa dashboard kosong. <strong className="text-white font-semibold">MaxxSales</strong> mengubah data penjualan & intelijen pasar jadi langkah eksekusi harian —{' '}
+            <span className="text-white/80 font-medium">langsung bisa dikerjakan hari ini juga.</span>
           </p>
 
 
@@ -174,33 +176,25 @@ export default function LandingPage({ onEnterDashboard, brandName, darkMode, set
               initial={{ opacity: 0, x: 20 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ delay: 0.5, duration: 0.6 }}
-              className="rounded-2xl border border-neutral-800 bg-[#0c0c0c] overflow-hidden shadow-xl shadow-black/30 flex flex-col"
+              className="rounded-2xl border border-neutral-700 bg-[#111111] overflow-hidden shadow-2xl shadow-black/40 flex flex-col ring-1 ring-white/5"
             >
               {/* Card header */}
-              <div className="px-5 py-4 border-b border-neutral-800 flex items-center justify-between bg-[#111111] flex-wrap gap-2">
-                <div className="flex items-center gap-2.5">
-                  <motion.span
-                    animate={{ y: [0, -4, 0] }}
-                    transition={{ duration: 2.5, repeat: Infinity, ease: "easeInOut" }}
-                    className="text-xl"
-                  >
-                    🚀
-                  </motion.span>
-                  <div>
-                    <h3 className="text-sm sm:text-base font-bold text-white leading-tight">Tugas Hari Ini, Juragan!</h3>
-                    <p className="text-[10px] text-neutral-500 font-mono">Daily Pulse · Checklist Eksekusi</p>
-                  </div>
-                </div>
+              <div className="px-5 py-3 border-b border-neutral-700/50 flex items-center gap-1.5 bg-[#161616]/80">
+                <span className="w-2.5 h-2.5 rounded-full bg-red-400/80 shrink-0"></span>
+                <span className="w-2.5 h-2.5 rounded-full bg-yellow-400/80 shrink-0"></span>
+                <span className="w-2.5 h-2.5 rounded-full bg-green-400/80 shrink-0 mr-2"></span>
+                <span className="text-[10px] font-mono text-neutral-500 truncate">maxxsales.ai/daily-pulse</span>
+                <div className="flex-1"></div>
                 <motion.span
                   whileHover={{ scale: 1.05 }}
-                  className="px-2.5 py-1 rounded-full text-[9px] font-mono font-bold bg-emerald-500/15 text-emerald-400 border border-emerald-500/25 whitespace-nowrap"
+                  className="px-2 py-0.5 rounded-full text-[8px] font-mono font-bold bg-emerald-500/15 text-emerald-400 border border-emerald-500/25 whitespace-nowrap"
                 >
                   🔥 STREAK 4 HARI
                 </motion.span>
               </div>
 
               {/* Checklist body — balanced */}
-              <div className="p-4 sm:p-5 space-y-3 flex-1">
+              <div className="p-5 sm:p-6 space-y-3.5 flex-1">
                 {checklist.map((item) => (
                   <motion.label
                     key={item.id}
@@ -239,7 +233,7 @@ export default function LandingPage({ onEnterDashboard, brandName, darkMode, set
               </div>
 
               {/* Card footer */}
-              <div className="px-5 py-3 border-t border-neutral-800 bg-[#0f0f0f] flex items-center justify-between">
+              <div className="px-5 py-3 border-t border-neutral-700/50 bg-[#161616]/50 flex items-center justify-between">
                 <span className="text-[10px] font-mono text-neutral-500">
                   ✅ {checklist.filter(i => i.done).length}/{checklist.length} tugas selesai hari ini
                 </span>
