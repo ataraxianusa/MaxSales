@@ -1,6 +1,6 @@
-# MaxxSales — AI-Powered Sales Flow Platform
+# MaxxSales — AI-Powered Sales Growth OS
 
-> **MVP** · AI Business Brain for Indonesian Entrepreneurs / Pengusaha — OpenRouter-powered sales intelligence, competitor analysis, customer segmentation, content generation, and daily strategy briefings.
+> **MVP v1.2** · Sistem Operasi Pertumbuhan Bisnis berbasis AI untuk Pengusaha Indonesia — 3-chain tactical briefing, competitor intelligence, customer segmentation, content generation, dan daily strategy execution.
 
 [![Deploy to GitHub Pages](https://github.com/ataraxianusa/MaxSales/actions/workflows/deploy.yml/badge.svg)](https://github.com/ataraxianusa/MaxSales/actions/workflows/deploy.yml)
 [![Live Site](https://img.shields.io/badge/Live%20Site-maxsales.qzz.io-blue)](https://maxsales.qzz.io)
@@ -10,11 +10,11 @@
 
 ## Overview
 
-**MaxxSales** (also referred to as *VOXIA Sales-Flow*) is a one-stop digital sales platform built for Indonesian SMEs and enterprise teams. It combines AI-generated marketing assets, intelligent CRM scoring, strategy blueprint automation, competitor intelligence, and multi-branch synchronization into a single unified dashboard.
+**MaxxSales** is an AI-powered business growth operating system that transforms raw business data into daily tactical strategies for Pengusaha. It combines an 8-endpoint AI backend (3-chain prompt pipeline, SWOT analysis, customer segmentation, content generation) with a React dashboard for execution-ready daily briefings.
 
-The platform runs as a **React + TypeScript** SPA with a dual-backend architecture:
-- **Express.js** server for local development / full-stack Node.js hosting
-- **Cloudflare Workers** (Hono) for edge production deployment
+The platform runs as a **React 19 + TypeScript** SPA with a dual-backend architecture:
+- **Express.js** (`server.ts`) for local development
+- **Cloudflare Workers + Hono** (`worker.ts`) for edge production deployment
 
 All AI features are powered by **OpenRouter** (default model: `openai/gpt-oss-120b:free`). When `OPENROUTER_API_KEY` is not set, every module falls back gracefully to a smart local simulator so the UI remains fully functional.
 
@@ -24,31 +24,31 @@ All AI features are powered by **OpenRouter** (default model: `openai/gpt-oss-12
 
 ## Features
 
-### 5 Core Dashboard Modules
+### 6 Core Dashboard Modules
 
 | # | Module | Description |
 |---|---|---|
-| 1 | **Competitor War Room** | Add competitor profiles, run AI-powered SWOT analysis, compare brands with radar charts |
-| 2 | **Customer Insight** | Customer segment management with estimated LTV calculation, churn risk analysis, and AI-generated retention recommendations |
-| 3 | **Strategy Fusion** | AI-generated multi-pillar marketing strategy blueprint based on your Business DNA and optimism level (Konservatif / Moderat / Agresif) |
-| 4 | **Content Generator** | AI-generated promo content: headlines, captions, hashtags, price displays, and urgency text for feed/story/WhatsApp formats |
-| 5 | **Daily Sales Pulse** | Morning briefing, daily KPI tracker, revenue radar, competitor activity alerts, and gamified streak system (+50 XP per check-in) |
+| 1 | **Daily Sales Pulse** | AI-generated tactical briefing (3-chain: GapAnalyzer → ExecutionPlan → CommsWriter), dynamic checklist, copy-paste WhatsApp & social templates, revenue tracking with bar charts, competitor radar |
+| 2 | **Competitor War Room** | Add competitor profiles, AI-powered SWOT analysis, compare brands with radar charts |
+| 3 | **Customer Insight** | Customer segment management with estimated LTV calculation, churn risk analysis, and AI-generated retention recommendations |
+| 4 | **Strategy Forge** | AI-generated 5–11 pillar marketing strategy blueprint based on your Business DNA and optimism level (Konservatif / Moderat / Agresif) |
+| 5 | **Content Generator** | AI-generated promo content: headlines, captions, hashtags, price displays, and urgency text for feed/story/WhatsApp formats |
+| 6 | **Floating AI Chatbot** | Context-aware MaxxSales copilot — answers questions about all features using the stored Business DNA |
 
 ### Supporting Modules
 
 | Module | Description |
 |---|---|
-| 🧬 **DNA Business Canvas** | 5-tab business profile wizard (Product, Target Market, Business Patterns, Media Channels, Competitor Summary) — filled once to unlock all AI features |
-| 🤖 **AI Chatbot (FloatingChatbot)** | Context-aware MaxxSales copilot — answers questions about all features using the stored Business DNA |
-| 🎓 **User Tour** | Interactive onboarding guide and glossary matching the 5 core features |
-| 📘 **Technical Docs** | In-app reference panel showing Cloudflare Worker code, API endpoint docs, and deployment instructions |
+| 🧬 **DNA Business Canvas** | 6-tab business profile wizard — Product, Target Market, Business Patterns, Media Channels, **Performa Real-Time**, Competitor Summary. Filled once to unlock all AI features. Re-edit anytime via sidebar. |
+| 🎓 **User Tour** | Interactive onboarding guide and glossary matching all core features |
+| 📘 **Technical Docs** | In-app reference panel showing architecture, API endpoints, and deployment instructions |
 | 🔐 **Login** | Simple local-storage–based login gate |
 | 🌗 **Dark/Light Theme** | Toggle between dark and light mode (persisted to localStorage) |
 
 ### Gamification
 
-- **Daily Streak**: Check in daily via the sidebar panel or by visiting Daily Sales Pulse — earn +50 XP per day, track streak count, level up every 3 days
-- **Progress Tracking**: Visual progress bar across the 5 core modules with checkbox-based engagement tracking
+- **Daily Streak**: Check in daily via "Acak Tips Baru" in Daily Sales Pulse — earn +50 XP per day, track streak count
+- **Progress Tracking**: Visual progress bar across the 6 core modules with checkbox-based engagement tracking
 
 ---
 
@@ -56,10 +56,11 @@ All AI features are powered by **OpenRouter** (default model: `openai/gpt-oss-12
 
 | Layer | Technology |
 |---|---|
-| **Frontend** | React 19, TypeScript, Tailwind CSS v4, Recharts, D3, Motion |
-| **Backend (Dev / Full-stack)** | Express.js, Node.js, `tsx` (dev runner), `esbuild` (production bundle) |
+| **Frontend** | React 19, TypeScript 5.8, Tailwind CSS v4, Recharts, Motion |
+| **Backend (Dev)** | Express.js, Node.js, `tsx` (dev runner), `esbuild` (production bundle) |
 | **Backend (Edge)** | Cloudflare Workers + Hono (`worker.ts`) |
-| **AI** | OpenRouter API (OpenAI-compatible, default model `openai/gpt-oss-120b:free`) |
+| **AI** | OpenRouter API (OpenAI-compatible, default: `openai/gpt-oss-120b:free`) |
+| **AI Architecture** | 3-chain sequential prompt pipeline (GapAnalyzer → ExecutionPlan → CommsWriter), temperature-locked at 0.25 for tactical outputs |
 | **Build Tool** | Vite 6 + `@tailwindcss/vite` + `@vitejs/plugin-react` |
 | **Icons** | Lucide React |
 | **CI/CD** | GitHub Actions → GitHub Pages (`gh-pages` branch) |
@@ -100,10 +101,9 @@ The app runs at **http://localhost:3000**.
 |---|---|---|
 | `OPENROUTER_API_KEY` | Optional* | OpenRouter API key. Without it, app runs in simulation mode. |
 | `OPENROUTER_MODEL` | Optional | OpenRouter model slug (default: `openai/gpt-oss-120b:free`) |
-| `APP_URL` | Optional | Hosting URL for self-referential links and OpenRouter `HTTP-Referer` header |
 | `VITE_API_URL` | Optional | Cloudflare Worker URL for production — sets `API_BASE` at build time |
 
-> *All AI features fall back to a built-in smart simulator if no API key is provided.
+> *All 8 AI endpoints fall back to built-in smart simulators if no API key is provided. The 3-chain tactical briefing has its own dedicated fallback generator.
 
 ### Build for Production
 
@@ -121,20 +121,17 @@ npm start
 
 ### GitHub Pages (Frontend Only)
 
-The repo deploys to GitHub Pages automatically via `.github/workflows/deploy.yml` on every push to `main`. The `VITE_API_URL` secret must be set in the GitHub repo to point at your Cloudflare Worker for live AI features. Without it, the static build runs in **simulation mode**.
+The repo deploys to GitHub Pages automatically via `.github/workflows/deploy.yml` on every push to `main`. The `VITE_API_URL` secret must be set in the GitHub repo to point at your Cloudflare Worker for live AI features.
 
 **Live URL:** [https://maxsales.qzz.io](https://maxsales.qzz.io)
 
 ### Cloudflare Worker (AI Backend)
 
-The `worker.ts` file exports a Hono app ready for Cloudflare Workers deployment. Set up via wrangler:
+The `worker.ts` file exports a Hono app with all 8 endpoints ready for Cloudflare Workers deployment:
 
 ```bash
 # Set your OpenRouter API key as a secret
 npx wrangler secret put OPENROUTER_API_KEY
-
-# Optionally override the model
-npx wrangler secret put OPENROUTER_MODEL
 
 # Deploy
 npx wrangler deploy
@@ -151,42 +148,54 @@ npm run build
 npm start  # Express server at PORT (default 3000)
 ```
 
-Set `OPENROUTER_API_KEY` as an environment variable on your hosting platform.
-
 ---
 
 ## Project Structure
 
 ```
 MaxSales/
-├── src/                          # React frontend source
-│   ├── components/               # All UI components (12 files)
-│   │   ├── App.tsx               # Root app with routing, state, theme
-│   │   ├── BusinessCanvas.tsx    # DNA Business Canvas wizard
+├── src/
+│   ├── components/               # 13 React components
+│   │   ├── App.tsx               # Root app: routing, state, theme, DNA edit gate
+│   │   ├── BusinessCanvas.tsx    # 6-tab DNA wizard (660 lines)
 │   │   ├── CompetitorWarRoom.tsx # Competitor SWOT + radar charts
 │   │   ├── ContentGenerator.tsx  # AI promo content generator
 │   │   ├── CustomerInsight.tsx   # Customer segmentation & LTV
-│   │   ├── DailyPulse.tsx        # Daily sales dashboard + streak
+│   │   ├── DailyPulse.tsx        # Daily tactical briefing dashboard (624 lines)
 │   │   ├── FloatingChatbot.tsx   # AI copilot floating chat
 │   │   ├── Header.tsx            # Navigation header
 │   │   ├── LandingPage.tsx       # Public landing page
 │   │   ├── Login.tsx             # Auth gate
 │   │   ├── StrategyForge.tsx     # Multi-pillar strategy generator
-│   │   ├── TechnicalDocs.tsx     # In-app API & deployment docs
+│   │   ├── TechnicalDocs.tsx     # In-app architecture & API docs
 │   │   └── UserTour.tsx          # Onboarding tour & glossary
+│   ├── hooks/
+│   │   └── useDNAAutoUpdate.ts   # DNA auto-suggestion hook
+│   ├── store/
+│   │   └── ChainContext.tsx      # Global state: DNA, competitors, segments, streak
 │   ├── api.ts                    # API_BASE utility
 │   ├── index.css                 # Tailwind import
 │   ├── main.tsx                  # React entry point
-│   └── types.ts                  # TypeScript interfaces + default data
-├── server.ts                     # Express backend (all API routes)
-├── worker.ts                     # Cloudflare Worker (Hono) — same API
-├── vite.config.ts                # Vite configuration
-├── wrangler.toml                 # Cloudflare Workers config
-├── tsconfig.json                 # TypeScript configuration
-├── index.html                    # HTML entry point
-├── CNAME                         # Custom domain (maxsales.qzz.io)
-├── metadata.json                 # Play Store–style capability metadata
-├── .env.example                  # Environment variable template
+│   ├── tactical-briefing.ts      # ⭐ 3-chain prompt module (387 lines)
+│   └── types.ts                  # 6 TypeScript interfaces (59 DNA fields) + defaults
+├── server.ts                     # Express backend — 8 API endpoints (654 lines)
+├── worker.ts                     # Cloudflare Worker (Hono) — 8 API endpoints (442 lines)
+├── docs/                         # Documentation
+│   ├── blueprint/                # Architecture blueprints (v01–v02)
+│   ├── migrasi/                  # Azure migration docs (18 files, v01–v02)
+│   │   ├── api/                  #   Endpoint inventory, AI adapter, refactoring plan
+│   │   ├── arsitektur/           #   Architecture analysis, target design, strategy
+│   │   ├── biaya/                #   Cost analysis & optimization
+│   │   ├── implementasi/         #   Timeline, rollback, testing plans
+│   │   ├── infrastruktur/        #   Network, CI/CD, DR design
+│   │   ├── keamanan/             #   Security baseline & compliance
+│   │   └── laporan/              #   Executive reports & recommendations
+│   └── azure-migration-plan/     # Migration executive brief
+├── vite.config.ts
+├── wrangler.toml
+├── tsconfig.json
+├── index.html
+├── CNAME                         # Custom domain
 └── .github/workflows/
     └── deploy.yml                # GitHub Actions → GitHub Pages
 ```
@@ -195,17 +204,68 @@ MaxSales/
 
 ## API Endpoints
 
-All endpoints are available both in the Express server (`server.ts`) and the Cloudflare Worker (`worker.ts`).
+All 8 endpoints available both in `server.ts` and `worker.ts`.
 
-| Method | Endpoint | Description |
+| # | Method | Endpoint | AI Calls | Description |
+|---|--------|----------|----------|-------------|
+| 1 | `GET` | `/api/status` | 0 | Health check + AI mode status |
+| 2 | `POST` | `/api/generate-content-text` | 1 | Generate promo content (headlines, captions, hashtags) |
+| 3 | `POST` | `/api/strategy-forge` | 1 | Generate 5–11 pillar strategy blueprint |
+| 4 | `POST` | `/api/daily-pulse` | 1 | Morning briefing (legacy — now replaced by tactical-briefing in UI) |
+| 5 | `POST` | `/api/analyze-competitor` | 1 | SWOT analysis for a specific competitor |
+| 6 | `POST` | `/api/analyze-segments` | 1 | AI-powered customer segment analysis with LTV & churn risk |
+| 7 | `POST` | `/api/chat` | 1 | Conversational AI copilot (context-aware with Business DNA) |
+| 8 | `POST` | `/api/tactical-briefing` | **3 (chain)** | ⭐ 3-chain tactical briefing: GapAnalyzer → ExecutionPlan → CommsWriter |
+
+### Tactical Briefing — 3-Chain Architecture
+
+```
+Chain 1: GapAnalyzer          (temp: 0.25, tokens: 256)
+  Input:  DNA + WarRoom + CustomerInsight + DailyContext
+  Output: JSON { gap, revenueImpact }
+    ↓
+Chain 2: ExecutionPlan        (temp: 0.25, tokens: 256)
+  Input:  Gap + PeakHours + TopConvertingChannel
+  Output: JSON { steps[], quickWin }
+    ↓
+Chain 3: CommsWriter          (temp: 0.25, tokens: 512)
+  Input:  Gap + Plan + Brand + Contact
+  Output: Markdown (3 sections: Celah + Eksekusi + Amunisi)
+```
+
+**Terminology Policy:** All system prompts strictly prohibit "UMKM", "UKM", "Usaha Kecil", "Mikro". Use "Pengusaha", "Pelaku Usaha", or brand name.
+
+---
+
+## DNA Business Canvas — 59 Fields Across 6 Tabs
+
+| Tab | Fields | Purpose |
 |---|---|---|
-| `GET` | `/api/status` | Health check + AI mode status |
-| `POST` | `/api/generate-content-text` | Generate promo content (headlines, captions, hashtags) |
-| `POST` | `/api/strategy-forge` | Generate 5–11 pillar marketing strategy blueprint |
-| `POST` | `/api/daily-pulse` | Morning briefing with leads count, competitor update, sales % |
-| `POST` | `/api/analyze-competitor` | SWOT analysis for a specific competitor |
-| `POST` | `/api/analyze-segments` | AI-powered customer segment analysis with LTV & churn risk |
-| `POST` | `/api/chat` | Conversational AI copilot (context-aware with Business DNA) |
+| Produk & Spesifikasi | 16 | Product name, price, quality, packaging, advantages |
+| Target Market | 14 | Demographics, behavior, platforms, triggers |
+| Pola & Finansial | 13 | Business type, revenue, margin, capital |
+| Media & Channel | 10 | Social media, marketplaces, ad budget |
+| **Performa Real-Time** ⭐ | **2** | Peak sales hours, top converting channel |
+| Kompetitor | 4 | Competitor count, biggest rival, strengths, weaknesses |
+
+---
+
+## Terminology Policy
+
+> **Hard rule:** Semua system prompt, user prompt, dan output ke pengguna TIDAK BOLEH menggunakan "UMKM", "UKM", "Usaha Kecil", atau "Mikro". Gunakan "Pengusaha", "Pelaku Usaha", "Bisnis Anda", atau nama brand langsung.
+
+Enforced across: `server.ts`, `worker.ts`, `src/tactical-briefing.ts`, dan seluruh UI components.
+
+---
+
+## Azure Migration
+
+MaxSales is migrating from Cloudflare Workers to Microsoft Azure. See `docs/migrasi/` for comprehensive documentation:
+
+- **Endpoint Inventory v02** — 8 endpoints mapped to Azure Functions
+- **Architecture Analysis v02** — Current state + target state with Cosmos DB, Front Door, API Management
+- **Implementation Timeline v02** — 12-week plan with pre-migration Fase 0 already completed
+- **Executive Report v02** — Budget $43-64/month, risk matrix, next steps
 
 ---
 
@@ -223,5 +283,5 @@ See [LICENSE](./LICENSE) for full terms.
 <div align="center">
   <sub>Built with ❤️ by <a href="mailto:ics@voxia.id">VOXIA Team</a> · © 2026 VOXIA. All rights reserved.</sub>
   <br>
-  <sub>AI by <a href="https://openrouter.ai">OpenRouter</a> · Deployed on <a href="https://pages.cloudflare.com">Cloudflare</a> & <a href="https://pages.github.com">GitHub Pages</a></sub>
+  <sub>AI by <a href="https://openrouter.ai">OpenRouter</a> · Deployed on <a href="https://pages.cloudflare.com">Cloudflare Workers</a> & <a href="https://pages.github.com">GitHub Pages</a></sub>
 </div>
