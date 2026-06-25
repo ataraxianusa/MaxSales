@@ -201,6 +201,8 @@ export default function DailyPulse() {
         targetMonthlyRevenue: dna.targetMonthlyRevenue,
         activeSocialMedia: dna.activeSocialMedia?.length ? dna.activeSocialMedia : ["Instagram", "WhatsApp"],
         businessContact: dna.businessContact || "-",
+        peakHours: dna.peakHours || "09:00-11:00 & 19:00-21:00",
+        topConvertingChannel: dna.topConvertingChannel || "WhatsApp DM",
       },
       warRoom: {
         competitors: competitors.filter(c => c.name?.trim()).map(c => ({
