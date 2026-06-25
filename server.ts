@@ -10,6 +10,12 @@ import express from "express";
 import path from "path";
 import { createServer as createViteServer } from "vite";
 import dotenv from "dotenv";
+import {
+  generateTacticalBriefing,
+  generateFallbackBriefing,
+  type TacticalBriefingInput,
+  type LlmCaller,
+} from "./src/tactical-briefing.js";
 
 dotenv.config();
 
@@ -518,7 +524,33 @@ HANYA JSON, tanpa penjelasan.`;
   }
 });
 
-// 5. CHAT — AI Co-pilot / FloatingChatbot
+// 5. TACTICAL BRIEFING — 3-Chain Prompt: Gap Analyzer → Execution Plan → Comms Writer
+app.post("/api/tactical-briefing", async (req, res) => {
+  const input = req.body as TacticalBriefingInput;
+
+  if (!isRealAiEnabled) {
+    return res.json({ ...generateFallbackBriefing(input), mode: "stimulated-local" });
+  }
+
+  try {
+    const llmAdapter: LlmCaller = async (messages, options) => {
+      const content = await callOpenRouter(messages, options);
+      return { content, tokensUsed: 0 };
+    };
+
+    const briefing = await generateTacticalBriefing(input, llmAdapter);
+    return res.json({ ...briefing, mode: "live-ai" });
+  } catch (error: any) {
+    console.error("Tactical Briefing Error:", error);
+    return res.json({
+      ...generateFallbackBriefing(input),
+      mode: "stimulated-local-error",
+      message: error.message,
+    });
+  }
+});
+
+// 6. CHAT — AI Co-pilot / FloatingChatbot
 app.post("/api/chat", async (req, res) => {
   const { messages, dna } = req.body;
 
