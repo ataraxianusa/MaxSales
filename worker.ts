@@ -196,7 +196,7 @@ app.post("/api/daily-pulse", async (c) => {
   const { dna, completedCount, activeStrategies, pendingItems, yesterdayRevenue, todayTarget, dailyAchievement } = await c.req.json();
 
   const fallback = {
-    briefing: `Selamat pagi, ${dna?.brand || "Pejuang UKM"}! Fokus interaksi pelanggan hari ini! 💪`,
+    briefing: `Selamat pagi, ${dna?.brand || "Pejuang Bisnis"}! Fokus interaksi pelanggan hari ini! 💪`,
     leadsCount: 5,
     competitorUpdate: `${dna?.biggestCompetitor || "Kompetitor"} sedang aktif promo.`,
     salesPercentage: 42
@@ -218,7 +218,7 @@ app.post("/api/daily-pulse", async (c) => {
     const raw = await callOpenRouter(apiKey, model, [
       { role: "system", content: JSON_SYS },
       { role: "user", content: `Buat morning briefing energetik untuk:
-- Brand: ${dna?.brand || "UKM"}
+- Brand: ${dna?.brand || "Pengusaha"}
 - Produk: ${dna?.productName || "Produk"}
 - Keunggulan: ${dna?.advantages?.split(",")?.[0] || "Produk berkualitas"}
 - Kategori: ${dna?.category || "Fashion"}
@@ -342,7 +342,7 @@ app.post("/api/analyze-segments", async (c) => {
 
     const raw = await callOpenRouter(apiKey, model, [
       { role: "system", content: JSON_SYS },
-      { role: "user", content: `Analisis data segmentasi pelanggan UKM fashion Indonesia.
+      { role: "user", content: `Analisis data segmentasi pelanggan Pengusaha fashion Indonesia.
 
 Profil Bisnis:
 - Brand: ${dna?.brand || "Brand"}
@@ -394,7 +394,7 @@ app.post("/api/chat", async (c) => {
   }
 
   try {
-    const sys = `Anda MaxxSales AI Co-pilot untuk UKM Indonesia. Fitur: DNA Canvas, Competitor War Room, Customer Insight, Strategy Fusion, Content Generator, Daily Pulse. Nada profesional-ramah. Bahasa Indonesia. <150 kata. Konteks: ${JSON.stringify({ brand: dna?.brand, product: dna?.productName })}`;
+    const sys = `Anda MaxxSales AI Co-pilot untuk Pengusaha Indonesia. Fitur: DNA Canvas, Competitor War Room, Customer Insight, Strategy Fusion, Content Generator, Daily Pulse. Nada profesional-ramah. Bahasa Indonesia. <150 kata. Konteks: ${JSON.stringify({ brand: dna?.brand, product: dna?.productName })}`;
 
     const orMsgs: { role: string; content: string }[] = [{ role: "system", content: sys }];
     for (const m of messages.slice(-10)) {

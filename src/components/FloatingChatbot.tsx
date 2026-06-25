@@ -179,7 +179,7 @@ export default function FloatingChatbot({ dna }: FloatingChatbotProps) {
               <div className="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse"></div>
               <div>
                 <h3 className="text-xs font-bold font-mono tracking-wide">MAXXSALES AI CO-PILOT</h3>
-                <p className="text-[9px] text-neutral-400 dark:text-[#A3A3A3] font-mono">Expert UKM Assistant</p>
+                <p className="text-[9px] text-neutral-400 dark:text-[#A3A3A3] font-mono">Expert Business Assistant</p>
               </div>
             </div>
             <button

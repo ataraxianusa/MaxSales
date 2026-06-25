@@ -247,7 +247,7 @@ export default function UserTour({ currentTab, setTab }: UserTourProps) {
           classColor: "border-purple-500/20 bg-purple-500/[0.02] text-purple-600 dark:text-purple-400",
           desc: "Sistem kawal serbu pemasaran yang mensintesis DNA keunikan produk Anda dengan celah kelemahan operasional pesaing.",
           term: "Strategy Fusion System",
-          definition: "Metode pemetaan otomatis yang membagi taktik pemasaran UMKM ke dalam 11 ruang lingkup digital modern gratisan.",
+          definition: "Metode pemetaan otomatis yang membagi taktik pemasaran Pengusaha ke dalam 11 ruang lingkup digital modern gratisan.",
           tip: "Salin draft gimmick penawaran dari sini dan jadikan tulisan utama promosi Anda di tab Content Creator."
         };
       case "content":

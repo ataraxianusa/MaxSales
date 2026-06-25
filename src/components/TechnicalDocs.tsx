@@ -120,14 +120,14 @@ app.post("/api/strategy-forge", async (c) => {
 
 app.post("/api/daily-pulse", async (c) => {
   const { dna } = await c.req.json();
-  const fallback = { briefing: \`Selamat pagi, \${dna?.brand||"Pejuang UKM"}! Fokus interaksi pelanggan hari ini! 💪\`, leadsCount: 5, competitorUpdate: \`\${dna?.biggestCompetitor||"Kompetitor"} sedang aktif promo.\`, salesPercentage: 42 };
+  const fallback = { briefing: \`Selamat pagi, \${dna?.brand||"Pejuang Bisnis"}! Fokus interaksi pelanggan hari ini! 💪\`, leadsCount: 5, competitorUpdate: \`\${dna?.biggestCompetitor||"Kompetitor"} sedang aktif promo.\`, salesPercentage: 42 };
   const apiKey = c.env.OPENROUTER_API_KEY;
   const model = c.env.OPENROUTER_MODEL || "openai/gpt-oss-120b:free";
   if (!apiKey) return c.json({ ...fallback, mode: "simulated" });
   try {
     const raw = await callOpenRouter(apiKey, model, [
       { role: "system", content: JSON_SYS },
-      { role: "user", content: \`Morning briefing energetik untuk: brand=\${dna?.brand||"UKM"}, produk=\${dna?.productName||"Produk"}, target=Rp\${dna?.targetMonthlyRevenue||50000000}, kompetitor=\${dna?.biggestCompetitor||"Kompetitor"}. JSON: {\"briefing\":\"pesan 2-3 kalimat dg semangat + emoji\",\"leadsCount\":angka 3-12,\"competitorUpdate\":\"update kompetitor\",\"salesPercentage\":angka 30-70} HANYA JSON.\` }
+      { role: "user", content: \`Morning briefing energetik untuk: brand=\${dna?.brand||"Pengusaha"}}, produk=\${dna?.productName||"Produk"}, target=Rp\${dna?.targetMonthlyRevenue||50000000}, kompetitor=\${dna?.biggestCompetitor||"Kompetitor"}. JSON: {\"briefing\":\"pesan 2-3 kalimat dg semangat + emoji\",\"leadsCount\":angka 3-12,\"competitorUpdate\":\"update kompetitor\",\"salesPercentage\":angka 30-70} HANYA JSON.\` }
     ], { temperature: 0.8 });
     const parsed = parseJsonResponse(raw, fallback);
     return c.json(parsed, mode: "live-ai" });
@@ -160,7 +160,7 @@ app.post("/api/chat", async (c) => {
     return c.json({ reply, mode: "simulated" });
   }
   try {
-    const sys = \`Anda MaxxSales AI Co-pilot untuk UKM Indonesia. Fitur: DNA Canvas, Competitor War Room, Customer Insight, Strategy Fusion, Content Generator, Daily Pulse. Nada profesional-ramah. Bahasa Indonesia. <150 kata. Konteks: \${JSON.stringify({ brand: dna?.brand, product: dna?.productName })}\`;
+    const sys = \`Anda MaxxSales AI Co-pilot untuk Pengusaha Indonesia. Fitur: DNA Canvas, Competitor War Room, Customer Insight, Strategy Fusion, Content Generator, Daily Pulse. Nada profesional-ramah. Bahasa Indonesia. <150 kata. Konteks: \${JSON.stringify({ brand: dna?.brand, product: dna?.productName })}\`;
     const orMsgs: { role: string; content: string }[] = [{ role: "system", content: sys }];
     for (const m of messages.slice(-10)) {
       const text = m.parts || m.content || "";
@@ -243,7 +243,7 @@ jobs:
         <Info className="w-5 h-5 shrink-0 mt-0.5 text-neutral-500" />
         <div>
           <strong className="font-bold text-neutral-900 dark:text-white font-mono uppercase text-[10px] tracking-wider block mb-1">PROGRAM INFRASTRUKTUR $0 (ZERO COST PLAN)</strong>
-          Untuk menghindari sewa server bulanan yang membebani UKM, infrastruktur MaxxSales dibagi menjadi dua komponen: berkas antarmuka statis di-host di <strong>GitHub Pages (Gratis)</strong>, dan pemrosesan AI dijalankan via <strong>Cloudflare Workers (Gratis s.d 100.000 request/hari)</strong> menghubungkan API OpenRouter DeepSeek.
+          Untuk menghindari sewa server bulanan yang membebani Pengusaha, infrastruktur MaxxSales dibagi menjadi dua komponen: berkas antarmuka statis di-host di <strong>GitHub Pages (Gratis)</strong>, dan pemrosesan AI dijalankan via <strong>Cloudflare Workers (Gratis s.d 100.000 request/hari)</strong> menghubungkan API OpenRouter DeepSeek.
         </div>
       </div>
 

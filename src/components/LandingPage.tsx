@@ -344,7 +344,7 @@ export default function LandingPage({ onEnterDashboard, brandName, darkMode, set
               5 Pilar Utama Taktis Jualan yang Mengubah Aturan Main Penjualan Anda
             </h2>
             <p className="text-xs font-mono text-neutral-400 dark:text-[#737373] uppercase tracking-wider mt-2 max-w-xl mx-auto">
-              Sistem terpadu pembangun habit bersaing yang agresif dan ramah operasional pemilik UMKM lokal.
+              Sistem terpadu pembangun habit bersaing yang agresif dan ramah operasional Pengusaha lokal.
             </p>
           </div>
 
