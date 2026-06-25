@@ -7,11 +7,18 @@ import { Sparkles, CheckSquare, TrendingUp, RefreshCw, BarChart2, Target, Users,
 import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, Cell, ReferenceLine } from "recharts";
 
 export default function DailyPulse() {
-  const { dna, strategyOutput, dailyRecords, addPulseRecord, streakCount } = useChain();
+  const { dna, strategyOutput, dailyRecords, addPulseRecord, streakCount, competitors, segments } = useChain();
   const [loading, setLoading] = React.useState(false);
   const [briefing, setBriefing] = React.useState(
     `Selamat pagi, Owner Hebat! Hari baru adalah momentum baru untuk memajukan brand Anda. Berdasarkan DNA Produk: ${dna.productName}, segmentasi ibu muda saat ini sangat aktif mencari inspirasi belanja menjelang siang hari. Kami menyarankan untuk menyelesaikan action item di bawah ini sebelum pukul 11:30 WIB agar tidak kehilangan momentum closing!`
   );
+
+  // Tactical Briefing state (3-chain output)
+  const [tacticalGap, setTacticalGap] = React.useState("");
+  const [tacticalSteps, setTacticalSteps] = React.useState<{ id: string; text: string; done: boolean; category: string }[]>([]);
+  const [waTemplate, setWaTemplate] = React.useState("");
+  const [socialCopy, setSocialCopy] = React.useState("");
+  const [radarIntel, setRadarIntel] = React.useState("");
 
   const [items, setItems] = React.useState([
     { id: "1", text: `Posting desain visual Reels terbaru dari Content Generator ke Instagram`, done: false, category: "Marketing" },
@@ -133,42 +140,133 @@ export default function DailyPulse() {
     });
   }, [dailyRecords, chartPeriod, yesterdayRevenue, todayTarget, dailyAchievement, dailyAvgTarget]);
 
+  // ── Tactical Briefing: markdown parser ────────────────────────
+  function parseTacticalMarkdown(md: string) {
+    const blocks = md.split(/^### /m);
+    const sec1 = blocks.find(b => b.startsWith("1.")) ?? "";
+    const sec2 = blocks.find(b => b.startsWith("2.")) ?? "";
+    const sec3 = blocks.find(b => b.startsWith("3.")) ?? "";
+
+    // Section 1: gap text (strip the header line)
+    const gapLines = sec1.split("\n");
+    const gapText = gapLines.slice(1).join("\n").trim();
+
+    // Section 2: parse numbered action items with **Verb** pattern
+    const stepLines = sec2.split("\n").filter(l => /^\d+\.\s/.test(l.trim()));
+    const steps = stepLines.map((line, i) => {
+      const cleaned = line.replace(/^\d+\.\s+/, "").trim();
+      return {
+        id: `tactical-${i}`,
+        text: cleaned,
+        done: false,
+        category: "Eksekusi",
+      };
+    });
+
+    // Section 3: extract WhatsApp template & social copy from code blocks
+    const waMatch = sec3.match(/```[\s\S]*?```/);
+    const waText = waMatch ? waMatch[0].replace(/```/g, "").trim() : "";
+
+    // Second code block = social copy
+    const allCodeBlocks = sec3.match(/```[\s\S]*?```/g);
+    const socialText = allCodeBlocks && allCodeBlocks.length > 1
+      ? allCodeBlocks[1].replace(/```/g, "").trim()
+      : "";
+
+    return { gapText, steps, waText, socialText };
+  }
+
+  // ── Tactical Briefing: input builder from ChainContext ──────
+  function buildTacticalInput() {
+    const topComp = competitors[0];
+    const topSegment = [...segments].sort((a, b) => b.percentage - a.percentage)[0];
+    const churnSegment = segments.find(s => s.risk === "High");
+
+    return {
+      dna: {
+        brand: dna.brand || "Brand Anda",
+        productName: dna.productName,
+        category: dna.category,
+        advantages: dna.advantages,
+        normalPrice: dna.normalPrice,
+        targetMonthlyRevenue: dna.targetMonthlyRevenue,
+        activeSocialMedia: dna.activeSocialMedia?.length ? dna.activeSocialMedia : ["Instagram", "WhatsApp"],
+        businessContact: dna.businessContact || "-",
+      },
+      warRoom: {
+        competitors: competitors.filter(c => c.name?.trim()).map(c => ({
+          name: c.name,
+          biggestWeakness: c.weaknesses || "-",
+          priceGap: c.averagePrice || "-",
+          blindSpot: c.opportunities || "-",
+        })),
+        topMarketThreat: competitors[0]?.threats || "Belum teridentifikasi",
+        untappedOpportunity: competitors[0]?.opportunities || "Belum teridentifikasi",
+      },
+      customerInsight: {
+        topSegment: topSegment?.name || "Pelanggan Setia",
+        topComplaint: "Butuh variasi produk & respon cepat",
+        topDesire: "Produk eksklusif dengan harga kompetitif",
+        churnRiskSegment: churnSegment?.name || "Belum teridentifikasi",
+        avgTransactionGap: topSegment
+          ? `Rp ${((dna.normalPrice * 1.5) - topSegment.avgTransaction).toLocaleString()} gap`
+          : "Belum terhitung",
+      },
+      daily: {
+        yesterdayRevenue,
+        todayTarget,
+        dailyAchievementPct: dailyAchievement,
+        activeStrategies: strategyOutput?.pillars?.map(p => p.title) ?? [],
+        pendingItems: items.filter(x => !x.done).map(x => x.text),
+        streakDays: streakCount,
+      },
+    };
+  }
+
   const fetchBriefing = async () => {
     setLoading(true);
     try {
-      const yesterday = dailyRecords[dailyRecords.length - 1];
-      const dailyAchievement = todayTarget > 0 ? Math.round((yesterdayRevenue / todayTarget) * 100) : 0;
+      const payload = buildTacticalInput();
 
-      const response = await fetch(`${API_BASE}/api/daily-pulse`, {
+      const response = await fetch(`${API_BASE}/api/tactical-briefing`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          dna,
-          completedCount: items.filter((x) => x.done).length,
-          activeStrategies: strategyOutput?.pillars?.map((p) => p.title) ?? [],
-          pendingItems: yesterday?.pendingItems ?? [],
-          yesterdayRevenue,
-          todayTarget,
-          dailyAchievement,
-        }),
+        body: JSON.stringify(payload),
       });
       const data = await response.json();
-      if (data.briefing) {
-        setBriefing(data.briefing);
+
+      if (data.markdown) {
+        const parsed = parseTacticalMarkdown(data.markdown);
+
+        setTacticalGap(parsed.gapText);
+        setBriefing(parsed.gapText); // backward compat — keep existing briefing display
+        setTacticalSteps(parsed.steps);
+        setItems(parsed.steps); // overwrite hardcoded items
+        setWaTemplate(parsed.waText);
+        setSocialCopy(parsed.socialText);
+
+        // Radar intel: extract first impactful sentence from gap
+        const gapSentences = parsed.gapText.split(/[.!?]\s+/).filter(Boolean);
+        setRadarIntel(
+          gapSentences.length > 0
+            ? gapSentences[0] + "."
+            : parsed.gapText.slice(0, 150)
+        );
+
         addPulseRecord({
           date: new Date().toISOString().split("T")[0],
-          briefing: data.briefing,
-          completedCount: items.filter((x) => x.done).length,
-          pendingItems: items.filter((x) => !x.done).map((x) => x.text),
-          activeStrategies: strategyOutput?.pillars?.map((p) => p.title) ?? [],
-          streakCount: streakCount,
+          briefing: parsed.gapText,
+          completedCount: 0,
+          pendingItems: parsed.steps.map(s => s.text),
+          activeStrategies: strategyOutput?.pillars?.map(p => p.title) ?? [],
+          streakCount,
           yesterdayRevenue,
           todayTarget,
           dailyAchievement,
         });
       }
     } catch (err) {
-      console.error(err);
+      console.error("Tactical Briefing fetch error:", err);
     } finally {
       setLoading(false);
     }
@@ -284,6 +382,58 @@ export default function DailyPulse() {
               ))}
             </div>
           </div>
+
+          {/* Amunisi Komunikasi — from Chain 3 */}
+          {(waTemplate || socialCopy) && (
+            <div className="p-6 rounded border bg-white dark:bg-[#111111] border-neutral-200 dark:border-[#262626] space-y-4">
+              <div className="flex items-center justify-between border-b pb-2 border-neutral-150 dark:border-[#1A1A1A]">
+                <h3 className="text-sm font-bold flex items-center space-x-2 text-neutral-900 dark:text-white">
+                  <span className="text-base">💬</span>
+                  <span>Amunisi Komunikasi (Siap Pakai)</span>
+                </h3>
+              </div>
+
+              {waTemplate && (
+                <div className="space-y-2">
+                  <span className="text-[9px] font-bold font-mono uppercase text-emerald-600 dark:text-emerald-400 tracking-wider">
+                    Template WhatsApp
+                  </span>
+                  <div className="relative">
+                    <pre className="p-3 rounded bg-emerald-50 dark:bg-[#0f1a14] border border-emerald-200 dark:border-emerald-900/40 text-xs leading-relaxed text-neutral-800 dark:text-[#E5E5E5] whitespace-pre-wrap font-sans">
+                      {waTemplate}
+                    </pre>
+                    <button
+                      onClick={() => navigator.clipboard.writeText(waTemplate)}
+                      className="absolute top-2 right-2 p-1.5 rounded bg-white dark:bg-[#171717] border border-neutral-200 dark:border-[#262626] text-[10px] font-mono text-neutral-500 hover:text-neutral-900 dark:hover:text-white"
+                      title="Copy WhatsApp"
+                    >
+                      📋 Salin
+                    </button>
+                  </div>
+                </div>
+              )}
+
+              {socialCopy && (
+                <div className="space-y-2">
+                  <span className="text-[9px] font-bold font-mono uppercase text-purple-600 dark:text-purple-400 tracking-wider">
+                    Copywriting Media Sosial
+                  </span>
+                  <div className="relative">
+                    <pre className="p-3 rounded bg-purple-50 dark:bg-[#13101a] border border-purple-200 dark:border-purple-900/40 text-xs leading-relaxed text-neutral-800 dark:text-[#E5E5E5] whitespace-pre-wrap font-sans">
+                      {socialCopy}
+                    </pre>
+                    <button
+                      onClick={() => navigator.clipboard.writeText(socialCopy)}
+                      className="absolute top-2 right-2 p-1.5 rounded bg-white dark:bg-[#171717] border border-neutral-200 dark:border-[#262626] text-[10px] font-mono text-neutral-500 hover:text-neutral-900 dark:hover:text-white"
+                      title="Copy Social"
+                    >
+                      📋 Salin
+                    </button>
+                  </div>
+                </div>
+              )}
+            </div>
+          )}
         </div>
 
         {/* RIGHT COLUMN: REVENUE KPI & RADAR ALERTS (4 Columns) */}
@@ -450,7 +600,9 @@ export default function DailyPulse() {
               <span>RADAR PASAR KOMPETITOR</span>
             </h4>
             <p className="text-[11px] leading-relaxed text-neutral-500 dark:text-[#A3A3A3]">
-              Pesaing utama Anda <strong className="font-semibold text-neutral-805 dark:text-white">{dna.biggestCompetitor || "Zahra Store"}</strong> mendetect volume kampanye visual Anda. Hubungi segmen pembeli Anda dengan taktik retensi CRM penyelamat Churn secepatnya!
+              {radarIntel || (
+                <>Pesaing utama Anda <strong className="font-semibold text-neutral-805 dark:text-white">{dna.biggestCompetitor || "Zahra Store"}</strong> mendetect volume kampanye visual Anda. Klik <strong>"Acak Tips Baru"</strong> untuk mendapatkan briefing taktis terkini.</>
+              )}
             </p>
           </div>
         </div>
