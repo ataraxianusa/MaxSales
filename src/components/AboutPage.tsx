@@ -30,7 +30,7 @@ export default function AboutPage({ onBack }: AboutPageProps) {
             <h2 className="text-xl font-semibold text-neutral-900 dark:text-white mb-4">PT. Gen Indo Kreatif</h2>
             <p className="text-neutral-600 dark:text-neutral-400 leading-relaxed">
               PT. Gen Indo Kreatif adalah perusahaan teknologi yang berpusat di Surabaya, Indonesia. 
-              Kami berkomitmen untuk memberdayakan UMKM dan pengusaha lokal melalui solusi berbasis 
+              Kami berkomitmen untuk memberdayakan pemilik usaha dan pengusaha lokal melalui solusi berbasis 
               kecerdasan buatan (AI) yang praktis dan mudah digunakan.
             </p>
           </section>
@@ -48,7 +48,7 @@ export default function AboutPage({ onBack }: AboutPageProps) {
             <ul className="space-y-3 text-neutral-600 dark:text-neutral-400">
               <li className="flex items-start space-x-3">
                 <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 mt-2 flex-shrink-0"></span>
-                <span>Menyediakan solusi AI yang mudah diakses oleh UMKM Indonesia</span>
+                <span>Menyediakan solusi AI yang mudah diakses oleh pengusaha Indonesia</span>
               </li>
               <li className="flex items-start space-x-3">
                 <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 mt-2 flex-shrink-0"></span>

@@ -166,7 +166,7 @@ export const defaultCanvasData = (): BusinessCanvasData => ({
   businessType: "Campuran",
   salesChannels: ["Online Store", "Social Media", "Reseller"],
   paymentMethods: ["COD", "Transfer", "E-Wallet"],
-  legalStatus: ["UMKM", "Perseorangan"],
+  legalStatus: ["Perseorangan"],
   permits: ["NIB", "Halal MUI"],
   foundedYear: 2024,
   employeeCount: "1-5",
