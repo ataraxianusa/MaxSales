@@ -314,34 +314,7 @@ export default function App() {
       {/* Main Routing Render */}
       <main id="main-content" className="flex-1">
         
-        {/* LANDING PAGE ROUTE */}
-        {currentTab === "landing" && (
-          <LandingPage 
-            onEnterDashboard={() => {
-              if (isLoggedIn) {
-                setTab("dashboard");
-              } else {
-                setTab("login");
-              }
-            }}
-            brandName={canvas.brand}
-            darkMode={darkMode}
-            setDarkMode={setDarkMode}
-          />
-        )}
-
-        {/* LOGIN PAGE ROUTE */}
-        {currentTab === "login" && (
-          <Login 
-            onLoginSuccess={() => {
-              setIsLoggedIn(true);
-              localStorage.setItem("maxx_sales_logged_in", "true");
-              setTab("dashboard");
-            }}
-          />
-        )}
-
-        {/* LEGAL PAGES - Direct URL routes */}
+        {/* LEGAL PAGES — direct URL, hide all other content */}
         <Routes>
           <Route path="/about" element={<AboutPage onBack={() => navigate("/")} />} />
           <Route path="/terms" element={<TermsOfService onBack={() => navigate("/")} />} />
@@ -349,7 +322,37 @@ export default function App() {
           <Route path="/risk" element={<RiskDisclosure onBack={() => navigate("/")} />} />
         </Routes>
 
-        {/* DASHBOARD ROUTE */}
+        {/* APP CONTENT — only render when NOT on a legal page */}
+        {!["/about", "/terms", "/privacy", "/risk"].includes(location.pathname) && (
+          <>
+            {/* LANDING PAGE ROUTE */}
+            {currentTab === "landing" && (
+              <LandingPage 
+                onEnterDashboard={() => {
+                  if (isLoggedIn) {
+                    setTab("dashboard");
+                  } else {
+                    setTab("login");
+                  }
+                }}
+                brandName={canvas.brand}
+                darkMode={darkMode}
+                setDarkMode={setDarkMode}
+              />
+            )}
+
+            {/* LOGIN PAGE ROUTE */}
+            {currentTab === "login" && (
+              <Login 
+                onLoginSuccess={() => {
+                  setIsLoggedIn(true);
+                  localStorage.setItem("maxx_sales_logged_in", "true");
+                  setTab("dashboard");
+                }}
+              />
+            )}
+
+            {/* DASHBOARD ROUTE */}
         {currentTab === "dashboard" && isLoggedIn && (
           <ChainProvider
             competitors={competitors}
@@ -653,6 +656,8 @@ export default function App() {
             )}
           </div>
           </ChainProvider>
+        )}
+          </>
         )}
 
       </main>
