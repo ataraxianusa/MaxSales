@@ -6,6 +6,7 @@ import AIFeedback from "./AIFeedback";
 import { Image as ImageIcon, Upload, Download, Copy, RefreshCw, Layers, Eye, Smartphone, Check, Loader2 } from "lucide-react";
 
 type AspectRatioType = "feed" | "story" | "whatsapp";
+type LayoutStyle = "minimal" | "bold" | "card" | "banner";
 
 interface ContentSuggestions {
   hooks: string[];
@@ -35,6 +36,7 @@ export default function ContentGenerator() {
 
   // Active view tab
   const [activeFormat, setActiveFormat] = React.useState<AspectRatioType>("feed");
+  const [layoutStyle, setLayoutStyle] = React.useState<LayoutStyle>("minimal");
   const [loading, setLoading] = React.useState(false);
   const [copiedText, setCopiedText] = React.useState(false);
 
@@ -160,7 +162,7 @@ export default function ContentGenerator() {
   React.useEffect(() => {
     const timer = setTimeout(() => drawCanvas(), 300);
     return () => clearTimeout(timer);
-  }, [generatedText, imageSrc, activeFormat, promoPrice, normalPrice]);
+  }, [generatedText, imageSrc, activeFormat, layoutStyle, promoPrice, normalPrice]);
 
   const drawCanvas = () => {
     const canvas = canvasRef.current;
@@ -192,87 +194,292 @@ export default function ContentGenerator() {
     ctx.fillRect(0, 0, width, height);
 
     const renderOverlayAndText = () => {
-      // 1. Draw elegant dark gradient overlay at the bottom so text is highly readable
-      const gradient = ctx.createLinearGradient(0, height * 0.4, 0, height);
-      gradient.addColorStop(0, "rgba(0, 0, 0, 0)");
-      gradient.addColorStop(0.3, "rgba(0, 0, 0, 0.7)");
-      gradient.addColorStop(0.85, "rgba(0, 0, 0, 0.95)");
-      gradient.addColorStop(1, "rgba(0, 0, 0, 1)");
-      ctx.fillStyle = gradient;
-      ctx.fillRect(0, 0, width, height);
-
-      // 2. Render Text Content (Headline, Subheadline, Normal price, Promo price, CTA button, Watermark)
-      ctx.fillStyle = "#ffffff";
-      ctx.textBaseline = "top";
-
-      // Scale calculations for font based on story vs feed
       const fScale = activeFormat === "story" ? 1.4 : 1.0;
 
-      // Brand Title Tag
-      ctx.fillStyle = "#a3a3a3"; // neutral-400
-      ctx.font = `bold ${Math.round(26 * fScale)}px Inter, system-ui, sans-serif`;
-      ctx.fillText((dna.brand || "EL-ZAHRA BOUTIQUE").toUpperCase(), 60, height - 370 * fScale);
+      // Helper: draw CTA button (reusable across layouts)
+      const drawCTA = (x: number, y: number, w: number, h: number, radius?: number) => {
+        ctx.fillStyle = "#ffffff";
+        if (radius) {
+          ctx.beginPath();
+          ctx.roundRect(x, y, w, h, radius);
+          ctx.fill();
+        } else {
+          ctx.fillRect(x, y, w, h);
+        }
+        ctx.fillStyle = "#111111";
+        ctx.font = `bold ${Math.round(22 * fScale)}px Inter, system-ui, sans-serif`;
+        ctx.textAlign = "center";
+        ctx.textBaseline = "middle";
+        ctx.fillText(generatedText.ctaText.toUpperCase(), x + w / 2, y + h / 2);
+        ctx.textAlign = "left";
+        ctx.textBaseline = "top";
+      };
 
-      // Promo/Diskon Highlight Bag
-      ctx.fillStyle = "#ffffff";
-      ctx.font = `black ${Math.round(48 * fScale)}px Inter, system-ui, sans-serif`;
-      ctx.fillText(generatedText.headline, 60, height - 315 * fScale);
+      // Helper: draw price block
+      const drawPrice = (x: number, y: number) => {
+        ctx.fillStyle = "#737373";
+        ctx.font = `500 ${Math.round(24 * fScale)}px Inter, system-ui, sans-serif`;
+        const normPriceText = `Normal: Rp ${normalPrice.toLocaleString("id-ID")}`;
+        ctx.fillText(normPriceText, x, y);
+        const nw = ctx.measureText(normPriceText).width;
+        ctx.strokeStyle = "#ef4444";
+        ctx.lineWidth = 3;
+        ctx.beginPath();
+        ctx.moveTo(x, y + 14 * fScale);
+        ctx.lineTo(x + nw, y + 14 * fScale);
+        ctx.stroke();
+        ctx.fillStyle = "#ffffff";
+        ctx.font = `bold ${Math.round(34 * fScale)}px Inter, system-ui, sans-serif`;
+        ctx.fillText(`Rp ${promoPrice.toLocaleString("id-ID")}`, x, y + 38 * fScale);
+        ctx.fillStyle = "#a3a3a3";
+        ctx.font = `bold ${Math.round(18 * fScale)}px Inter, system-ui, sans-serif`;
+        ctx.fillText(generatedText.promoDisplay || "Hemat", x + ctx.measureText(`Rp ${promoPrice.toLocaleString("id-ID")}`).width + 12, y + 44 * fScale);
+      };
 
-      // Subheadline Keunggulan
-      ctx.fillStyle = "#e5e5e5"; // neutral-200
-      ctx.font = `400 ${Math.round(24 * fScale)}px Inter, system-ui, sans-serif`;
-      ctx.fillText(generatedText.subheadline, 60, height - 250 * fScale);
+      if (layoutStyle === "minimal") {
+        // ── MINIMAL: Classic bottom gradient overlay ──
+        const gradient = ctx.createLinearGradient(0, height * 0.4, 0, height);
+        gradient.addColorStop(0, "rgba(0, 0, 0, 0)");
+        gradient.addColorStop(0.3, "rgba(0, 0, 0, 0.7)");
+        gradient.addColorStop(0.85, "rgba(0, 0, 0, 0.95)");
+        gradient.addColorStop(1, "rgba(0, 0, 0, 1)");
+        ctx.fillStyle = gradient;
+        ctx.fillRect(0, 0, width, height);
 
-      // Prices (Draw Normal Price struck-through, and Promo price in bright white)
-      ctx.fillStyle = "#737373"; // neutral-500
-      ctx.font = `500 ${Math.round(28 * fScale)}px Inter, system-ui, sans-serif`;
-      const normPriceText = `Normal: Rp ${normalPrice.toLocaleString("id-ID")}`;
-      ctx.fillText(normPriceText, 60, height - 200 * fScale);
-      
-      // Draw strikeout on Normal price
-      const normTextWidth = ctx.measureText(normPriceText).width;
-      ctx.strokeStyle = "#ef4444"; // red strike
-      ctx.lineWidth = 3;
-      ctx.beginPath();
-      ctx.moveTo(60, height - 186 * fScale);
-      ctx.lineTo(60 + normTextWidth, height - 186 * fScale);
-      ctx.stroke();
+        ctx.fillStyle = "#a3a3a3";
+        ctx.font = `bold ${Math.round(24 * fScale)}px Inter, system-ui, sans-serif`;
+        ctx.fillText((dna.brand || "BRAND").toUpperCase(), 60, height - 380 * fScale);
 
-      // Promo Price
-      ctx.fillStyle = "#ffffff"; // Monochrome high-contrast
-      ctx.font = `bold ${Math.round(38 * fScale)}px Inter, system-ui, sans-serif`;
-      ctx.fillText(`PROMO: Rp ${promoPrice.toLocaleString("id-ID")} (${generatedText.promoDisplay || "Hemat"})`, 60, height - 160 * fScale);
+        ctx.fillStyle = "#ffffff";
+        ctx.font = `black ${Math.round(46 * fScale)}px Inter, system-ui, sans-serif`;
+        ctx.fillText(generatedText.headline, 60, height - 330 * fScale);
 
-      // Urgency text
-      ctx.fillStyle = "#a3a3a3"; // neutral-400
-      ctx.font = `italic bold ${Math.round(24 * fScale)}px Inter, system-ui, sans-serif`;
-      ctx.fillText(`⏰ ${generatedText.urgencyText.toUpperCase()}`, 60, height - 110 * fScale);
+        ctx.fillStyle = "#e5e5e5";
+        ctx.font = `400 ${Math.round(22 * fScale)}px Inter, system-ui, sans-serif`;
+        ctx.fillText(generatedText.subheadline, 60, height - 270 * fScale);
 
-      // CTA Button Box at bottom-right (Sharp and rectangle)
-      const btnX = width - 360;
-      const btnY = height - 150 * fScale;
-      const btnW = 300;
-      const btnH = 65 * fScale;
+        drawPrice(60, height - 220 * fScale);
 
-      ctx.fillStyle = "#ffffff"; // solid white block
-      ctx.beginPath();
-      ctx.rect(btnX, btnY, btnW, btnH);
-      ctx.fill();
+        ctx.fillStyle = "#a3a3a3";
+        ctx.font = `italic bold ${Math.round(20 * fScale)}px Inter, system-ui, sans-serif`;
+        ctx.fillText(`⏰ ${generatedText.urgencyText.toUpperCase()}`, 60, height - 120 * fScale);
 
-      // CTA Text
-      ctx.fillStyle = "#111111"; // deep black text inside button
-      ctx.font = `bold ${Math.round(24 * fScale)}px Inter, system-ui, sans-serif`;
-      ctx.textAlign = "center";
-      ctx.textBaseline = "middle";
-      ctx.fillText(generatedText.ctaText.toUpperCase(), btnX + btnW / 2, btnY + btnH / 2);
+        drawCTA(width - 340, height - 110 * fScale, 280, 55 * fScale);
 
-      // Footer Watermark @account
-      ctx.fillStyle = "#525252"; // neutral-600
-      ctx.font = `bold 20px monospace`;
+      } else if (layoutStyle === "bold") {
+        // ── BOLD: Center text + accent color bar ──
+        const gradient = ctx.createLinearGradient(0, 0, 0, height);
+        gradient.addColorStop(0, "rgba(0, 0, 0, 0.3)");
+        gradient.addColorStop(0.45, "rgba(0, 0, 0, 0.15)");
+        gradient.addColorStop(0.55, "rgba(0, 0, 0, 0.85)");
+        gradient.addColorStop(1, "rgba(0, 0, 0, 0.98)");
+        ctx.fillStyle = gradient;
+        ctx.fillRect(0, 0, width, height);
+
+        // Accent bar left side
+        ctx.fillStyle = "#10b981"; // emerald-500
+        ctx.fillRect(0, height * 0.38, 8 * fScale, height * 0.55);
+
+        // Brand
+        ctx.fillStyle = "#10b981";
+        ctx.font = `bold ${Math.round(22 * fScale)}px Inter, system-ui, sans-serif`;
+        ctx.fillText(`◆ ${(dna.brand || "BRAND").toUpperCase()}`, 40, height * 0.40);
+
+        // Headline — large centered
+        ctx.fillStyle = "#ffffff";
+        ctx.font = `black ${Math.round(56 * fScale)}px Inter, system-ui, sans-serif`;
+        ctx.textAlign = "center";
+        ctx.fillText(generatedText.headline, width / 2, height * 0.48);
+        ctx.textAlign = "left";
+
+        // Subheadline
+        ctx.fillStyle = "#d4d4d4";
+        ctx.font = `400 ${Math.round(22 * fScale)}px Inter, system-ui, sans-serif`;
+        ctx.textAlign = "center";
+        ctx.fillText(generatedText.subheadline, width / 2, height * 0.54);
+        ctx.textAlign = "left";
+
+        // Price block centered
+        ctx.textAlign = "center";
+        ctx.fillStyle = "#737373";
+        ctx.font = `500 ${Math.round(22 * fScale)}px Inter, system-ui, sans-serif`;
+        const np = `Normal: Rp ${normalPrice.toLocaleString("id-ID")}`;
+        ctx.fillText(np, width / 2, height * 0.62);
+        const npW = ctx.measureText(np).width;
+        ctx.strokeStyle = "#ef4444";
+        ctx.lineWidth = 3;
+        ctx.beginPath();
+        ctx.moveTo(width / 2 - npW / 2, height * 0.62 + 14 * fScale);
+        ctx.lineTo(width / 2 + npW / 2, height * 0.62 + 14 * fScale);
+        ctx.stroke();
+
+        ctx.fillStyle = "#ffffff";
+        ctx.font = `black ${Math.round(42 * fScale)}px Inter, system-ui, sans-serif`;
+        ctx.fillText(`Rp ${promoPrice.toLocaleString("id-ID")}`, width / 2, height * 0.69);
+        ctx.fillStyle = "#10b981";
+        ctx.font = `bold ${Math.round(20 * fScale)}px Inter, system-ui, sans-serif`;
+        const pp = `Rp ${promoPrice.toLocaleString("id-ID")}`;
+        ctx.fillText(generatedText.promoDisplay || "Hemat", width / 2 + ctx.measureText(pp).width / 2 + 16, height * 0.70);
+        ctx.textAlign = "left";
+
+        // Urgency pill
+        ctx.fillStyle = "rgba(16, 185, 129, 0.15)";
+        const urgText = `⏰ ${generatedText.urgencyText.toUpperCase()}`;
+        ctx.font = `bold ${Math.round(18 * fScale)}px Inter, system-ui, sans-serif`;
+        const urgW = ctx.measureText(urgText).width + 32;
+        ctx.beginPath();
+        ctx.roundRect(width / 2 - urgW / 2, height * 0.78, urgW, 40 * fScale, 20 * fScale);
+        ctx.fill();
+        ctx.fillStyle = "#10b981";
+        ctx.textAlign = "center";
+        ctx.fillText(urgText, width / 2, height * 0.78 + 12 * fScale);
+        ctx.textAlign = "left";
+
+        // CTA centered
+        const ctaW = 300;
+        const ctaH = 55 * fScale;
+        drawCTA(width / 2 - ctaW / 2, height * 0.86, ctaW, ctaH, 12 * fScale);
+
+      } else if (layoutStyle === "card") {
+        // ── CARD: Frosted glass card overlay at bottom ──
+        const gradient = ctx.createLinearGradient(0, 0, 0, height);
+        gradient.addColorStop(0, "rgba(0, 0, 0, 0)");
+        gradient.addColorStop(0.5, "rgba(0, 0, 0, 0)");
+        gradient.addColorStop(0.6, "rgba(0, 0, 0, 0.6)");
+        gradient.addColorStop(1, "rgba(0, 0, 0, 0.85)");
+        ctx.fillStyle = gradient;
+        ctx.fillRect(0, 0, width, height);
+
+        // Glass card
+        const cardX = 40;
+        const cardY = height * 0.58;
+        const cardW = width - 80;
+        const cardH = height * 0.38;
+        ctx.fillStyle = "rgba(255, 255, 255, 0.08)";
+        ctx.beginPath();
+        ctx.roundRect(cardX, cardY, cardW, cardH, 24);
+        ctx.fill();
+        ctx.strokeStyle = "rgba(255, 255, 255, 0.15)";
+        ctx.lineWidth = 1.5;
+        ctx.stroke();
+
+        // Brand badge inside card
+        ctx.fillStyle = "rgba(255, 255, 255, 0.12)";
+        const badgeText = (dna.brand || "BRAND").toUpperCase();
+        ctx.font = `bold ${Math.round(16 * fScale)}px Inter, system-ui, sans-serif`;
+        const badgeW = ctx.measureText(badgeText).width + 28;
+        ctx.beginPath();
+        ctx.roundRect(cardX + 24, cardY + 24, badgeW, 32 * fScale, 8);
+        ctx.fill();
+        ctx.fillStyle = "#e5e5e5";
+        ctx.fillText(badgeText, cardX + 38, cardY + 30);
+
+        // Headline
+        ctx.fillStyle = "#ffffff";
+        ctx.font = `black ${Math.round(40 * fScale)}px Inter, system-ui, sans-serif`;
+        ctx.fillText(generatedText.headline, cardX + 24, cardY + 72);
+
+        // Subheadline
+        ctx.fillStyle = "#a3a3a3";
+        ctx.font = `400 ${Math.round(20 * fScale)}px Inter, system-ui, sans-serif`;
+        ctx.fillText(generatedText.subheadline, cardX + 24, cardY + 122);
+
+        // Price
+        ctx.fillStyle = "#737373";
+        ctx.font = `500 ${Math.round(20 * fScale)}px Inter, system-ui, sans-serif`;
+        const np2 = `Normal: Rp ${normalPrice.toLocaleString("id-ID")}`;
+        ctx.fillText(np2, cardX + 24, cardY + 162);
+        const np2W = ctx.measureText(np2).width;
+        ctx.strokeStyle = "#ef4444";
+        ctx.lineWidth = 2;
+        ctx.beginPath();
+        ctx.moveTo(cardX + 24, cardY + 175 * fScale);
+        ctx.lineTo(cardX + 24 + np2W, cardY + 175 * fScale);
+        ctx.stroke();
+        ctx.fillStyle = "#ffffff";
+        ctx.font = `bold ${Math.round(30 * fScale)}px Inter, system-ui, sans-serif`;
+        ctx.fillText(`Rp ${promoPrice.toLocaleString("id-ID")}`, cardX + 24, cardY + 185 * fScale);
+        ctx.fillStyle = "#10b981";
+        ctx.font = `bold ${Math.round(16 * fScale)}px Inter, system-ui, sans-serif`;
+        ctx.fillText(generatedText.promoDisplay || "Hemat", cardX + 24 + ctx.measureText(`Rp ${promoPrice.toLocaleString("id-ID")}`).width + 10, cardY + 191 * fScale);
+
+        // CTA button bottom-right of card
+        drawCTA(cardX + cardW - 220, cardY + cardH - 70 * fScale, 196, 48 * fScale, 10);
+
+        // Urgency top-right of card
+        ctx.fillStyle = "#a3a3a3";
+        ctx.font = `italic bold ${Math.round(16 * fScale)}px Inter, system-ui, sans-serif`;
+        ctx.textAlign = "right";
+        ctx.fillText(`⏰ ${generatedText.urgencyText.toUpperCase()}`, cardX + cardW - 24, cardY + 36);
+        ctx.textAlign = "left";
+
+      } else if (layoutStyle === "banner") {
+        // ── BANNER: Diagonal top banner with overlay below ──
+        // Full dark overlay
+        ctx.fillStyle = "rgba(0, 0, 0, 0.75)";
+        ctx.fillRect(0, 0, width, height);
+
+        // Diagonal accent shape at top
+        ctx.fillStyle = "#10b981";
+        ctx.beginPath();
+        ctx.moveTo(0, 0);
+        ctx.lineTo(width, 0);
+        ctx.lineTo(width, height * 0.15);
+        ctx.lineTo(0, height * 0.22);
+        ctx.closePath();
+        ctx.fill();
+
+        // Brand in banner
+        ctx.fillStyle = "#065f46";
+        ctx.font = `black ${Math.round(28 * fScale)}px Inter, system-ui, sans-serif`;
+        ctx.fillText((dna.brand || "BRAND").toUpperCase(), 60, height * 0.09);
+
+        // Flash badge
+        ctx.fillStyle = "#ffffff";
+        const flashText = "⚡ FLASH SALE";
+        ctx.font = `black ${Math.round(20 * fScale)}px Inter, system-ui, sans-serif`;
+        const flashW = ctx.measureText(flashText).width + 32;
+        ctx.beginPath();
+        ctx.roundRect(width - flashW - 60, height * 0.04, flashW, 38 * fScale, 8);
+        ctx.fill();
+        ctx.fillStyle = "#10b981";
+        ctx.fillText(flashText, width - flashW - 44, height * 0.05 + 6 * fScale);
+
+        // Large headline below banner
+        ctx.fillStyle = "#ffffff";
+        ctx.font = `black ${Math.round(52 * fScale)}px Inter, system-ui, sans-serif`;
+        ctx.fillText(generatedText.headline, 60, height * 0.30);
+
+        // Subheadline
+        ctx.fillStyle = "#d4d4d4";
+        ctx.font = `400 ${Math.round(22 * fScale)}px Inter, system-ui, sans-serif`;
+        ctx.fillText(generatedText.subheadline, 60, height * 0.38);
+
+        // Accent line
+        ctx.fillStyle = "#10b981";
+        ctx.fillRect(60, height * 0.44, 120, 4);
+
+        // Price block
+        drawPrice(60, height * 0.50);
+
+        // Urgency
+        ctx.fillStyle = "#a3a3a3";
+        ctx.font = `italic bold ${Math.round(22 * fScale)}px Inter, system-ui, sans-serif`;
+        ctx.fillText(`⏰ ${generatedText.urgencyText.toUpperCase()}`, 60, height * 0.68);
+
+        // CTA
+        drawCTA(60, height * 0.76, 280, 55 * fScale, 10);
+
+        // Bottom accent line
+        ctx.fillStyle = "#10b981";
+        ctx.fillRect(0, height - 6, width, 6);
+      }
+
+      // Watermark (all layouts)
+      ctx.fillStyle = "#525252";
+      ctx.font = `bold 18px monospace`;
       ctx.textAlign = "right";
-      ctx.fillText(generatedText.watermark, width - 60, height - 40);
-
-      // Reset textAlign & Baseline
+      ctx.fillText(generatedText.watermark, width - 40, height - 24);
       ctx.textAlign = "left";
       ctx.textBaseline = "top";
     };
@@ -586,30 +793,55 @@ export default function ContentGenerator() {
         <div className="lg:col-span-7 space-y-6">
           
           {/* Format Tabs switcher */}
-          <div className="flex border-b border-neutral-200 dark:border-[#262626] gap-1 pb-1">
-            {[
-              { type: "feed", label: "Instagram Feed (1:1)", icon: Eye },
-              { type: "story", label: "Stories/Reels (9:16)", icon: Smartphone },
-              { type: "whatsapp", label: "WhatsApp Catalog (1:1)", icon: ImageIcon }
-            ].map(f => {
-              const IconComp = f.icon;
-              const isActive = activeFormat === f.type;
-              return (
+          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between border-b border-neutral-200 dark:border-[#262626] gap-2 pb-2">
+            <div className="flex gap-1">
+              {[
+                { type: "feed", label: "Instagram Feed (1:1)", icon: Eye },
+                { type: "story", label: "Stories/Reels (9:16)", icon: Smartphone },
+                { type: "whatsapp", label: "WhatsApp Catalog (1:1)", icon: ImageIcon }
+              ].map(f => {
+                const IconComp = f.icon;
+                const isActive = activeFormat === f.type;
+                return (
+                  <button
+                    id={`btn-format-switch-${f.type}`}
+                    key={f.type}
+                    onClick={() => setActiveFormat(f.type as AspectRatioType)}
+                    className={`flex items-center space-x-1.5 px-3 py-2 text-xs font-mono transition-colors border-b-2 ${
+                      isActive
+                        ? "border-neutral-950 text-neutral-950 dark:border-white dark:text-white font-bold"
+                        : "border-transparent text-neutral-500 hover:text-neutral-850"
+                    }`}
+                  >
+                    <IconComp className="w-3.5 h-3.5" />
+                    <span>{f.label}</span>
+                  </button>
+                );
+              })}
+            </div>
+
+            {/* Layout Style Selector */}
+            <div className="flex items-center gap-1">
+              <span className="text-[9px] font-mono text-neutral-400 mr-1">LAYOUT:</span>
+              {[
+                { type: "minimal" as LayoutStyle, label: "Minimal", icon: "◻" },
+                { type: "bold" as LayoutStyle, label: "Bold", icon: "◆" },
+                { type: "card" as LayoutStyle, label: "Card", icon: "▢" },
+                { type: "banner" as LayoutStyle, label: "Banner", icon: "▬" },
+              ].map(ls => (
                 <button
-                  id={`btn-format-switch-${f.type}`}
-                  key={f.type}
-                  onClick={() => setActiveFormat(f.type as AspectRatioType)}
-                  className={`flex items-center space-x-1.5 px-3 py-2 text-xs font-mono transition-colors border-b-2 ${
-                    isActive
-                      ? "border-neutral-950 text-neutral-950 dark:border-white dark:text-white font-bold"
-                      : "border-transparent text-neutral-500 hover:text-neutral-850"
+                  key={ls.type}
+                  onClick={() => setLayoutStyle(ls.type)}
+                  className={`px-2.5 py-1.5 text-[10px] font-mono rounded transition-colors ${
+                    layoutStyle === ls.type
+                      ? "bg-neutral-950 text-white dark:bg-white dark:text-black"
+                      : "bg-neutral-100 dark:bg-neutral-800 text-neutral-500 hover:text-neutral-900 dark:hover:text-white"
                   }`}
                 >
-                  <IconComp className="w-3.5 h-3.5" />
-                  <span>{f.label}</span>
+                  <span className="mr-1">{ls.icon}</span>{ls.label}
                 </button>
-              );
-            })}
+              ))}
+            </div>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-12 gap-6">
