@@ -7,16 +7,27 @@ import { Image as ImageIcon, Upload, Download, Copy, RefreshCw, Layers, Eye, Sma
 
 type AspectRatioType = "feed" | "story" | "whatsapp";
 
+interface ContentSuggestions {
+  hooks: string[];
+  ctas: string[];
+  captions: string[];
+}
+
 export default function ContentGenerator() {
   const { dna, segments, strategyOutput } = useChain();
-  // Input states
-  const [promo, setPromo] = React.useState("Flash Sale 30% Terbatazs!");
-  const [hook, setHook] = React.useState("Model sutra asli yang adem dipakai seharian!");
-  const [cta, setCta] = React.useState("Beli Sekarang");
+  // Input states — auto-fill from DNA
+  const [promo, setPromo] = React.useState(`${dna.productName} — Flash Sale!`);
+  const [hook, setHook] = React.useState(dna.advantages ? dna.advantages.split(",")[0].trim() : "Model sutra asli yang adem dipakai seharian!");
+  const [cta, setCta] = React.useState(dna.buyTriggers?.length ? "Custom" : "Beli Sekarang");
+  const [customCta, setCustomCta] = React.useState(dna.buyTriggers?.length ? `Pesan via WA (${dna.buyTriggers[0]})` : "");
   const [urgency, setUrgency] = React.useState("Hari Ini Saja");
-  const [customCta, setCustomCta] = React.useState("");
   const [promoPrice, setPromoPrice] = React.useState(279000);
   const [normalPrice, setNormalPrice] = React.useState(dna.normalPrice || 399000);
+  
+  // AI Suggestion states
+  const [suggestions, setSuggestions] = React.useState<ContentSuggestions | null>(null);
+  const [suggestLoading, setSuggestLoading] = React.useState(false);
+  const [showSuggestions, setShowSuggestions] = React.useState(false);
   
   // Image states
   const [imageSrc, setImageSrc] = React.useState<string | null>(null);
@@ -30,7 +41,7 @@ export default function ContentGenerator() {
   // AI Generated output text state
   const [generatedText, setGeneratedText] = React.useState<GeneratedContentText>({
     headline: `${dna.productName} — Flash Sale!`,
-    subheadline: dna.advantages ? dna.advantages.split(',')[0] : "Bahan sutra premium yang flowy",
+    subheadline: dna.advantages ? dna.advantages.split(",")[0].trim() : "Bahan sutra premium yang flowy",
     priceDisplay: `Rp ${promoPrice.toLocaleString("id-ID")}`,
     promoDisplay: `Hemat 30%`,
     ctaText: "Beli Sekarang",
@@ -41,6 +52,35 @@ export default function ContentGenerator() {
   });
 
   const canvasRef = React.useRef<HTMLCanvasElement | null>(null);
+
+  // Fetch AI suggestions for hooks, CTAs, captions
+  const fetchSuggestions = async () => {
+    setSuggestLoading(true);
+    try {
+      const highRiskSegments = segments
+        .filter((s) => s.risk === "High")
+        .map((s) => ({ name: s.name, behavior: s.channel }));
+
+      const response = await fetch(`${API_BASE}/api/suggest-content`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          dna,
+          targetSegments: highRiskSegments,
+          activeStrategies: strategyOutput?.pillars?.slice(0, 3).map((p) => p.title) ?? [],
+        }),
+      });
+      const data = await response.json();
+      if (data?.hooks) {
+        setSuggestions(data);
+        setShowSuggestions(true);
+      }
+    } catch (err) {
+      console.error(err);
+    } finally {
+      setSuggestLoading(false);
+    }
+  };
 
   // Default preset image if none is uploaded
   const loadDefaultMockProduct = () => {
@@ -390,6 +430,96 @@ export default function ContentGenerator() {
                 rows={2}
                 className="w-full text-xs p-3 rounded border bg-transparent border-neutral-300 dark:border-neutral-800 focus:border-neutral-900 dark:focus:border-white focus:outline-none"
               />
+            </div>
+
+            {/* AI Suggestions Panel */}
+            <div className="pt-2">
+              <button
+                id="btn-ai-suggest"
+                onClick={fetchSuggestions}
+                disabled={suggestLoading}
+                className="w-full py-2 rounded text-[10px] font-semibold border border-dashed border-neutral-300 dark:border-neutral-700 text-neutral-600 dark:text-neutral-400 hover:border-neutral-900 dark:hover:border-white hover:text-neutral-900 dark:hover:text-white transition-colors flex items-center justify-center space-x-1.5 disabled:opacity-50"
+              >
+                {suggestLoading ? (
+                  <Loader2 className="w-3 h-3 animate-spin" />
+                ) : (
+                  <RefreshCw className="w-3 h-3" />
+                )}
+                <span>{suggestLoading ? "AI Sedang Berpikir..." : "✨ Dapatkan Saran Hook, CTA & Caption dari AI"}</span>
+              </button>
+
+              {showSuggestions && suggestions && (
+                <div className="mt-3 p-3 rounded border border-neutral-200 dark:border-[#262626] bg-neutral-50 dark:bg-neutral-950/30 space-y-3">
+                  <div className="flex items-center justify-between">
+                    <span className="text-[9px] font-bold font-mono text-neutral-450 dark:text-[#737373] uppercase tracking-wider">Saran AI dari DNA Bisnis</span>
+                    <button
+                      onClick={() => setShowSuggestions(false)}
+                      className="text-[9px] text-neutral-400 hover:text-neutral-600 dark:hover:text-neutral-300"
+                    >
+                      ✕
+                    </button>
+                  </div>
+
+                  {/* Hook Suggestions */}
+                  <div>
+                    <span className="text-[9px] font-mono font-semibold text-neutral-500 dark:text-neutral-500 mb-1 block">HOOK IDEA:</span>
+                    <div className="flex flex-wrap gap-1.5">
+                      {suggestions.hooks.map((h, i) => (
+                        <button
+                          key={i}
+                          onClick={() => setHook(h)}
+                          className={`text-[9px] px-2 py-1 rounded border transition-colors ${
+                            hook === h
+                              ? "bg-neutral-900 text-white dark:bg-white dark:text-black border-neutral-900 dark:border-white"
+                              : "bg-white dark:bg-neutral-900 text-neutral-600 dark:text-neutral-400 border-neutral-200 dark:border-neutral-800 hover:border-neutral-400 dark:hover:border-neutral-600"
+                          }`}
+                        >
+                          {h}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* CTA Suggestions */}
+                  <div>
+                    <span className="text-[9px] font-mono font-semibold text-neutral-500 dark:text-neutral-500 mb-1 block">CTA IDEA:</span>
+                    <div className="flex flex-wrap gap-1.5">
+                      {suggestions.ctas.map((c, i) => (
+                        <button
+                          key={i}
+                          onClick={() => { setCta("Custom"); setCustomCta(c); }}
+                          className={`text-[9px] px-2 py-1 rounded border transition-colors ${
+                            customCta === c && cta === "Custom"
+                              ? "bg-neutral-900 text-white dark:bg-white dark:text-black border-neutral-900 dark:border-white"
+                              : "bg-white dark:bg-neutral-900 text-neutral-600 dark:text-neutral-400 border-neutral-200 dark:border-neutral-800 hover:border-neutral-400 dark:hover:border-neutral-600"
+                          }`}
+                        >
+                          {c}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* Caption Suggestions */}
+                  <div>
+                    <span className="text-[9px] font-mono font-semibold text-neutral-500 dark:text-neutral-500 mb-1 block">CAPTION IDEA:</span>
+                    <div className="space-y-1.5">
+                      {suggestions.captions.map((cap, i) => (
+                        <button
+                          key={i}
+                          onClick={() => {
+                            setHook(cap.split(/[.!]/)[0]?.trim() || hook);
+                            setShowSuggestions(false);
+                          }}
+                          className="w-full text-left text-[9px] px-2.5 py-1.5 rounded border bg-white dark:bg-neutral-900 text-neutral-600 dark:text-neutral-400 border-neutral-200 dark:border-neutral-800 hover:border-neutral-400 dark:hover:border-neutral-600 transition-colors leading-relaxed"
+                        >
+                          {cap}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              )}
             </div>
 
             {/* CTA and Urgency */}
