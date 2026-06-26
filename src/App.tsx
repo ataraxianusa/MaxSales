@@ -1,4 +1,5 @@
 import React from "react";
+import { Routes, Route, useNavigate, useLocation } from "react-router-dom";
 import Header from "./components/Header";
 import LandingPage from "./components/LandingPage";
 import Login from "./components/Login";
@@ -76,11 +77,14 @@ function DNANotificationBanner() {
 }
 
 export default function App() {
+  const navigate = useNavigate();
+  const location = useLocation();
+
   // Theme state
   const [darkMode, setDarkMode] = React.useState<boolean>(true);
 
   // App routing state: "landing" | "login" | "dashboard"
-  const [currentTab, setTab] = React.useState<"landing" | "login" | "dashboard" | "about" | "tos" | "privacy" | "risk">("landing");
+  const [currentTab, setTab] = React.useState<"landing" | "login" | "dashboard">("landing");
 
   // Authentication & wizard state
   const [isLoggedIn, setIsLoggedIn] = React.useState<boolean>(() => {
@@ -320,7 +324,6 @@ export default function App() {
                 setTab("login");
               }
             }}
-            onNavigate={(page) => setTab(page)}
             brandName={canvas.brand}
             darkMode={darkMode}
             setDarkMode={setDarkMode}
@@ -338,25 +341,13 @@ export default function App() {
           />
         )}
 
-        {/* ABOUT PAGE ROUTE */}
-        {currentTab === "about" && (
-          <AboutPage onBack={() => setTab("landing")} />
-        )}
-
-        {/* TERMS OF SERVICE ROUTE */}
-        {currentTab === "tos" && (
-          <TermsOfService onBack={() => setTab("landing")} />
-        )}
-
-        {/* PRIVACY POLICY ROUTE */}
-        {currentTab === "privacy" && (
-          <PrivacyPolicy onBack={() => setTab("landing")} />
-        )}
-
-        {/* RISK DISCLOSURE ROUTE */}
-        {currentTab === "risk" && (
-          <RiskDisclosure onBack={() => setTab("landing")} />
-        )}
+        {/* LEGAL PAGES - Direct URL routes */}
+        <Routes>
+          <Route path="/about" element={<AboutPage onBack={() => navigate("/")} />} />
+          <Route path="/terms" element={<TermsOfService onBack={() => navigate("/")} />} />
+          <Route path="/privacy" element={<PrivacyPolicy onBack={() => navigate("/")} />} />
+          <Route path="/risk" element={<RiskDisclosure onBack={() => navigate("/")} />} />
+        </Routes>
 
         {/* DASHBOARD ROUTE */}
         {currentTab === "dashboard" && isLoggedIn && (
