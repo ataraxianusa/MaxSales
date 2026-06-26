@@ -2,6 +2,10 @@ import React from "react";
 import Header from "./components/Header";
 import LandingPage from "./components/LandingPage";
 import Login from "./components/Login";
+import AboutPage from "./components/AboutPage";
+import TermsOfService from "./components/TermsOfService";
+import PrivacyPolicy from "./components/PrivacyPolicy";
+import RiskDisclosure from "./components/RiskDisclosure";
 import BusinessCanvas from "./components/BusinessCanvas";
 import CompetitorWarRoom from "./components/CompetitorWarRoom";
 import CustomerInsight from "./components/CustomerInsight";
@@ -76,7 +80,7 @@ export default function App() {
   const [darkMode, setDarkMode] = React.useState<boolean>(true);
 
   // App routing state: "landing" | "login" | "dashboard"
-  const [currentTab, setTab] = React.useState<"landing" | "login" | "dashboard" | "docs">("landing");
+  const [currentTab, setTab] = React.useState<"landing" | "login" | "dashboard" | "about" | "tos" | "privacy" | "risk">("landing");
 
   // Authentication & wizard state
   const [isLoggedIn, setIsLoggedIn] = React.useState<boolean>(() => {
@@ -315,7 +319,8 @@ export default function App() {
               } else {
                 setTab("login");
               }
-            }} 
+            }}
+            onNavigate={(page) => setTab(page)}
             brandName={canvas.brand}
             darkMode={darkMode}
             setDarkMode={setDarkMode}
@@ -331,6 +336,26 @@ export default function App() {
               setTab("dashboard");
             }}
           />
+        )}
+
+        {/* ABOUT PAGE ROUTE */}
+        {currentTab === "about" && (
+          <AboutPage onBack={() => setTab("landing")} />
+        )}
+
+        {/* TERMS OF SERVICE ROUTE */}
+        {currentTab === "tos" && (
+          <TermsOfService onBack={() => setTab("landing")} />
+        )}
+
+        {/* PRIVACY POLICY ROUTE */}
+        {currentTab === "privacy" && (
+          <PrivacyPolicy onBack={() => setTab("landing")} />
+        )}
+
+        {/* RISK DISCLOSURE ROUTE */}
+        {currentTab === "risk" && (
+          <RiskDisclosure onBack={() => setTab("landing")} />
         )}
 
         {/* DASHBOARD ROUTE */}
