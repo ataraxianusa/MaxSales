@@ -792,13 +792,13 @@ export default function ContentGenerator() {
         {/* COMPOSITOR / PREVIEW AREA (7 Columns) */}
         <div className="lg:col-span-7 space-y-6">
           
-          {/* Format Tabs switcher */}
-          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between border-b border-neutral-200 dark:border-[#262626] gap-2 pb-2">
+          {/* Format & Layout Tabs — centered */}
+          <div className="flex flex-col items-center gap-3 border-b border-neutral-200 dark:border-[#262626] pb-3">
             <div className="flex gap-1">
               {[
-                { type: "feed", label: "Instagram Feed (1:1)", icon: Eye },
-                { type: "story", label: "Stories/Reels (9:16)", icon: Smartphone },
-                { type: "whatsapp", label: "WhatsApp Catalog (1:1)", icon: ImageIcon }
+                { type: "feed", label: "Feed (1:1)", icon: Eye },
+                { type: "story", label: "Story (9:16)", icon: Smartphone },
+                { type: "whatsapp", label: "WA (1:1)", icon: ImageIcon }
               ].map(f => {
                 const IconComp = f.icon;
                 const isActive = activeFormat === f.type;
@@ -807,10 +807,10 @@ export default function ContentGenerator() {
                     id={`btn-format-switch-${f.type}`}
                     key={f.type}
                     onClick={() => setActiveFormat(f.type as AspectRatioType)}
-                    className={`flex items-center space-x-1.5 px-3 py-2 text-xs font-mono transition-colors border-b-2 ${
+                    className={`flex items-center space-x-1.5 px-4 py-2 text-xs font-mono rounded-lg transition-all ${
                       isActive
-                        ? "border-neutral-950 text-neutral-950 dark:border-white dark:text-white font-bold"
-                        : "border-transparent text-neutral-500 hover:text-neutral-850"
+                        ? "bg-neutral-950 text-white dark:bg-white dark:text-black shadow-sm"
+                        : "text-neutral-500 hover:text-neutral-900 dark:hover:text-white hover:bg-neutral-100 dark:hover:bg-neutral-800"
                     }`}
                   >
                     <IconComp className="w-3.5 h-3.5" />
@@ -821,7 +821,7 @@ export default function ContentGenerator() {
             </div>
 
             {/* Layout Style Selector */}
-            <div className="flex items-center gap-1">
+            <div className="flex items-center gap-1.5">
               <span className="text-[9px] font-mono text-neutral-400 mr-1">LAYOUT:</span>
               {[
                 { type: "minimal" as LayoutStyle, label: "Minimal", icon: "◻" },
@@ -832,10 +832,10 @@ export default function ContentGenerator() {
                 <button
                   key={ls.type}
                   onClick={() => setLayoutStyle(ls.type)}
-                  className={`px-2.5 py-1.5 text-[10px] font-mono rounded transition-colors ${
+                  className={`px-3 py-1.5 text-[10px] font-mono rounded-lg transition-all ${
                     layoutStyle === ls.type
-                      ? "bg-neutral-950 text-white dark:bg-white dark:text-black"
-                      : "bg-neutral-100 dark:bg-neutral-800 text-neutral-500 hover:text-neutral-900 dark:hover:text-white"
+                      ? "bg-neutral-950 text-white dark:bg-white dark:text-black shadow-sm"
+                      : "text-neutral-500 hover:text-neutral-900 dark:hover:text-white hover:bg-neutral-100 dark:hover:bg-neutral-800"
                   }`}
                 >
                   <span className="mr-1">{ls.icon}</span>{ls.label}
@@ -847,11 +847,11 @@ export default function ContentGenerator() {
           <div className="grid grid-cols-1 md:grid-cols-12 gap-6">
             
             {/* Aspect Ratio Canvas Live visualizer — full width */}
-            <div className="md:col-span-12 flex flex-col items-center justify-center">
-              <div className="rounded-xl overflow-hidden border border-neutral-200 dark:border-[#262626] bg-[#111111] text-white w-full max-w-lg shadow-lg shadow-black/10 dark:shadow-black/30">
+            <div className="md:col-span-12 flex flex-col items-center">
+              <div className="rounded-2xl overflow-hidden border border-neutral-200 dark:border-[#262626] bg-[#111111] text-white w-full shadow-xl shadow-black/5 dark:shadow-black/20">
                 <canvas 
                   ref={canvasRef} 
-                  className="w-full h-auto object-contain max-h-[480px]" 
+                  className="w-full h-auto object-contain" 
                   title="Materi Banner Hasil MaxxSales"
                 />
               </div>
@@ -860,7 +860,7 @@ export default function ContentGenerator() {
               <button
                 id="btn-download-overlay"
                 onClick={downloadOverlayImage}
-                className="w-full max-w-lg mt-3 py-2.5 rounded-lg text-xs font-semibold text-white bg-neutral-950 dark:text-black dark:bg-[#E5E5E5] hover:bg-neutral-900 dark:hover:bg-white flex items-center justify-center space-x-1.5 transition-colors"
+                className="w-full mt-4 py-3 rounded-xl text-xs font-semibold text-white bg-neutral-950 dark:text-black dark:bg-[#E5E5E5] hover:bg-neutral-900 dark:hover:bg-white flex items-center justify-center space-x-2 transition-all shadow-md shadow-black/10 dark:shadow-black/20"
               >
                 <Download className="w-4 h-4" />
                 <span>Unduh Gambar Materi (PNG)</span>
