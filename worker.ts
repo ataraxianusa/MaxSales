@@ -140,6 +140,80 @@ JSON: {"headline":"judul max 8 kata","subheadline":"sub max 12 kata","priceDispl
   }
 });
 
+// 1b. SUGGEST CONTENT (Hooks, CTAs, Captions)
+app.post("/api/suggest-content", async (c) => {
+  const { dna, targetSegments, activeStrategies } = await c.req.json();
+
+  const fallback = {
+    hooks: [
+      `${dna?.advantages?.split(",")[0] || "Kualitas premium"} — wajib punya!`,
+      `Udah nyoba ${dna?.productName || "produk"} ini? `,
+      `Buat kamu yang cari ${dna?.category?.toLowerCase() || "fashion"} anti mainstream!`
+    ],
+    ctas: [
+      ...((dna?.buyTriggers || []).slice(0, 3).map((t: string) => `Pesan via WA (Klik ${t})`)),
+      "Chat Admin Sekarang",
+      "Lihat Katalog"
+    ],
+    captions: [
+      `✨ ${dna?.productName || "Produk"} hadir dengan ${dna?.quality?.toLowerCase() || "kualitas premium"}! ${dna?.advantages?.split(",")[0] || ""}. Dapatkan sekarang sebelum kehabisan!`,
+      `🔥 PROMO SPESIAL! ${dna?.brand || "Brand"} lagi bagi-bagi diskon buat ${dna?.productName || "produk"} favorit kamu. Stok terbatas ya!`,
+      `💫 Kenapa ${dna?.productName || "produk"} ini beda dari yang lain? ${dna?.advantages?.split(",").slice(0, 2).join(" & ") || "Kualitas terjamin"}. Order sekarang!`
+    ]
+  };
+
+  const apiKey = c.env.OPENROUTER_API_KEY;
+  const model = c.env.OPENROUTER_MODEL || "openai/gpt-oss-120b:free";
+  if (!apiKey) return c.json({ ...fallback, mode: "simulated" });
+
+  const segmentContext = Array.isArray(targetSegments) && targetSegments.length > 0
+    ? targetSegments.map((s: any) => `- ${s.name}: ${s.channel || '-'}`).join("\n")
+    : "";
+
+  const strategyContext = Array.isArray(activeStrategies) && activeStrategies.length > 0
+    ? activeStrategies.join(", ")
+    : "";
+
+  try {
+    const raw = await callOpenRouter(apiKey, model, [
+      { role: "system", content: JSON_SYS },
+      { role: "user", content: `Buat 5 saran konten promosi untuk produk fashion Indonesia.
+
+KONTEKS PRODUK:
+- Nama: ${dna?.productName || "Produk"}
+- Brand: ${dna?.brand || "Brand"}
+- Kategori: ${dna?.category || "Fashion"}
+- Sub-Kategori: ${dna?.subCategory || "-"}
+- Kualitas: ${dna?.quality || "Premium"}
+- Keunggulan: ${dna?.advantages || "-"}
+- Deskripsi: ${dna?.shortDescription || "-"}
+- Harga Normal: Rp ${(dna?.normalPrice || 399000).toLocaleString()}
+- Target Gender: ${dna?.genders?.join(", ") || "Semua"}
+- Target Usia: ${dna?.ages?.join(", ") || "Dewasa"}
+- Hobi: ${dna?.hobbies || "-"}
+- Buy Triggers: ${dna?.buyTriggers?.join(", ") || "-"}
+- Platform Aktif: ${dna?.activePlatforms?.join(", ") || "Instagram"}
+
+${segmentContext ? `\nSEGMENT PRIORITAS:\n${segmentContext}` : ""}
+${strategyContext ? `\nSTRATEGI AKTIF: ${strategyContext}` : ""}
+
+INSTRUKSI:
+1. Buat 5 "hooks" (kalimat pembuka menarik, max 10 kata, bahasa gaul Indonesia, memancing rasa ingin tahu)
+2. Buat 5 "ctas" (call-to-action, pendek & menggoda, sesuai platform Indonesia, termasuk opsi WhatsApp)
+3. Buat 5 "captions" (caption promosi 2-3 kalimat, persuasive, include emoji, sesuai karakter produk)
+
+JSON FORMAT:
+{"hooks":["hook1","hook2","hook3","hook4","hook5"],"ctas":["cta1","cta2","cta3","cta4","cta5"],"captions":["caption1","caption2","caption3","caption4","caption5"]}
+HANYA JSON.` }
+    ], { temperature: 0.9 });
+
+    const parsed = parseJsonResponse(raw, fallback);
+    return c.json({ ...parsed, mode: "live-ai" });
+  } catch {
+    return c.json({ ...fallback, mode: "error" });
+  }
+});
+
 // 2. STRATEGY FORGE
 app.post("/api/strategy-forge", async (c) => {
   const { dna, optimismLevel, competitors } = await c.req.json();
