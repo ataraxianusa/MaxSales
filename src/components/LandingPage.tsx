@@ -106,15 +106,15 @@ export default function LandingPage({ onEnterDashboard, brandName, darkMode, set
             {/* LEFT COLUMN: Text Content */}
             <div className="text-center lg:text-left">
               <h1 className="text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-black tracking-tighter leading-[1.02] mb-3 text-white opacity-0 animate-fade-in" style={{ animationDelay: '0.15s' }}>
-            Ubah Data Bisnis Jadi
+            Ubah Produk Biasa Jadi
             <br />
             <span className="bg-clip-text text-transparent bg-gradient-to-r from-emerald-400 via-emerald-300 to-cyan-400 animate-gradient-shift">
-              Omset Harian
+              Luar Biasa
             </span>
           </h1>
 
           <p className="text-sm sm:text-base lg:text-lg text-emerald-400/90 font-semibold mb-2 opacity-0 animate-fade-in-up" style={{ animationDelay: '0.25s' }}>
-            Sistem Operasi Pertumbuhan Bisnis Berbasis AI untuk Pengusaha Taktis
+            Sistem Operasi Pertumbuhan Bisnis Berbasis AI Untuk Memaximalkan Penjualan
           </p>
 
           <p className="text-sm text-neutral-500 mb-6 leading-relaxed max-w-md opacity-0 animate-fade-in-up" style={{ animationDelay: '0.35s' }}>
