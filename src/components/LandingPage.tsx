@@ -22,12 +22,13 @@ import {
 
 interface LandingPageProps {
   onEnterDashboard: () => void;
+  onNavigate: (page: "about" | "tos" | "privacy" | "risk") => void;
   brandName: string;
   darkMode: boolean;
   setDarkMode: (val: boolean) => void;
 }
 
-export default function LandingPage({ onEnterDashboard, brandName, darkMode, setDarkMode }: LandingPageProps) {
+export default function LandingPage({ onEnterDashboard, onNavigate, brandName, darkMode, setDarkMode }: LandingPageProps) {
   // Mockup dashboard tab auto-cycler
   const [activeMockTab, setActiveMockTab] = React.useState<number>(0);
   const [isAutoPlaying, setIsAutoPlaying] = React.useState<boolean>(true);
@@ -122,7 +123,16 @@ export default function LandingPage({ onEnterDashboard, brandName, darkMode, set
             <span className="text-white/80 font-medium">langsung bisa dikerjakan hari ini juga.</span>
           </p>
 
-
+          {/* Pricing */}
+          <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3 mb-6 opacity-0 animate-fade-in-up" style={{ animationDelay: '0.40s' }}>
+            <div className="flex items-baseline gap-2">
+              <span className="text-3xl sm:text-4xl font-black text-white tracking-tight">Rp299<span className="text-lg font-bold">ribu</span></span>
+              <span className="text-sm text-neutral-500 line-through font-mono">Rp499.000</span>
+            </div>
+            <span className="px-2.5 py-1 rounded-full text-[10px] font-bold bg-emerald-500/15 text-emerald-400 border border-emerald-500/20">
+              HEMAT 40%
+            </span>
+          </div>
 
           {/* CTA Buttons */}
           <div className="flex flex-col sm:flex-row items-center lg:items-start gap-3 opacity-0 animate-fade-in-up" style={{ animationDelay: '0.45s' }}>
@@ -837,6 +847,21 @@ export default function LandingPage({ onEnterDashboard, brandName, darkMode, set
             </div>
           </div>
         </div>
+
+        {/* Footer */}
+        <footer className="border-t border-neutral-200 dark:border-[#262626] pt-8 pb-6 mt-12">
+          <div className="flex flex-col md:flex-row items-center justify-between gap-4">
+            <div className="text-xs text-neutral-500 dark:text-neutral-500">
+              © 2026 <span className="font-semibold text-neutral-700 dark:text-neutral-300">PT. Gen Indo Kreatif</span>. Surabaya, Indonesia.
+            </div>
+            <div className="flex flex-wrap items-center justify-center gap-4 text-[11px]">
+              <button onClick={() => onNavigate("about")} className="text-neutral-500 hover:text-neutral-900 dark:hover:text-white transition-colors">Tentang Kami</button>
+              <button onClick={() => onNavigate("tos")} className="text-neutral-500 hover:text-neutral-900 dark:hover:text-white transition-colors">Syarat & Ketentuan</button>
+              <button onClick={() => onNavigate("privacy")} className="text-neutral-500 hover:text-neutral-900 dark:hover:text-white transition-colors">Kebijakan Privasi</button>
+              <button onClick={() => onNavigate("risk")} className="text-neutral-500 hover:text-neutral-900 dark:hover:text-white transition-colors">Pernyataan Risiko</button>
+            </div>
+          </div>
+        </footer>
 
       </div>
     </div>
