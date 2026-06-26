@@ -131,6 +131,37 @@ export default function App() {
     localStorage.setItem("maxx_sales_segments", JSON.stringify(segments));
   }, [segments]);
 
+  // Sync DNA competitor data → CompetitorWarRoom
+  React.useEffect(() => {
+    if (!canvas.biggestCompetitor?.trim()) return;
+
+    const dnaCompId = "dna-" + canvas.biggestCompetitor.toLowerCase().replace(/\s+/g, "-").slice(0, 20);
+    const existingIdx = competitors.findIndex((c) => c.id === dnaCompId);
+
+    const dnaCompetitor: CompetitorIntel = {
+      id: dnaCompId,
+      name: canvas.biggestCompetitor,
+      location: "-",
+      averagePrice: canvas.priceRange || "-",
+      activeChannels: canvas.activeSocialMedia || [],
+      strengths: canvas.competitorStrengths || "",
+      weaknesses: canvas.competitorWeaknesses || "",
+      opportunities: "",
+      threats: "",
+      estimatedRevenue: canvas.monthlyRevenueRange || "-",
+    };
+
+    if (existingIdx >= 0) {
+      // Update existing DNA-sourced competitor
+      const updated = [...competitors];
+      updated[existingIdx] = dnaCompetitor;
+      setCompetitors(updated);
+    } else {
+      // Add DNA competitor at the top, keep manual ones below
+      setCompetitors([dnaCompetitor, ...competitors]);
+    }
+  }, [canvas.biggestCompetitor, canvas.competitorStrengths, canvas.competitorWeaknesses]);
+
   // State to track completion/engagement status of the 5 key features
   const [featureEngagement, setFeatureEngagement] = React.useState<{
     competitor: boolean;

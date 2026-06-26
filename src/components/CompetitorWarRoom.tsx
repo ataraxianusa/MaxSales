@@ -288,6 +288,7 @@ export default function CompetitorWarRoom({ dna, competitors, setCompetitors }: 
             <div className="space-y-1.55">
               {competitors.map(comp => {
                 const isActive = activeIntelCompetitor?.id === comp.id;
+                const isDnaSourced = comp.id.startsWith("dna-");
                 return (
                   <div
                     id={`btn-select-competitor-${comp.id}`}
@@ -303,19 +304,26 @@ export default function CompetitorWarRoom({ dna, competitors, setCompetitors }: 
                       <span className={`text-xs font-bold flex items-center space-x-1 ${isActive ? "text-white dark:text-black" : "text-neutral-955 dark:text-white"}`}>
                         <Award className="w-3.5 h-3.5 text-neutral-400" />
                         <span>{comp.name}</span>
+                        {isDnaSourced && (
+                          <span className="text-[8px] font-mono px-1.5 py-0.5 rounded bg-emerald-100 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-400 ml-1">
+                            DNA
+                          </span>
+                        )}
                       </span>
                       <p className={`text-[10px] font-mono mt-1 ${isActive ? "text-neutral-305 dark:text-neutral-700" : "text-neutral-400 dark:text-[#737373]"}`}>
                         {comp.location} • {comp.averagePrice}
                       </p>
                     </div>
-                    <button
-                      id={`btn-del-competitor-${comp.id}`}
-                      onClick={(e) => deleteCompetitor(comp.id, e)}
-                      className={`text-[9px] font-mono hover:font-bold p-1 ${isActive ? "text-neutral-300 dark:text-neutral-800" : "text-red-500 hover:underline"}`}
-                      title="Hapus"
-                    >
-                      Hapus
-                    </button>
+                    {!isDnaSourced && (
+                      <button
+                        id={`btn-del-competitor-${comp.id}`}
+                        onClick={(e) => deleteCompetitor(comp.id, e)}
+                        className={`text-[9px] font-mono hover:font-bold p-1 ${isActive ? "text-neutral-300 dark:text-neutral-800" : "text-red-500 hover:underline"}`}
+                        title="Hapus"
+                      >
+                        Hapus
+                      </button>
+                    )}
                   </div>
                 );
               })}
