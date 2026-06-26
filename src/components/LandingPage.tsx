@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import { motion } from "motion/react";
 import {
   Sparkles,
@@ -22,13 +23,12 @@ import {
 
 interface LandingPageProps {
   onEnterDashboard: () => void;
-  onNavigate: (page: "about" | "tos" | "privacy" | "risk") => void;
   brandName: string;
   darkMode: boolean;
   setDarkMode: (val: boolean) => void;
 }
 
-export default function LandingPage({ onEnterDashboard, onNavigate, brandName, darkMode, setDarkMode }: LandingPageProps) {
+export default function LandingPage({ onEnterDashboard, brandName, darkMode, setDarkMode }: LandingPageProps) {
   // Mockup dashboard tab auto-cycler
   const [activeMockTab, setActiveMockTab] = React.useState<number>(0);
   const [isAutoPlaying, setIsAutoPlaying] = React.useState<boolean>(true);
@@ -855,10 +855,10 @@ export default function LandingPage({ onEnterDashboard, onNavigate, brandName, d
               © 2026 <span className="font-semibold text-neutral-700 dark:text-neutral-300">PT. Gen Indo Kreatif</span>. Surabaya, Indonesia.
             </div>
             <div className="flex flex-wrap items-center justify-center gap-4 text-[11px]">
-              <button onClick={() => onNavigate("about")} className="text-neutral-500 hover:text-neutral-900 dark:hover:text-white transition-colors">Tentang Kami</button>
-              <button onClick={() => onNavigate("tos")} className="text-neutral-500 hover:text-neutral-900 dark:hover:text-white transition-colors">Syarat & Ketentuan</button>
-              <button onClick={() => onNavigate("privacy")} className="text-neutral-500 hover:text-neutral-900 dark:hover:text-white transition-colors">Kebijakan Privasi</button>
-              <button onClick={() => onNavigate("risk")} className="text-neutral-500 hover:text-neutral-900 dark:hover:text-white transition-colors">Pernyataan Risiko</button>
+              <Link to="/about" className="text-neutral-500 hover:text-neutral-900 dark:hover:text-white transition-colors">Tentang Kami</Link>
+              <Link to="/terms" className="text-neutral-500 hover:text-neutral-900 dark:hover:text-white transition-colors">Syarat & Ketentuan</Link>
+              <Link to="/privacy" className="text-neutral-500 hover:text-neutral-900 dark:hover:text-white transition-colors">Kebijakan Privasi</Link>
+              <Link to="/risk" className="text-neutral-500 hover:text-neutral-900 dark:hover:text-white transition-colors">Pernyataan Risiko</Link>
             </div>
           </div>
         </footer>

@@ -2,8 +2,8 @@ import React from "react";
 import { Sparkles, Sun, Moon, BookOpen, Layers, Layout, Menu, X, User } from "lucide-react";
 
 interface HeaderProps {
-  currentTab: "landing" | "login" | "dashboard" | "about" | "tos" | "privacy" | "risk";
-  setTab: (tab: "landing" | "login" | "dashboard" | "about" | "tos" | "privacy" | "risk") => void;
+  currentTab: "landing" | "login" | "dashboard";
+  setTab: (tab: "landing" | "login" | "dashboard") => void;
   darkMode: boolean;
   setDarkMode: (value: boolean) => void;
   brandName?: string;
