@@ -846,12 +846,12 @@ export default function ContentGenerator() {
 
           <div className="grid grid-cols-1 md:grid-cols-12 gap-6">
             
-            {/* Aspect Ratio Canvas Live visualizer */}
-            <div className="md:col-span-7 flex flex-col items-center justify-center">
-              <div className="rounded overflow-hidden border border-neutral-300 dark:border-[#262626] bg-[#111111] text-white w-full max-w-sm max-h-[480px]">
+            {/* Aspect Ratio Canvas Live visualizer — full width */}
+            <div className="md:col-span-12 flex flex-col items-center justify-center">
+              <div className="rounded-xl overflow-hidden border border-neutral-200 dark:border-[#262626] bg-[#111111] text-white w-full max-w-lg shadow-lg shadow-black/10 dark:shadow-black/30">
                 <canvas 
                   ref={canvasRef} 
-                  className="w-full h-auto object-contain max-h-[440px]" 
+                  className="w-full h-auto object-contain max-h-[480px]" 
                   title="Materi Banner Hasil MaxxSales"
                 />
               </div>
@@ -860,44 +860,70 @@ export default function ContentGenerator() {
               <button
                 id="btn-download-overlay"
                 onClick={downloadOverlayImage}
-                className="w-full max-w-sm mt-3 py-2.5 rounded text-xs font-semibold text-white bg-neutral-950 dark:text-black dark:bg-[#E5E5E5] hover:bg-neutral-900 dark:hover:bg-white flex items-center justify-center space-x-1.5 transition-colors"
+                className="w-full max-w-lg mt-3 py-2.5 rounded-lg text-xs font-semibold text-white bg-neutral-950 dark:text-black dark:bg-[#E5E5E5] hover:bg-neutral-900 dark:hover:bg-white flex items-center justify-center space-x-1.5 transition-colors"
               >
                 <Download className="w-4 h-4" />
                 <span>Unduh Gambar Materi (PNG)</span>
               </button>
             </div>
 
-            {/* AI Caption & hashtags side-panel */}
-            <div className="md:col-span-5 space-y-4">
-              <div className="p-4 rounded border bg-white dark:bg-[#111111] border-neutral-200 dark:border-[#262626] space-y-3">
-                <div className="flex items-center justify-between border-b border-neutral-100 dark:border-[#262626] pb-2">
-                  <span className="text-[9px] font-bold font-mono text-neutral-450 dark:text-[#737373] uppercase">Salinan Tulisan Promosi</span>
-                  <button
-                    id="btn-copy-caption"
-                    onClick={copyCaptionText}
-                    className="p-1 px-2 rounded bg-neutral-100 hover:bg-neutral-200 dark:bg-neutral-800 dark:hover:bg-neutral-750 text-[10px] font-mono text-neutral-600 dark:text-neutral-300 flex items-center space-x-1"
-                  >
-                    {copiedText ? <Check className="w-3 h-3 text-emerald-500" /> : <Copy className="w-3 h-3" />}
-                    <span>{copiedText ? "Tersalin!" : "Salin Teks"}</span>
-                  </button>
-                </div>
+          </div>
 
-                <div className="max-h-72 overflow-y-auto text-xs whitespace-pre-wrap leading-relaxed text-neutral-700 dark:text-[#A3A3A3] font-sans">
-                  {generatedText.caption}
-                  
-                  <div className="mt-3 text-neutral-400 dark:text-neutral-500 font-mono text-[9px]">
-                    {generatedText.hashtags.join(" ")}
-                  </div>
-
-                  <AIFeedback promptType="content" responseId={`content-${Date.now()}`} />
-                </div>
+          {/* Salinan Tulisan Promosi — full width below canvas */}
+          <div className="rounded-xl border border-neutral-200 dark:border-[#262626] bg-white dark:bg-[#111111] overflow-hidden shadow-sm">
+            {/* Header */}
+            <div className="flex items-center justify-between px-5 py-3 border-b border-neutral-100 dark:border-[#262626] bg-neutral-50 dark:bg-neutral-950/50">
+              <div className="flex items-center space-x-2">
+                <span className="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
+                <span className="text-xs font-semibold text-neutral-800 dark:text-white tracking-tight">Salinan Tulisan Promosi</span>
               </div>
-
-              <div className="p-3.5 rounded border border-dashed border-neutral-200 dark:border-[#262626] text-[10px] text-neutral-500 leading-normal bg-neutral-50 dark:bg-[#111111]">
-                📌 <strong className="font-semibold text-neutral-800 dark:text-neutral-300 font-mono">Tips Optimasi:</strong> Format stories 9:16 sangat ideal diunggah ke Reels Instagram atau TikTok Stories. Jangan lupa selipkan tautan (link) bio pendaftaran pemesanan di stiker tautan Stories demi konversi optimal!
-              </div>
+              <button
+                id="btn-copy-caption"
+                onClick={copyCaptionText}
+                className="flex items-center space-x-1.5 px-3 py-1.5 rounded-lg text-[10px] font-semibold transition-all
+                  bg-neutral-900 text-white hover:bg-neutral-800 
+                  dark:bg-white dark:text-black dark:hover:bg-neutral-200"
+              >
+                {copiedText ? <Check className="w-3.5 h-3.5 text-emerald-400 dark:text-emerald-600" /> : <Copy className="w-3.5 h-3.5" />}
+                <span>{copiedText ? "Tersalin!" : "Salin Teks"}</span>
+              </button>
             </div>
 
+            {/* Caption Body */}
+            <div className="px-5 py-4 space-y-4">
+              {/* Caption text */}
+              <div className="text-sm leading-relaxed text-neutral-700 dark:text-[#d4d4d4] font-sans whitespace-pre-wrap">
+                {generatedText.caption}
+              </div>
+
+              {/* Hashtags */}
+              <div className="flex flex-wrap gap-1.5">
+                {generatedText.hashtags.map((tag, i) => (
+                  <span
+                    key={i}
+                    className="px-2.5 py-1 rounded-full text-[10px] font-mono font-medium
+                      bg-neutral-100 text-neutral-600 
+                      dark:bg-neutral-800 dark:text-neutral-400"
+                  >
+                    {tag}
+                  </span>
+                ))}
+              </div>
+
+              {/* AI Feedback inline */}
+              <div className="pt-2 border-t border-neutral-100 dark:border-[#262626]">
+                <AIFeedback promptType="content" responseId={`content-${Date.now()}`} />
+              </div>
+            </div>
+          </div>
+
+          {/* Tips Optimasi — full width */}
+          <div className="flex items-start space-x-3 p-4 rounded-xl border border-dashed border-neutral-200 dark:border-neutral-800 bg-neutral-50 dark:bg-[#111111]">
+            <span className="text-lg mt-0.5">💡</span>
+            <div className="text-xs text-neutral-500 dark:text-neutral-500 leading-relaxed">
+              <strong className="font-semibold text-neutral-700 dark:text-neutral-300">Tips Optimasi:</strong>{" "}
+              Format Stories 9:16 ideal untuk Reels Instagram atau TikTok Stories. Selipkan tautan (link) bio pendaftaran pemesanan di stiker tautan Stories demi konversi optimal!
+            </div>
           </div>
 
         </div>
