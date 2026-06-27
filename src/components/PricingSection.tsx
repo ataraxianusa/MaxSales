@@ -93,7 +93,7 @@ const BENEFITS = [
 const TRUST_BADGES = [
   { icon: Lock, label: "Pembayaran Aman" },
   { icon: ShieldCheck, label: "Data Terenkripsi" },
-  { icon: CreditCard, label: "Xendit Gateway" },
+  { icon: CreditCard, label: "Otomatis 24/7" },
   { icon: Star, label: "Garansi 7 Hari" },
 ];
 
@@ -142,8 +142,7 @@ export default function PricingSection({ onBuyNow }: PricingSectionProps) {
           </span>
         </h2>
         <p className="text-sm text-neutral-400 max-w-md mx-auto">
-          Tidak ada langganan bulanan. Tidak ada kejutan biaya. Bayar sekali —
-          akses penuh selamanya.
+          Sistem komprehensif tanpa kejutan biaya tambahan di kemudian hari.
         </p>
       </motion.div>
 
@@ -301,8 +300,6 @@ export default function PricingSection({ onBuyNow }: PricingSectionProps) {
               {/* Extra micro-benefits */}
               <div className="mt-4 flex flex-wrap gap-2">
                 {[
-                  "✓ Tidak ada langganan bulanan",
-                  "✓ Akses selamanya",
                   "✓ Gratis update fitur",
                   "✓ Support via WhatsApp",
                   "✓ Garansi 7 hari",
@@ -319,7 +316,7 @@ export default function PricingSection({ onBuyNow }: PricingSectionProps) {
 
             {/* CTA Button */}
             <motion.button
-              id="cta-buy-now-xendit"
+              id="cta-buy-now"
               onClick={onBuyNow}
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.97 }}
@@ -338,13 +335,12 @@ export default function PricingSection({ onBuyNow }: PricingSectionProps) {
               <ArrowRight className="w-4 h-4 relative z-10 transition-transform duration-300 group-hover:translate-x-1" />
             </motion.button>
 
-            {/* Xendit payment info */}
+            {/* Payment info */}
             <div className="flex items-center justify-center gap-2 mb-5">
-              <Lock className="w-3 h-3 text-neutral-600" />
-              <span className="text-[10px] font-mono text-neutral-600">
-                Pembayaran diproses aman via{" "}
-                <span className="text-neutral-400 font-bold">Xendit</span> —
-                Transfer Bank · QRIS · E-Wallet · Kartu Kredit
+              <Lock className="w-3 h-3 text-emerald-500" />
+              <span className="text-[10px] font-mono text-neutral-400 text-center max-w-[280px]">
+                <span className="text-white font-bold">10+ Metode Pembayaran:</span><br/>
+                QRIS · E-Wallet (GoPay/OVO/DANA) · Virtual Account · Kartu Kredit · Gerai Retail (Alfamart/Indomaret)
               </span>
             </div>
 

@@ -124,16 +124,6 @@ export default function LandingPage({ onEnterDashboard, brandName, darkMode, set
             <span className="text-white/80 font-medium">langsung bisa dikerjakan hari ini juga.</span>
           </p>
 
-          {/* Pricing */}
-          <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3 mb-6 opacity-0 animate-fade-in-up" style={{ animationDelay: '0.40s' }}>
-            <div className="flex items-baseline gap-2">
-              <span className="text-3xl sm:text-4xl font-black text-white tracking-tight">Rp299<span className="text-lg font-bold">ribu</span></span>
-              <span className="text-sm text-neutral-500 line-through font-mono">Rp499.000</span>
-            </div>
-            <span className="px-2.5 py-1 rounded-full text-[10px] font-bold bg-emerald-500/15 text-emerald-400 border border-emerald-500/20">
-              HEMAT 40%
-            </span>
-          </div>
 
           {/* CTA Buttons */}
           <div className="flex flex-col sm:flex-row items-center lg:items-start gap-3 opacity-0 animate-fade-in-up" style={{ animationDelay: '0.45s' }}>
