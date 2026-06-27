@@ -655,7 +655,7 @@ export default function ContentGenerator() {
                   ) : (
                     <Sparkles className="w-4 h-4" />
                   )}
-                  <span>{suggestLoading ? "AI Sedang Berpikir..." : "✨ Dapatkan Saran Hook, CTA & Caption dari AI"}</span>
+                  <span>{suggestLoading ? "AI Sedang Berpikir..." : "Dapatkan Saran Hook, CTA & Caption dari AI"}</span>
                 </span>
               </button>
               <p className="text-[9px] text-center text-neutral-400 dark:text-neutral-500 mt-1.5 font-mono">Klik untuk dapatkan saran personal dari AI berdasarkan data bisnis Anda</p>
