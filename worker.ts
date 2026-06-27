@@ -529,10 +529,10 @@ app.post("/api/instagram-scrape", async (c) => {
   }
 });
 
-// 5d. TIKTOK PROFILE SCRAPE — Apify TikTok Profile Scraper
-app.post("/api/tiktok-scrape", async (c) => {
-  const { username } = await c.req.json();
-  if (!username) return c.json({ error: "TikTok username required." }, 400);
+// 5d. FACEBOOK PAGES SCRAPE — Apify Facebook Pages Scraper
+app.post("/api/facebook-scrape", async (c) => {
+  const { url } = await c.req.json();
+  if (!url) return c.json({ error: "Facebook page URL required." }, 400);
 
   const apifyToken = c.env.APIFY_TOKEN;
   if (!apifyToken) {
@@ -540,14 +540,14 @@ app.post("/api/tiktok-scrape", async (c) => {
   }
 
   try {
-    // Run Apify TikTok Profile Scraper
+    // Run Apify Facebook Pages Scraper
     const runResponse = await fetch(
-      `https://api.apify.com/v2/acts/clockworks~tiktok-profile-scraper/runs?token=${apifyToken}`,
+      `https://api.apify.com/v2/acts/apify~facebook-pages-scraper/runs?token=${apifyToken}`,
       {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          profiles: [username]
+          startUrls: [{ url }]
         })
       }
     );
@@ -556,13 +556,13 @@ app.post("/api/tiktok-scrape", async (c) => {
     const runId = runData?.data?.id;
 
     if (!runId) {
-      return c.json({ error: "Failed to start Apify TikTok run", mode: "error" });
+      return c.json({ error: "Failed to start Apify Facebook run", mode: "error" });
     }
 
-    // Wait for run to complete (max 30 seconds)
+    // Wait for run to complete (max 45 seconds)
     let status = "running";
     let attempts = 0;
-    while (status === "running" && attempts < 15) {
+    while (status === "running" && attempts < 22) {
       await new Promise(r => setTimeout(r, 2000));
       const statusRes = await fetch(
         `https://api.apify.com/v2/actor-runs/${runId}?token=${apifyToken}`
@@ -573,7 +573,7 @@ app.post("/api/tiktok-scrape", async (c) => {
     }
 
     if (status !== "succeeded") {
-      return c.json({ error: `Apify TikTok run status: ${status}`, mode: "error" });
+      return c.json({ error: `Apify Facebook run status: ${status}`, mode: "error" });
     }
 
     // Get dataset items
@@ -583,28 +583,31 @@ app.post("/api/tiktok-scrape", async (c) => {
     );
     const items = await itemsRes.json();
 
-    const profile = items?.[0];
-    if (!profile) {
-      return c.json({ error: "No TikTok profile data found", mode: "empty" });
+    const page = items?.[0];
+    if (!page) {
+      return c.json({ error: "No Facebook page data found", mode: "empty" });
     }
 
     return c.json({
-      username: profile.uniqueId || username,
-      nickname: profile.nickname || "",
-      bio: profile.signature || "",
-      followers: profile.followerCount || 0,
-      following: profile.followingCount || 0,
-      likes: profile.heartCount || profile.heart || 0,
-      videos: profile.videoCount || 0,
-      isVerified: profile.verified || false,
-      isBusiness: profile.profileLanding || false,
-      profilePicUrl: profile.avatar || "",
-      recentVideos: (profile.videos || []).slice(0, 3).map((v: any) => ({
-        desc: (v.desc || "").slice(0, 150),
-        plays: v.playCount || 0,
-        likes: v.diggCount || 0,
-        comments: v.commentCount || 0,
-        shares: v.shareCount || 0
+      name: page.name || "",
+      url: page.url || url,
+      likes: page.likes || 0,
+      followers: page.followers || 0,
+      rating: page.rating || 0,
+      reviewCount: page.reviewCount || 0,
+      email: page.email || "",
+      phone: page.phone || "",
+      website: page.website || "",
+      address: page.address || "",
+      bio: page.bio || page.about || "",
+      isVerified: page.isVerified || false,
+      category: page.category || "",
+      recentPosts: (page.recentPosts || []).slice(0, 3).map((p: any) => ({
+        text: (p.text || "").slice(0, 150),
+        likes: p.likes || 0,
+        comments: p.comments || 0,
+        shares: p.shares || 0,
+        timestamp: p.time || ""
       })),
       mode: "apify"
     });

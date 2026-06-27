@@ -18,7 +18,7 @@ export default function CompetitorWarRoom({ dna, competitors, setCompetitors }: 
   const [activeChannels, setActiveChannels] = React.useState<string[]>([]);
   const [estimatedRevenue, setEstimatedRevenue] = React.useState("10-50jt");
   const [instagramUsername, setInstagramUsername] = React.useState("");
-  const [tiktokUsername, setTiktokUsername] = React.useState("");
+  const [facebookUrl, setFacebookUrl] = React.useState("");
   
   // SWOT detail triggers
   const [strengths, setStrengths] = React.useState("");
@@ -59,8 +59,12 @@ export default function CompetitorWarRoom({ dna, competitors, setCompetitors }: 
     }
     setLoading(true);
     try {
-      // Call AI analysis, web scraping, Instagram scrape, AND TikTok scrape in parallel
-      const [analysisRes, scrapeRes, igRes, ttRes] = await Promise.all([
+      // Call AI analysis, web scraping, Instagram scrape, AND Facebook scrape in parallel
+      const fbUrl = facebookUrl.trim()
+        ? (facebookUrl.startsWith("http") ? facebookUrl : `https://facebook.com/${facebookUrl.replace("facebook.com/", "")}`)
+        : "";
+
+      const [analysisRes, scrapeRes, igRes, fbRes] = await Promise.all([
         fetch(`${API_BASE}/api/analyze-competitor`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -78,11 +82,11 @@ export default function CompetitorWarRoom({ dna, competitors, setCompetitors }: 
               body: JSON.stringify({ username: instagramUsername.replace("@", "") })
             })
           : Promise.resolve(null),
-        tiktokUsername.trim()
-          ? fetch(`${API_BASE}/api/tiktok-scrape`, {
+        fbUrl
+          ? fetch(`${API_BASE}/api/facebook-scrape`, {
               method: "POST",
               headers: { "Content-Type": "application/json" },
-              body: JSON.stringify({ username: tiktokUsername.replace("@", "") })
+              body: JSON.stringify({ url: fbUrl })
             })
           : Promise.resolve(null)
       ]);
@@ -90,7 +94,7 @@ export default function CompetitorWarRoom({ dna, competitors, setCompetitors }: 
       const analysisData = await analysisRes.json();
       const scrapeData = await scrapeRes.json();
       const igData = igRes ? await igRes.json() : null;
-      const ttData = ttRes ? await ttRes.json() : null;
+      const fbData = fbRes ? await fbRes.json() : null;
 
       // Merge all data sources
       const webInfo = scrapeData.socialLinks?.length
@@ -101,25 +105,25 @@ export default function CompetitorWarRoom({ dna, competitors, setCompetitors }: 
         ? `\n\nInstagram: ${igData.followers?.toLocaleString()} followers, ${igData.posts} posts, Engagement: ${igData.recentPosts?.length ? Math.round(igData.recentPosts.reduce((a: number, p: any) => a + (p.likes || 0), 0) / igData.recentPosts.length / Math.max(igData.followers || 1, 1) * 100) : 0}%`
         : "";
 
-      const ttInfo = ttData?.mode === "apify"
-        ? `\n\nTikTok: ${ttData.followers?.toLocaleString()} followers, ${ttData.videos} videos, Likes: ${ttData.likes?.toLocaleString()}`
+      const fbInfo = fbData?.mode === "apify"
+        ? `\n\nFacebook: ${fbData.likes?.toLocaleString()} likes, ${fbData.followers?.toLocaleString()} followers, Rating: ${fbData.rating}/5 (${fbData.reviewCount} reviews)`
         : "";
 
       const newId = `comp-${Date.now()}`;
       const newCompetitor: CompetitorIntel = {
         id: newId,
-        name: igData?.fullName || ttData?.nickname || name,
-        location: location || scrapeData.searchResults?.[0]?.snippet?.slice(0, 50) || "Kota Terdekat",
+        name: igData?.fullName || fbData?.name || name,
+        location: location || scrapeData.searchResults?.[0]?.snippet?.slice(0, 50) || fbData?.address || "Kota Terdekat",
         averagePrice: averagePrice || "Rp 200.000 - Rp 350.000",
         activeChannels: activeChannels.length > 0 ? activeChannels : ["Instagram"],
-        strengths: (analysisData.strengths || "Memiliki modal fisik kuat.") + webInfo + igInfo + ttInfo,
+        strengths: (analysisData.strengths || "Memiliki modal fisik kuat.") + webInfo + igInfo + fbInfo,
         weaknesses: analysisData.weaknesses || "Kemasan pengiriman belum diuji.",
         opportunities: analysisData.opportunities || "Tawarkan kemasan box mewah kustom Anda.",
         threats: analysisData.threats || "Banting harga eceran.",
         estimatedRevenue: igData?.followers
           ? `${Math.round(igData.followers / 1000)}jt followers IG`
-          : ttData?.followers
-          ? `${Math.round(ttData.followers / 1000)}jt followers TT`
+          : fbData?.followers
+          ? `${Math.round(fbData.followers / 1000)}jt followers FB`
           : analysisData.estimatedRevenue || "10-50jt"
       };
 
@@ -134,7 +138,7 @@ export default function CompetitorWarRoom({ dna, competitors, setCompetitors }: 
       setAveragePrice("");
       setActiveChannels([]);
       setInstagramUsername("");
-      setTiktokUsername("");
+      setFacebookUrl("");
       setStrengths("");
       setWeaknesses("");
       setOpportunities("");
@@ -293,13 +297,13 @@ export default function CompetitorWarRoom({ dna, competitors, setCompetitors }: 
                   />
                 </div>
                 <div>
-                  <label className="text-[10px] font-mono block font-semibold text-neutral-450 dark:text-[#737373] mb-1">TikTok ID</label>
+                  <label className="text-[10px] font-mono block font-semibold text-neutral-450 dark:text-[#737373] mb-1">Facebook Page URL</label>
                   <input
-                    id="inp-comp-tiktok"
+                    id="inp-comp-facebook"
                     type="text"
-                    placeholder="misal: zahra_store"
-                    value={tiktokUsername}
-                    onChange={e => setTiktokUsername(e.target.value.replace("@", ""))}
+                    placeholder="misal: facebook.com/zahra.store"
+                    value={facebookUrl}
+                    onChange={e => setFacebookUrl(e.target.value)}
                     className="w-full text-xs px-3 py-2 rounded border bg-transparent border-neutral-300 dark:border-neutral-800 focus:border-neutral-900 dark:focus:border-[#E5E5E5] focus:outline-none"
                   />
                 </div>
@@ -655,6 +659,42 @@ export default function CompetitorWarRoom({ dna, competitors, setCompetitors }: 
                 </div>
 
               </div>
+
+              {/* Social Media Intelligence Card */}
+              {activeIntelCompetitor.strengths.includes("Instagram") || activeIntelCompetitor.strengths.includes("Facebook") || activeIntelCompetitor.strengths.includes("Data Online") ? (
+                <div className="p-4 rounded border border-neutral-200 dark:border-[#262626] bg-gradient-to-r from-blue-50 to-purple-50 dark:from-blue-900/10 dark:to-purple-900/10 space-y-3">
+                  <div className="flex items-center space-x-2">
+                    <span className="text-sm">📊</span>
+                    <span className="text-[10px] font-bold font-mono text-neutral-800 dark:text-white uppercase tracking-widest">Social Media Intelligence</span>
+                  </div>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                    {activeIntelCompetitor.strengths.includes("Instagram") && (
+                      <div className="p-3 rounded bg-white dark:bg-[#1a1a1a] border border-pink-200 dark:border-pink-800/30">
+                        <span className="text-[9px] font-bold font-mono text-pink-600 dark:text-pink-400 uppercase">📷 Instagram</span>
+                        <p className="text-[10px] text-neutral-600 dark:text-neutral-400 mt-1 break-words">
+                          {activeIntelCompetitor.strengths.split("Instagram:")[1]?.split("\n")[0] || "Data tidak tersedia"}
+                        </p>
+                      </div>
+                    )}
+                    {activeIntelCompetitor.strengths.includes("Facebook") && (
+                      <div className="p-3 rounded bg-white dark:bg-[#1a1a1a] border border-blue-200 dark:border-blue-800/30">
+                        <span className="text-[9px] font-bold font-mono text-blue-600 dark:text-blue-400 uppercase">👥 Facebook</span>
+                        <p className="text-[10px] text-neutral-600 dark:text-neutral-400 mt-1 break-words">
+                          {activeIntelCompetitor.strengths.split("Facebook:")[1]?.split("\n")[0] || "Data tidak tersedia"}
+                        </p>
+                      </div>
+                    )}
+                    {activeIntelCompetitor.strengths.includes("Data Online") && (
+                      <div className="p-3 rounded bg-white dark:bg-[#1a1a1a] border border-green-200 dark:border-green-800/30 md:col-span-2">
+                        <span className="text-[9px] font-bold font-mono text-green-600 dark:text-green-400 uppercase">🌐 Web Presence</span>
+                        <p className="text-[10px] text-neutral-600 dark:text-neutral-400 mt-1 break-words">
+                          {activeIntelCompetitor.strengths.split("Data Online:")[1]?.split("\n")[0] || "Data tidak tersedia"}
+                        </p>
+                      </div>
+                    )}
+                  </div>
+                </div>
+              ) : null}
 
               {/* Head-to-Head battlefield summary card */}
               <div className="p-5 rounded border bg-neutral-50 dark:bg-[#111111] border-neutral-200 dark:border-[#262626] space-y-2.5">
