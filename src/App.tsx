@@ -159,14 +159,17 @@ export default function App() {
       estimatedRevenue: canvas.monthlyRevenueRange || "-",
     };
 
+    // Remove hardcoded competitors (comp-1, comp-2) when DNA competitor exists
+    const manualOnly = competitors.filter(c => !c.id.startsWith("comp-"));
+
     if (existingIdx >= 0) {
-      // Update existing DNA-sourced competitor
-      const updated = [...competitors];
-      updated[existingIdx] = dnaCompetitor;
+      // Update existing DNA-sourced competitor, keep manual ones
+      const withoutHardcoded = competitors.filter(c => !c.id.startsWith("comp-"));
+      const updated = withoutHardcoded.map(c => c.id === dnaCompId ? dnaCompetitor : c);
       setCompetitors(updated);
     } else {
-      // Add DNA competitor at the top, keep manual ones below
-      setCompetitors([dnaCompetitor, ...competitors]);
+      // Add DNA competitor at the top, keep manual ones below (remove hardcoded)
+      setCompetitors([dnaCompetitor, ...manualOnly]);
     }
   }, [canvas.biggestCompetitor, canvas.competitorStrengths, canvas.competitorWeaknesses]);
 
