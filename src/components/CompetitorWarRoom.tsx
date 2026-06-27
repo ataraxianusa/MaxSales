@@ -17,6 +17,8 @@ export default function CompetitorWarRoom({ dna, competitors, setCompetitors }: 
   const [averagePrice, setAveragePrice] = React.useState("");
   const [activeChannels, setActiveChannels] = React.useState<string[]>([]);
   const [estimatedRevenue, setEstimatedRevenue] = React.useState("10-50jt");
+  const [instagramUsername, setInstagramUsername] = React.useState("");
+  const [tiktokUsername, setTiktokUsername] = React.useState("");
   
   // SWOT detail triggers
   const [strengths, setStrengths] = React.useState("");
@@ -69,12 +71,12 @@ export default function CompetitorWarRoom({ dna, competitors, setCompetitors }: 
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ competitorName: name, location })
         }),
-        // Try Instagram scrape if username provided in name
-        name.includes("@") || name.match(/^[a-zA-Z0-9._]+$/)
+        // Try Instagram scrape if username provided
+        instagramUsername.trim()
           ? fetch(`${API_BASE}/api/instagram-scrape`, {
               method: "POST",
               headers: { "Content-Type": "application/json" },
-              body: JSON.stringify({ username: name.replace("@", "") })
+              body: JSON.stringify({ username: instagramUsername.replace("@", "") })
             })
           : Promise.resolve(null)
       ]);
@@ -118,6 +120,8 @@ export default function CompetitorWarRoom({ dna, competitors, setCompetitors }: 
       setLocation("");
       setAveragePrice("");
       setActiveChannels([]);
+      setInstagramUsername("");
+      setTiktokUsername("");
       setStrengths("");
       setWeaknesses("");
       setOpportunities("");
@@ -259,6 +263,32 @@ export default function CompetitorWarRoom({ dna, competitors, setCompetitors }: 
                       </button>
                     );
                   })}
+                </div>
+              </div>
+
+              {/* Social Media Inputs */}
+              <div className="grid grid-cols-2 gap-2">
+                <div>
+                  <label className="text-[10px] font-mono block font-semibold text-neutral-450 dark:text-[#737373] mb-1">Instagram ID</label>
+                  <input
+                    id="inp-comp-instagram"
+                    type="text"
+                    placeholder="misal: zahra_store"
+                    value={instagramUsername}
+                    onChange={e => setInstagramUsername(e.target.value.replace("@", ""))}
+                    className="w-full text-xs px-3 py-2 rounded border bg-transparent border-neutral-300 dark:border-neutral-800 focus:border-neutral-900 dark:focus:border-[#E5E5E5] focus:outline-none"
+                  />
+                </div>
+                <div>
+                  <label className="text-[10px] font-mono block font-semibold text-neutral-450 dark:text-[#737373] mb-1">TikTok ID</label>
+                  <input
+                    id="inp-comp-tiktok"
+                    type="text"
+                    placeholder="misal: zahra_store"
+                    value={tiktokUsername}
+                    onChange={e => setTiktokUsername(e.target.value.replace("@", ""))}
+                    className="w-full text-xs px-3 py-2 rounded border bg-transparent border-neutral-300 dark:border-neutral-800 focus:border-neutral-900 dark:focus:border-[#E5E5E5] focus:outline-none"
+                  />
                 </div>
               </div>
 
