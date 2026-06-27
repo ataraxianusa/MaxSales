@@ -24,6 +24,22 @@ interface AIAnalysisResult {
   segments: AISegmentInsight[];
 }
 
+interface RevenuePrediction {
+  name: string;
+  monthlyRevenue: number;
+  annualRevenue: number;
+  growthPotential: string;
+  action: string;
+}
+
+interface CustomerCluster {
+  name: string;
+  description: string;
+  percentage: number;
+  channel: string;
+  strategy: string;
+}
+
 export default function CustomerInsight({ dna, segments, setSegments }: CustomerInsightProps) {
   // LTV states
   const [aov, setAov] = React.useState(dna.normalPrice || 399000);
@@ -41,6 +57,15 @@ export default function CustomerInsight({ dna, segments, setSegments }: Customer
   const [aiAnalysis, setAiAnalysis] = React.useState<AIAnalysisResult | null>(null);
   const [aiLoading, setAiLoading] = React.useState(false);
   const [aiError, setAiError] = React.useState<string | null>(null);
+
+  // Revenue prediction states
+  const [revenuePredictions, setRevenuePredictions] = React.useState<RevenuePrediction[] | null>(null);
+  const [revenueLoading, setRevenueLoading] = React.useState(false);
+  const [totalMonthlyRevenue, setTotalMonthlyRevenue] = React.useState(0);
+
+  // Customer clustering states
+  const [clusters, setClusters] = React.useState<CustomerCluster[] | null>(null);
+  const [clusterLoading, setClusterLoading] = React.useState(false);
 
   const ltvResult = aov * frequency * lifespan;
 
@@ -96,6 +121,65 @@ export default function CustomerInsight({ dna, segments, setSegments }: Customer
       setAiError(err.message || "Gagal menghubungi AI. Coba lagi nanti.");
     } finally {
       setAiLoading(false);
+    }
+  };
+
+  const fetchAutoSegment = async () => {
+    setAiLoading(true);
+    setAiError(null);
+    try {
+      const response = await fetch(`${API_BASE}/api/auto-segment`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ dna })
+      });
+      const data = await response.json();
+      if (data.segments) {
+        setSegments(data.segments);
+      }
+    } catch (err: any) {
+      setAiError(err.message || "Gagal generate segmentasi.");
+    } finally {
+      setAiLoading(false);
+    }
+  };
+
+  const fetchRevenuePrediction = async () => {
+    setRevenueLoading(true);
+    try {
+      const response = await fetch(`${API_BASE}/api/predict-revenue`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ dna, segments })
+      });
+      const data = await response.json();
+      if (data.predictions) {
+        setRevenuePredictions(data.predictions);
+        setTotalMonthlyRevenue(data.totalMonthly || 0);
+      }
+    } catch (err: any) {
+      console.error(err);
+    } finally {
+      setRevenueLoading(false);
+    }
+  };
+
+  const fetchClusters = async () => {
+    setClusterLoading(true);
+    try {
+      const response = await fetch(`${API_BASE}/api/cluster-customers`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ dna, segments })
+      });
+      const data = await response.json();
+      if (data.clusters) {
+        setClusters(data.clusters);
+      }
+    } catch (err: any) {
+      console.error(err);
+    } finally {
+      setClusterLoading(false);
     }
   };
 
@@ -568,6 +652,120 @@ export default function CustomerInsight({ dna, segments, setSegments }: Customer
                     </ul>
                   </div>
                 )}
+              </div>
+            )}
+          </div>
+
+          {/* Auto-Segment Button */}
+          <div className="p-5 rounded border bg-white dark:bg-[#111111] border-neutral-200 dark:border-[#262626] space-y-4">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center space-x-2">
+                <div className="p-2 rounded bg-emerald-100 dark:bg-emerald-900/20 text-emerald-700 dark:text-emerald-400">
+                  <Users className="w-4 h-4" />
+                </div>
+                <div>
+                  <h3 className="text-xs font-bold font-mono uppercase tracking-wider text-neutral-900 dark:text-white">Auto-Segment dari DNA</h3>
+                  <p className="text-[10px] text-neutral-400">AI generate segmentasi otomatis berdasarkan data bisnis Anda.</p>
+                </div>
+              </div>
+              <button
+                onClick={fetchAutoSegment}
+                disabled={aiLoading}
+                className="py-1.5 px-3 rounded text-[10px] font-semibold bg-emerald-600 text-white hover:bg-emerald-700 transition-colors disabled:opacity-40 flex items-center space-x-1"
+              >
+                {aiLoading ? <Loader2 className="w-3 h-3 animate-spin" /> : <Cpu className="w-3 h-3" />}
+                <span>Generate Segmen</span>
+              </button>
+            </div>
+          </div>
+
+          {/* Revenue Prediction */}
+          <div className="p-5 rounded border bg-white dark:bg-[#111111] border-neutral-200 dark:border-[#262626] space-y-4">
+            <div className="flex items-center justify-between border-b pb-3 border-neutral-200 dark:border-[#262626]">
+              <div className="flex items-center space-x-2">
+                <div className="p-2 rounded bg-blue-100 dark:bg-blue-900/20 text-blue-700 dark:text-blue-400">
+                  <BarChart3 className="w-4 h-4" />
+                </div>
+                <div>
+                  <h3 className="text-xs font-bold font-mono uppercase tracking-wider text-neutral-900 dark:text-white">Prediksi Revenue</h3>
+                  <p className="text-[10px] text-neutral-400">Estimasi pendapatan per segmen pelanggan.</p>
+                </div>
+              </div>
+              <button
+                onClick={fetchRevenuePrediction}
+                disabled={revenueLoading || segments.length === 0}
+                className="py-1.5 px-3 rounded text-[10px] font-semibold bg-blue-600 text-white hover:bg-blue-700 transition-colors disabled:opacity-40 flex items-center space-x-1"
+              >
+                {revenueLoading ? <Loader2 className="w-3 h-3 animate-spin" /> : <TrendingUp className="w-3 h-3" />}
+                <span>Prediksi Revenue</span>
+              </button>
+            </div>
+
+            {revenuePredictions && (
+              <div className="space-y-3">
+                <div className="p-3 rounded bg-blue-50 dark:bg-blue-900/10 border border-blue-200 dark:border-blue-800/30">
+                  <span className="text-[10px] font-mono text-blue-600 dark:text-blue-400 uppercase">Total Estimasi Revenue Bulanan</span>
+                  <p className="text-lg font-bold text-blue-700 dark:text-blue-300">Rp {totalMonthlyRevenue.toLocaleString("id-ID")}</p>
+                </div>
+                {revenuePredictions.map((pred, idx) => (
+                  <div key={idx} className="p-3 rounded border border-neutral-200 dark:border-[#262626] bg-neutral-50 dark:bg-[#1A1A1A] flex items-center justify-between">
+                    <div>
+                      <span className="text-xs font-bold text-neutral-900 dark:text-white">{pred.name}</span>
+                      <p className="text-[10px] text-neutral-500">{pred.action}</p>
+                    </div>
+                    <div className="text-right">
+                      <span className="text-xs font-mono font-bold text-neutral-900 dark:text-white">Rp {pred.monthlyRevenue.toLocaleString("id-ID")}/bln</span>
+                      <span className={`block text-[9px] px-1.5 py-0.5 rounded mt-1 ${
+                        pred.growthPotential === "Tinggi" ? "bg-emerald-100 text-emerald-700 dark:bg-emerald-900/20 dark:text-emerald-400" :
+                        pred.growthPotential === "Sedang" ? "bg-amber-100 text-amber-700 dark:bg-amber-900/20 dark:text-amber-400" :
+                        "bg-red-100 text-red-700 dark:bg-red-900/20 dark:text-red-400"
+                      }`}>
+                        {pred.growthPotential}
+                      </span>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+
+          {/* Customer Clustering */}
+          <div className="p-5 rounded border bg-white dark:bg-[#111111] border-neutral-200 dark:border-[#262626] space-y-4">
+            <div className="flex items-center justify-between border-b pb-3 border-neutral-200 dark:border-[#262626]">
+              <div className="flex items-center space-x-2">
+                <div className="p-2 rounded bg-purple-100 dark:bg-purple-900/20 text-purple-700 dark:text-purple-400">
+                  <Award className="w-4 h-4" />
+                </div>
+                <div>
+                  <h3 className="text-xs font-bold font-mono uppercase tracking-wider text-neutral-900 dark:text-white">Customer Clustering</h3>
+                  <p className="text-[10px] text-neutral-400">Kluster pelanggan berdasarkan perilaku beli.</p>
+                </div>
+              </div>
+              <button
+                onClick={fetchClusters}
+                disabled={clusterLoading || segments.length === 0}
+                className="py-1.5 px-3 rounded text-[10px] font-semibold bg-purple-600 text-white hover:bg-purple-700 transition-colors disabled:opacity-40 flex items-center space-x-1"
+              >
+                {clusterLoading ? <Loader2 className="w-3 h-3 animate-spin" /> : <Award className="w-3 h-3" />}
+                <span>Cluster Pelanggan</span>
+              </button>
+            </div>
+
+            {clusters && (
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                {clusters.map((cluster, idx) => (
+                  <div key={idx} className="p-4 rounded border border-neutral-200 dark:border-[#262626] bg-gradient-to-br from-purple-50 to-blue-50 dark:from-purple-900/10 dark:to-blue-900/10 space-y-2">
+                    <div className="flex items-center justify-between">
+                      <span className="text-xs font-bold text-neutral-900 dark:text-white">{cluster.name}</span>
+                      <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-purple-100 dark:bg-purple-900/20 text-purple-700 dark:text-purple-400">{cluster.percentage}%</span>
+                    </div>
+                    <p className="text-[10px] text-neutral-600 dark:text-neutral-400">{cluster.description}</p>
+                    <div className="flex items-center space-x-2 text-[9px]">
+                      <span className="text-neutral-500">📍 {cluster.channel}</span>
+                      <span className="text-purple-600 dark:text-purple-400">💡 {cluster.strategy}</span>
+                    </div>
+                  </div>
+                ))}
               </div>
             )}
           </div>

@@ -715,6 +715,216 @@ HANYA JSON, tanpa penjelasan.` }
   }
 });
 
+// 7. AUTO-SEGMENT — AI generate segments from DNA
+app.post("/api/auto-segment", async (c) => {
+  const { dna } = await c.req.json();
+
+  const fallback = {
+    segments: [
+      { name: "Ibu Muda Urban", percentage: 35, channel: "Instagram DM", avgTransaction: dna?.normalPrice || 399000, frequency: "2x / bulan", risk: "Low" },
+      { name: "Mahasiswi Trendi", percentage: 28, channel: "TikTok Shop", avgTransaction: Math.round((dna?.normalPrice || 399000) * 0.8), frequency: "1.5x / bulan", risk: "Medium" },
+      { name: "Keluarga Modis", percentage: 22, channel: "Shopee", avgTransaction: Math.round((dna?.normalPrice || 399000) * 2), frequency: "1x / bulan", risk: "Low" },
+      { name: "Reseller Arisan", percentage: 15, channel: "WhatsApp", avgTransaction: Math.round((dna?.normalPrice || 399000) * 4), frequency: "0.8x / bulan", risk: "High" }
+    ],
+    mode: "simulated"
+  };
+
+  const apiKey = c.env.OPENROUTER_API_KEY;
+  const model = c.env.OPENROUTER_MODEL || "openai/gpt-oss-120b:free";
+  if (!apiKey) return c.json(fallback);
+
+  try {
+    const raw = await callOpenRouter(apiKey, model, [
+      { role: "system", content: JSON_SYS },
+      { role: "user", content: `Buat segmentasi pelanggan untuk bisnis fashion Indonesia.
+
+Profil Bisnis:
+- Brand: ${dna?.brand || "Brand"}
+- Produk: ${dna?.productName || "Produk"}
+- Kategori: ${dna?.category || "Fashion"}
+- Sub-Kategori: ${dna?.subCategory || "-"}
+- Kualitas: ${dna?.quality || "Premium"}
+- Harga: Rp ${(dna?.normalPrice || 399000).toLocaleString()}
+- Target Gender: ${dna?.genders?.join(", ") || "Semua"}
+- Target Usia: ${dna?.ages?.join(", ") || "Dewasa"}
+- Hobi: ${dna?.hobbies || "-"}
+- Platform Aktif: ${dna?.activePlatforms?.join(", ") || "Instagram"}
+- Buy Triggers: ${dna?.buyTriggers?.join(", ") || "Kualitas"}
+- Target Revenue: Rp ${(dna?.targetMonthlyRevenue || 50000000).toLocaleString()}/bln
+
+Buat 4-6 segmen pelanggan yang realistis dengan estimasi:
+- Persentase pasar
+- Kanal utama
+- Rata-rata transaksi
+- Frekuensi beli
+- Resiko churn
+
+JSON format:
+{
+  "segments": [
+    {
+      "name": "nama segmen (contoh: Ibu Muda Urban)",
+      "percentage": 35,
+      "channel": "kanal utama",
+      "avgTransaction": 399000,
+      "frequency": "2x / bulan",
+      "risk": "Low/Medium/High"
+    }
+  ]
+}
+HANYA JSON.` }
+    ], { temperature: 0.8, maxTokens: 1024 });
+
+    const parsed = parseJsonResponse(raw, fallback);
+    return c.json({ segments: parsed.segments || fallback.segments, mode: "live-ai" });
+  } catch {
+    return c.json(fallback);
+  }
+});
+
+// 8. REVENUE PREDICTION — AI predict revenue per segment
+app.post("/api/predict-revenue", async (c) => {
+  const { dna, segments } = await c.req.json();
+
+  const fallback = {
+    predictions: segments.map((s: any) => ({
+      name: s.name,
+      monthlyRevenue: Math.round(s.avgTransaction * parseFloat(s.frequency) || s.avgTransaction * 2),
+      annualRevenue: Math.round((s.avgTransaction * parseFloat(s.frequency) || s.avgTransaction * 2) * 12),
+      growthPotential: s.risk === "Low" ? "Tinggi" : s.risk === "Medium" ? "Sedang" : "Rendah",
+      action: s.risk === "High" ? "Prioritas retensi" : "Ekspansi & upsell"
+    })),
+    totalMonthly: segments.reduce((sum: number, s: any) => sum + (s.avgTransaction * (parseFloat(s.frequency) || 2)), 0),
+    mode: "simulated"
+  };
+
+  const apiKey = c.env.OPENROUTER_API_KEY;
+  const model = c.env.OPENROUTER_MODEL || "openai/gpt-oss-120b:free";
+  if (!apiKey) return c.json(fallback);
+
+  try {
+    const segmentsJson = JSON.stringify(segments.map((s: any) => ({
+      nama: s.name,
+      persentase: s.percentage,
+      rataTransaksi: s.avgTransaction,
+      frekuensi: s.frequency,
+      resiko: s.risk
+    })));
+
+    const raw = await callOpenRouter(apiKey, model, [
+      { role: "system", content: JSON_SYS },
+      { role: "user", content: `Prediksi revenue untuk bisnis fashion Indonesia.
+
+Profil Bisnis:
+- Brand: ${dna?.brand || "Brand"}
+- Produk: ${dna?.productName || "Produk"}
+- Harga: Rp ${(dna?.normalPrice || 399000).toLocaleString()}
+- Target Revenue: Rp ${(dna?.targetMonthlyRevenue || 50000000).toLocaleString()}/bln
+
+Data Segmen:
+${segmentsJson}
+
+Buat prediksi revenue per segmen:
+- Estimasi revenue bulanan
+- Estimasi revenue tahunan
+- Potensi pertumbuhan (Tinggi/Sedang/Rendah)
+- Aksi prioritas
+
+JSON format:
+{
+  "predictions": [
+    {
+      "name": "nama segmen",
+      "monthlyRevenue": 15000000,
+      "annualRevenue": 180000000,
+      "growthPotential": "Tinggi/Sedang/Rendah",
+      "action": "aksi prioritas"
+    }
+  ],
+  "totalMonthly": 50000000,
+  "recommendation": "rekomendasi strategi revenue 1-2 kalimat"
+}
+HANYA JSON.` }
+    ], { temperature: 0.7, maxTokens: 1024 });
+
+    const parsed = parseJsonResponse(raw, fallback);
+    return c.json({ predictions: parsed.predictions || fallback.predictions, totalMonthly: parsed.totalMonthly || fallback.totalMonthly, mode: "live-ai" });
+  } catch {
+    return c.json(fallback);
+  }
+});
+
+// 9. CUSTOMER CLUSTERING — AI cluster customers by behavior
+app.post("/api/cluster-customers", async (c) => {
+  const { dna, segments } = await c.req.json();
+
+  const fallback = {
+    clusters: [
+      { name: "Budget Hunters", description: "Selalu cari diskon, harga jadi faktor utama", percentage: 30, channel: "Shopee & Marketplace", strategy: "Flash sale, voucher diskon, bundling hemat" },
+      { name: "Quality Seekers", description: "Utamakan kualitas & brand, rela bayar lebih", percentage: 25, channel: "Instagram & WhatsApp", strategy: "Konten edukasi, testimoni, packaging premium" },
+      { name: "Social Shoppers", description: "Terpengaruh tren & influencer, beli karena viral", percentage: 25, channel: "TikTok & Instagram", strategy: "Kolaborasi influencer, konten viral, UGC challenge" },
+      { name: "Loyal Regulars", description: "Beli rutin, setia pada brand, jarang pindah", percentage: 20, channel: "WhatsApp & Direct", strategy: "Program loyalitas, early access, personal treatment" }
+    ],
+    mode: "simulated"
+  };
+
+  const apiKey = c.env.OPENROUTER_API_KEY;
+  const model = c.env.OPENROUTER_MODEL || "openai/gpt-oss-120b:free";
+  if (!apiKey) return c.json(fallback);
+
+  try {
+    const segmentsJson = JSON.stringify(segments.map((s: any) => ({
+      nama: s.name,
+      persentase: s.percentage,
+      kanal: s.channel,
+      rataTransaksi: s.avgTransaction,
+      frekuensi: s.frequency,
+      resiko: s.risk
+    })));
+
+    const raw = await callOpenRouter(apiKey, model, [
+      { role: "system", content: JSON_SYS },
+      { role: "user", content: `Lakukan customer clustering untuk bisnis fashion Indonesia.
+
+Profil Bisnis:
+- Brand: ${dna?.brand || "Brand"}
+- Produk: ${dna?.productName || "Produk"}
+- Harga: Rp ${(dna?.normalPrice || 399000).toLocaleString()}
+- Platform: ${dna?.activePlatforms?.join(", ") || "Instagram"}
+- Buy Triggers: ${dna?.buyTriggers?.join(", ") || "Kualitas"}
+
+Data Segmen:
+${segmentsJson}
+
+Buat 4-5 kluster pelanggan berdasarkan perilaku beli:
+- Nama kluster (kreatif, mudah diingat)
+- Deskripsi perilaku
+- Persentase estimasi
+- Kanal dominan
+- Strategi pendekatan
+
+JSON format:
+{
+  "clusters": [
+    {
+      "name": "nama kluster",
+      "description": "deskripsi perilaku 1 kalimat",
+      "percentage": 30,
+      "channel": "kanal dominan",
+      "strategy": "strategi pendekatan 1 kalimat"
+    }
+  ]
+}
+HANYA JSON.` }
+    ], { temperature: 0.8, maxTokens: 1024 });
+
+    const parsed = parseJsonResponse(raw, fallback);
+    return c.json({ clusters: parsed.clusters || fallback.clusters, mode: "live-ai" });
+  } catch {
+    return c.json(fallback);
+  }
+});
+
 // 5. CHAT — AI Co-pilot
 app.post("/api/chat", async (c) => {
   const { messages, dna } = await c.req.json();
