@@ -155,82 +155,7 @@ export default function LandingPage({ onEnterDashboard, brandName, darkMode, set
               ))}
             </motion.div>
 
-            {/* Daily Pulse Mockup Centered Below */}
-            <motion.div
-              initial={{ opacity: 0, y: 30 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.6, duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
-              className="w-full max-w-2xl mx-auto rounded-3xl border border-neutral-800/60 bg-[#111111]/80 backdrop-blur-md overflow-hidden shadow-2xl shadow-emerald-500/5 ring-1 ring-white/5 text-left"
-            >
-              {/* Card header */}
-              <div className="px-5 py-3 border-b border-neutral-800 flex items-center gap-2 bg-[#161616]/80">
-                <span className="w-2.5 h-2.5 rounded-full bg-red-400/80 shrink-0"></span>
-                <span className="w-2.5 h-2.5 rounded-full bg-yellow-400/80 shrink-0"></span>
-                <span className="w-2.5 h-2.5 rounded-full bg-green-400/80 shrink-0 mr-2"></span>
-                <span className="text-[10px] font-mono text-neutral-500 truncate">maxxsales.ai/daily-pulse</span>
-                <div className="flex-1"></div>
-                <motion.span
-                  whileHover={{ scale: 1.05 }}
-                  className="px-2 py-0.5 rounded-full text-[8px] font-mono font-bold bg-emerald-500/15 text-emerald-400 border border-emerald-500/25 whitespace-nowrap"
-                >
-                  🔥 STREAK 4 HARI
-                </motion.span>
-              </div>
 
-              {/* Checklist body — balanced */}
-              <div className="p-5 sm:p-6 space-y-3.5 flex-1">
-                {checklist.map((item) => (
-                  <motion.label
-                    key={item.id}
-                    whileHover={{ scale: 1.01, x: 2 }}
-                    whileTap={{ scale: 0.99 }}
-                    onClick={() => toggleChecklist(item.id)}
-                    className={`flex items-start gap-3 p-3.5 rounded-2xl cursor-pointer transition-all border ${
-                      item.done
-                        ? "bg-emerald-500/5 border-emerald-500/15 hover:bg-emerald-500/10"
-                        : "border-neutral-800/60 bg-[#0a0a0a] hover:bg-amber-500/5 hover:border-amber-500/20"
-                    } group`}
-                  >
-                    <motion.div
-                      animate={item.done ? { scale: [1, 1.2, 1] } : {}}
-                      transition={{ duration: 0.3 }}
-                      className={`mt-0.5 w-4 h-4 rounded border flex items-center justify-center shrink-0 transition-colors ${
-                        item.done
-                          ? "bg-emerald-500 border-emerald-500"
-                          : "border-neutral-700 bg-transparent group-hover:border-emerald-500/40"
-                      }`}
-                    >
-                      {item.done && <Check className="w-3 h-3 text-black" />}
-                    </motion.div>
-                    <div>
-                      <span className={`text-sm transition-all ${
-                        item.done
-                          ? "text-neutral-500 line-through group-hover:text-emerald-200/80"
-                          : "text-white font-medium group-hover:text-amber-200"
-                      }`}>
-                        {item.label}
-                      </span>
-                      <p className="text-[11px] text-neutral-500 mt-0.5">{item.desc}</p>
-                    </div>
-                  </motion.label>
-                ))}
-              </div>
-
-              {/* Card footer */}
-              <div className="px-6 py-4 border-t border-neutral-800 bg-[#161616]/50 flex items-center justify-between">
-                <span className="text-[10px] font-mono text-neutral-500">
-                  ✅ {checklist.filter(i => i.done).length}/{checklist.length} tugas selesai hari ini
-                </span>
-                <motion.span
-                  key={checklist.filter(i => i.done).length}
-                  animate={{ scale: [1, 1.15, 1] }}
-                  transition={{ duration: 0.4 }}
-                  className="text-[10px] font-mono text-emerald-500 font-bold"
-                >
-                  +{checklist.filter(i => i.done).length * 25} XP HARI INI
-                </motion.span>
-              </div>
-            </motion.div>
           </div>
         </div>
 
@@ -251,6 +176,84 @@ export default function LandingPage({ onEnterDashboard, brandName, darkMode, set
             <h2 className="text-xl sm:text-2xl font-bold text-white">
               Tools Andalan Bisnis Anda
             </h2>
+          </motion.div>
+
+          {/* Daily Pulse Mockup moved from Hero */}
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-40px" }}
+            transition={{ duration: 0.6 }}
+            className="w-full max-w-2xl mx-auto rounded-3xl border border-neutral-800/60 bg-[#111111]/80 backdrop-blur-md overflow-hidden shadow-2xl shadow-emerald-500/5 ring-1 ring-white/5 text-left mb-8"
+          >
+            {/* Card header */}
+            <div className="px-5 py-3 border-b border-neutral-800 flex items-center gap-2 bg-[#161616]/80">
+              <span className="w-2.5 h-2.5 rounded-full bg-red-400/80 shrink-0"></span>
+              <span className="w-2.5 h-2.5 rounded-full bg-yellow-400/80 shrink-0"></span>
+              <span className="w-2.5 h-2.5 rounded-full bg-green-400/80 shrink-0 mr-2"></span>
+              <span className="text-[10px] font-mono text-neutral-500 truncate">maxxsales.ai/daily-pulse</span>
+              <div className="flex-1"></div>
+              <motion.span
+                whileHover={{ scale: 1.05 }}
+                className="px-2 py-0.5 rounded-full text-[8px] font-mono font-bold bg-emerald-500/15 text-emerald-400 border border-emerald-500/25 whitespace-nowrap"
+              >
+                🔥 STREAK 4 HARI
+              </motion.span>
+            </div>
+
+            {/* Checklist body — balanced */}
+            <div className="p-5 sm:p-6 space-y-3.5 flex-1">
+              {checklist.map((item) => (
+                <motion.label
+                  key={item.id}
+                  whileHover={{ scale: 1.01, x: 2 }}
+                  whileTap={{ scale: 0.99 }}
+                  onClick={() => toggleChecklist(item.id)}
+                  className={`flex items-start gap-3 p-3.5 rounded-2xl cursor-pointer transition-all border ${
+                    item.done
+                      ? "bg-emerald-500/5 border-emerald-500/15 hover:bg-emerald-500/10"
+                      : "border-neutral-800/60 bg-[#0a0a0a] hover:bg-amber-500/5 hover:border-amber-500/20"
+                  } group`}
+                >
+                  <motion.div
+                    animate={item.done ? { scale: [1, 1.2, 1] } : {}}
+                    transition={{ duration: 0.3 }}
+                    className={`mt-0.5 w-4 h-4 rounded border flex items-center justify-center shrink-0 transition-colors ${
+                      item.done
+                        ? "bg-emerald-500 border-emerald-500"
+                        : "border-neutral-700 bg-transparent group-hover:border-emerald-500/40"
+                    }`}
+                  >
+                    {item.done && <Check className="w-3 h-3 text-black" />}
+                  </motion.div>
+                  <div>
+                    <span className={`text-sm transition-all ${
+                      item.done
+                        ? "text-neutral-500 line-through group-hover:text-emerald-200/80"
+                        : "text-white font-medium group-hover:text-amber-200"
+                    }`}>
+                      {item.label}
+                    </span>
+                    <p className="text-[11px] text-neutral-500 mt-0.5">{item.desc}</p>
+                  </div>
+                </motion.label>
+              ))}
+            </div>
+
+            {/* Card footer */}
+            <div className="px-6 py-4 border-t border-neutral-800 bg-[#161616]/50 flex items-center justify-between">
+              <span className="text-[10px] font-mono text-neutral-500">
+                ✅ {checklist.filter(i => i.done).length}/{checklist.length} tugas selesai hari ini
+              </span>
+              <motion.span
+                key={checklist.filter(i => i.done).length}
+                animate={{ scale: [1, 1.15, 1] }}
+                transition={{ duration: 0.4 }}
+                className="text-[10px] font-mono text-emerald-500 font-bold"
+              >
+                +{checklist.filter(i => i.done).length * 25} XP HARI INI
+              </motion.span>
+            </div>
           </motion.div>
 
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-5 items-start">
