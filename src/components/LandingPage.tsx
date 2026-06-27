@@ -90,97 +90,80 @@ export default function LandingPage({ onEnterDashboard, brandName, darkMode, set
         {/* 1. HERO: FOKUS 3 DETIK PERTAMA PAHAM */}
         <div className="relative max-w-6xl mx-auto mb-10 pt-4">
           
-          <div className="flex justify-center mb-6 opacity-0 animate-fade-in">
-            <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-emerald-500/10 border border-emerald-500/30 backdrop-blur-sm">
-              <span className="relative flex h-2 w-2">
-                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-                <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
-              </span>
-              <span className="text-[10px] font-bold font-mono tracking-[0.15em] text-emerald-400 uppercase">
-                Sistem Operasi Pertumbuhan Bisnis · AI-Powered
-              </span>
-            </div>
-          </div>
 
-          {/* 2-Column Hero Grid */}
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-10 items-stretch">
+          {/* Centered Hero Section */}
+          <div className="flex flex-col items-center justify-center text-center max-w-4xl mx-auto pt-6">
             
-            {/* LEFT COLUMN: Text Content */}
-            <div className="text-center lg:text-left">
-              <h1 className="text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-black tracking-tighter leading-[1.02] mb-3 text-white opacity-0 animate-fade-in" style={{ animationDelay: '0.15s' }}>
-            Ubah Produk Biasa Jadi
-            <br />
-            <span className="bg-clip-text text-transparent bg-gradient-to-r from-emerald-400 via-emerald-300 to-cyan-400 animate-gradient-shift">
-              Luar Biasa
-            </span>
-          </h1>
-
-          <p className="text-sm sm:text-base lg:text-lg text-emerald-400/90 font-semibold mb-2 opacity-0 animate-fade-in-up" style={{ animationDelay: '0.25s' }}>
-            Sistem Operasi Pertumbuhan Bisnis Berbasis AI Untuk Memaximalkan Penjualan
-          </p>
-
-          <p className="text-sm text-neutral-500 mb-6 leading-relaxed max-w-md opacity-0 animate-fade-in-up" style={{ animationDelay: '0.35s' }}>
-            Tanpa teori rumit. Tanpa dashboard kosong. <strong className="text-white font-semibold">MaxxSales</strong> mengubah data penjualan & intelijen pasar jadi langkah eksekusi harian —{' '}
-            <span className="text-white/80 font-medium">langsung bisa dikerjakan hari ini juga.</span>
-          </p>
-
-
-          {/* CTA Buttons */}
-          <div className="flex flex-col sm:flex-row items-center lg:items-start gap-3 opacity-0 animate-fade-in-up" style={{ animationDelay: '0.45s' }}>
-            <button
-              id="cta-start-dashboard"
-              onClick={onEnterDashboard}
-              className="group relative w-full sm:w-auto px-7 py-3 rounded-xl text-sm font-bold transition-all duration-300 bg-gradient-to-r from-emerald-500 to-emerald-600 hover:from-emerald-400 hover:to-emerald-500 text-black shadow-lg shadow-emerald-500/25 hover:shadow-emerald-500/40 hover:scale-[1.03] active:scale-[0.98] flex items-center justify-center gap-2 overflow-hidden"
-            >
-              {/* Shimmer sweep */}
-              <span className="absolute inset-0 w-full h-full bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700 ease-in-out" />
-              <span className="relative z-10 flex items-center gap-2">
-                Mulai Rancang Strategi Hari Ini
-                <ArrowRight className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1" />
+            <h1 className="text-4xl sm:text-5xl lg:text-7xl font-black tracking-tighter leading-[1.05] mb-6 text-white opacity-0 animate-fade-in" style={{ animationDelay: '0.1s' }}>
+              Ubah Produk Biasa Jadi
+              <br />
+              <span className="bg-clip-text text-transparent bg-gradient-to-r from-emerald-400 via-emerald-300 to-cyan-400 animate-gradient-shift">
+                Luar Biasa
               </span>
-            </button>
-            <button
-              id="cta-explore-preview"
-              onClick={() => document.getElementById('visual-showcase')?.scrollIntoView({ behavior: 'smooth' })}
-              className="w-full sm:w-auto px-6 py-3.5 rounded-xl text-sm font-semibold transition-all duration-300 border border-neutral-700 hover:border-neutral-500 text-neutral-300 hover:text-white hover:bg-white/5 flex items-center justify-center gap-2"
-            >
-              <MonitorSmartphone className="w-4 h-4" />
-              Lihat Pratinjau
-            </button>
-          </div>
+            </h1>
 
-          {/* Trust micro-signals */}
-          <motion.div
-            initial={{ opacity: 0, y: 12 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.6, duration: 0.5 }}
-            className="flex flex-wrap items-center justify-center lg:justify-start gap-4 sm:gap-6 mt-8 text-[11px] text-neutral-500 font-mono"
-          >
-            {[
-              { icon: ShieldCheck, text: "Coba Prototype Gratis" },
-              { icon: Clock, text: "Siap Pakai dalam 5 Menit" },
-              { icon: UserCheck, text: "Untuk Pengusaha, Bukan Akademisi" },
-            ].map((item, i) => (
-              <motion.span
-                key={i}
-                whileHover={{ scale: 1.05, color: "#a3e635" }}
-                className="flex items-center gap-1.5 cursor-default transition-colors"
+            <p className="text-base sm:text-lg lg:text-xl text-neutral-300 font-medium mb-4 max-w-2xl opacity-0 animate-fade-in-up" style={{ animationDelay: '0.2s' }}>
+              Sistem Operasi Pertumbuhan Bisnis Berbasis AI Untuk Memaximalkan Penjualan
+            </p>
+
+            <p className="text-sm sm:text-base text-neutral-500 mb-10 leading-relaxed max-w-xl mx-auto opacity-0 animate-fade-in-up" style={{ animationDelay: '0.3s' }}>
+              Tanpa teori rumit. Tanpa dashboard kosong. <strong className="text-neutral-300 font-semibold">MaxxSales</strong> mengubah data penjualan & intelijen pasar jadi langkah eksekusi harian — langsung bisa dikerjakan hari ini juga.
+            </p>
+
+            {/* CTA Buttons */}
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-4 opacity-0 animate-fade-in-up w-full sm:w-auto mb-10" style={{ animationDelay: '0.4s' }}>
+              <button
+                id="cta-start-dashboard"
+                onClick={onEnterDashboard}
+                className="group relative w-full sm:w-auto px-8 py-3.5 rounded-2xl text-sm font-bold transition-all duration-300 bg-gradient-to-r from-emerald-500 to-emerald-600 hover:from-emerald-400 hover:to-emerald-500 text-black shadow-lg shadow-emerald-500/25 hover:shadow-emerald-500/40 hover:scale-[1.02] active:scale-[0.98] flex items-center justify-center gap-2 overflow-hidden"
               >
-                <item.icon className="w-3.5 h-3.5 text-emerald-500" /> {item.text}
-              </motion.span>
-            ))}
-          </motion.div>
+                <span className="absolute inset-0 w-full h-full bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700 ease-in-out" />
+                <span className="relative z-10 flex items-center gap-2">
+                  Mulai Rancang Strategi Hari Ini
+                  <ArrowRight className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1" />
+                </span>
+              </button>
+              <button
+                id="cta-explore-preview"
+                onClick={() => document.getElementById('visual-showcase')?.scrollIntoView({ behavior: 'smooth' })}
+                className="w-full sm:w-auto px-8 py-3.5 rounded-2xl text-sm font-semibold transition-all duration-300 border border-neutral-800 hover:border-neutral-600 text-neutral-300 hover:text-white hover:bg-neutral-900 flex items-center justify-center gap-2"
+              >
+                <MonitorSmartphone className="w-4 h-4" />
+                Lihat Pratinjau
+              </button>
             </div>
 
-            {/* RIGHT COLUMN: Daily Pulse Mockup */}
+            {/* Trust micro-signals */}
             <motion.div
-              initial={{ opacity: 0, x: 20 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ delay: 0.5, duration: 0.6 }}
-              className="rounded-2xl border border-neutral-700 bg-[#111111] overflow-hidden shadow-2xl shadow-black/40 flex flex-col ring-1 ring-white/5"
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.5, duration: 0.5 }}
+              className="flex flex-wrap items-center justify-center gap-5 sm:gap-8 mb-16 text-[11px] text-neutral-500 font-mono"
+            >
+              {[
+                { icon: ShieldCheck, text: "Coba Prototype Gratis" },
+                { icon: Clock, text: "Siap Pakai dalam 5 Menit" },
+                { icon: UserCheck, text: "Untuk Pengusaha, Bukan Akademisi" },
+              ].map((item, i) => (
+                <motion.span
+                  key={i}
+                  whileHover={{ scale: 1.05, color: "#a3e635" }}
+                  className="flex items-center gap-1.5 cursor-default transition-colors"
+                >
+                  <item.icon className="w-3.5 h-3.5 text-emerald-500" /> {item.text}
+                </motion.span>
+              ))}
+            </motion.div>
+
+            {/* Daily Pulse Mockup Centered Below */}
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.6, duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
+              className="w-full max-w-2xl mx-auto rounded-3xl border border-neutral-800/60 bg-[#111111]/80 backdrop-blur-md overflow-hidden shadow-2xl shadow-emerald-500/5 ring-1 ring-white/5 text-left"
             >
               {/* Card header */}
-              <div className="px-5 py-3 border-b border-neutral-700/50 flex items-center gap-1.5 bg-[#161616]/80">
+              <div className="px-5 py-3 border-b border-neutral-800 flex items-center gap-2 bg-[#161616]/80">
                 <span className="w-2.5 h-2.5 rounded-full bg-red-400/80 shrink-0"></span>
                 <span className="w-2.5 h-2.5 rounded-full bg-yellow-400/80 shrink-0"></span>
                 <span className="w-2.5 h-2.5 rounded-full bg-green-400/80 shrink-0 mr-2"></span>
@@ -202,10 +185,10 @@ export default function LandingPage({ onEnterDashboard, brandName, darkMode, set
                     whileHover={{ scale: 1.01, x: 2 }}
                     whileTap={{ scale: 0.99 }}
                     onClick={() => toggleChecklist(item.id)}
-                    className={`flex items-start gap-3 p-3 rounded-xl cursor-pointer transition-all border ${
+                    className={`flex items-start gap-3 p-3.5 rounded-2xl cursor-pointer transition-all border ${
                       item.done
                         ? "bg-emerald-500/5 border-emerald-500/15 hover:bg-emerald-500/10"
-                        : "border-neutral-800 bg-[#0a0a0a] hover:bg-amber-500/5 hover:border-amber-500/20"
+                        : "border-neutral-800/60 bg-[#0a0a0a] hover:bg-amber-500/5 hover:border-amber-500/20"
                     } group`}
                   >
                     <motion.div
@@ -227,14 +210,14 @@ export default function LandingPage({ onEnterDashboard, brandName, darkMode, set
                       }`}>
                         {item.label}
                       </span>
-                      <p className="text-[10px] text-neutral-500 mt-0.5">{item.desc}</p>
+                      <p className="text-[11px] text-neutral-500 mt-0.5">{item.desc}</p>
                     </div>
                   </motion.label>
                 ))}
               </div>
 
               {/* Card footer */}
-              <div className="px-5 py-3 border-t border-neutral-700/50 bg-[#161616]/50 flex items-center justify-between">
+              <div className="px-6 py-4 border-t border-neutral-800 bg-[#161616]/50 flex items-center justify-between">
                 <span className="text-[10px] font-mono text-neutral-500">
                   ✅ {checklist.filter(i => i.done).length}/{checklist.length} tugas selesai hari ini
                 </span>
