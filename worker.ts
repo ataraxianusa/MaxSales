@@ -468,35 +468,44 @@ app.post("/api/instagram-scrape", async (c) => {
     );
 
     const runData = await runResponse.json();
+    console.log("[Apify IG] Run response:", JSON.stringify(runData).slice(0, 500));
+
     const runId = runData?.data?.id;
+    const datasetId = runData?.data?.defaultDatasetId;
 
     if (!runId) {
-      return c.json({ error: "Failed to start Apify run", mode: "error" });
+      return c.json({ error: "Failed to start Apify run", response: runData, mode: "error" });
     }
 
-    // Wait for run to complete (max 30 seconds)
+    // Wait for run to complete (max 90 seconds)
     let status = "running";
     let attempts = 0;
-    while (status === "running" && attempts < 15) {
+    while (status === "running" && attempts < 45) {
       await new Promise(r => setTimeout(r, 2000));
       const statusRes = await fetch(
         `https://api.apify.com/v2/actor-runs/${runId}?token=${apifyToken}`
       );
       const statusData = await statusRes.json();
       status = statusData?.data?.status || "running";
+      console.log(`[Apify IG] Attempt ${attempts}: status=${status}`);
       attempts++;
     }
 
     if (status !== "succeeded") {
-      return c.json({ error: `Apify run status: ${status}`, mode: "error" });
+      return c.json({ error: `Apify run status: ${status}`, runId, mode: "error" });
     }
 
     // Get dataset items
-    const datasetId = runData?.data?.defaultDatasetId;
+    const dsId = datasetId || runData?.data?.defaultDatasetId;
+    if (!dsId) {
+      return c.json({ error: "No dataset ID found", mode: "error" });
+    }
+
     const itemsRes = await fetch(
-      `https://api.apify.com/v2/datasets/${datasetId}/items?token=${apifyToken}&format=json`
+      `https://api.apify.com/v2/datasets/${dsId}/items?token=${apifyToken}&format=json`
     );
     const items = await itemsRes.json();
+    console.log("[Apify IG] Items count:", items?.length);
 
     const profile = items?.[0];
     if (!profile) {
@@ -553,16 +562,19 @@ app.post("/api/facebook-scrape", async (c) => {
     );
 
     const runData = await runResponse.json();
+    console.log("[Apify FB] Run response:", JSON.stringify(runData).slice(0, 500));
+
     const runId = runData?.data?.id;
+    const datasetId = runData?.data?.defaultDatasetId;
 
     if (!runId) {
-      return c.json({ error: "Failed to start Apify Facebook run", mode: "error" });
+      return c.json({ error: "Failed to start Apify Facebook run", response: runData, mode: "error" });
     }
 
-    // Wait for run to complete (max 45 seconds)
+    // Wait for run to complete (max 60 seconds)
     let status = "running";
     let attempts = 0;
-    while (status === "running" && attempts < 22) {
+    while (status === "running" && attempts < 30) {
       await new Promise(r => setTimeout(r, 2000));
       const statusRes = await fetch(
         `https://api.apify.com/v2/actor-runs/${runId}?token=${apifyToken}`
@@ -573,15 +585,20 @@ app.post("/api/facebook-scrape", async (c) => {
     }
 
     if (status !== "succeeded") {
-      return c.json({ error: `Apify Facebook run status: ${status}`, mode: "error" });
+      return c.json({ error: `Apify Facebook run status: ${status}`, runId, mode: "error" });
     }
 
     // Get dataset items
-    const datasetId = runData?.data?.defaultDatasetId;
+    const dsId = datasetId || runData?.data?.defaultDatasetId;
+    if (!dsId) {
+      return c.json({ error: "No dataset ID found", mode: "error" });
+    }
+
     const itemsRes = await fetch(
-      `https://api.apify.com/v2/datasets/${datasetId}/items?token=${apifyToken}&format=json`
+      `https://api.apify.com/v2/datasets/${dsId}/items?token=${apifyToken}&format=json`
     );
     const items = await itemsRes.json();
+    console.log("[Apify FB] Items count:", items?.length);
 
     const page = items?.[0];
     if (!page) {

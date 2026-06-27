@@ -288,28 +288,33 @@ export default function CompetitorWarRoom({ dna, competitors, setCompetitors }: 
               </div>
 
               {/* Social Media Inputs */}
-              <div className="grid grid-cols-2 gap-2">
-                <div>
-                  <label className="text-[10px] font-mono block font-semibold text-neutral-450 dark:text-[#737373] mb-1">Instagram ID</label>
-                  <input
-                    id="inp-comp-instagram"
-                    type="text"
-                    placeholder="misal: zahra_store"
-                    value={instagramUsername}
-                    onChange={e => setInstagramUsername(e.target.value.replace("@", ""))}
-                    className="w-full text-xs px-3 py-2 rounded border bg-transparent border-neutral-300 dark:border-neutral-800 focus:border-neutral-900 dark:focus:border-[#E5E5E5] focus:outline-none"
-                  />
-                </div>
-                <div>
-                  <label className="text-[10px] font-mono block font-semibold text-neutral-450 dark:text-[#737373] mb-1">Facebook Page URL</label>
-                  <input
-                    id="inp-comp-facebook"
-                    type="text"
-                    placeholder="misal: facebook.com/zahra.store"
-                    value={facebookUrl}
-                    onChange={e => setFacebookUrl(e.target.value)}
-                    className="w-full text-xs px-3 py-2 rounded border bg-transparent border-neutral-300 dark:border-neutral-800 focus:border-neutral-900 dark:focus:border-[#E5E5E5] focus:outline-none"
-                  />
+              <div className="p-2.5 rounded bg-blue-50 dark:bg-blue-900/10 border border-blue-200 dark:border-blue-800/30">
+                <p className="text-[9px] font-mono text-blue-600 dark:text-blue-400 mb-2">
+                  📊 Isi minimal salah satu untuk data lebih akurat. Kosongkan jika tidak diketahui.
+                </p>
+                <div className="grid grid-cols-2 gap-2">
+                  <div>
+                    <label className="text-[10px] font-mono block font-semibold text-neutral-450 dark:text-[#737373] mb-1">Instagram ID</label>
+                    <input
+                      id="inp-comp-instagram"
+                      type="text"
+                      placeholder="misal: yuwprojects"
+                      value={instagramUsername}
+                      onChange={e => setInstagramUsername(e.target.value.replace("@", ""))}
+                      className="w-full text-xs px-3 py-2 rounded border bg-transparent border-neutral-300 dark:border-neutral-800 focus:border-neutral-900 dark:focus:border-[#E5E5E5] focus:outline-none"
+                    />
+                  </div>
+                  <div>
+                    <label className="text-[10px] font-mono block font-semibold text-neutral-450 dark:text-[#737373] mb-1">Facebook Page URL</label>
+                    <input
+                      id="inp-comp-facebook"
+                      type="text"
+                      placeholder="misal: facebook.com/zahra.store"
+                      value={facebookUrl}
+                      onChange={e => setFacebookUrl(e.target.value)}
+                      className="w-full text-xs px-3 py-2 rounded border bg-transparent border-neutral-300 dark:border-neutral-800 focus:border-neutral-900 dark:focus:border-[#E5E5E5] focus:outline-none"
+                    />
+                  </div>
                 </div>
               </div>
 
