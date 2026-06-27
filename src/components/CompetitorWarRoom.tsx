@@ -57,31 +57,40 @@ export default function CompetitorWarRoom({ dna, competitors, setCompetitors }: 
     }
     setLoading(true);
     try {
-      const response = await fetch(`${API_BASE}/api/analyze-competitor`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          competitorName: name,
-          location,
-          averagePrice,
-          activeChannels,
-          dna
+      // Call both AI analysis AND web scraping in parallel
+      const [analysisRes, scrapeRes] = await Promise.all([
+        fetch(`${API_BASE}/api/analyze-competitor`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ competitorName: name, location, averagePrice, activeChannels, dna })
+        }),
+        fetch(`${API_BASE}/api/scrape-competitor`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ competitorName: name, location })
         })
-      });
-      const data = await response.json();
-      
+      ]);
+
+      const analysisData = await analysisRes.json();
+      const scrapeData = await scrapeRes.json();
+
+      // Merge web scrape data into analysis
+      const webInfo = scrapeData.socialLinks?.length
+        ? `\n\nData Online: ${scrapeData.socialLinks.join(", ")}`
+        : "";
+
       const newId = `comp-${Date.now()}`;
       const newCompetitor: CompetitorIntel = {
         id: newId,
         name,
-        location: location || "Kota Terdekat",
+        location: location || scrapeData.searchResults?.[0]?.snippet?.slice(0, 50) || "Kota Terdekat",
         averagePrice: averagePrice || "Rp 200.000 - Rp 350.000",
         activeChannels: activeChannels.length > 0 ? activeChannels : ["Instagram"],
-        strengths: data.strengths || "Memiliki modal fisik kuat.",
-        weaknesses: data.weaknesses || "Kemasan pengiriman belum diuji.",
-        opportunities: data.opportunities || "Tawarkan kemasan box mewah kustom Anda.",
-        threats: data.threats || "Banting harga eceran.",
-        estimatedRevenue: data.estimatedRevenue || "10-50jt"
+        strengths: (analysisData.strengths || "Memiliki modal fisik kuat.") + webInfo,
+        weaknesses: analysisData.weaknesses || "Kemasan pengiriman belum diuji.",
+        opportunities: analysisData.opportunities || "Tawarkan kemasan box mewah kustom Anda.",
+        threats: analysisData.threats || "Banting harga eceran.",
+        estimatedRevenue: analysisData.estimatedRevenue || "10-50jt"
       };
 
       const updated = [newCompetitor, ...competitors];

@@ -375,6 +375,70 @@ HANYA JSON.` }
   }
 });
 
+// 5b. WEB SCRAPE COMPETITOR — Search DuckDuckGo for competitor info
+app.post("/api/scrape-competitor", async (c) => {
+  const { competitorName, location } = await c.req.json();
+  if (!competitorName) return c.json({ error: "Competitor name required." }, 400);
+
+  const fallback = {
+    name: competitorName,
+    searchResults: [],
+    socialLinks: [],
+    summary: `Tidak dapat mengambil data online untuk "${competitorName}". Coba gunakan analisis manual.`,
+    mode: "fallback"
+  };
+
+  try {
+    // Search DuckDuckGo HTML (no API key needed)
+    const query = encodeURIComponent(`${competitorName} ${location || ""} toko online instagram`);
+    const response = await fetch(`https://html.duckduckgo.com/html/?q=${query}`, {
+      headers: {
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36"
+      }
+    });
+
+    const html = await response.text();
+
+    // Extract search results from HTML
+    const results: { title: string; snippet: string; url: string }[] = [];
+    const resultRegex = /<a rel="nofollow" class="result__a" href="([^"]*)"[^>]*>(.*?)<\/a>[\s\S]*?<a class="result__snippet"[^>]*>(.*?)<\/a>/g;
+    let match;
+    while ((match = resultRegex.exec(html)) !== null && results.length < 5) {
+      const url = match[1];
+      const title = match[2].replace(/<[^>]*>/g, "").trim();
+      const snippet = match[3].replace(/<[^>]*>/g, "").trim();
+      if (title && snippet) {
+        results.push({ title, snippet, url });
+      }
+    }
+
+    // Extract social media links
+    const socialLinks: string[] = [];
+    const instagramMatch = html.match(/https?:\/\/(www\.)?instagram\.com\/[^\s"<>]+/g);
+    const tiktokMatch = html.match(/https?:\/\/(www\.)?tiktok\.com\/@[^\s"<>]+/g);
+    const shopeeMatch = html.match(/https?:\/\/shopee\.\w+\/[^\s"<>]+/g);
+    if (instagramMatch) socialLinks.push(...instagramMatch.slice(0, 2));
+    if (tiktokMatch) socialLinks.push(...tiktokMatch.slice(0, 2));
+    if (shopeeMatch) socialLinks.push(...shopeeMatch.slice(0, 2));
+
+    // Build summary from snippets
+    const snippets = results.map(r => r.snippet).join(" ");
+    const summary = snippets.length > 50
+      ? `Ditemukan ${results.length} hasil pencarian untuk "${competitorName}". ${snippets.slice(0, 300)}...`
+      : `Tidak ditemukan data signifikan untuk "${competitorName}" dari pencarian online.`;
+
+    return c.json({
+      name: competitorName,
+      searchResults: results,
+      socialLinks: [...new Set(socialLinks)],
+      summary,
+      mode: "scraped"
+    });
+  } catch (err) {
+    return c.json({ ...fallback, error: String(err) });
+  }
+});
+
 // 6. ANALYZE SEGMENTS — AI Customer Segment Analysis
 app.post("/api/analyze-segments", async (c) => {
   const { dna, segments } = await c.req.json();
