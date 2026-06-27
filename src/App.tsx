@@ -139,38 +139,40 @@ export default function App() {
     localStorage.setItem("maxx_sales_segments", JSON.stringify(segments));
   }, [segments]);
 
-  // Sync DNA competitor data → CompetitorWarRoom
+  // Sync DNA competitor data → CompetitorWarRoom (debounced)
+  const dnaSyncTimerRef = React.useRef<ReturnType<typeof setTimeout> | null>(null);
+
   React.useEffect(() => {
-    if (!canvas.biggestCompetitor?.trim()) return;
+    if (dnaSyncTimerRef.current) clearTimeout(dnaSyncTimerRef.current);
 
-    const dnaCompId = "dna-" + canvas.biggestCompetitor.toLowerCase().replace(/\s+/g, "-").slice(0, 20);
-    const existingIdx = competitors.findIndex((c) => c.id === dnaCompId);
+    dnaSyncTimerRef.current = setTimeout(() => {
+      if (!canvas.biggestCompetitor?.trim()) return;
 
-    const dnaCompetitor: CompetitorIntel = {
-      id: dnaCompId,
-      name: canvas.biggestCompetitor,
-      location: "-",
-      averagePrice: canvas.priceRange || "-",
-      activeChannels: canvas.activeSocialMedia || [],
-      strengths: canvas.competitorStrengths || "",
-      weaknesses: canvas.competitorWeaknesses || "",
-      opportunities: "",
-      threats: "",
-      estimatedRevenue: canvas.monthlyRevenueRange || "-",
-    };
+      const dnaCompId = "dna-" + canvas.biggestCompetitor.toLowerCase().replace(/\s+/g, "-").slice(0, 20);
 
-    // Remove hardcoded competitors (comp-1, comp-2) when DNA competitor exists
-    const manualOnly = competitors.filter(c => !c.id.startsWith("comp-"));
+      const dnaCompetitor: CompetitorIntel = {
+        id: dnaCompId,
+        name: canvas.biggestCompetitor,
+        location: "-",
+        averagePrice: canvas.priceRange || "-",
+        activeChannels: canvas.activeSocialMedia || [],
+        strengths: canvas.competitorStrengths || "",
+        weaknesses: canvas.competitorWeaknesses || "",
+        opportunities: "",
+        threats: "",
+        estimatedRevenue: canvas.monthlyRevenueRange || "-",
+      };
 
-    if (existingIdx >= 0) {
-      // Update existing DNA-sourced competitor, keep manual ones
-      const withoutHardcoded = competitors.filter(c => !c.id.startsWith("comp-"));
-      const updated = withoutHardcoded.map(c => c.id === dnaCompId ? dnaCompetitor : c);
-      setCompetitors(updated);
-    } else {
-      // Add DNA competitor at the top, keep manual ones below (remove hardcoded)
+      // Remove ALL existing DNA-sourced competitors + hardcoded ones
+      const manualOnly = competitors.filter(c => !c.id.startsWith("dna-") && !c.id.startsWith("comp-"));
+
+      // Add single DNA competitor at top, keep manual ones below
       setCompetitors([dnaCompetitor, ...manualOnly]);
-    }
+    }, 800);
+
+    return () => {
+      if (dnaSyncTimerRef.current) clearTimeout(dnaSyncTimerRef.current);
+    };
   }, [canvas.biggestCompetitor, canvas.competitorStrengths, canvas.competitorWeaknesses]);
 
   // State to track completion/engagement status of the 5 key features
