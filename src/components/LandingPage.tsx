@@ -1,6 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { motion } from "motion/react";
+import PricingSection from "./PricingSection";
 import {
   Sparkles,
   ArrowRight,
@@ -795,6 +796,11 @@ export default function LandingPage({ onEnterDashboard, brandName, darkMode, set
 
           </div>
         </div>
+
+        {/* ═══════════════════════════════════════════════ */}
+        {/* 4. PRICING SECTION                             */}
+        {/* ═══════════════════════════════════════════════ */}
+        <PricingSection onBuyNow={onEnterDashboard} />
 
         {/* Accessibility Focus Showcase */}
         <div className="rounded-xl border p-8 bg-white dark:bg-[#111111] border-neutral-200 dark:border-[#262626] mb-12">
