@@ -661,40 +661,48 @@ export default function CompetitorWarRoom({ dna, competitors, setCompetitors }: 
               </div>
 
               {/* Social Media Intelligence Card */}
-              {activeIntelCompetitor.strengths.includes("Instagram") || activeIntelCompetitor.strengths.includes("Facebook") || activeIntelCompetitor.strengths.includes("Data Online") ? (
-                <div className="p-4 rounded border border-neutral-200 dark:border-[#262626] bg-gradient-to-r from-blue-50 to-purple-50 dark:from-blue-900/10 dark:to-purple-900/10 space-y-3">
-                  <div className="flex items-center space-x-2">
-                    <span className="text-sm">📊</span>
-                    <span className="text-[10px] font-bold font-mono text-neutral-800 dark:text-white uppercase tracking-widest">Social Media Intelligence</span>
+              {(() => {
+                // Parse social media data from strengths field
+                const igMatch = activeIntelCompetitor.strengths.match(/Instagram:\s*([^\n]+)/);
+                const fbMatch = activeIntelCompetitor.strengths.match(/Facebook:\s*([^\n]+)/);
+                const webMatch = activeIntelCompetitor.strengths.match(/Data Online:\s*([^\n]+)/);
+                const hasSocialData = igMatch || fbMatch || webMatch;
+
+                return hasSocialData ? (
+                  <div className="p-4 rounded border border-neutral-200 dark:border-[#262626] bg-gradient-to-r from-blue-50 to-purple-50 dark:from-blue-900/10 dark:to-purple-900/10 space-y-3">
+                    <div className="flex items-center space-x-2">
+                      <span className="text-sm">📊</span>
+                      <span className="text-[10px] font-bold font-mono text-neutral-800 dark:text-white uppercase tracking-widest">Social Media Intelligence</span>
+                    </div>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                      {igMatch && (
+                        <div className="p-3 rounded bg-white dark:bg-[#1a1a1a] border border-pink-200 dark:border-pink-800/30">
+                          <span className="text-[9px] font-bold font-mono text-pink-600 dark:text-pink-400 uppercase">📷 Instagram</span>
+                          <p className="text-[10px] text-neutral-600 dark:text-neutral-400 mt-1 break-words">
+                            {igMatch[1].trim()}
+                          </p>
+                        </div>
+                      )}
+                      {fbMatch && (
+                        <div className="p-3 rounded bg-white dark:bg-[#1a1a1a] border border-blue-200 dark:border-blue-800/30">
+                          <span className="text-[9px] font-bold font-mono text-blue-600 dark:text-blue-400 uppercase">👥 Facebook</span>
+                          <p className="text-[10px] text-neutral-600 dark:text-neutral-400 mt-1 break-words">
+                            {fbMatch[1].trim()}
+                          </p>
+                        </div>
+                      )}
+                      {webMatch && (
+                        <div className="p-3 rounded bg-white dark:bg-[#1a1a1a] border border-green-200 dark:border-green-800/30 md:col-span-2">
+                          <span className="text-[9px] font-bold font-mono text-green-600 dark:text-green-400 uppercase">🌐 Web Presence</span>
+                          <p className="text-[10px] text-neutral-600 dark:text-neutral-400 mt-1 break-words">
+                            {webMatch[1].trim()}
+                          </p>
+                        </div>
+                      )}
+                    </div>
                   </div>
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-                    {activeIntelCompetitor.strengths.includes("Instagram") && (
-                      <div className="p-3 rounded bg-white dark:bg-[#1a1a1a] border border-pink-200 dark:border-pink-800/30">
-                        <span className="text-[9px] font-bold font-mono text-pink-600 dark:text-pink-400 uppercase">📷 Instagram</span>
-                        <p className="text-[10px] text-neutral-600 dark:text-neutral-400 mt-1 break-words">
-                          {activeIntelCompetitor.strengths.split("Instagram:")[1]?.split("\n")[0] || "Data tidak tersedia"}
-                        </p>
-                      </div>
-                    )}
-                    {activeIntelCompetitor.strengths.includes("Facebook") && (
-                      <div className="p-3 rounded bg-white dark:bg-[#1a1a1a] border border-blue-200 dark:border-blue-800/30">
-                        <span className="text-[9px] font-bold font-mono text-blue-600 dark:text-blue-400 uppercase">👥 Facebook</span>
-                        <p className="text-[10px] text-neutral-600 dark:text-neutral-400 mt-1 break-words">
-                          {activeIntelCompetitor.strengths.split("Facebook:")[1]?.split("\n")[0] || "Data tidak tersedia"}
-                        </p>
-                      </div>
-                    )}
-                    {activeIntelCompetitor.strengths.includes("Data Online") && (
-                      <div className="p-3 rounded bg-white dark:bg-[#1a1a1a] border border-green-200 dark:border-green-800/30 md:col-span-2">
-                        <span className="text-[9px] font-bold font-mono text-green-600 dark:text-green-400 uppercase">🌐 Web Presence</span>
-                        <p className="text-[10px] text-neutral-600 dark:text-neutral-400 mt-1 break-words">
-                          {activeIntelCompetitor.strengths.split("Data Online:")[1]?.split("\n")[0] || "Data tidak tersedia"}
-                        </p>
-                      </div>
-                    )}
-                  </div>
-                </div>
-              ) : null}
+                ) : null;
+              })()}
 
               {/* Head-to-Head battlefield summary card */}
               <div className="p-5 rounded border bg-neutral-50 dark:bg-[#111111] border-neutral-200 dark:border-[#262626] space-y-2.5">
