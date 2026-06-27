@@ -10,6 +10,7 @@ import {
 type Bindings = {
   OPENROUTER_API_KEY: string;
   OPENROUTER_MODEL: string;
+  APIFY_TOKEN: string;
 };
 
 const app = new Hono<{ Bindings: Bindings }>();
@@ -436,6 +437,95 @@ app.post("/api/scrape-competitor", async (c) => {
     });
   } catch (err) {
     return c.json({ ...fallback, error: String(err) });
+  }
+});
+
+// 5c. INSTAGRAM PROFILE SCRAPE — Apify Instagram Profile Scraper
+app.post("/api/instagram-scrape", async (c) => {
+  const { username } = await c.req.json();
+  if (!username) return c.json({ error: "Instagram username required." }, 400);
+
+  const apifyToken = c.env.APIFY_TOKEN;
+  if (!apifyToken) {
+    return c.json({
+      error: "Apify token not configured.",
+      mode: "no-token"
+    });
+  }
+
+  try {
+    // Run Apify Instagram Profile Scraper
+    const runResponse = await fetch(
+      `https://api.apify.com/v2/acts/apify~instagram-profile-scraper/runs?token=${apifyToken}`,
+      {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          usernames: [username],
+          includeAboutSection: false
+        })
+      }
+    );
+
+    const runData = await runResponse.json();
+    const runId = runData?.data?.id;
+
+    if (!runId) {
+      return c.json({ error: "Failed to start Apify run", mode: "error" });
+    }
+
+    // Wait for run to complete (max 30 seconds)
+    let status = "running";
+    let attempts = 0;
+    while (status === "running" && attempts < 15) {
+      await new Promise(r => setTimeout(r, 2000));
+      const statusRes = await fetch(
+        `https://api.apify.com/v2/actor-runs/${runId}?token=${apifyToken}`
+      );
+      const statusData = await statusRes.json();
+      status = statusData?.data?.status || "running";
+      attempts++;
+    }
+
+    if (status !== "succeeded") {
+      return c.json({ error: `Apify run status: ${status}`, mode: "error" });
+    }
+
+    // Get dataset items
+    const datasetId = runData?.data?.defaultDatasetId;
+    const itemsRes = await fetch(
+      `https://api.apify.com/v2/datasets/${datasetId}/items?token=${apifyToken}&format=json`
+    );
+    const items = await itemsRes.json();
+
+    const profile = items?.[0];
+    if (!profile) {
+      return c.json({ error: "No profile data found", mode: "empty" });
+    }
+
+    // Extract useful data
+    return c.json({
+      username: profile.username || username,
+      fullName: profile.fullName || "",
+      biography: profile.biography || "",
+      followers: profile.followersCount || 0,
+      following: profile.followsCount || 0,
+      posts: profile.postsCount || 0,
+      isBusiness: profile.isBusinessAccount || false,
+      isVerified: profile.verified || false,
+      businessCategory: profile.businessCategoryName || "",
+      externalUrl: profile.externalUrl || "",
+      profilePicUrl: profile.profilePicUrlHD || profile.profilePicUrl || "",
+      recentPosts: (profile.latestPosts || []).slice(0, 3).map((p: any) => ({
+        caption: (p.caption || "").slice(0, 150),
+        likes: p.likesCount || 0,
+        comments: p.commentsCount || 0,
+        timestamp: p.timestamp || ""
+      })),
+      mode: "apify"
+    });
+  } catch (err) {
+    return c.json({ error: String(err), mode: "error" });
   }
 });
 
