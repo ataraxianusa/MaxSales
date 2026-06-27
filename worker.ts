@@ -529,6 +529,90 @@ app.post("/api/instagram-scrape", async (c) => {
   }
 });
 
+// 5d. TIKTOK PROFILE SCRAPE — Apify TikTok Profile Scraper
+app.post("/api/tiktok-scrape", async (c) => {
+  const { username } = await c.req.json();
+  if (!username) return c.json({ error: "TikTok username required." }, 400);
+
+  const apifyToken = c.env.APIFY_TOKEN;
+  if (!apifyToken) {
+    return c.json({ error: "Apify token not configured.", mode: "no-token" });
+  }
+
+  try {
+    // Run Apify TikTok Profile Scraper
+    const runResponse = await fetch(
+      `https://api.apify.com/v2/acts/clockworks~tiktok-profile-scraper/runs?token=${apifyToken}`,
+      {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          profiles: [username]
+        })
+      }
+    );
+
+    const runData = await runResponse.json();
+    const runId = runData?.data?.id;
+
+    if (!runId) {
+      return c.json({ error: "Failed to start Apify TikTok run", mode: "error" });
+    }
+
+    // Wait for run to complete (max 30 seconds)
+    let status = "running";
+    let attempts = 0;
+    while (status === "running" && attempts < 15) {
+      await new Promise(r => setTimeout(r, 2000));
+      const statusRes = await fetch(
+        `https://api.apify.com/v2/actor-runs/${runId}?token=${apifyToken}`
+      );
+      const statusData = await statusRes.json();
+      status = statusData?.data?.status || "running";
+      attempts++;
+    }
+
+    if (status !== "succeeded") {
+      return c.json({ error: `Apify TikTok run status: ${status}`, mode: "error" });
+    }
+
+    // Get dataset items
+    const datasetId = runData?.data?.defaultDatasetId;
+    const itemsRes = await fetch(
+      `https://api.apify.com/v2/datasets/${datasetId}/items?token=${apifyToken}&format=json`
+    );
+    const items = await itemsRes.json();
+
+    const profile = items?.[0];
+    if (!profile) {
+      return c.json({ error: "No TikTok profile data found", mode: "empty" });
+    }
+
+    return c.json({
+      username: profile.uniqueId || username,
+      nickname: profile.nickname || "",
+      bio: profile.signature || "",
+      followers: profile.followerCount || 0,
+      following: profile.followingCount || 0,
+      likes: profile.heartCount || profile.heart || 0,
+      videos: profile.videoCount || 0,
+      isVerified: profile.verified || false,
+      isBusiness: profile.profileLanding || false,
+      profilePicUrl: profile.avatar || "",
+      recentVideos: (profile.videos || []).slice(0, 3).map((v: any) => ({
+        desc: (v.desc || "").slice(0, 150),
+        plays: v.playCount || 0,
+        likes: v.diggCount || 0,
+        comments: v.commentCount || 0,
+        shares: v.shareCount || 0
+      })),
+      mode: "apify"
+    });
+  } catch (err) {
+    return c.json({ error: String(err), mode: "error" });
+  }
+});
+
 // 6. ANALYZE SEGMENTS — AI Customer Segment Analysis
 app.post("/api/analyze-segments", async (c) => {
   const { dna, segments } = await c.req.json();

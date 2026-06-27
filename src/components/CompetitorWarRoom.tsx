@@ -59,8 +59,8 @@ export default function CompetitorWarRoom({ dna, competitors, setCompetitors }: 
     }
     setLoading(true);
     try {
-      // Call AI analysis, web scraping, AND Instagram scrape in parallel
-      const [analysisRes, scrapeRes, igRes] = await Promise.all([
+      // Call AI analysis, web scraping, Instagram scrape, AND TikTok scrape in parallel
+      const [analysisRes, scrapeRes, igRes, ttRes] = await Promise.all([
         fetch(`${API_BASE}/api/analyze-competitor`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -71,12 +71,18 @@ export default function CompetitorWarRoom({ dna, competitors, setCompetitors }: 
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ competitorName: name, location })
         }),
-        // Try Instagram scrape if username provided
         instagramUsername.trim()
           ? fetch(`${API_BASE}/api/instagram-scrape`, {
               method: "POST",
               headers: { "Content-Type": "application/json" },
               body: JSON.stringify({ username: instagramUsername.replace("@", "") })
+            })
+          : Promise.resolve(null),
+        tiktokUsername.trim()
+          ? fetch(`${API_BASE}/api/tiktok-scrape`, {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({ username: tiktokUsername.replace("@", "") })
             })
           : Promise.resolve(null)
       ]);
@@ -84,6 +90,7 @@ export default function CompetitorWarRoom({ dna, competitors, setCompetitors }: 
       const analysisData = await analysisRes.json();
       const scrapeData = await scrapeRes.json();
       const igData = igRes ? await igRes.json() : null;
+      const ttData = ttRes ? await ttRes.json() : null;
 
       // Merge all data sources
       const webInfo = scrapeData.socialLinks?.length
@@ -94,19 +101,25 @@ export default function CompetitorWarRoom({ dna, competitors, setCompetitors }: 
         ? `\n\nInstagram: ${igData.followers?.toLocaleString()} followers, ${igData.posts} posts, Engagement: ${igData.recentPosts?.length ? Math.round(igData.recentPosts.reduce((a: number, p: any) => a + (p.likes || 0), 0) / igData.recentPosts.length / Math.max(igData.followers || 1, 1) * 100) : 0}%`
         : "";
 
+      const ttInfo = ttData?.mode === "apify"
+        ? `\n\nTikTok: ${ttData.followers?.toLocaleString()} followers, ${ttData.videos} videos, Likes: ${ttData.likes?.toLocaleString()}`
+        : "";
+
       const newId = `comp-${Date.now()}`;
       const newCompetitor: CompetitorIntel = {
         id: newId,
-        name: igData?.fullName || name,
+        name: igData?.fullName || ttData?.nickname || name,
         location: location || scrapeData.searchResults?.[0]?.snippet?.slice(0, 50) || "Kota Terdekat",
         averagePrice: averagePrice || "Rp 200.000 - Rp 350.000",
         activeChannels: activeChannels.length > 0 ? activeChannels : ["Instagram"],
-        strengths: (analysisData.strengths || "Memiliki modal fisik kuat.") + webInfo + igInfo,
+        strengths: (analysisData.strengths || "Memiliki modal fisik kuat.") + webInfo + igInfo + ttInfo,
         weaknesses: analysisData.weaknesses || "Kemasan pengiriman belum diuji.",
         opportunities: analysisData.opportunities || "Tawarkan kemasan box mewah kustom Anda.",
         threats: analysisData.threats || "Banting harga eceran.",
         estimatedRevenue: igData?.followers
-          ? `${Math.round(igData.followers / 1000)}jt followers`
+          ? `${Math.round(igData.followers / 1000)}jt followers IG`
+          : ttData?.followers
+          ? `${Math.round(ttData.followers / 1000)}jt followers TT`
           : analysisData.estimatedRevenue || "10-50jt"
       };
 
