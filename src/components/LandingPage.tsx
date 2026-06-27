@@ -88,7 +88,7 @@ export default function LandingPage({ onEnterDashboard, brandName, darkMode, set
       <div className="max-w-7xl mx-auto px-6 sm:px-8 py-12 md:py-16 relative z-10">
         
         {/* 1. HERO: FOKUS 3 DETIK PERTAMA PAHAM */}
-        <div className="relative max-w-6xl mx-auto mb-10 pt-4">
+        <div className="relative max-w-6xl mx-auto min-h-[calc(100vh-4rem)] flex flex-col justify-center mb-10 pt-4 pb-12">
           
 
           {/* Centered Hero Section */}
@@ -237,7 +237,7 @@ export default function LandingPage({ onEnterDashboard, brandName, darkMode, set
         {/* ═══════════════════════════════════════════════ */}
         {/* 2. SHOWCASE: AMUNISI + DASHBOARD PREVIEW       */}
         {/* ═══════════════════════════════════════════════ */}
-        <div id="visual-showcase" className="max-w-6xl mx-auto mb-20 scroll-mt-24">
+        <div id="visual-showcase" className="max-w-6xl mx-auto min-h-screen flex flex-col justify-center mb-20 scroll-mt-16">
           <motion.div
             initial={{ opacity: 0, y: 24 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -584,7 +584,7 @@ export default function LandingPage({ onEnterDashboard, brandName, darkMode, set
         </div>
 
         {/* 2 & 3. BENTO GRID OF 5 PILLARS */}
-        <div id="dna-canvas" className="mb-24 scroll-mt-24">
+        <div id="dna-canvas" className="min-h-screen flex flex-col justify-center mb-24 scroll-mt-16">
           <div className="text-center mb-12">
             {/* Custom polished header replacing "MVP Core" */}
             <h2 className="text-2xl sm:text-3xl font-bold tracking-tight text-white mb-2">

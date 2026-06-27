@@ -117,7 +117,7 @@ export default function PricingSection({ onBuyNow }: PricingSectionProps) {
   const pad = (n: number) => String(n).padStart(2, "0");
 
   return (
-    <section id="pricing" className="relative mb-24 scroll-mt-24">
+    <section id="pricing" className="relative min-h-screen flex flex-col justify-center mb-24 scroll-mt-16">
       {/* Radial ambient glow behind the card */}
       <div className="pointer-events-none absolute inset-0 flex items-center justify-center">
         <div className="w-[700px] h-[500px] rounded-full bg-emerald-500/5 blur-[120px]" />
