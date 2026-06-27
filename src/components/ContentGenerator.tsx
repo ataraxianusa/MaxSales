@@ -3,7 +3,7 @@ import { GeneratedContentText } from "../types";
 import { API_BASE } from "../api";
 import { useChain } from "../store/ChainContext";
 import AIFeedback from "./AIFeedback";
-import { Image as ImageIcon, Upload, Download, Copy, RefreshCw, Layers, Eye, Smartphone, Check, Loader2 } from "lucide-react";
+import { Image as ImageIcon, Upload, Download, Copy, RefreshCw, Layers, Eye, Smartphone, Check, Loader2, Sparkles } from "lucide-react";
 
 type AspectRatioType = "feed" | "story" | "whatsapp";
 type LayoutStyle = "minimal" | "bold" | "card" | "banner";
@@ -645,15 +645,20 @@ export default function ContentGenerator() {
                 id="btn-ai-suggest"
                 onClick={fetchSuggestions}
                 disabled={suggestLoading}
-                className="w-full py-2 rounded text-[10px] font-semibold border border-dashed border-neutral-300 dark:border-neutral-700 text-neutral-600 dark:text-neutral-400 hover:border-neutral-900 dark:hover:border-white hover:text-neutral-900 dark:hover:text-white transition-colors flex items-center justify-center space-x-1.5 disabled:opacity-50"
+                className="group relative w-full py-3 rounded-xl font-bold text-sm transition-all duration-300 bg-gradient-to-r from-violet-600 via-purple-600 to-indigo-600 hover:from-violet-500 hover:via-purple-500 hover:to-indigo-500 text-white shadow-lg shadow-purple-500/25 hover:shadow-purple-500/40 hover:scale-[1.02] active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100 flex items-center justify-center space-x-2 overflow-hidden"
               >
-                {suggestLoading ? (
-                  <Loader2 className="w-3 h-3 animate-spin" />
-                ) : (
-                  <RefreshCw className="w-3 h-3" />
-                )}
-                <span>{suggestLoading ? "AI Sedang Berpikir..." : "✨ Dapatkan Saran Hook, CTA & Caption dari AI"}</span>
+                {/* Animated shimmer */}
+                <span className="absolute inset-0 w-full h-full bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700 ease-in-out" />
+                <span className="relative z-10 flex items-center space-x-2">
+                  {suggestLoading ? (
+                    <Loader2 className="w-4 h-4 animate-spin" />
+                  ) : (
+                    <Sparkles className="w-4 h-4" />
+                  )}
+                  <span>{suggestLoading ? "AI Sedang Berpikir..." : "✨ Dapatkan Saran Hook, CTA & Caption dari AI"}</span>
+                </span>
               </button>
+              <p className="text-[9px] text-center text-neutral-400 dark:text-neutral-500 mt-1.5 font-mono">Klik untuk dapatkan saran personal dari AI berdasarkan data bisnis Anda</p>
 
               {showSuggestions && suggestions && (
                 <div className="mt-3 p-3 rounded border border-neutral-200 dark:border-[#262626] bg-neutral-50 dark:bg-neutral-950/30 space-y-3">
