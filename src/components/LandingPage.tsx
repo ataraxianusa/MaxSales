@@ -19,7 +19,9 @@ import {
   Clock,
   UserCheck,
   Check,
-  Copy
+  Copy,
+  Bot,
+  Send
 } from "lucide-react";
 
 interface LandingPageProps {
@@ -178,85 +180,138 @@ export default function LandingPage({ onEnterDashboard, brandName, darkMode, set
             </h2>
           </motion.div>
 
-          {/* Daily Pulse Mockup moved from Hero */}
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: "-40px" }}
-            transition={{ duration: 0.6 }}
-            className="w-full max-w-2xl mx-auto rounded-3xl border border-neutral-800/60 bg-[#111111]/80 backdrop-blur-md overflow-hidden shadow-2xl shadow-emerald-500/5 ring-1 ring-white/5 text-left mb-8"
-          >
-            {/* Card header */}
-            <div className="px-5 py-3 border-b border-neutral-800 flex items-center gap-2 bg-[#161616]/80">
-              <span className="w-2.5 h-2.5 rounded-full bg-red-400/80 shrink-0"></span>
-              <span className="w-2.5 h-2.5 rounded-full bg-yellow-400/80 shrink-0"></span>
-              <span className="w-2.5 h-2.5 rounded-full bg-green-400/80 shrink-0 mr-2"></span>
-              <span className="text-[10px] font-mono text-neutral-500 truncate">maxxsales.ai/daily-pulse</span>
-              <div className="flex-1"></div>
-              <motion.span
-                whileHover={{ scale: 1.05 }}
-                className="px-2 py-0.5 rounded-full text-[8px] font-mono font-bold bg-emerald-500/15 text-emerald-400 border border-emerald-500/25 whitespace-nowrap"
-              >
-                🔥 STREAK 4 HARI
-              </motion.span>
-            </div>
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 items-stretch">
 
-            {/* Checklist body — balanced */}
-            <div className="p-5 sm:p-6 space-y-3.5 flex-1">
-              {checklist.map((item) => (
-                <motion.label
-                  key={item.id}
-                  whileHover={{ scale: 1.01, x: 2 }}
-                  whileTap={{ scale: 0.99 }}
-                  onClick={() => toggleChecklist(item.id)}
-                  className={`flex items-start gap-3 p-3.5 rounded-2xl cursor-pointer transition-all border ${
-                    item.done
-                      ? "bg-emerald-500/5 border-emerald-500/15 hover:bg-emerald-500/10"
-                      : "border-neutral-800/60 bg-[#0a0a0a] hover:bg-amber-500/5 hover:border-amber-500/20"
-                  } group`}
-                >
-                  <motion.div
-                    animate={item.done ? { scale: [1, 1.2, 1] } : {}}
-                    transition={{ duration: 0.3 }}
-                    className={`mt-0.5 w-4 h-4 rounded border flex items-center justify-center shrink-0 transition-colors ${
+            {/* 1. Daily Pulse Mockup */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-60px" }}
+              transition={{ duration: 0.5 }}
+              whileHover={{ y: -3 }}
+              className="rounded-2xl border border-neutral-800 bg-[#0c0c0c] overflow-hidden shadow-xl shadow-black/30 flex flex-col h-full text-left"
+            >
+              {/* Card header */}
+              <div className="px-5 py-3.5 border-b border-neutral-800 flex items-center gap-2 bg-[#161616]/80">
+                <span className="w-2.5 h-2.5 rounded-full bg-red-400/80 shrink-0"></span>
+                <span className="w-2.5 h-2.5 rounded-full bg-yellow-400/80 shrink-0"></span>
+                <span className="w-2.5 h-2.5 rounded-full bg-green-400/80 shrink-0 mr-2"></span>
+                <span className="text-[10px] font-mono text-neutral-500 truncate">maxxsales.ai/daily-pulse</span>
+                <div className="flex-1"></div>
+                <span className="px-2 py-0.5 rounded-full text-[8px] font-mono font-bold bg-emerald-500/15 text-emerald-400 border border-emerald-500/25 whitespace-nowrap">
+                  🔥 STREAK 4 HARI
+                </span>
+              </div>
+
+              {/* Checklist body — balanced */}
+              <div className="p-4 sm:p-5 space-y-3.5 flex-1">
+                {checklist.map((item) => (
+                  <label
+                    key={item.id}
+                    onClick={() => toggleChecklist(item.id)}
+                    className={`flex items-start gap-3 p-3 rounded-2xl cursor-pointer transition-all border ${
                       item.done
-                        ? "bg-emerald-500 border-emerald-500"
-                        : "border-neutral-700 bg-transparent group-hover:border-emerald-500/40"
-                    }`}
+                        ? "bg-emerald-500/5 border-emerald-500/15 hover:bg-emerald-500/10"
+                        : "border-neutral-800/60 bg-[#0a0a0a] hover:bg-amber-500/5 hover:border-amber-500/20"
+                    } group`}
                   >
-                    {item.done && <Check className="w-3 h-3 text-black" />}
-                  </motion.div>
-                  <div>
-                    <span className={`text-sm transition-all ${
-                      item.done
-                        ? "text-neutral-500 line-through group-hover:text-emerald-200/80"
-                        : "text-white font-medium group-hover:text-amber-200"
-                    }`}>
-                      {item.label}
-                    </span>
-                    <p className="text-[11px] text-neutral-500 mt-0.5">{item.desc}</p>
+                    <div
+                      className={`mt-0.5 w-4 h-4 rounded border flex items-center justify-center shrink-0 transition-colors ${
+                        item.done
+                          ? "bg-emerald-500 border-emerald-500"
+                          : "border-neutral-700 bg-transparent group-hover:border-emerald-500/40"
+                      }`}
+                    >
+                      {item.done && <Check className="w-3 h-3 text-black" />}
+                    </div>
+                    <div>
+                      <span className={`text-xs transition-all ${
+                        item.done
+                          ? "text-neutral-500 line-through"
+                          : "text-white font-medium group-hover:text-amber-200"
+                      }`}>
+                        {item.label}
+                      </span>
+                      <p className="text-[10px] text-neutral-500 mt-0.5">{item.desc}</p>
+                    </div>
+                  </label>
+                ))}
+              </div>
+
+              {/* Card footer */}
+              <div className="px-6 py-4 border-t border-neutral-800 bg-[#161616]/50 flex items-center justify-between">
+                <span className="text-[10px] font-mono text-neutral-500">
+                  ✅ {checklist.filter(i => i.done).length}/{checklist.length} tugas selesai hari ini
+                </span>
+                <span className="text-[10px] font-mono text-emerald-500 font-bold">
+                  +{checklist.filter(i => i.done).length * 25} XP HARI INI
+                </span>
+              </div>
+            </motion.div>
+
+            {/* 2. AI Chatbot Assistant (NEW) */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-60px" }}
+              transition={{ duration: 0.5, delay: 0.1 }}
+              whileHover={{ y: -3 }}
+              className="rounded-2xl border border-neutral-800 bg-[#0c0c0c] overflow-hidden shadow-xl shadow-black/30 flex flex-col h-full text-left"
+            >
+              {/* Card header */}
+              <div className="px-5 py-3.5 border-b border-neutral-800 flex items-center gap-2 bg-[#161616]/85">
+                <div className="w-2.5 h-2.5 rounded-full bg-emerald-500/25 border border-emerald-500/50 flex items-center justify-center">
+                  <span className="w-1 h-1 rounded-full bg-emerald-400 animate-pulse"></span>
+                </div>
+                <Bot className="w-4 h-4 text-emerald-400 mr-1" />
+                <div>
+                  <h3 className="text-xs font-bold text-white leading-tight">AI Business Advisor</h3>
+                  <p className="text-[9px] text-neutral-500 font-mono">maxxsales.ai/advisor</p>
+                </div>
+              </div>
+
+              {/* Chat Body */}
+              <div className="p-4 space-y-3.5 flex-1 font-sans text-[11px] overflow-y-auto">
+                {/* User message */}
+                <div className="flex justify-end">
+                  <div className="bg-neutral-800 text-white rounded-2xl px-3 py-2 max-w-[85%]">
+                    <p>Bagaimana cara menaikkan omzet sosis bakar premium minggu ini?</p>
                   </div>
-                </motion.label>
-              ))}
-            </div>
+                </div>
 
-            {/* Card footer */}
-            <div className="px-6 py-4 border-t border-neutral-800 bg-[#161616]/50 flex items-center justify-between">
-              <span className="text-[10px] font-mono text-neutral-500">
-                ✅ {checklist.filter(i => i.done).length}/{checklist.length} tugas selesai hari ini
-              </span>
-              <motion.span
-                key={checklist.filter(i => i.done).length}
-                animate={{ scale: [1, 1.15, 1] }}
-                transition={{ duration: 0.4 }}
-                className="text-[10px] font-mono text-emerald-500 font-bold"
-              >
-                +{checklist.filter(i => i.done).length * 25} XP HARI INI
-              </motion.span>
-            </div>
-          </motion.div>
+                {/* AI message */}
+                <div className="flex gap-2">
+                  <div className="w-6 h-6 rounded-full bg-emerald-500/10 flex items-center justify-center border border-emerald-500/20 shrink-0">
+                    <Sparkles className="w-3.5 h-3.5 text-emerald-400" />
+                  </div>
+                  <div className="bg-[#111111] border border-neutral-800 text-neutral-300 rounded-2xl px-3 py-2.5 max-w-[85%] space-y-2">
+                    <p>Berdasarkan data penjualan Anda dan cuaca mendung sore hari ini:</p>
+                    <ul className="list-decimal pl-4 space-y-1 text-neutral-400">
+                      <li>Buat <strong className="text-emerald-400">Promo Kombo Sosis + Teh Jahe Hangat</strong> khusus jam 16:00-19:00.</li>
+                      <li>Kirim pesan WA ke <strong className="text-emerald-400">42 pelanggan terdekat</strong> yang biasa beli di jam tersebut.</li>
+                    </ul>
+                    <div className="pt-1.5">
+                      <button className="w-full py-1.5 px-3 rounded-lg bg-emerald-500 hover:bg-emerald-400 text-black font-bold font-mono text-[9px] uppercase transition-colors flex items-center justify-center gap-1.5">
+                        <Zap className="w-3 h-3 fill-black" /> Jalankan Broadcast WA
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
 
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-5 items-start">
+              {/* Chat Input area */}
+              <div className="p-3 border-t border-neutral-800 bg-[#0f0f0f] flex items-center gap-2">
+                <input 
+                  type="text" 
+                  placeholder="Tanya AI Advisor..." 
+                  disabled
+                  className="flex-1 bg-neutral-900 border border-neutral-800 rounded-lg px-3 py-1.5 text-neutral-400 placeholder-neutral-600 focus:outline-none text-[10px]"
+                />
+                <button disabled className="w-8 h-8 rounded-lg bg-neutral-800 flex items-center justify-center text-neutral-500 cursor-not-allowed shrink-0">
+                  <Send className="w-3.5 h-3.5" />
+                </button>
+              </div>
+            </motion.div>
 
             {/* LEFT: Amunisi Komunikasi */}
             <motion.div
