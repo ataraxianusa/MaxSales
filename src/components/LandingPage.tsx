@@ -601,7 +601,7 @@ export default function LandingPage({ onEnterDashboard, brandName, darkMode, set
         </div>
 
         {/* 2 & 3. BENTO GRID OF 5 PILLARS */}
-        <div className="mb-24">
+        <div id="dna-canvas" className="mb-24 scroll-mt-24">
           <div className="text-center mb-12">
             {/* Custom polished header replacing "MVP Core" */}
             <h2 className="text-2xl sm:text-3xl font-bold tracking-tight text-white mb-2">

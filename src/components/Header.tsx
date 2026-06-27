@@ -1,5 +1,5 @@
 import React from "react";
-import { Sparkles, Sun, Moon, BookOpen, Layers, Layout, Menu, X, User } from "lucide-react";
+import { Sparkles, Sun, Moon, Menu, X } from "lucide-react";
 
 interface HeaderProps {
   currentTab: "landing" | "login" | "dashboard";
@@ -14,6 +14,18 @@ interface HeaderProps {
 export default function Header({ currentTab, setTab, darkMode, setDarkMode, brandName, isLoggedIn, onLogout }: HeaderProps) {
   const [mobileMenuOpen, setMobileMenuOpen] = React.useState(false);
 
+  const handleNavClick = (id: string) => {
+    if (currentTab !== "landing") {
+      setTab("landing");
+      setTimeout(() => {
+        document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
+      }, 100);
+    } else {
+      document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
+    }
+    setMobileMenuOpen(false);
+  };
+
   return (
     <header className="sticky top-0 z-50 w-full border-b backdrop-blur-md transition-colors duration-300 border-neutral-200 dark:border-[#262626] bg-white/95 dark:bg-[#0A0A0A]/95">
       <div className="max-w-7xl mx-auto px-6 sm:px-8">
@@ -21,8 +33,11 @@ export default function Header({ currentTab, setTab, darkMode, setDarkMode, bran
           {/* Logo & Brand ID */}
           <button 
             id="btn-nav-logo"
-            onClick={() => setTab("landing")} 
-            className="flex items-center space-x-3 text-left focus:outline-none focus:ring-1 focus:ring-neutral-400 p-1"
+            onClick={() => {
+              setTab("landing");
+              window.scrollTo({ top: 0, behavior: "smooth" });
+            }} 
+            className="flex items-center space-x-3 text-left focus:outline-none focus:ring-1 focus:ring-neutral-400 p-1 shrink-0"
           >
             <div className="w-6 h-6 bg-neutral-900 dark:bg-[#E5E5E5] rounded-sm flex items-center justify-center text-white dark:text-black">
               <Sparkles className="w-3.5 h-3.5" />
@@ -37,35 +52,48 @@ export default function Header({ currentTab, setTab, darkMode, setDarkMode, bran
             </div>
           </button>
 
+          {/* Desktop Navigation Links (Only relevant if on landing or acts as return to landing) */}
+          <nav className="hidden md:flex items-center space-x-6 mx-auto">
+            <button onClick={() => handleNavClick('visual-showcase')} className="text-xs font-semibold text-neutral-600 dark:text-neutral-400 hover:text-emerald-500 dark:hover:text-emerald-400 transition-colors">
+              Pratinjau Dashboard
+            </button>
+            <button onClick={() => handleNavClick('dna-canvas')} className="text-xs font-semibold text-neutral-600 dark:text-neutral-400 hover:text-emerald-500 dark:hover:text-emerald-400 transition-colors">
+              DNA Sistem
+            </button>
+            <button onClick={() => handleNavClick('pricing')} className="text-xs font-semibold text-neutral-600 dark:text-neutral-400 hover:text-emerald-500 dark:hover:text-emerald-400 transition-colors">
+              Harga & Akses
+            </button>
+          </nav>
+
           {/* Right Utilities (Theme Selector + Access Support / Logout) */}
-          <div className="flex items-center space-x-4 ml-auto">
+          <div className="flex items-center space-x-3 ml-auto shrink-0">
             <button
               id="btn-toggle-theme"
               onClick={() => setDarkMode(!darkMode)}
               title={darkMode ? "Ubah ke Mode Terang" : "Ubah ke Mode Gelap"}
               aria-label={darkMode ? "Ubah ke Mode Terang" : "Ubah ke Mode Gelap"}
-              className="flex items-center space-x-1.5 px-3 py-1.5 rounded-full border transition-all text-xs font-mono font-bold tracking-wide focus:outline-none bg-neutral-100 border-neutral-200 hover:border-neutral-350 text-neutral-800 dark:bg-[#151515] dark:border-[#262626] dark:hover:border-[#383838] dark:text-[#E5E5E5] shadow-xs cursor-pointer"
+              className="flex items-center space-x-1.5 px-3 py-1.5 rounded-full border transition-all text-xs font-mono font-bold tracking-wide focus:outline-none bg-neutral-100 border-neutral-200 hover:border-neutral-300 text-neutral-800 dark:bg-[#151515] dark:border-[#262626] dark:hover:border-[#383838] dark:text-[#E5E5E5] shadow-sm cursor-pointer"
             >
               {darkMode ? (
                 <>
                   <Sun className="w-3.5 h-3.5 text-amber-500" />
-                  <span className="hidden leading-none xs:inline text-[9px] font-extrabold uppercase text-amber-500">TERANG</span>
+                  <span className="hidden lg:inline leading-none text-[9px] font-extrabold uppercase text-amber-500">TERANG</span>
                 </>
               ) : (
                 <>
                   <Moon className="w-3.5 h-3.5 text-indigo-500 animate-pulse" />
-                  <span className="hidden leading-none xs:inline text-[9px] font-extrabold uppercase text-indigo-500">GELAP</span>
+                  <span className="hidden lg:inline leading-none text-[9px] font-extrabold uppercase text-indigo-500">GELAP</span>
                 </>
               )}
             </button>
 
             {isLoggedIn && onLogout && (
               <>
-                <div className="h-4 w-[1px] bg-neutral-200 dark:bg-[#262626]"></div>
+                <div className="hidden sm:block h-4 w-[1px] bg-neutral-200 dark:bg-[#262626]"></div>
                 <button
                   id="btn-nav-logout"
                   onClick={onLogout}
-                  className="px-3 py-1.5 rounded border border-neutral-300 dark:border-[#262626] font-mono text-[10px] uppercase font-bold text-neutral-700 dark:text-[#E5E5E5] hover:bg-neutral-50 dark:hover:bg-[#1C1C1C] transition-colors"
+                  className="hidden sm:block px-3 py-1.5 rounded border border-neutral-300 dark:border-[#262626] font-mono text-[10px] uppercase font-bold text-neutral-700 dark:text-[#E5E5E5] hover:bg-neutral-50 dark:hover:bg-[#1C1C1C] transition-colors"
                 >
                   Keluar
                 </button>
@@ -74,19 +102,60 @@ export default function Header({ currentTab, setTab, darkMode, setDarkMode, bran
 
             {!isLoggedIn && (
               <>
-                <div className="h-4 w-[1px] bg-neutral-200 dark:bg-[#262626]"></div>
+                <div className="hidden sm:block h-4 w-[1px] bg-neutral-200 dark:bg-[#262626]"></div>
                 <button
                   id="btn-nav-login-direct"
                   onClick={() => setTab("login")}
-                  className="px-3 py-1.5 rounded font-mono text-[10px] uppercase font-bold text-white dark:text-black bg-neutral-950 dark:bg-[#E5E5E5] hover:bg-neutral-850 dark:hover:bg-white transition-colors"
+                  className="hidden sm:block px-3 py-1.5 rounded font-mono text-[10px] uppercase font-bold text-white dark:text-black bg-neutral-950 dark:bg-[#E5E5E5] hover:bg-neutral-800 dark:hover:bg-white transition-colors"
                 >
                   Masuk
                 </button>
               </>
             )}
+
+            {/* Mobile Menu Toggle */}
+            <button
+              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+              className="md:hidden p-1.5 rounded-md text-neutral-600 dark:text-neutral-400 hover:bg-neutral-100 dark:hover:bg-[#1A1A1A] transition-colors"
+            >
+              {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+            </button>
           </div>
         </div>
       </div>
+
+      {/* Mobile Navigation Dropdown */}
+      {mobileMenuOpen && (
+        <div className="md:hidden border-t border-neutral-200 dark:border-[#262626] bg-white dark:bg-[#0A0A0A]">
+          <div className="px-6 py-4 space-y-4">
+            <button onClick={() => handleNavClick('visual-showcase')} className="block w-full text-left text-sm font-semibold text-neutral-700 dark:text-neutral-300">
+              Pratinjau Dashboard
+            </button>
+            <button onClick={() => handleNavClick('dna-canvas')} className="block w-full text-left text-sm font-semibold text-neutral-700 dark:text-neutral-300">
+              DNA Sistem
+            </button>
+            <button onClick={() => handleNavClick('pricing')} className="block w-full text-left text-sm font-semibold text-neutral-700 dark:text-neutral-300">
+              Harga & Akses
+            </button>
+            <hr className="border-neutral-200 dark:border-[#262626]" />
+            {!isLoggedIn ? (
+              <button
+                onClick={() => { setTab("login"); setMobileMenuOpen(false); }}
+                className="block w-full py-2 rounded text-center font-mono text-[11px] uppercase font-bold text-white dark:text-black bg-neutral-950 dark:bg-[#E5E5E5]"
+              >
+                Masuk / Login
+              </button>
+            ) : (
+              <button
+                onClick={() => { onLogout && onLogout(); setMobileMenuOpen(false); }}
+                className="block w-full py-2 rounded border border-neutral-300 dark:border-[#262626] text-center font-mono text-[11px] uppercase font-bold text-neutral-700 dark:text-[#E5E5E5]"
+              >
+                Keluar
+              </button>
+            )}
+          </div>
+        </div>
+      )}
     </header>
   );
 }
