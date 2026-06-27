@@ -348,105 +348,10 @@ export default function CustomerInsight({ dna, segments, setSegments }: Customer
             </div>
           </div>
 
-          {/* LTV Bar Chart - visible only after AI analysis */}
-          {aiAnalysis && !aiLoading && (
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.45, ease: [0.25, 0.1, 0.25, 1] }}
-              className="p-5 rounded border bg-white dark:bg-[#111111] border-neutral-200 dark:border-[#262626] space-y-4"
-            >
-              <motion.div
-                initial={{ opacity: 0, x: -8 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ duration: 0.3, delay: 0.15 }}
-                className="flex items-center space-x-2 border-b pb-2 border-neutral-200 dark:border-[#262626]"
-              >
-                <BarChart3 className="w-3.5 h-3.5 text-neutral-500" />
-                <h4 className="text-[10px] font-bold uppercase tracking-wider text-neutral-950 dark:text-white font-mono">
-                  Perbandingan LTV per Segmen
-                </h4>
-              </motion.div>
-              <motion.div
-                initial={{ opacity: 0, scale: 0.95 }}
-                animate={{ opacity: 1, scale: 1 }}
-                transition={{ duration: 0.4, delay: 0.25, ease: [0.25, 0.1, 0.25, 1] }}
-                className="w-full h-52"
-              >
-                <ResponsiveContainer width="100%" height="100%">
-                  <BarChart
-                    data={aiAnalysis.segments.map(s => ({
-                      name: s.name,
-                      LTV: parseLTV(s.estimatedLtv),
-                      label: s.estimatedLtv
-                    }))}
-                    margin={{ top: 5, right: 10, left: 0, bottom: 5 }}
-                  >
-                    <XAxis 
-                      dataKey="name" 
-                      tick={{ fontSize: 10, fill: '#737373' }}
-                      axisLine={{ stroke: '#262626' }}
-                      tickLine={false}
-                    />
-                    <YAxis 
-                      tick={{ fontSize: 10, fill: '#737373' }}
-                      axisLine={false}
-                      tickLine={false}
-                      tickFormatter={(v: number) => `Rp${(v/1000000).toFixed(0)}jt`}
-                    />
-                    <Tooltip
-                      contentStyle={{
-                        backgroundColor: '#1A1A1A',
-                        border: '1px solid #262626',
-                        borderRadius: '6px',
-                        fontSize: '11px',
-                        color: '#E5E5E5'
-                      }}
-                      formatter={(_: any, __: any, props: any) => [props.payload.label, 'LTV']}
-                    />
-                    <Bar
-                      dataKey="LTV"
-                      radius={[3, 3, 0, 0]}
-                      maxBarSize={40}
-                      animationBegin={350}
-                      animationDuration={600}
-                      animationEasing="ease-out"
-                    >
-                      {aiAnalysis.segments.map((_, idx) => {
-                        const colors = ['#3B82F6', '#10B981', '#F59E0B', '#8B5CF6', '#EF4444', '#06B6D4', '#EC4899', '#84CC16'];
-                        return <Cell key={idx} fill={colors[idx % colors.length]} />;
-                      })}
-                    </Bar>
-                  </BarChart>
-                </ResponsiveContainer>
-              </motion.div>
-              <motion.div
-                initial="hidden"
-                animate="visible"
-                variants={{
-                  visible: { transition: { staggerChildren: 0.07, delayChildren: 0.5 } }
-                }}
-                className="flex flex-wrap gap-2 justify-center"
-              >
-                {aiAnalysis.segments.map((seg, idx) => {
-                  const colors = ['bg-blue-500', 'bg-emerald-500', 'bg-amber-500', 'bg-violet-500', 'bg-red-500', 'bg-cyan-500', 'bg-pink-500', 'bg-lime-500'];
-                  return (
-                    <motion.span
-                      key={idx}
-                      variants={{
-                        hidden: { opacity: 0, y: 8 },
-                        visible: { opacity: 1, y: 0, transition: { duration: 0.25 } }
-                      }}
-                      className="flex items-center space-x-1 text-[9px] font-mono text-neutral-500"
-                    >
-                      <span className={`w-2 h-2 rounded-sm ${colors[idx % colors.length]}`} />
-                      <span>{seg.name}</span>
-                    </motion.span>
-                  );
-                })}
-              </motion.div>
-            </motion.div>
-          )}
+        </div>
+
+        {/* Right column: LTV Calculator */}
+        <div className="lg:col-span-1 space-y-6">
 
           {/* CRM Action Matrix Recommendation block */}
           <div className="p-5 rounded border bg-neutral-50 dark:bg-[#111111] border-neutral-200 dark:border-[#262626] text-neutral-800 dark:text-white space-y-3.5">
