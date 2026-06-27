@@ -163,8 +163,9 @@ export default function App() {
         estimatedRevenue: canvas.monthlyRevenueRange || "-",
       };
 
-      // Remove ALL existing DNA-sourced competitors + hardcoded ones
-      const manualOnly = competitors.filter(c => !c.id.startsWith("dna-") && !c.id.startsWith("comp-"));
+      // Only remove hardcoded competitors (comp-1, comp-2) and existing dna-* competitors
+      // Keep ALL user-created competitors (comp-1719412345678 etc.)
+      const manualOnly = competitors.filter(c => !c.id.startsWith("dna-") && c.id !== "comp-1" && c.id !== "comp-2");
 
       // Add single DNA competitor at top, keep manual ones below
       setCompetitors([dnaCompetitor, ...manualOnly]);
