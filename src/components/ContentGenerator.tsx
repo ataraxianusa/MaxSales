@@ -3,7 +3,7 @@ import { GeneratedContentText } from "../types";
 import { API_BASE } from "../api";
 import { useChain } from "../store/ChainContext";
 import AIFeedback from "./AIFeedback";
-import { Image as ImageIcon, Upload, Download, Copy, RefreshCw, Layers, Eye, Smartphone, Check, Loader2, Sparkles } from "lucide-react";
+import { Image as ImageIcon, Upload, Download, Copy, RefreshCw, Layers, Eye, Smartphone, Check, Loader2 } from "lucide-react";
 
 type AspectRatioType = "feed" | "story" | "whatsapp";
 type LayoutStyle = "minimal" | "bold" | "card" | "banner";
@@ -645,17 +645,15 @@ export default function ContentGenerator() {
                 id="btn-ai-suggest"
                 onClick={fetchSuggestions}
                 disabled={suggestLoading}
-                className="group relative w-full py-3 rounded-xl font-bold text-sm transition-all duration-300 bg-gradient-to-r from-violet-600 via-purple-600 to-indigo-600 hover:from-violet-500 hover:via-purple-500 hover:to-indigo-500 text-white shadow-lg shadow-purple-500/25 hover:shadow-purple-500/40 hover:scale-[1.02] active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100 flex items-center justify-center space-x-2 overflow-hidden"
+                className="group relative w-full py-3 rounded-xl text-center font-bold text-sm transition-all duration-300 bg-gradient-to-r from-violet-600 via-purple-600 to-indigo-600 hover:from-violet-500 hover:via-purple-500 hover:to-indigo-500 text-white shadow-lg shadow-purple-500/25 hover:shadow-purple-500/40 hover:scale-[1.02] active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed overflow-hidden"
               >
-                {/* Animated shimmer */}
                 <span className="absolute inset-0 w-full h-full bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700 ease-in-out" />
-                <span className="relative z-10 flex items-center space-x-2">
+                <span className="relative z-10">
                   {suggestLoading ? (
-                    <Loader2 className="w-4 h-4 animate-spin" />
+                    <span className="flex items-center justify-center space-x-2"><Loader2 className="w-4 h-4 animate-spin" /><span>AI Sedang Berpikir...</span></span>
                   ) : (
-                    <Sparkles className="w-4 h-4" />
+                    "Dapatkan Saran Hook, CTA & Caption dari AI"
                   )}
-                  <span>{suggestLoading ? "AI Sedang Berpikir..." : "Dapatkan Saran Hook, CTA & Caption dari AI"}</span>
                 </span>
               </button>
               <p className="text-[9px] text-center text-neutral-400 dark:text-neutral-500 mt-1.5 font-mono">Klik untuk dapatkan saran personal dari AI berdasarkan data bisnis Anda</p>
