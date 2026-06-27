@@ -475,26 +475,29 @@ app.post("/api/instagram-scrape", async (c) => {
       return c.json({ error: "Failed to start Apify run", response: runData, mode: "error" });
     }
 
-    // Step 2: Poll for completion (max 120 seconds)
-    let status = runData?.data?.status || "running";
+    // Step 2: Poll for completion (max 50 seconds / 25 attempts)
+    // NOTE: Apify returns UPPERCASE status: READY, RUNNING, SUCCEEDED, FAILED, TIMED-OUT, ABORTED
+    let status: string = runData?.data?.status || "RUNNING";
+    let lastPollData: any = runData;
     let attempts = 0;
-    while (status !== "succeeded" && status !== "failed" && attempts < 60) {
+    const terminalStatuses = new Set(["SUCCEEDED", "FAILED", "TIMED-OUT", "ABORTED"]);
+    while (!terminalStatuses.has(status) && attempts < 25) {
       await new Promise(r => setTimeout(r, 2000));
       const pollRes = await fetch(
         `https://api.apify.com/v2/actor-runs/${runId}?token=${apifyToken}`
       );
-      const pollData = await pollRes.json();
-      status = pollData?.data?.status || "running";
+      lastPollData = await pollRes.json();
+      status = lastPollData?.data?.status || "RUNNING";
       attempts++;
       if (attempts % 5 === 0) console.log(`[Apify IG] Poll ${attempts}: status=${status}`);
     }
 
-    if (status !== "succeeded") {
+    if (status !== "SUCCEEDED") {
       return c.json({ error: `Apify run ended with status: ${status}`, runId, mode: "error" });
     }
 
-    // Step 3: Get dataset items
-    const dsId = runData?.data?.defaultDatasetId;
+    // Step 3: Get dataset items — use lastPollData for reliable dsId
+    const dsId = lastPollData?.data?.defaultDatasetId || runData?.data?.defaultDatasetId;
     if (!dsId) {
       return c.json({ error: "No dataset ID found", mode: "error" });
     }
@@ -567,26 +570,29 @@ app.post("/api/facebook-scrape", async (c) => {
       return c.json({ error: "Failed to start Apify Facebook run", response: runData, mode: "error" });
     }
 
-    // Step 2: Poll for completion (max 120 seconds)
-    let status = runData?.data?.status || "running";
+    // Step 2: Poll for completion (max 50 seconds / 25 attempts)
+    // NOTE: Apify returns UPPERCASE status: READY, RUNNING, SUCCEEDED, FAILED, TIMED-OUT, ABORTED
+    let status: string = runData?.data?.status || "RUNNING";
+    let lastPollData: any = runData;
     let attempts = 0;
-    while (status !== "succeeded" && status !== "failed" && attempts < 60) {
+    const terminalStatuses = new Set(["SUCCEEDED", "FAILED", "TIMED-OUT", "ABORTED"]);
+    while (!terminalStatuses.has(status) && attempts < 25) {
       await new Promise(r => setTimeout(r, 2000));
       const pollRes = await fetch(
         `https://api.apify.com/v2/actor-runs/${runId}?token=${apifyToken}`
       );
-      const pollData = await pollRes.json();
-      status = pollData?.data?.status || "running";
+      lastPollData = await pollRes.json();
+      status = lastPollData?.data?.status || "RUNNING";
       attempts++;
       if (attempts % 5 === 0) console.log(`[Apify FB] Poll ${attempts}: status=${status}`);
     }
 
-    if (status !== "succeeded") {
+    if (status !== "SUCCEEDED") {
       return c.json({ error: `Apify Facebook run ended with status: ${status}`, runId, mode: "error" });
     }
 
-    // Step 3: Get dataset items
-    const dsId = runData?.data?.defaultDatasetId;
+    // Step 3: Get dataset items — use lastPollData for reliable dsId
+    const dsId = lastPollData?.data?.defaultDatasetId || runData?.data?.defaultDatasetId;
     if (!dsId) {
       return c.json({ error: "No dataset ID found", mode: "error" });
     }

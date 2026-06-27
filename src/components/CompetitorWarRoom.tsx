@@ -27,6 +27,7 @@ export default function CompetitorWarRoom({ dna, competitors, setCompetitors }: 
   const [threats, setThreats] = React.useState("");
 
   const [loading, setLoading] = React.useState(false);
+  const [scrapeStatus, setScrapeStatus] = React.useState<string | null>(null);
   const [activeIntelCompetitor, setActiveIntelCompetitor] = React.useState<CompetitorIntel | null>(
     competitors[0] || null
   );
@@ -58,6 +59,7 @@ export default function CompetitorWarRoom({ dna, competitors, setCompetitors }: 
       return;
     }
     setLoading(true);
+    setScrapeStatus(null);
     try {
       // Call AI analysis, web scraping, Instagram scrape, AND Facebook scrape in parallel
       const fbUrl = facebookUrl.trim()
@@ -93,10 +95,30 @@ export default function CompetitorWarRoom({ dna, competitors, setCompetitors }: 
 
       const analysisData = await analysisRes.json();
       const scrapeData = await scrapeRes.json();
-      const igData = igRes ? await igRes.json() : null;
-      const fbData = fbRes ? await fbRes.json() : null;
+
+      // Safe JSON parse — network timeout or proxy errors can return non-JSON
+      let igData: any = null;
+      let fbData: any = null;
+      try { igData = igRes ? await igRes.json() : null; } catch { igData = { mode: "parse-error" }; }
+      try { fbData = fbRes ? await fbRes.json() : null; } catch { fbData = { mode: "parse-error" }; }
 
       console.log("[SWOT] API Results:", { analysisData, scrapeData, igData, fbData });
+
+      // Surface Apify result status to user
+      const statusParts: string[] = [];
+      if (igData) {
+        if (igData.mode === "apify") statusParts.push(`✅ IG: ${igData.followers?.toLocaleString()} followers`);
+        else if (igData.mode === "no-token") statusParts.push("⚠️ IG: Token Apify belum dikonfigurasi");
+        else if (igData.mode === "empty") statusParts.push("⚠️ IG: Profil tidak ditemukan");
+        else if (igData.mode === "error" || igData.mode === "parse-error") statusParts.push(`❌ IG: ${igData.error || "Scraping gagal"}`);
+      }
+      if (fbData) {
+        if (fbData.mode === "apify") statusParts.push(`✅ FB: ${fbData.likes?.toLocaleString()} likes`);
+        else if (fbData.mode === "no-token") statusParts.push("⚠️ FB: Token Apify belum dikonfigurasi");
+        else if (fbData.mode === "empty") statusParts.push("⚠️ FB: Halaman tidak ditemukan");
+        else if (fbData.mode === "error" || fbData.mode === "parse-error") statusParts.push(`❌ FB: ${fbData.error || "Scraping gagal"}`);
+      }
+      if (statusParts.length > 0) setScrapeStatus(statusParts.join(" · "));
 
       // Merge all data sources
       const webInfo = scrapeData.socialLinks?.length
@@ -149,6 +171,7 @@ export default function CompetitorWarRoom({ dna, competitors, setCompetitors }: 
       setThreats("");
     } catch (err) {
       console.error("[SWOT] Error:", err);
+      setScrapeStatus(`❌ Error: ${err}`);
       alert(`Gagal analisis: ${err}`);
     } finally {
       setLoading(false);
@@ -328,8 +351,15 @@ export default function CompetitorWarRoom({ dna, competitors, setCompetitors }: 
                   className="w-full py-2 rounded text-xs font-semibold bg-neutral-950 text-white dark:bg-[#E5E5E5] dark:text-black hover:bg-neutral-900 dark:hover:bg-white flex items-center justify-center space-x-1.5 px-3 transition-colors disabled:opacity-50"
                 >
                   {loading ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : <Cpu className="w-3.5 h-3.5" />}
-                  <span>Generate SWOT dengan AI</span>
+                  <span>{loading ? "Menganalisis & scraping..." : "Generate SWOT dengan AI"}</span>
                 </button>
+
+                {/* Apify scrape result status */}
+                {scrapeStatus && (
+                  <p className="text-[9px] font-mono leading-relaxed text-neutral-500 dark:text-[#737373] bg-neutral-50 dark:bg-[#1A1A1A] rounded px-2 py-1.5 border border-neutral-200 dark:border-[#262626]">
+                    {scrapeStatus}
+                  </p>
+                )}
 
                 <p className="text-[9px] font-mono text-center text-neutral-400">Atau ketik manual di bawah ini:</p>
 
