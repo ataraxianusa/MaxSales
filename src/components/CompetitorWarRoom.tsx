@@ -96,6 +96,8 @@ export default function CompetitorWarRoom({ dna, competitors, setCompetitors }: 
       const igData = igRes ? await igRes.json() : null;
       const fbData = fbRes ? await fbRes.json() : null;
 
+      console.log("[SWOT] API Results:", { analysisData, scrapeData, igData, fbData });
+
       // Merge all data sources
       const webInfo = scrapeData.socialLinks?.length
         ? `\n\nData Online: ${scrapeData.socialLinks.join(", ")}`
@@ -127,6 +129,8 @@ export default function CompetitorWarRoom({ dna, competitors, setCompetitors }: 
           : analysisData.estimatedRevenue || "10-50jt"
       };
 
+      console.log("[SWOT] New competitor:", newCompetitor);
+
       const updated = [newCompetitor, ...competitors];
       setCompetitors(updated);
       setActiveIntelCompetitor(newCompetitor);
@@ -144,8 +148,8 @@ export default function CompetitorWarRoom({ dna, competitors, setCompetitors }: 
       setOpportunities("");
       setThreats("");
     } catch (err) {
-      console.error(err);
-      alert("Terjadi kegagalan analisis AI. Silakan coba kembali.");
+      console.error("[SWOT] Error:", err);
+      alert(`Gagal analisis: ${err}`);
     } finally {
       setLoading(false);
     }
