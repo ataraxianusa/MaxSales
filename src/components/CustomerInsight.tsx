@@ -560,215 +560,146 @@ export default function CustomerInsight({ dna, segments, setSegments }: Customer
 
           </div>
 
-          {/* AI Analysis Section */}
-          <div className="p-6 rounded border bg-white dark:bg-[#111111] border-neutral-200 dark:border-[#262626] space-y-4">
-            <div className="flex items-center justify-between border-b pb-3 border-neutral-200 dark:border-[#262626]">
+          {/* AI Tools Strip — compact toolbar */}
+          <div className="p-4 rounded border bg-white dark:bg-[#111111] border-neutral-200 dark:border-[#262626]">
+            <div className="flex items-center justify-between mb-3 border-b pb-2 border-neutral-100 dark:border-[#262626]">
               <div className="flex items-center space-x-2">
-                <div className="p-2 rounded bg-neutral-100 dark:bg-[#262626] text-neutral-850 dark:text-neutral-200">
-                  <Cpu className="w-4 h-4" />
-                </div>
-                <div>
-                  <h3 className="text-xs font-bold font-mono uppercase tracking-wider text-neutral-900 dark:text-white">Analisis AI Segmentasi</h3>
-                  <p className="text-[10px] text-neutral-400">Rekomendasi LTV & churn otomatis.</p>
-                </div>
+                <Cpu className="w-4 h-4 text-neutral-400" />
+                <span className="text-[10px] font-bold font-mono uppercase tracking-wider text-neutral-800 dark:text-white">AI Intelligence Tools</span>
               </div>
+              {aiError && !aiLoading && (
+                <span className="text-[9px] text-red-500 flex items-center space-x-1">
+                  <AlertTriangle className="w-3 h-3" />
+                  <span>{aiError}</span>
+                </span>
+              )}
+            </div>
+            
+            {/* 4 buttons in a row */}
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-2">
               <button
                 onClick={fetchAIAnalysis}
                 disabled={aiLoading || segments.length === 0}
-                className="py-1.5 px-3 rounded text-[10px] font-semibold bg-neutral-950 text-white dark:bg-[#E5E5E5] dark:text-black hover:bg-neutral-900 dark:hover:bg-white transition-colors disabled:opacity-40 disabled:cursor-not-allowed flex items-center space-x-1"
+                className="flex items-center justify-center space-x-1.5 py-2.5 rounded-lg border border-neutral-200 dark:border-[#262626] bg-neutral-50 dark:bg-[#1A1A1A] hover:bg-neutral-100 dark:hover:bg-[#262626] transition-colors disabled:opacity-40 text-[10px] font-semibold text-neutral-700 dark:text-neutral-300"
               >
-                {aiLoading ? (
-                  <>
-                    <Loader2 className="w-3 h-3 animate-spin" />
-                    <span>Menganalisis...</span>
-                  </>
-                ) : (
-                  <>
-                    <Lightbulb className="w-3 h-3" />
-                    <span>AI Analisis</span>
-                  </>
-                )}
+                {aiLoading ? <Loader2 className="w-3 h-3 animate-spin" /> : <Lightbulb className="w-3 h-3 text-amber-500" />}
+                <span>Analisis Segmen</span>
               </button>
-            </div>
-
-            {segments.length === 0 && !aiAnalysis && (
-              <p className="text-[11px] text-neutral-400 text-center py-4">
-                Tambahkan minimal 1 segmen pelanggan lalu klik "AI Analisis" untuk rekomendasi otomatis.
-              </p>
-            )}
-
-            {aiLoading && (
-              <div className="flex items-center justify-center py-6 space-x-2">
-                <Loader2 className="w-4 h-4 animate-spin text-neutral-400" />
-                <span className="text-xs text-neutral-400">AI sedang menganalisis segmentasi Anda...</span>
-              </div>
-            )}
-
-            {aiError && !aiLoading && (
-              <div className="p-3 rounded border border-red-200 dark:border-red-900/30 bg-red-50 dark:bg-red-950/20 text-red-600 dark:text-red-400 text-[11px] flex items-start space-x-2">
-                <AlertTriangle className="w-3.5 h-3.5 mt-0.5 shrink-0" />
-                <span>{aiError}</span>
-              </div>
-            )}
-
-            {aiAnalysis && !aiLoading && (
-              <div className="space-y-3">
-                {/* Summary */}
-                <div className="p-3 rounded border border-neutral-200 dark:border-[#262626] bg-neutral-50 dark:bg-[#1A1A1A]">
-                  <p className="text-[11px] text-neutral-700 dark:text-neutral-300 leading-relaxed">
-                    {aiAnalysis.summary}
-                  </p>
-                </div>
-
-                {/* Per-segment insights */}
-                {aiAnalysis.segments.map((seg, idx) => (
-                  <div key={idx} className="p-3 rounded border border-neutral-200 dark:border-[#262626] bg-white dark:bg-[#1A1A1A] space-y-1.5">
-                    <div className="flex items-center justify-between">
-                      <span className="text-xs font-bold text-neutral-900 dark:text-white">{seg.name}</span>
-                      <span className="text-[10px] font-mono text-neutral-500">LTV: {seg.estimatedLtv}</span>
-                    </div>
-                    <div className="flex items-center space-x-2">
-                      <AlertTriangle className="w-3 h-3 text-neutral-400" />
-                      <span className="text-[10px] text-neutral-500">Resiko Churn: <strong className="text-neutral-700 dark:text-neutral-300">{seg.churnRisk}</strong></span>
-                    </div>
-                    <p className="text-[10px] text-neutral-500 dark:text-[#A3A3A3] leading-relaxed flex items-start space-x-1.5">
-                      <CheckCircle2 className="w-3 h-3 mt-0.5 shrink-0 text-emerald-500" />
-                      <span>{seg.recommendation}</span>
-                    </p>
-                  </div>
-                ))}
-
-                {/* Global recommendations */}
-                {aiAnalysis.recommendations.length > 0 && (
-                  <div className="p-3 rounded border border-neutral-200 dark:border-[#262626] bg-neutral-50 dark:bg-[#1A1A1A] space-y-2">
-                    <span className="text-[10px] font-bold font-mono uppercase tracking-wider text-neutral-500">Rekomendasi Strategis</span>
-                    <ul className="space-y-1.5">
-                      {aiAnalysis.recommendations.map((rec, idx) => (
-                        <li key={idx} className="text-[11px] text-neutral-700 dark:text-neutral-300 flex items-start space-x-1.5">
-                          <TrendingUp className="w-3 h-3 mt-0.5 shrink-0 text-neutral-500" />
-                          <span>{rec}</span>
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-                )}
-              </div>
-            )}
-          </div>
-
-          {/* Auto-Segment Button */}
-          <div className="p-5 rounded border bg-white dark:bg-[#111111] border-neutral-200 dark:border-[#262626] space-y-4">
-            <div className="flex items-center justify-between">
-              <div className="flex items-center space-x-2">
-                <div className="p-2 rounded bg-emerald-100 dark:bg-emerald-900/20 text-emerald-700 dark:text-emerald-400">
-                  <Users className="w-4 h-4" />
-                </div>
-                <div>
-                  <h3 className="text-xs font-bold font-mono uppercase tracking-wider text-neutral-900 dark:text-white">Auto-Segment dari DNA</h3>
-                  <p className="text-[10px] text-neutral-400">AI generate segmentasi otomatis berdasarkan data bisnis Anda.</p>
-                </div>
-              </div>
               <button
                 onClick={fetchAutoSegment}
                 disabled={aiLoading}
-                className="py-1.5 px-3 rounded text-[10px] font-semibold bg-emerald-600 text-white hover:bg-emerald-700 transition-colors disabled:opacity-40 flex items-center space-x-1"
+                className="flex items-center justify-center space-x-1.5 py-2.5 rounded-lg border border-neutral-200 dark:border-[#262626] bg-neutral-50 dark:bg-[#1A1A1A] hover:bg-neutral-100 dark:hover:bg-[#262626] transition-colors disabled:opacity-40 text-[10px] font-semibold text-neutral-700 dark:text-neutral-300"
               >
-                {aiLoading ? <Loader2 className="w-3 h-3 animate-spin" /> : <Cpu className="w-3 h-3" />}
-                <span>Generate Segmen</span>
+                {aiLoading ? <Loader2 className="w-3 h-3 animate-spin" /> : <Users className="w-3 h-3 text-emerald-500" />}
+                <span>Auto-Segment</span>
               </button>
-            </div>
-          </div>
-
-          {/* Revenue Prediction */}
-          <div className="p-5 rounded border bg-white dark:bg-[#111111] border-neutral-200 dark:border-[#262626] space-y-4">
-            <div className="flex items-center justify-between border-b pb-3 border-neutral-200 dark:border-[#262626]">
-              <div className="flex items-center space-x-2">
-                <div className="p-2 rounded bg-blue-100 dark:bg-blue-900/20 text-blue-700 dark:text-blue-400">
-                  <BarChart3 className="w-4 h-4" />
-                </div>
-                <div>
-                  <h3 className="text-xs font-bold font-mono uppercase tracking-wider text-neutral-900 dark:text-white">Prediksi Revenue</h3>
-                  <p className="text-[10px] text-neutral-400">Estimasi pendapatan per segmen pelanggan.</p>
-                </div>
-              </div>
               <button
                 onClick={fetchRevenuePrediction}
                 disabled={revenueLoading || segments.length === 0}
-                className="py-1.5 px-3 rounded text-[10px] font-semibold bg-blue-600 text-white hover:bg-blue-700 transition-colors disabled:opacity-40 flex items-center space-x-1"
+                className="flex items-center justify-center space-x-1.5 py-2.5 rounded-lg border border-neutral-200 dark:border-[#262626] bg-neutral-50 dark:bg-[#1A1A1A] hover:bg-neutral-100 dark:hover:bg-[#262626] transition-colors disabled:opacity-40 text-[10px] font-semibold text-neutral-700 dark:text-neutral-300"
               >
-                {revenueLoading ? <Loader2 className="w-3 h-3 animate-spin" /> : <TrendingUp className="w-3 h-3" />}
+                {revenueLoading ? <Loader2 className="w-3 h-3 animate-spin" /> : <BarChart3 className="w-3 h-3 text-blue-500" />}
                 <span>Prediksi Revenue</span>
               </button>
-            </div>
-
-            {revenuePredictions && (
-              <div className="space-y-3">
-                <div className="p-3 rounded bg-blue-50 dark:bg-blue-900/10 border border-blue-200 dark:border-blue-800/30">
-                  <span className="text-[10px] font-mono text-blue-600 dark:text-blue-400 uppercase">Total Estimasi Revenue Bulanan</span>
-                  <p className="text-lg font-bold text-blue-700 dark:text-blue-300">Rp {totalMonthlyRevenue.toLocaleString("id-ID")}</p>
-                </div>
-                {revenuePredictions.map((pred, idx) => (
-                  <div key={idx} className="p-3 rounded border border-neutral-200 dark:border-[#262626] bg-neutral-50 dark:bg-[#1A1A1A] flex items-center justify-between">
-                    <div>
-                      <span className="text-xs font-bold text-neutral-900 dark:text-white">{pred.name}</span>
-                      <p className="text-[10px] text-neutral-500">{pred.action}</p>
-                    </div>
-                    <div className="text-right">
-                      <span className="text-xs font-mono font-bold text-neutral-900 dark:text-white">Rp {pred.monthlyRevenue.toLocaleString("id-ID")}/bln</span>
-                      <span className={`block text-[9px] px-1.5 py-0.5 rounded mt-1 ${
-                        pred.growthPotential === "Tinggi" ? "bg-emerald-100 text-emerald-700 dark:bg-emerald-900/20 dark:text-emerald-400" :
-                        pred.growthPotential === "Sedang" ? "bg-amber-100 text-amber-700 dark:bg-amber-900/20 dark:text-amber-400" :
-                        "bg-red-100 text-red-700 dark:bg-red-900/20 dark:text-red-400"
-                      }`}>
-                        {pred.growthPotential}
-                      </span>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            )}
-          </div>
-
-          {/* Customer Clustering */}
-          <div className="p-5 rounded border bg-white dark:bg-[#111111] border-neutral-200 dark:border-[#262626] space-y-4">
-            <div className="flex items-center justify-between border-b pb-3 border-neutral-200 dark:border-[#262626]">
-              <div className="flex items-center space-x-2">
-                <div className="p-2 rounded bg-purple-100 dark:bg-purple-900/20 text-purple-700 dark:text-purple-400">
-                  <Award className="w-4 h-4" />
-                </div>
-                <div>
-                  <h3 className="text-xs font-bold font-mono uppercase tracking-wider text-neutral-900 dark:text-white">Customer Clustering</h3>
-                  <p className="text-[10px] text-neutral-400">Kluster pelanggan berdasarkan perilaku beli.</p>
-                </div>
-              </div>
               <button
                 onClick={fetchClusters}
                 disabled={clusterLoading || segments.length === 0}
-                className="py-1.5 px-3 rounded text-[10px] font-semibold bg-purple-600 text-white hover:bg-purple-700 transition-colors disabled:opacity-40 flex items-center space-x-1"
+                className="flex items-center justify-center space-x-1.5 py-2.5 rounded-lg border border-neutral-200 dark:border-[#262626] bg-neutral-50 dark:bg-[#1A1A1A] hover:bg-neutral-100 dark:hover:bg-[#262626] transition-colors disabled:opacity-40 text-[10px] font-semibold text-neutral-700 dark:text-neutral-300"
               >
-                {clusterLoading ? <Loader2 className="w-3 h-3 animate-spin" /> : <Award className="w-3 h-3" />}
+                {clusterLoading ? <Loader2 className="w-3 h-3 animate-spin" /> : <Award className="w-3 h-3 text-purple-500" />}
                 <span>Cluster Pelanggan</span>
               </button>
             </div>
-
-            {clusters && (
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-                {clusters.map((cluster, idx) => (
-                  <div key={idx} className="p-4 rounded border border-neutral-200 dark:border-[#262626] bg-gradient-to-br from-purple-50 to-blue-50 dark:from-purple-900/10 dark:to-blue-900/10 space-y-2">
-                    <div className="flex items-center justify-between">
-                      <span className="text-xs font-bold text-neutral-900 dark:text-white">{cluster.name}</span>
-                      <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-purple-100 dark:bg-purple-900/20 text-purple-700 dark:text-purple-400">{cluster.percentage}%</span>
-                    </div>
-                    <p className="text-[10px] text-neutral-600 dark:text-neutral-400">{cluster.description}</p>
-                    <div className="flex items-center space-x-2 text-[9px]">
-                      <span className="text-neutral-500">📍 {cluster.channel}</span>
-                      <span className="text-purple-600 dark:text-purple-400">💡 {cluster.strategy}</span>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            )}
           </div>
+
+          {/* AI Results — compact grid */}
+          {(aiAnalysis || revenuePredictions || clusters) && (
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              
+              {/* AI Analysis Results */}
+              {aiAnalysis && (
+                <div className="p-4 rounded border border-neutral-200 dark:border-[#262626] bg-white dark:bg-[#111111] space-y-2">
+                  <div className="flex items-center space-x-2 pb-2 border-b border-neutral-100 dark:border-[#262626]">
+                    <Lightbulb className="w-3.5 h-3.5 text-amber-500" />
+                    <span className="text-[10px] font-bold font-mono uppercase tracking-wider text-neutral-800 dark:text-white">Analisis Segmentasi</span>
+                  </div>
+                  <p className="text-[10px] text-neutral-600 dark:text-neutral-400 leading-relaxed">{aiAnalysis.summary}</p>
+                  <div className="space-y-1.5">
+                    {aiAnalysis.segments.map((seg, idx) => (
+                      <div key={idx} className="flex items-center justify-between text-[10px] p-2 rounded bg-neutral-50 dark:bg-[#1A1A1A]">
+                        <span className="font-semibold text-neutral-800 dark:text-white">{seg.name}</span>
+                        <div className="flex items-center space-x-2">
+                          <span className="text-neutral-500">LTV: {seg.estimatedLtv}</span>
+                          <span className={`px-1.5 py-0.5 rounded text-[8px] font-bold uppercase ${
+                            seg.churnRisk === "High" ? "bg-red-100 text-red-600 dark:bg-red-900/20 dark:text-red-400" :
+                            seg.churnRisk === "Medium" ? "bg-amber-100 text-amber-600 dark:bg-amber-900/20 dark:text-amber-400" :
+                            "bg-emerald-100 text-emerald-600 dark:bg-emerald-900/20 dark:text-emerald-400"
+                          }`}>{seg.churnRisk}</span>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                  {aiAnalysis.recommendations.length > 0 && (
+                    <div className="pt-2 border-t border-neutral-100 dark:border-[#262626]">
+                      <span className="text-[9px] font-mono text-neutral-400 uppercase">Rekomendasi:</span>
+                      <p className="text-[10px] text-neutral-600 dark:text-neutral-400 mt-1">{aiAnalysis.recommendations[0]}</p>
+                    </div>
+                  )}
+                </div>
+              )}
+
+              {/* Revenue Prediction Results */}
+              {revenuePredictions && (
+                <div className="p-4 rounded border border-neutral-200 dark:border-[#262626] bg-white dark:bg-[#111111] space-y-2">
+                  <div className="flex items-center justify-between pb-2 border-b border-neutral-100 dark:border-[#262626]">
+                    <div className="flex items-center space-x-2">
+                      <BarChart3 className="w-3.5 h-3.5 text-blue-500" />
+                      <span className="text-[10px] font-bold font-mono uppercase tracking-wider text-neutral-800 dark:text-white">Prediksi Revenue</span>
+                    </div>
+                    <span className="text-xs font-bold text-blue-600 dark:text-blue-400">Rp {totalMonthlyRevenue.toLocaleString("id-ID")}/bln</span>
+                  </div>
+                  <div className="space-y-1.5">
+                    {revenuePredictions.map((pred, idx) => (
+                      <div key={idx} className="flex items-center justify-between text-[10px] p-2 rounded bg-neutral-50 dark:bg-[#1A1A1A]">
+                        <span className="font-semibold text-neutral-800 dark:text-white">{pred.name}</span>
+                        <div className="flex items-center space-x-2">
+                          <span className="text-neutral-500">Rp {pred.monthlyRevenue.toLocaleString("id-ID")}</span>
+                          <span className={`px-1.5 py-0.5 rounded text-[8px] font-bold ${
+                            pred.growthPotential === "Tinggi" ? "bg-emerald-100 text-emerald-600 dark:bg-emerald-900/20 dark:text-emerald-400" :
+                            pred.growthPotential === "Sedang" ? "bg-amber-100 text-amber-600 dark:bg-amber-900/20 dark:text-amber-400" :
+                            "bg-red-100 text-red-600 dark:bg-red-900/20 dark:text-red-400"
+                          }`}>{pred.growthPotential}</span>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {/* Customer Clustering Results */}
+              {clusters && (
+                <div className="p-4 rounded border border-neutral-200 dark:border-[#262626] bg-white dark:bg-[#111111] md:col-span-2 space-y-2">
+                  <div className="flex items-center space-x-2 pb-2 border-b border-neutral-100 dark:border-[#262626]">
+                    <Award className="w-3.5 h-3.5 text-purple-500" />
+                    <span className="text-[10px] font-bold font-mono uppercase tracking-wider text-neutral-800 dark:text-white">Customer Clustering</span>
+                  </div>
+                  <div className="grid grid-cols-2 md:grid-cols-4 gap-2">
+                    {clusters.map((cluster, idx) => (
+                      <div key={idx} className="p-3 rounded-lg bg-gradient-to-br from-purple-50 to-blue-50 dark:from-purple-900/10 dark:to-blue-900/10 border border-purple-100 dark:border-purple-800/20">
+                        <div className="flex items-center justify-between mb-1">
+                          <span className="text-[10px] font-bold text-neutral-900 dark:text-white">{cluster.name}</span>
+                          <span className="text-[8px] font-mono px-1.5 py-0.5 rounded bg-purple-100 dark:bg-purple-900/20 text-purple-700 dark:text-purple-400">{cluster.percentage}%</span>
+                        </div>
+                        <p className="text-[9px] text-neutral-500 dark:text-neutral-400 leading-tight">{cluster.description}</p>
+                        <p className="text-[8px] text-purple-600 dark:text-purple-400 mt-1">💡 {cluster.strategy}</p>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+            </div>
+          )}
 
         </div>
 
