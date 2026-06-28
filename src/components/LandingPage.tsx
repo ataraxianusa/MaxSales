@@ -83,33 +83,38 @@ export default function LandingPage({ onEnterDashboard, brandName, darkMode, set
   ];
 
   return (
-    <div className="relative overflow-hidden transition-colors duration-300 bg-white dark:bg-[#050505] text-neutral-900 dark:text-[#E5E5E5] min-h-[calc(100vh-4rem)]">
-      {/* Decorative Grid Backdrop */}
-      <div className="absolute inset-0 bg-[linear-gradient(to_right,#8080800a_1px,transparent_1px),linear-gradient(to_bottom,#8080800a_1px,transparent_1px)] bg-[size:14px_24px] pointer-events-none"></div>
+    <div className="relative overflow-hidden transition-colors duration-300 bg-linen-base dark:bg-space-dark text-neutral-900 dark:text-[#E5E5E5] min-h-[calc(100vh-4rem)]">
+      {/* Decorative Grid Backdrop — hexagonal feel */}
+      <div className="absolute inset-0 bg-[linear-gradient(135deg,rgba(30,58,138,0.03)_0%,rgba(139,92,246,0.02)_100%)] pointer-events-none"></div>
+      <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808008_1px,transparent_1px),linear-gradient(to_bottom,#80808008_1px,transparent_1px)] bg-[size:20px_32px] pointer-events-none"></div>
 
       <div className="max-w-7xl mx-auto px-6 sm:px-8 py-12 md:py-16 relative z-10">
         
-        {/* 1. HERO: FOKUS 3 DETIK PERTAMA PAHAM */}
+        {/* 1. HERO */}
         <div className="relative max-w-6xl mx-auto min-h-[calc(100vh-4rem)] flex flex-col justify-center mb-10 pt-4 pb-12">
           
-
-          {/* Centered Hero Section */}
           <div className="flex flex-col items-center justify-center text-center max-w-4xl mx-auto pt-6">
             
-            <h1 className="text-4xl sm:text-5xl lg:text-7xl font-black tracking-tighter leading-[1.05] mb-6 text-white opacity-0 animate-fade-in" style={{ animationDelay: '0.1s' }}>
+            {/* Eyebrow tag */}
+            <span className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-[10px] font-bold font-mono tracking-[0.12em] uppercase bg-market-indigo/10 dark:bg-ai-violet/10 text-market-indigo dark:text-ai-violet border border-market-indigo/20 dark:border-ai-violet/20 mb-6 opacity-0 animate-fade-in" style={{ animationDelay: '0.05s' }}>
+              <span className="w-1.5 h-1.5 rounded-full bg-ai-violet animate-pulse"></span>
+              AI-Powered Market Intelligence
+            </span>
+
+            <h1 className="font-display text-4xl sm:text-5xl lg:text-7xl font-black tracking-[-0.02em] leading-[1.05] mb-6 text-neutral-900 dark:text-white opacity-0 animate-fade-in" style={{ animationDelay: '0.1s' }}>
               Ubah Produk Biasa Jadi
               <br />
-              <span className="bg-clip-text text-transparent bg-gradient-to-r from-emerald-400 via-emerald-300 to-cyan-400 animate-gradient-shift">
+              <span className="bg-clip-text text-transparent bg-gradient-to-r from-market-indigo via-ai-violet to-market-indigo dark:from-ai-violet dark:via-data-cyan dark:to-ai-violet animate-gradient-shift">
                 Luar Biasa
               </span>
             </h1>
 
-            <p className="text-base sm:text-lg lg:text-xl text-neutral-300 font-medium mb-4 max-w-2xl opacity-0 animate-fade-in-up" style={{ animationDelay: '0.2s' }}>
+            <p className="text-base sm:text-lg lg:text-xl text-earth-terracotta dark:text-[#E5E5E5] font-medium mb-4 max-w-2xl opacity-0 animate-fade-in-up font-body" style={{ animationDelay: '0.2s' }}>
               Sistem Operasi Pertumbuhan Bisnis Berbasis AI Untuk Memaximalkan Penjualan
             </p>
 
-            <p className="text-sm sm:text-base text-neutral-500 mb-10 leading-relaxed max-w-xl mx-auto opacity-0 animate-fade-in-up" style={{ animationDelay: '0.3s' }}>
-              Tanpa teori rumit. Tanpa dashboard kosong. <strong className="text-neutral-300 font-semibold">MaxxSales</strong> mengubah data penjualan & intelijen pasar jadi langkah eksekusi harian — langsung bisa dikerjakan hari ini juga.
+            <p className="text-sm sm:text-base text-neutral-500 dark:text-neutral-400 mb-10 leading-relaxed max-w-xl mx-auto opacity-0 animate-fade-in-up font-body" style={{ animationDelay: '0.3s' }}>
+              Tanpa teori rumit. Tanpa dashboard kosong. <strong className="text-neutral-700 dark:text-neutral-300 font-semibold">MaxxSales</strong> mengubah data penjualan & intelijen pasar jadi langkah eksekusi harian — langsung bisa dikerjakan hari ini juga.
             </p>
 
             {/* CTA Buttons */}
@@ -117,7 +122,7 @@ export default function LandingPage({ onEnterDashboard, brandName, darkMode, set
               <button
                 id="cta-start-dashboard"
                 onClick={onEnterDashboard}
-                className="group relative w-full sm:w-auto px-8 py-3.5 rounded-2xl text-sm font-bold transition-all duration-300 bg-gradient-to-r from-emerald-500 to-emerald-600 hover:from-emerald-400 hover:to-emerald-500 text-black shadow-lg shadow-emerald-500/25 hover:shadow-emerald-500/40 hover:scale-[1.02] active:scale-[0.98] flex items-center justify-center gap-2 overflow-hidden"
+                className="group relative w-full sm:w-auto px-8 py-3.5 rounded-2xl text-sm font-bold transition-all duration-300 bg-ai-violet hover:bg-urgent-red text-white shadow-lg shadow-ai-violet/25 hover:shadow-urgent-red/25 hover:scale-[1.02] active:scale-[0.98] flex items-center justify-center gap-2 overflow-hidden"
               >
                 <span className="absolute inset-0 w-full h-full bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700 ease-in-out" />
                 <span className="relative z-10 flex items-center gap-2">
@@ -128,7 +133,7 @@ export default function LandingPage({ onEnterDashboard, brandName, darkMode, set
               <button
                 id="cta-explore-preview"
                 onClick={() => document.getElementById('visual-showcase')?.scrollIntoView({ behavior: 'smooth' })}
-                className="w-full sm:w-auto px-8 py-3.5 rounded-2xl text-sm font-semibold transition-all duration-300 border border-neutral-800 hover:border-neutral-600 text-neutral-300 hover:text-white hover:bg-neutral-900 flex items-center justify-center gap-2"
+                className="w-full sm:w-auto px-8 py-3.5 rounded-2xl text-sm font-semibold transition-all duration-300 border border-market-indigo/30 dark:border-ai-violet/30 text-market-indigo dark:text-ai-violet hover:bg-market-indigo/5 dark:hover:bg-ai-violet/5 flex items-center justify-center gap-2"
               >
                 <MonitorSmartphone className="w-4 h-4" />
                 Lihat Pratinjau
@@ -140,7 +145,7 @@ export default function LandingPage({ onEnterDashboard, brandName, darkMode, set
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.5, duration: 0.5 }}
-              className="flex flex-wrap items-center justify-center gap-5 sm:gap-8 mb-16 text-[11px] text-neutral-500 font-mono"
+              className="flex flex-wrap items-center justify-center gap-5 sm:gap-8 mb-16 text-[11px] text-earth-terracotta dark:text-neutral-400 font-body"
             >
               {[
                 { icon: ShieldCheck, text: "Coba Prototype Gratis" },
@@ -149,10 +154,10 @@ export default function LandingPage({ onEnterDashboard, brandName, darkMode, set
               ].map((item, i) => (
                 <motion.span
                   key={i}
-                  whileHover={{ scale: 1.05, color: "#a3e635" }}
+                  whileHover={{ scale: 1.05, color: "#EF4444" }}
                   className="flex items-center gap-1.5 cursor-default transition-colors"
                 >
-                  <item.icon className="w-3.5 h-3.5 text-emerald-500" /> {item.text}
+                  <item.icon className="w-3.5 h-3.5 text-data-cyan" /> {item.text}
                 </motion.span>
               ))}
             </motion.div>
@@ -162,7 +167,7 @@ export default function LandingPage({ onEnterDashboard, brandName, darkMode, set
         </div>
 
         {/* ═══════════════════════════════════════════════ */}
-        {/* 2. SHOWCASE: AMUNISI + DASHBOARD PREVIEW       */}
+        {/* 2. SHOWCASE: 4 PANELS                        */}
         {/* ═══════════════════════════════════════════════ */}
         <div id="visual-showcase" className="max-w-6xl mx-auto min-h-screen flex flex-col justify-center mb-20 scroll-mt-16">
           <motion.div
@@ -170,14 +175,17 @@ export default function LandingPage({ onEnterDashboard, brandName, darkMode, set
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-80px" }}
             transition={{ duration: 0.6 }}
-            className="text-center mb-6"
+            className="text-center mb-8"
           >
-            <span className="text-[10px] font-bold font-mono tracking-[0.15em] text-emerald-500 uppercase block mb-2">
+            <span className="text-[10px] font-bold font-mono tracking-[0.15em] text-ai-violet uppercase block mb-2">
               ✦ Show, Don't Just Tell ✦
             </span>
-            <h2 className="text-xl sm:text-2xl font-bold text-white">
+            <h2 className="font-display text-2xl sm:text-3xl font-bold text-neutral-900 dark:text-white">
               Tools Andalan Bisnis Anda
             </h2>
+            <p className="text-sm text-neutral-500 dark:text-neutral-400 mt-2 max-w-md mx-auto font-body">
+              Semua yang dibutuhkan pengusaha dalam satu dashboard terintegrasi AI.
+            </p>
           </motion.div>
 
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 items-stretch">
@@ -189,16 +197,16 @@ export default function LandingPage({ onEnterDashboard, brandName, darkMode, set
               viewport={{ once: true, margin: "-60px" }}
               transition={{ duration: 0.5 }}
               whileHover={{ y: -3 }}
-              className="rounded-2xl border border-neutral-800 bg-[#0c0c0c] overflow-hidden shadow-xl shadow-black/30 flex flex-col h-full text-left"
+              className="rounded-2xl border border-stone-border bg-charcoal-surface overflow-hidden shadow-xl shadow-black/30 flex flex-col h-full text-left"
             >
               {/* Card header */}
-              <div className="px-5 py-3.5 border-b border-neutral-800 flex items-center gap-2 bg-[#161616]/80">
-                <span className="w-2.5 h-2.5 rounded-full bg-red-400/80 shrink-0"></span>
-                <span className="w-2.5 h-2.5 rounded-full bg-yellow-400/80 shrink-0"></span>
-                <span className="w-2.5 h-2.5 rounded-full bg-green-400/80 shrink-0 mr-2"></span>
+              <div className="px-5 py-3.5 border-b border-stone-border flex items-center gap-2 bg-charcoal-surface/80">
+                <span className="w-2.5 h-2.5 rounded-full bg-urgent-red/80 shrink-0"></span>
+                <span className="w-2.5 h-2.5 rounded-full bg-[#F59E0B]/80 shrink-0"></span>
+                <span className="w-2.5 h-2.5 rounded-full bg-data-cyan/80 shrink-0 mr-2"></span>
                 <span className="text-[10px] font-mono text-neutral-500 truncate">maxxsales.ai/daily-pulse</span>
                 <div className="flex-1"></div>
-                <span className="px-2 py-0.5 rounded-full text-[8px] font-mono font-bold bg-emerald-500/15 text-emerald-400 border border-emerald-500/25 whitespace-nowrap">
+                <span className="px-2 py-0.5 rounded-full text-[8px] font-mono font-bold bg-ai-violet/15 text-ai-violet border border-ai-violet/25 whitespace-nowrap">
                   🔥 STREAK 4 HARI
                 </span>
               </div>
@@ -211,61 +219,61 @@ export default function LandingPage({ onEnterDashboard, brandName, darkMode, set
                     onClick={() => toggleChecklist(item.id)}
                     className={`flex items-start gap-3 p-3 rounded-2xl cursor-pointer transition-all border ${
                       item.done
-                        ? "bg-emerald-500/5 border-emerald-500/15 hover:bg-emerald-500/10"
-                        : "border-neutral-800/60 bg-[#0a0a0a] hover:bg-amber-500/5 hover:border-amber-500/20"
+                        ? "bg-ai-violet/5 border-ai-violet/15 hover:bg-ai-violet/10"
+                        : "border-stone-border bg-space-dark hover:bg-urgent-red/5 hover:border-urgent-red/20"
                     } group`}
                   >
                     <div
                       className={`mt-0.5 w-4 h-4 rounded border flex items-center justify-center shrink-0 transition-colors ${
                         item.done
-                          ? "bg-emerald-500 border-emerald-500"
-                          : "border-neutral-700 bg-transparent group-hover:border-emerald-500/40"
+                          ? "bg-ai-violet border-ai-violet"
+                          : "border-neutral-700 bg-transparent group-hover:border-ai-violet/40"
                       }`}
                     >
-                      {item.done && <Check className="w-3 h-3 text-black" />}
+                      {item.done && <Check className="w-3 h-3 text-white" />}
                     </div>
                     <div>
-                      <span className={`text-xs transition-all ${
+                      <span className={`text-xs transition-all font-body ${
                         item.done
                           ? "text-neutral-500 line-through"
-                          : "text-white font-medium group-hover:text-amber-200"
+                          : "text-white font-medium group-hover:text-earth-terracotta"
                       }`}>
                         {item.label}
                       </span>
-                      <p className="text-[10px] text-neutral-500 mt-0.5">{item.desc}</p>
+                      <p className="text-[10px] text-neutral-500 mt-0.5 font-body">{item.desc}</p>
                     </div>
                   </label>
                 ))}
               </div>
 
               {/* Card footer */}
-              <div className="px-6 py-4 border-t border-neutral-800 bg-[#161616]/50 flex items-center justify-between">
+              <div className="px-6 py-4 border-t border-stone-border bg-charcoal-surface/50 flex items-center justify-between">
                 <span className="text-[10px] font-mono text-neutral-500">
                   ✅ {checklist.filter(i => i.done).length}/{checklist.length} tugas selesai hari ini
                 </span>
-                <span className="text-[10px] font-mono text-emerald-500 font-bold">
+                <span className="text-[10px] font-mono text-ai-violet font-bold">
                   +{checklist.filter(i => i.done).length * 25} XP HARI INI
                 </span>
               </div>
             </motion.div>
 
-            {/* 2. AI Chatbot Assistant (NEW) */}
+            {/* 2. AI Chatbot Assistant */}
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: "-60px" }}
               transition={{ duration: 0.5, delay: 0.1 }}
               whileHover={{ y: -3 }}
-              className="rounded-2xl border border-neutral-800 bg-[#0c0c0c] overflow-hidden shadow-xl shadow-black/30 flex flex-col h-full text-left"
+              className="rounded-2xl border border-stone-border bg-charcoal-surface overflow-hidden shadow-xl shadow-black/30 flex flex-col h-full text-left"
             >
               {/* Card header */}
-              <div className="px-5 py-3.5 border-b border-neutral-800 flex items-center gap-2 bg-[#161616]/85">
-                <div className="w-2.5 h-2.5 rounded-full bg-emerald-500/25 border border-emerald-500/50 flex items-center justify-center">
-                  <span className="w-1 h-1 rounded-full bg-emerald-400 animate-pulse"></span>
+              <div className="px-5 py-3.5 border-b border-stone-border flex items-center gap-2 bg-charcoal-surface/85">
+                <div className="w-2.5 h-2.5 rounded-full bg-ai-violet/25 border border-ai-violet/50 flex items-center justify-center">
+                  <span className="w-1 h-1 rounded-full bg-ai-violet animate-pulse"></span>
                 </div>
-                <Bot className="w-4 h-4 text-emerald-400 mr-1" />
+                <Bot className="w-4 h-4 text-ai-violet mr-1" />
                 <div>
-                  <h3 className="text-xs font-bold text-white leading-tight">AI Business Advisor</h3>
+                  <h3 className="text-xs font-bold text-white leading-tight font-body">AI Business Advisor</h3>
                   <p className="text-[9px] text-neutral-500 font-mono">maxxsales.ai/advisor</p>
                 </div>
               </div>
@@ -341,22 +349,22 @@ export default function LandingPage({ onEnterDashboard, brandName, darkMode, set
               <div className="p-3 sm:p-4 space-y-3">
                 {/* WA Blast template */}
                 <motion.div
-                  whileHover={{ scale: 1.02, borderColor: "rgba(34,211,238,0.4)" }}
-                  className="rounded-xl border border-neutral-800 bg-[#0a0a0a] overflow-hidden transition-colors"
+                  whileHover={{ scale: 1.02, borderColor: "rgba(6,182,212,0.4)" }}
+                  className="rounded-xl border border-stone-border bg-space-dark overflow-hidden transition-colors"
                 >
-                  <div className="px-3 py-2 bg-[#111111] border-b border-neutral-800 flex items-center gap-1.5">
-                    <span className="w-2 h-2 rounded-full bg-green-500"></span>
+                  <div className="px-3 py-2 bg-charcoal-surface border-b border-stone-border flex items-center gap-1.5">
+                    <span className="w-2 h-2 rounded-full bg-data-cyan"></span>
                     <span className="text-[9px] font-mono font-bold text-neutral-400 uppercase tracking-wider">Siaran WhatsApp</span>
                   </div>
                   <div className="p-3">
-                    <p className="text-[11px] text-neutral-300 leading-relaxed font-sans">
-                      <span className="text-amber-400 font-semibold">🔥 PROMO GILA HARI INI! 🔥</span><br />
+                    <p className="text-[11px] text-neutral-300 leading-relaxed font-body">
+                      <span className="text-earth-terracotta font-semibold">🔥 PROMO GILA HARI INI! 🔥</span><br />
                       Juragan, khusus hari ini: beli <strong className="text-white">2 Sosis Bakar Premium</strong> gratis <strong className="text-white">1 Es Teh Segar</strong>!<br /><br />
                       📍 Depan Indomaret Jl. Kenangan<br />⏰ Jam 15:00 - 18:00 sore ini
                     </p>
                     <motion.button whileTap={{ scale: 0.96 }} onClick={() => handleCopy("wa")}
                       className={`mt-2.5 w-full py-2 rounded-lg text-[10px] font-mono font-bold transition-all flex items-center justify-center gap-1.5 ${
-                        copiedWa ? "bg-emerald-500/20 text-emerald-400 border border-emerald-500/30" : "bg-cyan-500/15 text-cyan-400 border border-cyan-500/25 hover:bg-cyan-500/25"
+                        copiedWa ? "bg-data-cyan/20 text-data-cyan border border-data-cyan/30" : "bg-data-cyan/15 text-data-cyan border border-data-cyan/25 hover:bg-data-cyan/25"
                       }`}
                     >
                       {copiedWa ? <><Check className="w-3 h-3" /> Tersalin!</> : <><Copy className="w-3 h-3" /> Salin Teks Siaran</>}
@@ -366,21 +374,21 @@ export default function LandingPage({ onEnterDashboard, brandName, darkMode, set
 
                 {/* Social caption template */}
                 <motion.div
-                  whileHover={{ scale: 1.02, borderColor: "rgba(168,85,247,0.4)" }}
-                  className="rounded-xl border border-neutral-800 bg-[#0a0a0a] overflow-hidden transition-colors"
+                  whileHover={{ scale: 1.02, borderColor: "rgba(139,92,246,0.4)" }}
+                  className="rounded-xl border border-stone-border bg-space-dark overflow-hidden transition-colors"
                 >
-                  <div className="px-3 py-2 bg-[#111111] border-b border-neutral-800 flex items-center gap-1.5">
-                    <span className="w-2 h-2 rounded-full bg-purple-500"></span>
+                  <div className="px-3 py-2 bg-charcoal-surface border-b border-stone-border flex items-center gap-1.5">
+                    <span className="w-2 h-2 rounded-full bg-ai-violet"></span>
                     <span className="text-[9px] font-mono font-bold text-neutral-400 uppercase tracking-wider">Caption Instagram</span>
                   </div>
                   <div className="p-3">
-                    <p className="text-[11px] text-neutral-300 leading-relaxed font-sans">
+                    <p className="text-[11px] text-neutral-300 leading-relaxed font-body">
                       Siapa bilang jajan enak harus mahal? 🤔<br /><br />
                       <strong className="text-white">Sosis Bakar MaxxSales</strong> — daging sapi asli, bukan tepung isi angin. Dijamin nagih dari gigitan pertama! 🥩✨
                     </p>
                     <motion.button whileTap={{ scale: 0.96 }} onClick={() => handleCopy("ig")}
                       className={`mt-2.5 w-full py-2 rounded-lg text-[10px] font-mono font-bold transition-all flex items-center justify-center gap-1.5 ${
-                        copiedIg ? "bg-emerald-500/20 text-emerald-400 border border-emerald-500/30" : "bg-purple-500/15 text-purple-400 border border-purple-500/25 hover:bg-purple-500/25"
+                        copiedIg ? "bg-ai-violet/20 text-ai-violet border border-ai-violet/30" : "bg-ai-violet/15 text-ai-violet border border-ai-violet/25 hover:bg-ai-violet/25"
                       }`}
                     >
                       {copiedIg ? <><Check className="w-3 h-3" /> Tersalin!</> : <><Copy className="w-3 h-3" /> Salin Caption</>}
@@ -390,7 +398,7 @@ export default function LandingPage({ onEnterDashboard, brandName, darkMode, set
               </div>
 
               {/* Card footer */}
-              <div className="px-5 py-3 border-t border-neutral-800 bg-[#0f0f0f]">
+              <div className="px-5 py-3 border-t border-stone-border bg-charcoal-surface/50">
                 <motion.p animate={{ opacity: [0.6, 1, 0.6] }} transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
                   className="text-[10px] text-neutral-500 font-mono text-center">
                   ⚡ Template diperbarui otomatis setiap pagi oleh AI
@@ -404,25 +412,25 @@ export default function LandingPage({ onEnterDashboard, brandName, darkMode, set
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true, margin: "-60px" }}
               transition={{ duration: 0.5, delay: 0.15 }}
-              className="border border-neutral-800 bg-[#0c0c0c] rounded-2xl shadow-xl shadow-black/30 overflow-hidden"
+              className="border border-stone-border bg-charcoal-surface rounded-2xl shadow-xl shadow-black/30 overflow-hidden"
             >
-              <div className="bg-[#111111] border-b border-neutral-800 px-4 py-3 flex items-center justify-between">
-                <span className="text-[9px] font-bold font-mono tracking-widest text-emerald-500 uppercase">✦ Preview Dashboard</span>
-                <span className="flex items-center gap-1"><span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-ping"></span><span className="text-[8px] font-mono text-neutral-500 uppercase">Live</span></span>
+              <div className="bg-charcoal-surface border-b border-stone-border px-4 py-3 flex items-center justify-between">
+                <span className="text-[9px] font-bold font-mono tracking-widest text-ai-violet uppercase">✦ Preview Dashboard</span>
+                <span className="flex items-center gap-1"><span className="w-1.5 h-1.5 rounded-full bg-ai-violet animate-ping"></span><span className="text-[8px] font-mono text-neutral-500 uppercase">Live</span></span>
               </div>
             {/* Window Browser Chrome Header bar */}
             <div className="bg-neutral-100 dark:bg-[#121212] border-b border-neutral-250 dark:border-[#1E1E1E] px-4 py-3 flex items-center justify-between">
               <div className="flex items-center space-x-1.5">
-                <span className="w-2.5 h-2.5 rounded-full bg-red-400"></span>
-                <span className="w-2.5 h-2.5 rounded-full bg-yellow-400"></span>
-                <span className="w-2.5 h-2.5 rounded-full bg-green-400"></span>
+                <span className="w-2.5 h-2.5 rounded-full bg-urgent-red"></span>
+                <span className="w-2.5 h-2.5 rounded-full bg-[#F59E0B]"></span>
+                <span className="w-2.5 h-2.5 rounded-full bg-data-cyan"></span>
               </div>
-              <div className="bg-white dark:bg-[#1a1a1a] border border-neutral-200 dark:border-[#262626] rounded text-[10px] font-mono text-neutral-400 dark:text-[#737373] px-3 py-1 text-center w-64 truncate select-none">
+              <div className="bg-white dark:bg-charcoal-surface border border-stone-border rounded text-[10px] font-mono text-neutral-400 dark:text-[#737373] px-3 py-1 text-center w-64 truncate select-none">
                 https://maxxsales.ai/dashboard/war-room
               </div>
               <div className="flex items-center space-x-1">
-                <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-ping"></span>
-                <span className="text-[8px] font-mono text-neutral-400 dark:text-emerald-400 uppercase tracking-tighter">PREVIEW AKTIF</span>
+                <span className="w-1.5 h-1.5 rounded-full bg-data-cyan animate-ping"></span>
+                <span className="text-[8px] font-mono text-neutral-400 dark:text-data-cyan uppercase tracking-tighter">PREVIEW AKTIF</span>
               </div>
             </div>
 

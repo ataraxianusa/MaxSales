@@ -2,6 +2,87 @@
 
 @variant dark (&:where(.dark, .dark *));
 
+/* ============================================
+   MAXXSALES HYBRID DESIGN SYSTEM (B+C)
+   Indonesian Market Vibrancy + AI Neural Network
+   ============================================ */
+
+/* DESIGN TOKENS: COLOR PALETTE */
+@theme {
+  --color-market-indigo: #1E3A8A;
+  --color-ai-violet: #8B5CF6;
+  --color-data-cyan: #06B6D4;
+  --color-urgent-red: #EF4444;
+  --color-earth-terracotta: #C2410C;
+  --color-linen-base: #FDFBF7;
+  
+  /* Dark mode */
+  --color-space-dark: #0A0A0A;
+  --color-charcoal-surface: #1A1A1A;
+  --color-stone-border: #2A2A2A;
+  
+  /* Semantic colors */
+  --color-primary: var(--color-market-indigo);
+  --color-secondary: var(--color-ai-violet);
+  --color-accent: var(--color-data-cyan);
+  --color-success: #10B981;
+  --color-warning: #F59E0B;
+  --color-error: var(--color-urgent-red);
+}
+
+/* ============================================
+   CUSTOM ANIMATIONS - SIGNATURE & MOTION
+   ============================================ */
+
+/* 1. NEURAL PULSE - Signature animation for Market Neural Network */
+@keyframes neural-pulse {
+  0%, 100% { 
+    opacity: 0.3; 
+    transform: scale(1); 
+    filter: drop-shadow(0 0 0px var(--color-ai-violet));
+  }
+  50% { 
+    opacity: 0.8; 
+    transform: scale(1.05); 
+    filter: drop-shadow(0 0 15px var(--color-ai-violet));
+  }
+}
+
+/* 2. MARKET FLOW - Hero gradient animation */
+@keyframes market-flow {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+/* 3. NODE CONNECTION - SVG path drawing for neural network */
+@keyframes node-connection {
+  0% { 
+    stroke-dashoffset: 100%;
+    opacity: 0;
+  }
+  50% { 
+    opacity: 1;
+  }
+  100% { 
+    stroke-dashoffset: 0%;
+    opacity: 1;
+  }
+}
+
+/* 4. BATIK MORPH - Subtle texture animation */
+@keyframes batik-morph {
+  0%, 100% { 
+    background-position: 0% 0%;
+    opacity: 0.05;
+  }
+  50% { 
+    background-position: 100% 100%;
+    opacity: 0.08;
+  }
+}
+
+/* 5. Fade in up (enhanced for hybrid design) */
 @keyframes fade-in-up {
   from {
     opacity: 0;
@@ -13,54 +94,32 @@
   }
 }
 
+/* 6. Fade in */
 @keyframes fade-in {
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
-  }
+  from { opacity: 0; }
+  to { opacity: 1; }
 }
 
+/* 7. Gradient shift for CTAs */
 @keyframes gradient-shift {
-  0% {
-    background-position: 0% 50%;
-  }
-  50% {
-    background-position: 100% 50%;
-  }
-  100% {
-    background-position: 0% 50%;
-  }
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
 }
 
+/* 8. Glow pulse for interactive elements */
 @keyframes glow-pulse {
-  0%, 100% {
-    filter: brightness(1);
-  }
-  50% {
-    filter: brightness(1.15);
-  }
+  0%, 100% { filter: brightness(1); }
+  50% { filter: brightness(1.15); }
 }
 
+/* 9. Float for cards */
 @keyframes float {
-  0%, 100% {
-    transform: translateY(0px);
-  }
-  50% {
-    transform: translateY(-4px);
-  }
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-4px); }
 }
 
-@keyframes icon-ring {
-  0% {
-    box-shadow: 0 0 0 0 rgba(52, 211, 153, 0);
-  }
-  100% {
-    box-shadow: 0 0 0 8px rgba(52, 211, 153, 0);
-  }
-}
-
+/* 10. Slide label for micro-interactions */
 @keyframes slide-label {
   from {
     transform: translateX(0);
@@ -72,70 +131,112 @@
   }
 }
 
-/* ===== DARK MODE NEON GLOW EFFECTS ===== */
-
-/* Neon icon glow pulse — emerald */
-@keyframes neon-icon-emerald {
-  0%, 100% {
-    box-shadow: 0 0 8px 2px rgba(52, 211, 153, 0.4), 0 0 25px 8px rgba(52, 211, 153, 0.2), 0 0 50px 15px rgba(52, 211, 153, 0.08);
+/* 11. Hexagonal grid pulse for background pattern */
+@keyframes hex-grid-pulse {
+  0%, 100% { 
+    opacity: 0.03;
+    transform: scale(1);
   }
-  50% {
-    box-shadow: 0 0 12px 5px rgba(52, 211, 153, 0.6), 0 0 35px 12px rgba(52, 211, 153, 0.35), 0 0 65px 20px rgba(52, 211, 153, 0.12);
-  }
-}
-
-/* Neon icon glow pulse — red */
-@keyframes neon-icon-red {
-  0%, 100% {
-    box-shadow: 0 0 8px 2px rgba(248, 113, 113, 0.4), 0 0 25px 8px rgba(248, 113, 113, 0.2), 0 0 50px 15px rgba(248, 113, 113, 0.08);
-  }
-  50% {
-    box-shadow: 0 0 12px 5px rgba(248, 113, 113, 0.6), 0 0 35px 12px rgba(248, 113, 113, 0.35), 0 0 65px 20px rgba(248, 113, 113, 0.12);
+  50% { 
+    opacity: 0.06;
+    transform: scale(1.02);
   }
 }
 
-/* Neon icon glow pulse — purple */
-@keyframes neon-icon-purple {
-  0%, 100% {
-    box-shadow: 0 0 8px 2px rgba(192, 132, 252, 0.4), 0 0 25px 8px rgba(192, 132, 252, 0.2), 0 0 50px 15px rgba(192, 132, 252, 0.08);
+/* 12. Market stall hover effect */
+@keyframes market-stall-glow {
+  0%, 100% { 
+    box-shadow: 0 0 0 0 rgba(139, 92, 246, 0.1);
   }
-  50% {
-    box-shadow: 0 0 12px 5px rgba(192, 132, 252, 0.6), 0 0 35px 12px rgba(192, 132, 252, 0.35), 0 0 65px 20px rgba(192, 132, 252, 0.12);
-  }
-}
-
-/* Neon icon glow pulse — cyan */
-@keyframes neon-icon-cyan {
-  0%, 100% {
-    box-shadow: 0 0 8px 2px rgba(34, 211, 238, 0.4), 0 0 25px 8px rgba(34, 211, 238, 0.2), 0 0 50px 15px rgba(34, 211, 238, 0.08);
-  }
-  50% {
-    box-shadow: 0 0 12px 5px rgba(34, 211, 238, 0.6), 0 0 35px 12px rgba(34, 211, 238, 0.35), 0 0 65px 20px rgba(34, 211, 238, 0.12);
+  50% { 
+    box-shadow: 0 0 0 8px rgba(139, 92, 246, 0.2);
   }
 }
 
-.dark .group:hover .neon-icon-emerald {
-  animation: neon-icon-emerald 2.5s ease-in-out infinite;
+/* ============================================
+   ANIMATION UTILITIES
+   ============================================ */
+
+/* Signature neural pulse animation */
+.animate-neural-pulse {
+  animation: neural-pulse 3s ease-in-out infinite;
 }
 
-.dark .group:hover .neon-icon-red {
-  animation: neon-icon-red 2.5s ease-in-out infinite;
+/* Market flow background */
+.animate-market-flow {
+  background-size: 200% 200%;
+  animation: market-flow 20s ease infinite;
 }
 
-.dark .group:hover .neon-icon-purple {
-  animation: neon-icon-purple 2.5s ease-in-out infinite;
+/* Node connection for SVG paths */
+.animate-node-connection {
+  animation: node-connection 2s ease-in-out forwards;
 }
 
-.dark .group:hover .neon-icon-cyan {
-  animation: neon-icon-cyan 2.5s ease-in-out infinite;
+/* Batik morph texture */
+.animate-batik-morph {
+  animation: batik-morph 15s ease infinite;
 }
 
+/* Hex grid pulse */
+.animate-hex-grid-pulse {
+  animation: hex-grid-pulse 4s ease-in-out infinite;
+}
+
+/* Market stall glow */
+.animate-market-stall-glow {
+  animation: market-stall-glow 2.5s ease-in-out infinite;
+}
+
+/* Existing animations */
 .animate-fade-in-up {
   animation: fade-in-up 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
 .animate-fade-in {
   animation: fade-in 0.6s ease-out forwards;
+}
+
+/* ============================================
+   FONT FAMILIES — HYBRID DESIGN SPEC
+   ============================================ */
+
+.font-display {
+  font-family: 'Playfair Display', Georgia, serif;
+}
+
+.font-body {
+  font-family: 'Inter', system-ui, sans-serif;
+}
+
+.font-mono {
+  font-family: 'Space Mono', ui-monospace, monospace;
+}
+
+/* ============================================
+   REDUCED MOTION — Accessibility
+   ============================================ */
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-neural-pulse,
+  .animate-market-flow,
+  .animate-node-connection,
+  .animate-batik-morph,
+  .animate-hex-grid-pulse,
+  .animate-market-stall-glow,
+  .animate-fade-in-up,
+  .animate-fade-in,
+  .animate-gradient-shift {
+    animation: none !important;
+  }
+  
+  .hover\:-translate-y-3 {
+    transform: none !important;
+  }
+}
+
+.animate-fade-in-quick {
+  animation: fade-in 0.3s ease-out forwards;
 }
 
 .animate-gradient-shift {
@@ -147,9 +248,248 @@
   animation: glow-pulse 3s ease-in-out infinite;
 }
 
-/* Staggered delays for children */
+.animate-float {
+  animation: float 3s ease-in-out infinite;
+}
+
+/* Staggered delays */
 .animate-stagger-1 { animation-delay: 0.1s; }
 .animate-stagger-2 { animation-delay: 0.2s; }
 .animate-stagger-3 { animation-delay: 0.3s; }
 .animate-stagger-4 { animation-delay: 0.4s; }
 .animate-stagger-5 { animation-delay: 0.5s; }
+
+/* ============================================
+   MARKET NEURAL NETWORK BACKGROUND PATTERN
+   ============================================ */
+
+.market-neural-background {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.market-neural-pattern {
+  position: absolute;
+  inset: 0;
+  background-image: 
+    /* Batik-inspired hexagonal grid */
+    linear-gradient(30deg, transparent 40%, rgba(30, 58, 138, 0.03) 41%, rgba(30, 58, 138, 0.03) 42%, transparent 43%),
+    linear-gradient(-30deg, transparent 40%, rgba(30, 58, 138, 0.03) 41%, rgba(30, 58, 138, 0.03) 42%, transparent 43%),
+    /* Neural connection lines */
+    linear-gradient(45deg, transparent 48%, rgba(139, 92, 246, 0.02) 49%, rgba(139, 92, 246, 0.02) 50%, transparent 51%),
+    linear-gradient(-45deg, transparent 48%, rgba(139, 92, 246, 0.02) 49%, rgba(139, 92, 246, 0.02) 50%, transparent 51%);
+  background-size: 80px 140px, 80px 140px, 60px 60px, 60px 60px;
+  animation: hex-grid-pulse 4s ease-in-out infinite;
+}
+
+.market-neural-nodes {
+  position: absolute;
+  inset: 0;
+}
+
+.market-neural-node {
+  position: absolute;
+  width: 4px;
+  height: 4px;
+  background: var(--color-ai-violet);
+  border-radius: 50%;
+  opacity: 0.4;
+  animation: neural-pulse 3s ease-in-out infinite;
+}
+
+.market-neural-node:nth-child(odd) {
+  animation-delay: 0.5s;
+}
+
+.market-neural-node:nth-child(3n) {
+  animation-delay: 1s;
+}
+
+.market-neural-node:nth-child(4n) {
+  background: var(--color-data-cyan);
+}
+
+.market-neural-node:nth-child(5n) {
+  background: var(--color-market-indigo);
+  animation-delay: 1.5s;
+}
+
+/* ============================================
+   DARK MODE NEON GLOW EFFECTS (Updated Colors)
+   ============================================ */
+
+@keyframes neon-icon-market-indigo {
+  0%, 100% {
+    box-shadow: 0 0 8px 2px rgba(30, 58, 138, 0.4), 0 0 25px 8px rgba(30, 58, 138, 0.2), 0 0 50px 15px rgba(30, 58, 138, 0.08);
+  }
+  50% {
+    box-shadow: 0 0 12px 5px rgba(30, 58, 138, 0.6), 0 0 35px 12px rgba(30, 58, 138, 0.35), 0 0 65px 20px rgba(30, 58, 138, 0.12);
+  }
+}
+
+@keyframes neon-icon-ai-violet {
+  0%, 100% {
+    box-shadow: 0 0 8px 2px rgba(139, 92, 246, 0.4), 0 0 25px 8px rgba(139, 92, 246, 0.2), 0 0 50px 15px rgba(139, 92, 246, 0.08);
+  }
+  50% {
+    box-shadow: 0 0 12px 5px rgba(139, 92, 246, 0.6), 0 0 35px 12px rgba(139, 92, 246, 0.35), 0 0 65px 20px rgba(139, 92, 246, 0.12);
+  }
+}
+
+@keyframes neon-icon-data-cyan {
+  0%, 100% {
+    box-shadow: 0 0 8px 2px rgba(6, 182, 212, 0.4), 0 0 25px 8px rgba(6, 182, 212, 0.2), 0 0 50px 15px rgba(6, 182, 212, 0.08);
+  }
+  50% {
+    box-shadow: 0 0 12px 5px rgba(6, 182, 212, 0.6), 0 0 35px 12px rgba(6, 182, 212, 0.35), 0 0 65px 20px rgba(6, 182, 212, 0.12);
+  }
+}
+
+@keyframes neon-icon-urgent-red {
+  0%, 100% {
+    box-shadow: 0 0 8px 2px rgba(239, 68, 68, 0.4), 0 0 25px 8px rgba(239, 68, 68, 0.2), 0 0 50px 15px rgba(239, 68, 68, 0.08);
+  }
+  50% {
+    box-shadow: 0 0 12px 5px rgba(239, 68, 68, 0.6), 0 0 35px 12px rgba(239, 68, 68, 0.35), 0 0 65px 20px rgba(239, 68, 68, 0.12);
+  }
+}
+
+.dark .group:hover .neon-icon-market-indigo {
+  animation: neon-icon-market-indigo 2.5s ease-in-out infinite;
+}
+
+.dark .group:hover .neon-icon-ai-violet {
+  animation: neon-icon-ai-violet 2.5s ease-in-out infinite;
+}
+
+.dark .group:hover .neon-icon-data-cyan {
+  animation: neon-icon-data-cyan 2.5s ease-in-out infinite;
+}
+
+.dark .group:hover .neon-icon-urgent-red {
+  animation: neon-icon-urgent-red 2.5s ease-in-out infinite;
+}
+
+/* ============================================
+   CUSTOM UTILITY CLASSES
+   ============================================ */
+
+/* Text gradients for hybrid theme */
+.text-gradient-market-ai {
+  background: linear-gradient(135deg, var(--color-market-indigo), var(--color-ai-violet));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.text-gradient-ai-data {
+  background: linear-gradient(135deg, var(--color-ai-violet), var(--color-data-cyan));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Background gradients */
+.bg-gradient-market-ai {
+  background: linear-gradient(135deg, var(--color-market-indigo), var(--color-ai-violet));
+}
+
+.bg-gradient-linen-market {
+  background: linear-gradient(to bottom, var(--color-linen-base), var(--color-market-indigo));
+}
+
+.bg-gradient-dark-market {
+  background: linear-gradient(to bottom, var(--color-space-dark), var(--color-market-indigo));
+}
+
+/* Glow effects */
+.glow-ai-violet {
+  box-shadow: 0 0 20px rgba(139, 92, 246, 0.3);
+}
+
+.glow-data-cyan {
+  box-shadow: 0 0 20px rgba(6, 182, 212, 0.3);
+}
+
+.glow-market-indigo {
+  box-shadow: 0 0 20px rgba(30, 58, 138, 0.3);
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+  .animate-neural-pulse,
+  .animate-market-flow,
+  .animate-batik-morph,
+  .animate-hex-grid-pulse,
+  .animate-neural-pulse *,
+  .animate-market-flow *,
+  .animate-batik-morph *,
+  .animate-hex-grid-pulse * {
+    animation: none !important;
+    opacity: 0.5 !important;
+    transform: none !important;
+  }
+  
+  .animate-fade-in,
+  .animate-fade-in-up {
+    animation: fade-in 0.6s ease-out forwards !important;
+    transform: none !important;
+  }
+}
+
+/* ============================================
+   BATIK TEXTURE OVERLAY
+   ============================================ */
+
+.batik-overlay {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background-image: 
+    radial-gradient(circle at 20% 80%, rgba(30, 58, 138, 0.05) 0%, transparent 50%),
+    radial-gradient(circle at 80% 20%, rgba(194, 65, 12, 0.03) 0%, transparent 50%),
+    radial-gradient(circle at 50% 50%, rgba(30, 58, 138, 0.02) 0%, transparent 70%);
+  animation: batik-morph 20s ease-in-out infinite;
+}
+
+/* ============================================
+   RESPONSIVE TYPOGRAPHY HELPERS
+   ============================================ */
+
+@media (max-width: 767px) {
+  .responsive-h1 {
+    font-size: clamp(2rem, 5vw, 2.5rem);
+  }
+  .responsive-h2 {
+    font-size: clamp(1.5rem, 4vw, 2rem);
+  }
+  .responsive-h3 {
+    font-size: clamp(1.25rem, 3.5vw, 1.5rem);
+  }
+}
+
+@media (min-width: 768px) and (max-width: 1023px) {
+  .responsive-h1 {
+    font-size: clamp(2.5rem, 6vw, 3.5rem);
+  }
+  .responsive-h2 {
+    font-size: clamp(1.75rem, 4.5vw, 2.5rem);
+  }
+  .responsive-h3 {
+    font-size: clamp(1.375rem, 3.75vw, 1.75rem);
+  }
+}
+
+@media (min-width: 1024px) {
+  .responsive-h1 {
+    font-size: clamp(3rem, 8vw, 5rem);
+  }
+  .responsive-h2 {
+    font-size: clamp(2rem, 6vw, 3rem);
+  }
+  .responsive-h3 {
+    font-size: clamp(1.5rem, 4vw, 2rem);
+  }
+}
