@@ -152,7 +152,7 @@ export default function PricingSection({ onBuyNow }: PricingSectionProps) {
         whileInView={{ opacity: 1, y: 0, scale: 1 }}
         viewport={{ once: true, margin: "-40px" }}
         transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
-        className="relative z-10 max-w-2xl mx-auto"
+        className="relative z-10 w-full"
       >
         {/* Outer glow ring on hover */}
         <div
