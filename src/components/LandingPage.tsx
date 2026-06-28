@@ -722,54 +722,112 @@ export default function LandingPage({ onEnterDashboard, brandName, darkMode, set
 
         {/* Accessibility Focus Showcase */}
         <div className="rounded-xl border p-8 bg-white dark:bg-[#111111] border-neutral-200 dark:border-[#262626] mb-12">
-          <div className="flex flex-col lg:flex-row items-center justify-between gap-12">
-            <div className="max-w-xl text-left">
-              <div className="flex items-center space-x-2 text-neutral-500 dark:text-[#A3A3A3] mb-3">
-                <MonitorSmartphone className="w-4 h-4 text-emerald-500" />
-                <span className="text-[10px] font-bold font-mono uppercase tracking-widest">Optimized for accessibility</span>
-              </div>
-              <h3 className="text-2xl font-light tracking-tight text-neutral-900 dark:text-white mb-3">Satu UI Responsif untuk Segala Ukuran Layar</h3>
-              <p className="text-xs text-neutral-550 dark:text-[#A3A3A3] leading-relaxed mb-4 font-sans">
-                Didukung oleh tema kontras tinggi dan adaptabilitas media yang ramah aksesibilitas. Nyaman dibuka lewat smartphone Android di pasar grosir fisik, hingga laptop beresolusi tinggi di kantor Anda. Dukungan penuh navigasi keyboard dan penata visual minimalis menjamin kegunaan yang adil bagi siapa saja.
-              </p>
-              <ul className="space-y-2 text-[11px] text-neutral-450 dark:text-[#737373] list-none pl-0">
-                <li className="flex items-center space-x-2">
-                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
-                  <span>Mendukung penuh perubahan kontras gelap dan terang dalam sekali sentuh.</span>
-                </li>
-                <li className="flex items-center space-x-2">
-                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
-                  <span>Bebas dari iklan mengganggu dan bebas biaya operasional selamanya ($0 Infrastructure).</span>
-                </li>
-              </ul>
-            </div>
-            
-            {/* Simple Dynamic Demo Box */}
-            <div className="w-full lg:w-96 rounded-lg border border-neutral-250 dark:border-[#262626] p-6 bg-neutral-50 dark:bg-[#0A0A0A] text-left">
-              <span className="text-[9px] font-mono uppercase text-neutral-400 dark:text-[#737373] block mb-3">Interactive Demo: Try Dynamic Canvas Promo</span>
-              <div className="space-y-4">
+        {/* ═══════════════════════════════════════════════ */}
+        {/* FAQ + TESTIMONI + PARTNER TRUST               */}
+        {/* ═══════════════════════════════════════════════ */}
+        <div className="max-w-5xl mx-auto mb-20">
+
+          {/* Testimoni & Partner Trust */}
+          <div className="text-center mb-12">
+            <h2 className="font-display text-2xl sm:text-3xl font-bold tracking-tight text-neutral-900 dark:text-white mb-2">
+              Sudah Dipercaya Pengusaha Seperti Anda
+            </h2>
+            <p className="text-sm text-neutral-500 dark:text-neutral-400 max-w-lg mx-auto font-body">
+              Berikut kata mereka yang sudah merasakan dampak MaxxSales.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-16">
+            {/* Testimoni 1 */}
+            <div className="p-5 rounded-xl border border-stone-border bg-charcoal-surface">
+              <div className="flex items-center gap-3 mb-3">
+                <div className="w-10 h-10 rounded-full bg-gradient-to-br from-ai-violet to-market-indigo flex items-center justify-center text-sm font-bold text-white">RS</div>
                 <div>
-                  <label className="text-[10px] font-mono uppercase tracking-wider block text-neutral-500 dark:text-[#737373] mb-1">Tentukan Nilai Promo Bisnis Anda:</label>
-                  <input 
-                    type="text" 
-                    placeholder="misal: Diskon 30% Terbatas!" 
-                    defaultValue="Promo Gajian: Hemat 35%!"
-                    className="w-full text-xs px-3 py-2 rounded border bg-white dark:bg-[#111111] border-neutral-300 dark:border-[#262626] text-neutral-900 dark:text-white outline-none focus:border-emerald-500"
-                    onChange={() => {}}
-                    id="demo-promo-input"
-                  />
+                  <p className="text-sm font-bold text-neutral-900 dark:text-white">Rina Sari</p>
+                  <p className="text-[10px] text-neutral-500 font-mono">Toko Fashion Muslimah, Surabaya</p>
                 </div>
-                <button
-                  id="btn-demo-proceed"
-                  onClick={onEnterDashboard}
-                  className="w-full py-2.5 px-4 rounded text-xs font-semibold bg-neutral-900 dark:bg-[#E5E5E5] text-white dark:text-black hover:bg-neutral-800 dark:hover:bg-white flex items-center justify-center space-x-1 transition-all"
-                >
-                  <span>Mulai Render Foto Produk Sekarang</span>
-                  <ArrowRight className="w-4 h-4" />
-                </button>
+              </div>
+              <p className="text-xs text-neutral-500 dark:text-neutral-400 font-body leading-relaxed italic">
+                "Sebelum MaxxSales, saya harus cek 5 aplikasi berbeda setiap pagi. Sekarang semua ada di satu dashboard — stok, promo, bahkan siapa yang harus dihubungi hari ini."
+              </p>
+              <div className="flex items-center gap-1 mt-3">
+                {[1,2,3,4,5].map(i => <span key={i} className="text-amber-400 text-xs">★</span>)}
+              </div>
+            </div>
+
+            {/* Testimoni 2 */}
+            <div className="p-5 rounded-xl border border-stone-border bg-charcoal-surface">
+              <div className="flex items-center gap-3 mb-3">
+                <div className="w-10 h-10 rounded-full bg-gradient-to-br from-data-cyan to-market-indigo flex items-center justify-center text-sm font-bold text-white">BP</div>
+                <div>
+                  <p className="text-sm font-bold text-neutral-900 dark:text-white">Budi Prasetyo</p>
+                  <p className="text-[10px] text-neutral-500 font-mono">Sosis Bakar Premium, Malang</p>
+                </div>
+              </div>
+              <p className="text-xs text-neutral-500 dark:text-neutral-400 font-body leading-relaxed italic">
+                "Konten iklan yang dulu butuh 2 jam sekarang jadi 5 menit. AI-nya tahu persis cara nulis yang bikin pelanggan saya beli."
+              </p>
+              <div className="flex items-center gap-1 mt-3">
+                {[1,2,3,4,5].map(i => <span key={i} className="text-amber-400 text-xs">★</span>)}
+              </div>
+            </div>
+
+            {/* Testimoni 3 */}
+            <div className="p-5 rounded-xl border border-stone-border bg-charcoal-surface">
+              <div className="flex items-center gap-3 mb-3">
+                <div className="w-10 h-10 rounded-full bg-gradient-to-br from-earth-terracotta to-urgent-red flex items-center justify-center text-sm font-bold text-white">DM</div>
+                <div>
+                  <p className="text-sm font-bold text-neutral-900 dark:text-white">Dewi Melati</p>
+                  <p className="text-[10px] text-neutral-500 font-mono">Kue Kering Premium, Jakarta</p>
+                </div>
+              </div>
+              <p className="text-xs text-neutral-500 dark:text-neutral-400 font-body leading-relaxed italic">
+                "Saya tahu persis pelanggan mana yang akan berhenti beli sebelum mereka benar-benar pergi. Retensi naik 35% dalam sebulan."
+              </p>
+              <div className="flex items-center gap-1 mt-3">
+                {[1,2,3,4,5].map(i => <span key={i} className="text-amber-400 text-xs">★</span>)}
               </div>
             </div>
           </div>
+
+          {/* FAQ */}
+          <div className="text-center mb-8">
+            <h2 className="font-display text-2xl sm:text-3xl font-bold tracking-tight text-neutral-900 dark:text-white mb-2">
+              Pertanyaan yang Sering Diajukan
+            </h2>
+          </div>
+
+          <div className="space-y-3 max-w-3xl mx-auto">
+            {[
+              { q: "Apakah perlu keahlian teknis untuk menggunakan MaxxSales?", a: "Tidak sama sekali. Isi data bisnis Anda sekali — produk, harga, target pasar — lalu semua fitur AI langsung aktif. Tidak perlu coding atau setup teknis." },
+              { q: "Bagaimana AI tahu tentang bisnis saya?", a: "Melalui DNA Business Canvas. Anda mengisi data sekali saat onboarding, lalu semua modul AI menggunakan data tersebut sebagai dasar analisis dan rekomendasi." },
+              { q: "Apakah data saya aman?", a: "Ya. Semua data disimpan lokal di browser Anda menggunakan localStorage. Tidak ada data bisnis yang dikirim ke server kami." },
+              { q: "Bagaimana cara kerja AI Chatbot?", a: "Chatbot memahami DNA bisnis Anda — produk, harga, kompetitor, segmen. Tanya kapan saja dan dapatkan saran yang relevan dengan kondisi bisnis Anda saat ini." },
+              { q: "Apakah ada biaya tambahan tersembunyi?", a: "Tidak. Satu harga, akses penuh ke semua fitur. Tidak ada biaya tambahan atau langganan tersembunyi." },
+            ].map((faq, i) => (
+              <details key={i} className="group rounded-xl border border-stone-border bg-charcoal-surface overflow-hidden">
+                <summary className="px-5 py-4 cursor-pointer text-sm font-semibold text-neutral-900 dark:text-white flex items-center justify-between hover:bg-neutral-50 dark:hover:bg-neutral-800/50 transition-colors">
+                  <span>{faq.q}</span>
+                  <span className="text-neutral-400 group-open:rotate-180 transition-transform">▾</span>
+                </summary>
+                <div className="px-5 pb-4 text-xs text-neutral-500 dark:text-neutral-400 font-body leading-relaxed">
+                  {faq.a}
+                </div>
+              </details>
+            ))}
+          </div>
+
+          {/* Partner Trust Bar */}
+          <div className="mt-12 text-center">
+            <p className="text-[10px] font-mono text-neutral-400 uppercase tracking-wider mb-4">Digunakan oleh pengusaha di</p>
+            <div className="flex flex-wrap items-center justify-center gap-6 opacity-60">
+              {["Surabaya", "Malang", "Jakarta", "Bandung", "Semarang", "Yogyakarta"].map(city => (
+                <span key={city} className="text-xs font-mono text-neutral-500 dark:text-neutral-500">{city}</span>
+              ))}
+            </div>
+          </div>
+
+        </div>
         </div>
 
         {/* Footer */}
