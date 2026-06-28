@@ -39,9 +39,9 @@ export default function LandingPage({ onEnterDashboard, brandName, darkMode, set
 
   // Interactive checklist state for Visual Showcase
   const [checklist, setChecklist] = React.useState([
-    { id: 1, label: "Cek stok produk terlaris & pastikan cukup sampai tutup", desc: "Sosis, bumbu, gas — semua aman sebelum jam sibuk sore", done: true },
-    { id: 2, label: "Kirim siaran WA promo ke 5 grup pelanggan teraktif", desc: 'Gunakan template "Amunisi Komunikasi" — tinggal salin & kirim', done: true },
-    { id: 3, label: "Hubungi 3 pelanggan loyal & tawarkan promo spesial", desc: "Cek database Customer Insight, pilih yang LTV tertinggi", done: false },
+    { id: 1, label: "AI cek stok otomatis & warning sebelum kehabisan", desc: "Tidak perlu hitung manual — sistem alert sebelum jam sibuk", done: true },
+    { id: 2, label: "Siapkan kampanye WA blast dari template AI", desc: "Satu klik copy, kirim ke 50+ grup sekaligus", done: true },
+    { id: 3, label: "Hubungi pelanggan churn risk sebelum mereka pindah", desc: "AI prediksi siapa yang akan berhenti beli bulan depan", done: false },
   ]);
 
   // Copy-to-clipboard feedback states
@@ -215,13 +215,13 @@ export default function LandingPage({ onEnterDashboard, brandName, darkMode, set
             className="text-center mb-8"
           >
             <span className="text-[10px] font-bold font-mono tracking-[0.15em] text-ai-violet uppercase block mb-2">
-              ✦ Show, Don't Just Tell ✦
+              ✦ Apa yang Anda Dapatkan ✦
             </span>
             <h2 className="font-display text-2xl sm:text-3xl font-bold text-neutral-900 dark:text-white">
-              Tools Andalan Bisnis Anda
+              Bisnis Jalan, AI Kerja
             </h2>
-            <p className="text-sm text-neutral-500 dark:text-neutral-400 mt-2 max-w-md mx-auto font-body">
-              Semua yang dibutuhkan pengusaha dalam satu dashboard terintegrasi AI.
+            <p className="text-sm text-neutral-500 dark:text-neutral-400 mt-2 max-w-lg mx-auto font-body leading-relaxed">
+              Empat modul AI yang bekerja 24/7 untuk bisnis Anda — <strong className="text-neutral-700 dark:text-neutral-300">bukan sekadar dashboard, tapi asisten yang mengambil keputusan.</strong>
             </p>
           </motion.div>
 
