@@ -2,6 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { motion } from "motion/react";
 import PricingSection from "./PricingSection";
+import MarketNeuralNetwork from "./MarketNeuralNetwork";
 import {
   Sparkles,
   ArrowRight,
@@ -84,84 +85,120 @@ export default function LandingPage({ onEnterDashboard, brandName, darkMode, set
 
   return (
     <div className="relative overflow-hidden transition-colors duration-300 bg-linen-base dark:bg-space-dark text-neutral-900 dark:text-[#E5E5E5] min-h-[calc(100vh-4rem)]">
-      {/* Decorative Grid Backdrop — hexagonal feel */}
-      <div className="absolute inset-0 bg-[linear-gradient(135deg,rgba(30,58,138,0.03)_0%,rgba(139,92,246,0.02)_100%)] pointer-events-none"></div>
-      <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808008_1px,transparent_1px),linear-gradient(to_bottom,#80808008_1px,transparent_1px)] bg-[size:20px_32px] pointer-events-none"></div>
+      {/* Signature Element: Market Neural Network Background */}
+      <MarketNeuralNetwork />
+      
+      {/* Subtle grid texture */}
+      <div className="absolute inset-0 bg-[linear-gradient(135deg,rgba(30,58,138,0.02)_0%,rgba(139,92,246,0.01)_100%)] pointer-events-none"></div>
 
       <div className="max-w-7xl mx-auto px-6 sm:px-8 py-12 md:py-16 relative z-10">
         
-        {/* 1. HERO */}
+        {/* 1. HERO — Asymmetric split: Text left, visual interest right */}
         <div className="relative max-w-6xl mx-auto min-h-[calc(100vh-4rem)] flex flex-col justify-center mb-10 pt-4 pb-12">
           
-          <div className="flex flex-col items-center justify-center text-center max-w-4xl mx-auto pt-6">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
             
-            {/* Eyebrow tag */}
-            <span className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-[10px] font-bold font-mono tracking-[0.12em] uppercase bg-market-indigo/10 dark:bg-ai-violet/10 text-market-indigo dark:text-ai-violet border border-market-indigo/20 dark:border-ai-violet/20 mb-6 opacity-0 animate-fade-in" style={{ animationDelay: '0.05s' }}>
-              <span className="w-1.5 h-1.5 rounded-full bg-ai-violet animate-pulse"></span>
-              AI-Powered Market Intelligence
-            </span>
-
-            <h1 className="font-display text-4xl sm:text-5xl lg:text-7xl font-black tracking-[-0.02em] leading-[1.05] mb-6 text-neutral-900 dark:text-white opacity-0 animate-fade-in" style={{ animationDelay: '0.1s' }}>
-              Ubah Produk Biasa Jadi
-              <br />
-              <span className="bg-clip-text text-transparent bg-gradient-to-r from-market-indigo via-ai-violet to-market-indigo dark:from-ai-violet dark:via-data-cyan dark:to-ai-violet animate-gradient-shift">
-                Luar Biasa
+            {/* Left: Text content */}
+            <div className="lg:col-span-7 flex flex-col">
+              
+              {/* Eyebrow tag */}
+              <span className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-[10px] font-bold font-mono tracking-[0.12em] uppercase bg-market-indigo/10 dark:bg-ai-violet/10 text-market-indigo dark:text-ai-violet border border-market-indigo/20 dark:border-ai-violet/20 mb-6 w-fit opacity-0 animate-fade-in" style={{ animationDelay: '0.05s' }}>
+                <span className="w-1.5 h-1.5 rounded-full bg-ai-violet animate-pulse"></span>
+                AI-Powered Market Intelligence
               </span>
-            </h1>
 
-            <p className="text-base sm:text-lg lg:text-xl text-earth-terracotta dark:text-[#E5E5E5] font-medium mb-4 max-w-2xl opacity-0 animate-fade-in-up font-body" style={{ animationDelay: '0.2s' }}>
-              Sistem Operasi Pertumbuhan Bisnis Berbasis AI Untuk Memaximalkan Penjualan
-            </p>
-
-            <p className="text-sm sm:text-base text-neutral-500 dark:text-neutral-400 mb-10 leading-relaxed max-w-xl mx-auto opacity-0 animate-fade-in-up font-body" style={{ animationDelay: '0.3s' }}>
-              Tanpa teori rumit. Tanpa dashboard kosong. <strong className="text-neutral-700 dark:text-neutral-300 font-semibold">MaxxSales</strong> mengubah data penjualan & intelijen pasar jadi langkah eksekusi harian — langsung bisa dikerjakan hari ini juga.
-            </p>
-
-            {/* CTA Buttons */}
-            <div className="flex flex-col sm:flex-row items-center justify-center gap-4 opacity-0 animate-fade-in-up w-full sm:w-auto mb-10" style={{ animationDelay: '0.4s' }}>
-              <button
-                id="cta-start-dashboard"
-                onClick={onEnterDashboard}
-                className="group relative w-full sm:w-auto px-8 py-3.5 rounded-2xl text-sm font-bold transition-all duration-300 bg-ai-violet hover:bg-urgent-red text-white shadow-lg shadow-ai-violet/25 hover:shadow-urgent-red/25 hover:scale-[1.02] active:scale-[0.98] flex items-center justify-center gap-2 overflow-hidden"
-              >
-                <span className="absolute inset-0 w-full h-full bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700 ease-in-out" />
-                <span className="relative z-10 flex items-center gap-2">
-                  Mulai Rancang Strategi Hari Ini
-                  <ArrowRight className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1" />
+              <h1 className="font-display text-4xl sm:text-5xl lg:text-7xl font-black tracking-[-0.02em] leading-[1.05] mb-6 text-neutral-900 dark:text-white opacity-0 animate-fade-in" style={{ animationDelay: '0.1s' }}>
+                Ubah Produk Biasa Jadi
+                <br />
+                <span className="bg-clip-text text-transparent bg-gradient-to-r from-market-indigo via-ai-violet to-market-indigo dark:from-ai-violet dark:via-data-cyan dark:to-ai-violet animate-gradient-shift">
+                  Luar Biasa
                 </span>
-              </button>
-              <button
-                id="cta-explore-preview"
-                onClick={() => document.getElementById('visual-showcase')?.scrollIntoView({ behavior: 'smooth' })}
-                className="w-full sm:w-auto px-8 py-3.5 rounded-2xl text-sm font-semibold transition-all duration-300 border border-market-indigo/30 dark:border-ai-violet/30 text-market-indigo dark:text-ai-violet hover:bg-market-indigo/5 dark:hover:bg-ai-violet/5 flex items-center justify-center gap-2"
+              </h1>
+
+              <p className="text-lg sm:text-xl lg:text-2xl text-earth-terracotta dark:text-[#E5E5E5] font-medium mb-4 max-w-xl opacity-0 animate-fade-in-up font-body leading-snug" style={{ animationDelay: '0.2s' }}>
+                Intelijen pasar AI yang mengubah data bisnis jadi strategi jitu harian — eksekusi cepat, hasil nyata.
+              </p>
+
+              <p className="text-sm sm:text-base text-neutral-500 dark:text-neutral-400 mb-8 leading-relaxed max-w-lg opacity-0 animate-fade-in-up font-body" style={{ animationDelay: '0.3s' }}>
+                Tanpa teori rumit. Tanpa dashboard kosong. <strong className="text-neutral-700 dark:text-neutral-300 font-semibold">MaxxSales</strong> mengubah data penjualan & intelijen pasar jadi langkah eksekusi harian — langsung bisa dikerjakan hari ini juga.
+              </p>
+
+              {/* CTA Buttons */}
+              <div className="flex flex-col sm:flex-row items-start gap-4 opacity-0 animate-fade-in-up mb-8" style={{ animationDelay: '0.4s' }}>
+                <button
+                  id="cta-start-dashboard"
+                  onClick={onEnterDashboard}
+                  className="group relative px-8 py-3.5 rounded-2xl text-sm font-bold transition-all duration-300 bg-ai-violet hover:bg-urgent-red text-white shadow-lg shadow-ai-violet/25 hover:shadow-urgent-red/25 hover:scale-[1.02] active:scale-[0.98] flex items-center justify-center gap-2 overflow-hidden"
+                >
+                  <span className="absolute inset-0 w-full h-full bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700 ease-in-out" />
+                  <span className="relative z-10 flex items-center gap-2">
+                    Mulai Rancang Strategi Hari Ini
+                    <ArrowRight className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1" />
+                  </span>
+                </button>
+                <button
+                  id="cta-explore-preview"
+                  onClick={() => document.getElementById('visual-showcase')?.scrollIntoView({ behavior: 'smooth' })}
+                  className="px-8 py-3.5 rounded-2xl text-sm font-semibold transition-all duration-300 border border-market-indigo/30 dark:border-ai-violet/30 text-market-indigo dark:text-ai-violet hover:bg-market-indigo/5 dark:hover:bg-ai-violet/5 flex items-center justify-center gap-2"
+                >
+                  <MonitorSmartphone className="w-4 h-4" />
+                  Lihat Pratinjau
+                </button>
+              </div>
+
+              {/* Trust micro-signals */}
+              <motion.div
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.5, duration: 0.5 }}
+                className="flex flex-wrap items-center gap-5 sm:gap-6 text-[11px] text-earth-terracotta dark:text-neutral-400 font-body"
               >
-                <MonitorSmartphone className="w-4 h-4" />
-                Lihat Pratinjau
-              </button>
+                {[
+                  { icon: ShieldCheck, text: "Coba Prototype Gratis" },
+                  { icon: Clock, text: "Siap Pakai dalam 5 Menit" },
+                  { icon: UserCheck, text: "Untuk Pengusaha, Bukan Akademisi" },
+                ].map((item, i) => (
+                  <motion.span
+                    key={i}
+                    whileHover={{ scale: 1.05, color: "#EF4444" }}
+                    className="flex items-center gap-1.5 cursor-default transition-colors"
+                  >
+                    <item.icon className="w-3.5 h-3.5 text-data-cyan" /> {item.text}
+                  </motion.span>
+                ))}
+              </motion.div>
             </div>
 
-            {/* Trust micro-signals */}
-            <motion.div
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.5, duration: 0.5 }}
-              className="flex flex-wrap items-center justify-center gap-5 sm:gap-8 mb-16 text-[11px] text-earth-terracotta dark:text-neutral-400 font-body"
-            >
-              {[
-                { icon: ShieldCheck, text: "Coba Prototype Gratis" },
-                { icon: Clock, text: "Siap Pakai dalam 5 Menit" },
-                { icon: UserCheck, text: "Untuk Pengusaha, Bukan Akademisi" },
-              ].map((item, i) => (
-                <motion.span
-                  key={i}
-                  whileHover={{ scale: 1.05, color: "#EF4444" }}
-                  className="flex items-center gap-1.5 cursor-default transition-colors"
-                >
-                  <item.icon className="w-3.5 h-3.5 text-data-cyan" /> {item.text}
-                </motion.span>
-              ))}
-            </motion.div>
-
+            {/* Right: Visual accent — abstract neural pattern */}
+            <div className="lg:col-span-5 hidden lg:flex items-center justify-center">
+              <div className="relative w-full max-w-md aspect-square">
+                {/* Glowing orb */}
+                <div className="absolute inset-0 rounded-full bg-gradient-to-br from-ai-violet/20 via-market-indigo/10 to-transparent blur-3xl animate-pulse"></div>
+                {/* Central node */}
+                <div className="absolute inset-0 flex items-center justify-center">
+                  <div className="w-32 h-32 rounded-full border-2 border-ai-violet/30 flex items-center justify-center animate-neural-pulse">
+                    <div className="w-20 h-20 rounded-full border border-data-cyan/20 flex items-center justify-center">
+                      <div className="w-10 h-10 rounded-full bg-gradient-to-br from-ai-violet to-market-indigo flex items-center justify-center">
+                        <Sparkles className="w-5 h-5 text-white" />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                {/* Orbiting dots */}
+                {[0, 60, 120, 180, 240, 300].map((deg, i) => (
+                  <div
+                    key={i}
+                    className="absolute w-3 h-3 rounded-full bg-ai-violet/60"
+                    style={{
+                      top: `${50 + 40 * Math.sin(deg * Math.PI / 180)}%`,
+                      left: `${50 + 40 * Math.cos(deg * Math.PI / 180)}%`,
+                      transform: 'translate(-50%, -50%)',
+                      animationDelay: `${i * 0.5}s`
+                    }}
+                  />
+                ))}
+              </div>
+            </div>
 
           </div>
         </div>
