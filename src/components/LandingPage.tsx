@@ -116,11 +116,11 @@ export default function LandingPage({ onEnterDashboard, brandName, darkMode, set
               </h1>
 
               <p className="text-lg sm:text-xl lg:text-2xl text-earth-terracotta dark:text-[#E5E5E5] font-medium mb-4 max-w-xl opacity-0 animate-fade-in-up font-body leading-snug" style={{ animationDelay: '0.2s' }}>
-                Intelijen pasar AI yang mengubah data bisnis jadi strategi jitu harian — eksekusi cepat, hasil nyata.
+                Analisis kompetitor otomatis. Strategi promosi harian. Konten iklan siap pakai — semua dalam satu dashboard.
               </p>
 
               <p className="text-sm sm:text-base text-neutral-500 dark:text-neutral-400 mb-8 leading-relaxed max-w-lg opacity-0 animate-fade-in-up font-body" style={{ animationDelay: '0.3s' }}>
-                Tanpa teori rumit. Tanpa dashboard kosong. <strong className="text-neutral-700 dark:text-neutral-300 font-semibold">MaxxSales</strong> mengubah data penjualan & intelijen pasar jadi langkah eksekusi harian — langsung bisa dikerjakan hari ini juga.
+                <strong className="text-neutral-700 dark:text-neutral-300 font-semibold">MaxxSales</strong> mengambil data penjualan & intelijen pasar Anda, lalu mengubahnya menjadi checklist harian, konten promosi, dan strategi yang bisa langsung dieksekusi — tanpa perlu hire konsultan mahal.
               </p>
 
               {/* CTA Buttons */}
@@ -154,9 +154,9 @@ export default function LandingPage({ onEnterDashboard, brandName, darkMode, set
                 className="flex flex-wrap items-center gap-5 sm:gap-6 text-[11px] text-earth-terracotta dark:text-neutral-400 font-body"
               >
                 {[
-                  { icon: ShieldCheck, text: "Coba Prototype Gratis" },
-                  { icon: Clock, text: "Siap Pakai dalam 5 Menit" },
-                  { icon: UserCheck, text: "Untuk Pengusaha, Bukan Akademisi" },
+                  { icon: ShieldCheck, text: "Satu harga, akses penuh" },
+                  { icon: Clock, text: "Siap pakai dalam 3 menit" },
+                  { icon: UserCheck, text: "Untuk pengusaha, bukan akademisi" },
                 ].map((item, i) => (
                   <motion.span
                     key={i}
