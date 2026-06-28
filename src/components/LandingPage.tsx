@@ -207,13 +207,7 @@ export default function LandingPage({ onEnterDashboard, brandName, darkMode, set
         {/* 2. SHOWCASE: 4 PANELS                        */}
         {/* ═══════════════════════════════════════════════ */}
         <div id="visual-showcase" className="max-w-6xl mx-auto min-h-screen flex flex-col justify-center mb-20 scroll-mt-16">
-          <motion.div
-            initial={{ opacity: 0, y: 24 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: "-80px" }}
-            transition={{ duration: 0.6 }}
-            className="text-center mb-8"
-          >
+          <div className="text-center mb-8">
             <span className="text-[10px] font-bold font-mono tracking-[0.15em] text-ai-violet uppercase block mb-2">
               ✦ Apa yang Anda Dapatkan ✦
             </span>
@@ -223,7 +217,7 @@ export default function LandingPage({ onEnterDashboard, brandName, darkMode, set
             <p className="text-sm text-neutral-500 dark:text-neutral-400 mt-2 max-w-lg mx-auto font-body leading-relaxed">
               Empat modul AI yang bekerja 24/7 untuk bisnis Anda — <strong className="text-neutral-700 dark:text-neutral-300">bukan sekadar dashboard, tapi asisten yang mengambil keputusan.</strong>
             </p>
-          </motion.div>
+          </div>
 
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 items-stretch">
 
