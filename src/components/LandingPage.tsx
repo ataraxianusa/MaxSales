@@ -467,51 +467,51 @@ export default function LandingPage({ onEnterDashboard, brandName, darkMode, set
         {/* 2 & 3. BENTO GRID OF 5 PILLARS */}
         <div id="dna-canvas" className="min-h-screen flex flex-col justify-center mb-24 scroll-mt-16">
           <div className="text-center mb-12">
-            {/* Custom polished header replacing "MVP Core" */}
-            <h2 className="text-2xl sm:text-3xl font-bold tracking-tight text-white mb-2">
-              DNA Business Canvas — Pusat Kendali Bisnis Anda
+            <h2 className="font-display text-2xl sm:text-3xl font-bold tracking-tight text-neutral-900 dark:text-white mb-2">
+              Satu Data, Seluruh Bisnis Terhubung
             </h2>
-            <p className="text-xs text-neutral-400 max-w-xl mx-auto">
-              Satu data, semua terhubung. Setiap pilar di bawah ini <strong className="text-emerald-400">mengalir dari DNA Bisnis Anda</strong> sebagai Single Source of Truth.
+            <p className="text-sm text-neutral-500 dark:text-neutral-400 max-w-xl mx-auto font-body">
+              Isi DNA bisnis sekali — <strong className="text-neutral-700 dark:text-neutral-300">semua modul AI langsung aktif dan bekerja untuk Anda.</strong>
             </p>
           </div>
 
           <div className="max-w-4xl mx-auto space-y-6">
 
-            {/* ========== PILAR 1: DNA HUB - Single Source of Truth ========== */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.5 }}
-              className="relative rounded-2xl border-2 border-emerald-500/30 bg-[#0c0c0c] overflow-hidden shadow-xl shadow-emerald-500/10"
-            >
-              <div className="absolute top-3 right-4 px-3 py-1 rounded-full bg-emerald-500/15 border border-emerald-500/30 text-[9px] font-mono font-bold text-emerald-400 uppercase tracking-wider">
-                ⭐ Single Source of Truth
-              </div>
-              <div className="p-6 sm:p-8">
-                <div className="flex items-start gap-4 flex-col sm:flex-row">
-                  <div className="w-14 h-14 rounded-xl bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center shrink-0">
-                    <ShieldCheck className="w-7 h-7 text-emerald-400" />
-                  </div>
-                  <div className="flex-1 min-w-0">
-                    <span className="text-[10px] font-mono font-bold text-emerald-500 uppercase tracking-widest block mb-1">Pilar 1 · Fondasi</span>
-                    <h3 className="text-xl font-bold text-white mb-2">DNA Business Canvas</h3>
-                    <p className="text-sm text-neutral-400 leading-relaxed mb-4">
-                      Data dasar berisi identitas bisnis terdalam Anda: spesifikasi produk, harga, target segmen mikro, pola logistik, hingga preferensi media sosial. <strong className="text-white/80">DNA ini melandasi keakuratan seluruh pilar di bawahnya.</strong>
-                    </p>
-                    <div className="flex flex-wrap items-center gap-3 text-[10px] font-mono">
-                      <span className="flex items-center gap-1 px-2.5 py-1 rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
-                        <ShieldCheck className="w-3 h-3" /> Sekali Isi, Pakai Selamanya
-                      </span>
-                      <span className="flex items-center gap-1 text-neutral-500">
-                        ↓ Data mengalir ke seluruh pilar eksekusi
-                      </span>
+            {/* DNA Hub — Central visual */}
+            <div className="relative rounded-2xl border border-stone-border bg-charcoal-surface overflow-hidden p-8 sm:p-10">
+              <div className="flex flex-col lg:flex-row items-center gap-8">
+                {/* Left: DNA icon cluster */}
+                <div className="relative w-40 h-40 shrink-0">
+                  <div className="absolute inset-0 rounded-full bg-ai-violet/10 animate-pulse"></div>
+                  <div className="absolute inset-4 rounded-full border border-ai-violet/20 flex items-center justify-center">
+                    <div className="w-20 h-20 rounded-full bg-gradient-to-br from-ai-violet to-market-indigo flex items-center justify-center shadow-lg shadow-ai-violet/30">
+                      <span className="text-3xl">🧬</span>
                     </div>
+                  </div>
+                  {/* Orbiting feature dots */}
+                  {[0, 72, 144, 216, 288].map((deg, i) => {
+                    const icons = ["🎯", "👥", "⚡", "🎨", "📊"];
+                    return (
+                      <div key={i} className="absolute w-8 h-8 rounded-full bg-charcoal-surface border border-stone-border flex items-center justify-center text-sm" style={{ top: `${50 + 45 * Math.sin(deg * Math.PI / 180)}%`, left: `${50 + 45 * Math.cos(deg * Math.PI / 180)}%`, transform: 'translate(-50%, -50%)' }}>
+                        {icons[i]}
+                      </div>
+                    );
+                  })}
+                </div>
+                {/* Right: benefit text */}
+                <div className="flex-1 text-center lg:text-left">
+                  <h3 className="font-display text-xl sm:text-2xl font-bold text-neutral-900 dark:text-white mb-3">DNA Business Canvas</h3>
+                  <p className="text-sm text-neutral-500 dark:text-neutral-400 font-body leading-relaxed mb-4">
+                    Satu kali isi data bisnis Anda — produk, harga, target pasar, keunggulan — lalu semua modul AI otomatis menyesuaikan.
+                  </p>
+                  <div className="flex flex-wrap justify-center lg:justify-start gap-2">
+                    {["Sekali isi", "Otomatis aktif", "Update berkala", "Tanpa coding"].map(tag => (
+                      <span key={tag} className="px-3 py-1 rounded-full text-[10px] font-mono bg-ai-violet/10 text-ai-violet border border-ai-violet/20">{tag}</span>
+                    ))}
                   </div>
                 </div>
               </div>
-            </motion.div>
+            </div>
 
             {/* ========== CONNECTOR ========== */}
             <div className="flex justify-center">
@@ -524,88 +524,152 @@ export default function LandingPage({ onEnterDashboard, brandName, darkMode, set
               </motion.div>
             </div>
 
-            {/* ========== PILAR 2-3-4-5: FLOW ROW ========== */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+            {/* 5 Pillars — Visual cards with mockup previews */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
               
-              {/* Pilar 2 */}
-              <motion.div
-                initial={{ opacity: 0, y: 16 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.4, delay: 0.1 }}
-                whileHover={{ y: -3 }}
-                className="group rounded-xl border border-red-500/15 bg-[#0c0c0c] p-5 hover:border-red-500/30 hover:bg-[#0f0f0f] transition-all relative"
-              >
-                <span className="absolute -top-2.5 -right-2.5 w-6 h-6 rounded-full bg-red-500 text-black text-[10px] font-bold flex items-center justify-center">2</span>
-                <Target className="w-6 h-6 text-red-400 mb-3" />
-                <h4 className="text-sm font-bold text-white mb-1.5">Competitor War Room</h4>
-                <p className="text-[11px] text-neutral-400 leading-relaxed">
-                  SWOT head-to-head dengan kompetitor lokal. Cari celah harga, kemasan, dan strategi promosi.
-                </p>
-                <div className="mt-3 pt-3 border-t border-neutral-800 flex items-center gap-1.5 text-[9px] font-mono text-red-400/70">
-                  <Target className="w-3 h-3" /> Intelijen Pasar
+              {/* Pilar 1: Competitor War Room */}
+              <div className="rounded-xl border border-stone-border bg-charcoal-surface p-5 hover:border-urgent-red/30 transition-all group">
+                <div className="flex items-center gap-3 mb-3">
+                  <div className="w-10 h-10 rounded-lg bg-urgent-red/10 flex items-center justify-center text-xl">🎯</div>
+                  <div>
+                    <h4 className="text-sm font-bold text-neutral-900 dark:text-white">Competitor War Room</h4>
+                    <p className="text-[10px] text-neutral-500 font-mono">SWOT & Radar Pesaing</p>
+                  </div>
                 </div>
-              </motion.div>
+                <div className="rounded-lg bg-space-dark border border-stone-border p-3 mb-3">
+                  <div className="flex items-center gap-2 mb-2">
+                    <div className="w-2 h-2 rounded-full bg-urgent-red"></div>
+                    <span className="text-[9px] font-mono text-neutral-500">Skor vs Kompetitor</span>
+                  </div>
+                  <div className="space-y-1.5">
+                    <div className="flex justify-between text-[9px]"><span className="text-neutral-400">Harga</span><span className="text-urgent-red font-bold">7/10</span></div>
+                    <div className="w-full bg-neutral-800 h-1 rounded"><div className="bg-urgent-red h-1 rounded w-[70%]"></div></div>
+                    <div className="flex justify-between text-[9px]"><span className="text-neutral-400">Kualitas</span><span className="text-data-cyan font-bold">9/10</span></div>
+                    <div className="w-full bg-neutral-800 h-1 rounded"><div className="bg-data-cyan h-1 rounded w-[90%]"></div></div>
+                  </div>
+                </div>
+                <p className="text-[10px] text-neutral-500">Temukan celah harga & strategi promosi yang belum disentuh pesaing.</p>
+              </div>
 
-              {/* Pilar 3 */}
-              <motion.div
-                initial={{ opacity: 0, y: 16 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.4, delay: 0.2 }}
-                whileHover={{ y: -3 }}
-                className="group rounded-xl border border-emerald-500/15 bg-[#0c0c0c] p-5 hover:border-emerald-500/30 hover:bg-[#0f0f0f] transition-all relative"
-              >
-                <span className="absolute -top-2.5 -right-2.5 w-6 h-6 rounded-full bg-emerald-500 text-black text-[10px] font-bold flex items-center justify-center">3</span>
-                <TrendingUp className="w-6 h-6 text-emerald-400 mb-3" />
-                <h4 className="text-sm font-bold text-white mb-1.5">Customer Insight & LTV</h4>
-                <p className="text-[11px] text-neutral-400 leading-relaxed">
-                  4 segmen psikografis, kalkulator LTV, prediksi Churn Risk — kenali siapa pembeli Anda.
-                </p>
-                <div className="mt-3 pt-3 border-t border-neutral-800 flex items-center gap-1.5 text-[9px] font-mono text-emerald-400/70">
-                  <UserCheck className="w-3 h-3" /> CRM & Retensi
+              {/* Pilar 2: Customer Insight */}
+              <div className="rounded-xl border border-stone-border bg-charcoal-surface p-5 hover:border-data-cyan/30 transition-all group">
+                <div className="flex items-center gap-3 mb-3">
+                  <div className="w-10 h-10 rounded-lg bg-data-cyan/10 flex items-center justify-center text-xl">👥</div>
+                  <div>
+                    <h4 className="text-sm font-bold text-neutral-900 dark:text-white">Customer Insight</h4>
+                    <p className="text-[10px] text-neutral-500 font-mono">LTV & Segmen Mikro</p>
+                  </div>
                 </div>
-              </motion.div>
+                <div className="rounded-lg bg-space-dark border border-stone-border p-3 mb-3">
+                  <div className="flex items-center justify-between mb-2">
+                    <span className="text-[9px] font-mono text-neutral-500">Estimasi LTV</span>
+                    <span className="text-[11px] font-bold text-data-cyan">Rp 9.576.000</span>
+                  </div>
+                  <div className="grid grid-cols-2 gap-2">
+                    <div className="rounded bg-neutral-800 p-1.5 text-center"><span className="text-[9px] text-neutral-400 block">AOV</span><span className="text-[10px] font-bold text-white">399rb</span></div>
+                    <div className="rounded bg-neutral-800 p-1.5 text-center"><span className="text-[9px] text-neutral-400 block">Freq</span><span className="text-[10px] font-bold text-white">2x/bln</span></div>
+                  </div>
+                </div>
+                <p className="text-[10px] text-neutral-500">Kenali siapa pembeli Anda, berapa nilai seumur hidupnya, dan kapan mereka akan pergi.</p>
+              </div>
 
-              {/* Pilar 4 */}
-              <motion.div
-                initial={{ opacity: 0, y: 16 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.4, delay: 0.3 }}
-                whileHover={{ y: -3 }}
-                className="group rounded-xl border border-purple-500/15 bg-[#0c0c0c] p-5 hover:border-purple-500/30 hover:bg-[#0f0f0f] transition-all relative"
-              >
-                <span className="absolute -top-2.5 -right-2.5 w-6 h-6 rounded-full bg-purple-500 text-black text-[10px] font-bold flex items-center justify-center">4</span>
-                <Zap className="w-6 h-6 text-purple-400 mb-3" />
-                <h4 className="text-sm font-bold text-white mb-1.5">Strategy Fusion AI</h4>
-                <p className="text-[11px] text-neutral-400 leading-relaxed">
-                  11 saluran rekomendasi strategi dari data DNA. Pilih level: Konservatif, Moderat, atau Agresif.
-                </p>
-                <div className="mt-3 pt-3 border-t border-neutral-800 flex items-center gap-1.5 text-[9px] font-mono text-purple-400/70">
-                  <Zap className="w-3 h-3" /> 11 Saluran Strategis
+              {/* Pilar 3: Strategy Fusion */}
+              <div className="rounded-xl border border-stone-border bg-charcoal-surface p-5 hover:border-ai-violet/30 transition-all group">
+                <div className="flex items-center gap-3 mb-3">
+                  <div className="w-10 h-10 rounded-lg bg-ai-violet/10 flex items-center justify-center text-xl">⚡</div>
+                  <div>
+                    <h4 className="text-sm font-bold text-neutral-900 dark:text-white">Strategy Fusion</h4>
+                    <p className="text-[10px] text-neutral-500 font-mono">11 Saluran Promosi AI</p>
+                  </div>
                 </div>
-              </motion.div>
+                <div className="rounded-lg bg-space-dark border border-stone-border p-3 mb-3">
+                  <div className="flex items-center gap-2 mb-2">
+                    <span className="px-2 py-0.5 rounded bg-ai-violet/15 text-[9px] font-bold text-ai-violet">MODERAT</span>
+                    <span className="text-[9px] text-neutral-500">→</span>
+                    <span className="text-[9px] text-neutral-400">Rekomendasi AI</span>
+                  </div>
+                  <div className="space-y-1">
+                    <div className="flex items-center gap-1.5 text-[9px] text-neutral-400"><span className="w-1.5 h-1.5 rounded-full bg-ai-violet"></span>Instagram Reels</div>
+                    <div className="flex items-center gap-1.5 text-[9px] text-neutral-400"><span className="w-1.5 h-1.5 rounded-full bg-data-cyan"></span>WhatsApp Blast</div>
+                    <div className="flex items-center gap-1.5 text-[9px] text-neutral-400"><span className="w-1.5 h-1.5 rounded-full bg-urgent-red"></span>TikTok Shop</div>
+                  </div>
+                </div>
+                <p className="text-[10px] text-neutral-500">Pilih level ambisi — AI susun strategi promosi berdasarkan data bisnis Anda.</p>
+              </div>
 
-              {/* Pilar 5 */}
-              <motion.div
-                initial={{ opacity: 0, y: 16 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.4, delay: 0.4 }}
-                whileHover={{ y: -3 }}
-                className="group rounded-xl border border-cyan-500/15 bg-[#0c0c0c] p-5 hover:border-cyan-500/30 hover:bg-[#0f0f0f] transition-all relative"
-              >
-                <span className="absolute -top-2.5 -right-2.5 w-6 h-6 rounded-full bg-cyan-500 text-black text-[10px] font-bold flex items-center justify-center">5</span>
-                <Image className="w-6 h-6 text-cyan-400 mb-3" />
-                <h4 className="text-sm font-bold text-white mb-1.5">Content Design Overlay</h4>
-                <p className="text-[11px] text-neutral-400 leading-relaxed">
-                  Render 4 variasi overlay visual instan dari foto produk — siap posting IG Stories & WA.
-                </p>
-                <div className="mt-3 pt-3 border-t border-neutral-800 flex items-center gap-1.5 text-[9px] font-mono text-cyan-400/70">
-                  <Image className="w-3 h-3" /> Overlay Banner Instan
+              {/* Pilar 4: Content Generator */}
+              <div className="rounded-xl border border-stone-border bg-charcoal-surface p-5 hover:border-market-indigo/30 transition-all group">
+                <div className="flex items-center gap-3 mb-3">
+                  <div className="w-10 h-10 rounded-lg bg-market-indigo/10 flex items-center justify-center text-xl">🎨</div>
+                  <div>
+                    <h4 className="text-sm font-bold text-neutral-900 dark:text-white">Content Generator</h4>
+                    <p className="text-[10px] text-neutral-500 font-mono">Poster Iklan Instan</p>
+                  </div>
                 </div>
-              </motion.div>
+                <div className="rounded-lg bg-space-dark border border-stone-border p-3 mb-3 flex gap-2">
+                  <div className="flex-1 rounded bg-gradient-to-b from-market-indigo/20 to-market-indigo/5 p-2 text-center">
+                    <span className="text-[9px] text-neutral-400 block">Feed 1:1</span>
+                    <span className="text-[10px] font-bold text-white">📱</span>
+                  </div>
+                  <div className="flex-1 rounded bg-gradient-to-b from-ai-violet/20 to-ai-violet/5 p-2 text-center">
+                    <span className="text-[9px] text-neutral-400 block">Story 9:16</span>
+                    <span className="text-[10px] font-bold text-white">📲</span>
+                  </div>
+                  <div className="flex-1 rounded bg-gradient-to-b from-data-cyan/20 to-data-cyan/5 p-2 text-center">
+                    <span className="text-[9px] text-neutral-400 block">WA</span>
+                    <span className="text-[10px] font-bold text-white">💬</span>
+                  </div>
+                </div>
+                <p className="text-[10px] text-neutral-500">Upload foto produk → AI render 4 variasi poster promosi siap posting.</p>
+              </div>
+
+              {/* Pilar 5: Daily Pulse */}
+              <div className="rounded-xl border border-stone-border bg-charcoal-surface p-5 hover:border-earth-terracotta/30 transition-all group">
+                <div className="flex items-center gap-3 mb-3">
+                  <div className="w-10 h-10 rounded-lg bg-earth-terracotta/10 flex items-center justify-center text-xl">📊</div>
+                  <div>
+                    <h4 className="text-sm font-bold text-neutral-900 dark:text-white">Daily Pulse</h4>
+                    <p className="text-[10px] text-neutral-500 font-mono">Briefing & Checklist Harian</p>
+                  </div>
+                </div>
+                <div className="rounded-lg bg-space-dark border border-stone-border p-3 mb-3">
+                  <div className="flex items-center justify-between mb-2">
+                    <span className="text-[9px] font-mono text-neutral-500">🔥 Streak</span>
+                    <span className="text-[10px] font-bold text-earth-terracotta">4 Hari</span>
+                  </div>
+                  <div className="space-y-1">
+                    <div className="flex items-center gap-1.5 text-[9px]"><span className="w-3 h-3 rounded bg-ai-violet/20 flex items-center justify-center text-[7px]">✓</span><span className="text-neutral-400">Cek stok otomatis</span></div>
+                    <div className="flex items-center gap-1.5 text-[9px]"><span className="w-3 h-3 rounded bg-ai-violet/20 flex items-center justify-center text-[7px]">✓</span><span className="text-neutral-400">Siapkan WA blast</span></div>
+                    <div className="flex items-center gap-1.5 text-[9px]"><span className="w-3 h-3 rounded border border-neutral-600"></span><span className="text-neutral-500">Hubungi churn risk</span></div>
+                  </div>
+                </div>
+                <p className="text-[10px] text-neutral-500">Checklist harian + briefing AI — tahu persis apa yang harus dilakukan hari ini.</p>
+              </div>
+
+              {/* Pilar 6: AI Chatbot */}
+              <div className="rounded-xl border border-stone-border bg-charcoal-surface p-5 hover:border-[#F59E0B]/30 transition-all group">
+                <div className="flex items-center gap-3 mb-3">
+                  <div className="w-10 h-10 rounded-lg bg-[#F59E0B]/10 flex items-center justify-center text-xl">🤖</div>
+                  <div>
+                    <h4 className="text-sm font-bold text-neutral-900 dark:text-white">AI Advisor</h4>
+                    <p className="text-[10px] text-neutral-500 font-mono">Tanya Kapan Saja</p>
+                  </div>
+                </div>
+                <div className="rounded-lg bg-space-dark border border-stone-border p-3 mb-3">
+                  <div className="flex gap-2">
+                    <div className="flex-1 rounded-lg bg-neutral-800 px-2 py-1.5">
+                      <span className="text-[9px] text-neutral-400">Cara naikkan omzet minggu ini?</span>
+                    </div>
+                  </div>
+                  <div className="flex gap-2 mt-2 justify-end">
+                    <div className="flex-1 rounded-lg bg-ai-violet/15 border border-ai-violet/20 px-2 py-1.5">
+                      <span className="text-[9px] text-ai-violet">Buat promo kombo Sosis + Teh Jahe untuk jam 16:00-19:00...</span>
+                    </div>
+                  </div>
+                </div>
+                <p className="text-[10px] text-neutral-500">AI yang tahu DNA bisnis Anda — tanya kapan saja, jawaban instan.</p>
+              </div>
+
             </div>
 
             {/* ========== CONNECTOR ========== */}
