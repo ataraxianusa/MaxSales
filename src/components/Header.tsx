@@ -52,16 +52,19 @@ export default function Header({ currentTab, setTab, darkMode, setDarkMode, bran
             </div>
           </button>
 
-          {/* Desktop Navigation Links (Only relevant if on landing or acts as return to landing) */}
+          {/* Desktop Navigation Links */}
           <nav className="hidden md:flex items-center space-x-6 mx-auto">
-            <button onClick={() => handleNavClick('visual-showcase')} className="text-xs font-semibold text-neutral-600 dark:text-neutral-400 hover:text-emerald-500 dark:hover:text-emerald-400 transition-colors">
+            <button onClick={() => handleNavClick('visual-showcase')} className="text-xs font-semibold text-neutral-600 dark:text-neutral-400 hover:text-ai-violet dark:hover:text-ai-violet transition-colors">
               Pratinjau Dashboard
             </button>
-            <button onClick={() => handleNavClick('dna-canvas')} className="text-xs font-semibold text-neutral-600 dark:text-neutral-400 hover:text-emerald-500 dark:hover:text-emerald-400 transition-colors">
+            <button onClick={() => handleNavClick('dna-canvas')} className="text-xs font-semibold text-neutral-600 dark:text-neutral-400 hover:text-ai-violet dark:hover:text-ai-violet transition-colors">
               DNA Sistem
             </button>
-            <button onClick={() => handleNavClick('pricing')} className="text-xs font-semibold text-neutral-600 dark:text-neutral-400 hover:text-emerald-500 dark:hover:text-emerald-400 transition-colors">
+            <button onClick={() => handleNavClick('pricing')} className="text-xs font-semibold text-neutral-600 dark:text-neutral-400 hover:text-ai-violet dark:hover:text-ai-violet transition-colors">
               Harga & Akses
+            </button>
+            <button onClick={() => handleNavClick('faq')} className="text-xs font-semibold text-neutral-600 dark:text-neutral-400 hover:text-ai-violet dark:hover:text-ai-violet transition-colors">
+              FAQ
             </button>
           </nav>
 
@@ -136,6 +139,9 @@ export default function Header({ currentTab, setTab, darkMode, setDarkMode, bran
             </button>
             <button onClick={() => handleNavClick('pricing')} className="block w-full text-left text-sm font-semibold text-neutral-700 dark:text-neutral-300">
               Harga & Akses
+            </button>
+            <button onClick={() => handleNavClick('faq')} className="block w-full text-left text-sm font-semibold text-neutral-700 dark:text-neutral-300">
+              FAQ
             </button>
             <hr className="border-neutral-200 dark:border-[#262626]" />
             {!isLoggedIn ? (

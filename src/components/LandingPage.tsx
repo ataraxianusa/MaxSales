@@ -791,7 +791,7 @@ export default function LandingPage({ onEnterDashboard, brandName, darkMode, set
           </div>
 
           {/* FAQ */}
-          <div className="text-center mb-8">
+          <div id="faq" className="text-center mb-8 scroll-mt-16">
             <h2 className="font-display text-2xl sm:text-3xl font-bold tracking-tight text-neutral-900 dark:text-white mb-2">
               Pertanyaan yang Sering Diajukan
             </h2>
