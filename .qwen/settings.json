@@ -1,0 +1,27 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(git push)",
+      "Bash(git add *)",
+      "Bash(git commit *)",
+      "Bash(npx *)",
+      "Bash(gh *)",
+      "Bash(ls *)",
+      "Bash(cat *)",
+      "Bash(git diff *)",
+      "Bash(git remote *)",
+      "Bash(git mv *)",
+      "Bash(git fetch *)",
+      "Bash(sed *)",
+      "Bash(cd *)",
+      "Bash(echo *)",
+      "Bash(node *)",
+      "Bash(git checkout *)",
+      "Bash(git pull *)",
+      "Bash(python3 *)",
+      "Bash(git stash)",
+      "Bash(git stash *)"
+    ]
+  },
+  "$version": 4
+}
