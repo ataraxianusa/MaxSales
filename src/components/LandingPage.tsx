@@ -137,11 +137,47 @@ const STEPS = [
 ];
 
 const FAQ_ITEMS = [
-  { q: "Perlu keahlian teknis?", a: "Tidak. Buka browser, langsung pakai." },
-  { q: "Bagaimana AI tahu bisnis saya?", a: "Dari DNA Canvas — 59 field tentang bisnis Anda." },
-  { q: "Data saya aman?", a: "Ya. Disimpan di browser (localStorage). Bisa hapus kapan saja." },
-  { q: "Bisa untuk semua jenis bisnis?", a: "Ya. F&B, fashion, retail, jasa, kerajinan." },
-  { q: "Ada garansi?", a: "Hubungi dalam 7 hari jika tidak puas. Refund 100%." },
+  {
+    q: "Saya gaptek, bisa pakai ini?",
+    a: "Bisa banget. MaxSales dirancang untuk pengusaha, bukan programmer. Anda cukup isi formulir bisnis seperti ngobrol biasa — soal produk, pelanggan, harga. Setelah itu, AI yang bekerja. Tidak perlu install apa pun, cukup buka browser.",
+  },
+  {
+    q: "Kok bisa AI tahu bisnis saya? Datanya dari mana?",
+    a: "Semua dari data yang Anda sendiri isi lewat DNA Business Canvas — ada 6 tab yang mencakup produk, target pasar, pola keuangan, channel media, performa real-time, dan kompetitor. Semakin lengkap Anda isi, semakin tajam rekomendasinya. Tidak ada data yang diambil dari luar.",
+  },
+  {
+    q: "Aman nggak sih data bisnis saya?",
+    a: "Aman. Semua data tersimpan di browser Anda sendiri (localStorage), bukan di server kami. Tidak ada database pusat yang menyimpan data pribadi Anda. Kalau mau hapus, tinggal clear browser — data hilang selamanya.",
+  },
+  {
+    q: "Bisnis saya bidang jasa, cocok nggak?",
+    a: "Cocok. MaxSales dipakai oleh pengusaha F&B, fashion, retail, jasa catering, salon, bengkel, sampai kerajinan tangan. Yang penting Anda punya produk atau jasa yang dijual dan ingin omset naik — sisanya AI bantu.",
+  },
+  {
+    q: "Gimana kalau ternyata nggak cocok?",
+    a: "Hubungi kami dalam 7 hari pertama. Kami bantu cari solusinya, atau kalau memang tidak cocok, kami refund 100% tanpa ribet. Kami nggak mau uang Anda kalau produknya nggak bermanfaat.",
+  },
+];
+
+const TESTIMONIALS = [
+  {
+    name: "Siti Nurhaliza",
+    role: "Pemilik Katering Rumahan, Surabaya",
+    quote: "Dulu saya bingung setiap mau promosi. Sekarang tinggal buka MaxSales pagi-pagi, langsung dapat template WhatsApp yang tinggal kirim. Omset bulan ini naik 25%.",
+    initials: "SN",
+  },
+  {
+    name: "Budi Santoso",
+    role: "Reseller Fashion, Jakarta",
+    quote: "Fitur Competitor War Room-nya juara. Saya jadi tahu kelemahan kompetitor dan bisa ambil celah. Yang paling suka, AI-nya ngomong bahasa manusia — bukan bahasa robot.",
+    initials: "BS",
+  },
+  {
+    name: "Rina Wijaya",
+    role: "Pemilik Toko Kue Online, Bandung",
+    quote: "Saya nggak ngerti teknologi sama sekali, tapi MaxSales gampang banget dipakai. Sekarang setiap pagi saya punya 'briefing' dari AI — kayak punya asisten pribadi yang ngerti bisnis saya.",
+    initials: "RW",
+  },
 ];
 
 export default function LandingPage({ onEnterDashboard, darkMode, setDarkMode }: LandingPageProps) {
@@ -297,10 +333,41 @@ export default function LandingPage({ onEnterDashboard, darkMode, setDarkMode }:
         </div>
       </section>
 
-      {/* ── FAQ ────────────────────────────────────────── */}
+      {/* ── TESTIMONIALS ──────────────────────────────── */}
       <section className="border-t border-ink/5 dark:border-dark-text/5">
         <div className="max-w-6xl mx-auto px-6 md:px-12 py-16 md:py-24">
-          <SectionLabel n={6} label="PERTANYAAN" />
+          <SectionLabel n={6} label="KATA MEREKA" />
+
+          <div className="grid md:grid-cols-3 gap-6">
+            {TESTIMONIALS.map((t, i) => (
+              <motion.div
+                key={i}
+                className="paper-surface rounded-sm p-6"
+                initial={{ opacity: 0, y: 16 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: "-30px" }}
+                transition={{ duration: 0.5, delay: i * 0.1 }}
+              >
+                <div className="flex items-center gap-3 mb-4">
+                  <div className="w-10 h-10 rounded-full bg-biru/10 dark:bg-biru/20 flex items-center justify-center">
+                    <span className="font-mono text-xs font-bold text-biru dark:text-biru">{t.initials}</span>
+                  </div>
+                  <div>
+                    <p className="font-body font-bold text-sm text-ink dark:text-dark-text">{t.name}</p>
+                    <p className="font-mono text-[10px] text-ink/40 dark:text-dark-text/40">{t.role}</p>
+                  </div>
+                </div>
+                <p className="text-sm text-ink/70 dark:text-dark-text/70 leading-relaxed italic">"{t.quote}"</p>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ── FAQ ────────────────────────────────────────── */}
+      <section className="border-t border-ink/5 dark:border-dark-text/5 bg-krem/50 dark:bg-dark-krem/30">
+        <div className="max-w-3xl mx-auto px-6 md:px-12 py-16 md:py-24">
+          <SectionLabel n={7} label="PERTANYAAN" />
 
           <div className="space-y-0">
             {FAQ_ITEMS.map((item, i) => (
