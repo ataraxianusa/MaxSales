@@ -135,7 +135,7 @@ export default function PricingSection({ onBuyNow }: PricingSectionProps) {
           <BadgePercent className="w-3.5 h-3.5" />
           Harga Perkenalan · Terbatas
         </span>
-        <h2 className="text-2xl sm:text-3xl font-black tracking-tight text-white mb-2">
+        <h2 className="text-2xl sm:text-3xl font-black tracking-tight text-ink dark:text-white mb-2">
           Satu Investasi.{" "}
           <span className="bg-clip-text text-transparent bg-gradient-to-r from-emerald-400 to-cyan-400">
             Seluruh Sistem.

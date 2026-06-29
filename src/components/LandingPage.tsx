@@ -187,8 +187,7 @@ export default function LandingPage({ onEnterDashboard, darkMode, setDarkMode }:
     <div className="min-h-screen bg-base dark:bg-space-dark text-ink dark:text-dark-text font-body">
       {/* ── Nav ───────────────────────────────────────── */}
       <nav className="sticky top-0 z-50 bg-base/80 dark:bg-space-dark/80 backdrop-blur-md border-b border-ink/5 dark:border-dark-text/5">
-        <div className="max-w-6xl mx-auto px-6 md:px-12 h-14 flex items-center justify-between">
-          <span className="font-display text-lg text-ink dark:text-dark-text">MaxxSales</span>
+        <div className="max-w-6xl mx-auto px-6 md:px-12 h-14 flex items-center justify-end">
           <div className="flex items-center gap-4">
             <button onClick={() => setDarkMode(!darkMode)} className="p-2 text-ink/40 dark:text-dark-text/40 hover:text-ink dark:hover:text-dark-text transition-colors" aria-label="Toggle dark mode">
               {darkMode ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />}
