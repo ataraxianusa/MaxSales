@@ -184,7 +184,7 @@ export default function LandingPage({ onEnterDashboard }: LandingPageProps) {
   return (
     <div className="min-h-screen bg-base dark:bg-space-dark text-ink dark:text-dark-text font-body">
       {/* ── HERO ──────────────────────────────────────── */}
-      <section className="w-full px-6 md:px-12 pt-12 pb-20 md:pt-20 md:pb-28">
+      <section id="visual-showcase" className="w-full px-6 md:px-12 pt-12 pb-20 md:pt-20 md:pb-28">
         <div className="max-w-6xl mx-auto">
         <SectionLabel n={1} label="SISTEM OPERASI PERTUMBUHAN BISNIS" />
 
@@ -266,7 +266,7 @@ export default function LandingPage({ onEnterDashboard }: LandingPageProps) {
       </section>
 
       {/* ── HOW IT WORKS — Animated Steps ─────────────── */}
-      <section className="border-t border-ink/5 dark:border-dark-text/5 overflow-hidden">
+      <section id="dna-canvas" className="border-t border-ink/5 dark:border-dark-text/5 overflow-hidden">
         <div className="max-w-6xl mx-auto px-6 md:px-12 py-16 md:py-24">
           <SectionLabel n={4} label="CARA KERJA" />
 
@@ -350,7 +350,7 @@ export default function LandingPage({ onEnterDashboard }: LandingPageProps) {
       </section>
 
       {/* ── FAQ ────────────────────────────────────────── */}
-      <section className="border-t border-ink/5 dark:border-dark-text/5 bg-krem/50 dark:bg-dark-krem/30">
+      <section id="faq" className="border-t border-ink/5 dark:border-dark-text/5 bg-krem/50 dark:bg-dark-krem/30">
         <div className="max-w-3xl mx-auto px-6 md:px-12 py-16 md:py-24">
           <SectionLabel n={7} label="PERTANYAAN" />
 
