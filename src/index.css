@@ -3,90 +3,53 @@
 @variant dark (&:where(.dark, .dark *));
 
 /* ============================================
-   MAXXSALES HYBRID DESIGN SYSTEM (B+C)
-   Indonesian Market Vibrancy + AI Neural Network
+   MAXXSALES — WAR ROOM TABLE DESIGN SYSTEM
+   Paper-white base, warm palette, tactile surfaces
    ============================================ */
 
 /* DESIGN TOKENS: COLOR PALETTE */
 @theme {
+  /* Core palette — War Room Table */
+  --color-base: #FAF8F5;
+  --color-ink: #1C1917;
+  --color-merah: #DC2626;
+  --color-emas: #D4A017;
+  --color-biru: #1E3A8A;
+  --color-krem: #F5F0E8;
+
+  /* Dark mode inversions */
+  --color-space-dark: #1C1917;
+  --color-charcoal-surface: #292524;
+  --color-stone-border: #44403C;
+  --color-dark-text: #FAF8F5;
+  --color-dark-krem: #292524;
+
+  /* Legacy aliases (backward compat with dashboard components) */
   --color-market-indigo: #1E3A8A;
   --color-ai-violet: #8B5CF6;
   --color-data-cyan: #06B6D4;
-  --color-urgent-red: #EF4444;
+  --color-urgent-red: #DC2626;
   --color-earth-terracotta: #C2410C;
-  --color-linen-base: #FDFBF7;
-  
-  /* Dark mode */
-  --color-space-dark: #0A0A0A;
-  --color-charcoal-surface: #1A1A1A;
-  --color-stone-border: #2A2A2A;
-  
+  --color-linen-base: #FAF8F5;
+
   /* Semantic colors */
-  --color-primary: var(--color-market-indigo);
-  --color-secondary: var(--color-ai-violet);
-  --color-accent: var(--color-data-cyan);
-  --color-success: #10B981;
-  --color-warning: #F59E0B;
-  --color-error: var(--color-urgent-red);
+  --color-primary: var(--color-merah);
+  --color-secondary: var(--color-biru);
+  --color-accent: var(--color-emas);
+  --color-success: #16A34A;
+  --color-warning: #D97706;
+  --color-error: var(--color-merah);
 }
 
 /* ============================================
-   CUSTOM ANIMATIONS - SIGNATURE & MOTION
+   CUSTOM ANIMATIONS — RESTRAINED & FUNCTIONAL
    ============================================ */
 
-/* 1. NEURAL PULSE - Signature animation for Market Neural Network */
-@keyframes neural-pulse {
-  0%, 100% { 
-    opacity: 0.3; 
-    transform: scale(1); 
-    filter: drop-shadow(0 0 0px var(--color-ai-violet));
-  }
-  50% { 
-    opacity: 0.8; 
-    transform: scale(1.05); 
-    filter: drop-shadow(0 0 15px var(--color-ai-violet));
-  }
-}
-
-/* 2. MARKET FLOW - Hero gradient animation */
-@keyframes market-flow {
-  0% { background-position: 0% 50%; }
-  50% { background-position: 100% 50%; }
-  100% { background-position: 0% 50%; }
-}
-
-/* 3. NODE CONNECTION - SVG path drawing for neural network */
-@keyframes node-connection {
-  0% { 
-    stroke-dashoffset: 100%;
-    opacity: 0;
-  }
-  50% { 
-    opacity: 1;
-  }
-  100% { 
-    stroke-dashoffset: 0%;
-    opacity: 1;
-  }
-}
-
-/* 4. BATIK MORPH - Subtle texture animation */
-@keyframes batik-morph {
-  0%, 100% { 
-    background-position: 0% 0%;
-    opacity: 0.05;
-  }
-  50% { 
-    background-position: 100% 100%;
-    opacity: 0.08;
-  }
-}
-
-/* 5. Fade in up (enhanced for hybrid design) */
+/* 1. FADE IN UP — Element entrance */
 @keyframes fade-in-up {
   from {
     opacity: 0;
-    transform: translateY(24px);
+    transform: translateY(20px);
   }
   to {
     opacity: 1;
@@ -94,162 +57,54 @@
   }
 }
 
-/* 6. Fade in */
+/* 2. FADE IN — Simple opacity entrance */
 @keyframes fade-in {
   from { opacity: 0; }
   to { opacity: 1; }
 }
 
-/* 7. Gradient shift for CTAs */
-@keyframes gradient-shift {
-  0% { background-position: 0% 50%; }
-  50% { background-position: 100% 50%; }
-  100% { background-position: 0% 50%; }
-}
-
-/* 8. Glow pulse for interactive elements */
-@keyframes glow-pulse {
-  0%, 100% { filter: brightness(1); }
-  50% { filter: brightness(1.15); }
-}
-
-/* 9. Float for cards */
-@keyframes float {
-  0%, 100% { transform: translateY(0px); }
-  50% { transform: translateY(-4px); }
-}
-
-/* 10. Slide label for micro-interactions */
-@keyframes slide-label {
+/* 3. SLIDE IN LEFT — Section number entrance */
+@keyframes slide-in-left {
   from {
-    transform: translateX(0);
-    opacity: 0.5;
+    opacity: 0;
+    transform: translateX(-12px);
   }
   to {
-    transform: translateX(4px);
     opacity: 1;
+    transform: translateX(0);
   }
 }
 
-/* 11. Hexagonal grid pulse for background pattern */
-@keyframes hex-grid-pulse {
-  0%, 100% { 
-    opacity: 0.03;
-    transform: scale(1);
-  }
-  50% { 
-    opacity: 0.06;
-    transform: scale(1.02);
-  }
+/* 4. COUNT UP — Pricing number animation (triggered by JS) */
+@keyframes count-pulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.02); }
 }
 
-/* 12. Market stall hover effect */
-@keyframes market-stall-glow {
-  0%, 100% { 
-    box-shadow: 0 0 0 0 rgba(139, 92, 246, 0.1);
-  }
-  50% { 
-    box-shadow: 0 0 0 8px rgba(139, 92, 246, 0.2);
-  }
+/* 5. SHADOW DEEPEN — CTA hover */
+@keyframes shadow-deepen {
+  from { box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
+  to { box-shadow: 0 4px 12px rgba(0,0,0,0.15); }
 }
 
 /* ============================================
    ANIMATION UTILITIES
    ============================================ */
 
-/* Signature neural pulse animation */
-.animate-neural-pulse {
-  animation: neural-pulse 3s ease-in-out infinite;
-}
-
-/* Market flow background */
-.animate-market-flow {
-  background-size: 200% 200%;
-  animation: market-flow 20s ease infinite;
-}
-
-/* Node connection for SVG paths */
-.animate-node-connection {
-  animation: node-connection 2s ease-in-out forwards;
-}
-
-/* Batik morph texture */
-.animate-batik-morph {
-  animation: batik-morph 15s ease infinite;
-}
-
-/* Hex grid pulse */
-.animate-hex-grid-pulse {
-  animation: hex-grid-pulse 4s ease-in-out infinite;
-}
-
-/* Market stall glow */
-.animate-market-stall-glow {
-  animation: market-stall-glow 2.5s ease-in-out infinite;
-}
-
-/* Existing animations */
 .animate-fade-in-up {
-  animation: fade-in-up 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  animation: fade-in-up 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
 .animate-fade-in {
-  animation: fade-in 0.6s ease-out forwards;
+  animation: fade-in 0.5s ease-out forwards;
 }
 
-/* ============================================
-   FONT FAMILIES — HYBRID DESIGN SPEC
-   ============================================ */
-
-.font-display {
-  font-family: 'Playfair Display', Georgia, serif;
-}
-
-.font-body {
-  font-family: 'Inter', system-ui, sans-serif;
-}
-
-.font-mono {
-  font-family: 'Space Mono', ui-monospace, monospace;
-}
-
-/* ============================================
-   REDUCED MOTION — Accessibility
-   ============================================ */
-
-@media (prefers-reduced-motion: reduce) {
-  .animate-neural-pulse,
-  .animate-market-flow,
-  .animate-node-connection,
-  .animate-batik-morph,
-  .animate-hex-grid-pulse,
-  .animate-market-stall-glow,
-  .animate-fade-in-up,
-  .animate-fade-in,
-  .animate-gradient-shift {
-    animation: none !important;
-  }
-  
-  .hover\:-translate-y-3 {
-    transform: none !important;
-  }
+.animate-slide-in-left {
+  animation: slide-in-left 0.4s ease-out forwards;
 }
 
 .animate-fade-in-quick {
   animation: fade-in 0.3s ease-out forwards;
-}
-
-.animate-gradient-shift {
-  background-size: 200% 200%;
-  animation: gradient-shift 4s ease infinite;
-}
-
-.animate-glow-pulse {
-  animation: glow-pulse 3s ease-in-out infinite;
-}
-
-.animate-float {
-  animation: float 3s ease-in-out infinite;
 }
 
 /* Staggered delays */
@@ -260,64 +115,23 @@
 .animate-stagger-5 { animation-delay: 0.5s; }
 
 /* ============================================
-   MARKET NEURAL NETWORK BACKGROUND PATTERN
+   FONT FAMILIES — WAR ROOM TABLE SPEC
    ============================================ */
 
-.market-neural-background {
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  z-index: 0;
+.font-display {
+  font-family: 'Instrument Serif', Georgia, serif;
 }
 
-.market-neural-pattern {
-  position: absolute;
-  inset: 0;
-  background-image: 
-    /* Batik-inspired hexagonal grid */
-    linear-gradient(30deg, transparent 40%, rgba(30, 58, 138, 0.03) 41%, rgba(30, 58, 138, 0.03) 42%, transparent 43%),
-    linear-gradient(-30deg, transparent 40%, rgba(30, 58, 138, 0.03) 41%, rgba(30, 58, 138, 0.03) 42%, transparent 43%),
-    /* Neural connection lines */
-    linear-gradient(45deg, transparent 48%, rgba(139, 92, 246, 0.02) 49%, rgba(139, 92, 246, 0.02) 50%, transparent 51%),
-    linear-gradient(-45deg, transparent 48%, rgba(139, 92, 246, 0.02) 49%, rgba(139, 92, 246, 0.02) 50%, transparent 51%);
-  background-size: 80px 140px, 80px 140px, 60px 60px, 60px 60px;
-  animation: hex-grid-pulse 4s ease-in-out infinite;
+.font-body {
+  font-family: 'DM Sans', system-ui, sans-serif;
 }
 
-.market-neural-nodes {
-  position: absolute;
-  inset: 0;
-}
-
-.market-neural-node {
-  position: absolute;
-  width: 4px;
-  height: 4px;
-  background: var(--color-ai-violet);
-  border-radius: 50%;
-  opacity: 0.4;
-  animation: neural-pulse 3s ease-in-out infinite;
-}
-
-.market-neural-node:nth-child(odd) {
-  animation-delay: 0.5s;
-}
-
-.market-neural-node:nth-child(3n) {
-  animation-delay: 1s;
-}
-
-.market-neural-node:nth-child(4n) {
-  background: var(--color-data-cyan);
-}
-
-.market-neural-node:nth-child(5n) {
-  background: var(--color-market-indigo);
-  animation-delay: 1.5s;
+.font-mono {
+  font-family: 'JetBrains Mono', ui-monospace, monospace;
 }
 
 /* ============================================
-   DARK MODE NEON GLOW EFFECTS (Updated Colors)
+   DARK MODE NEON GLOW EFFECTS (Dashboard compat)
    ============================================ */
 
 @keyframes neon-icon-market-indigo {
@@ -349,10 +163,10 @@
 
 @keyframes neon-icon-urgent-red {
   0%, 100% {
-    box-shadow: 0 0 8px 2px rgba(239, 68, 68, 0.4), 0 0 25px 8px rgba(239, 68, 68, 0.2), 0 0 50px 15px rgba(239, 68, 68, 0.08);
+    box-shadow: 0 0 8px 2px rgba(220, 38, 38, 0.4), 0 0 25px 8px rgba(220, 38, 38, 0.2), 0 0 50px 15px rgba(220, 38, 38, 0.08);
   }
   50% {
-    box-shadow: 0 0 12px 5px rgba(239, 68, 68, 0.6), 0 0 35px 12px rgba(239, 68, 68, 0.35), 0 0 65px 20px rgba(239, 68, 68, 0.12);
+    box-shadow: 0 0 12px 5px rgba(220, 38, 38, 0.6), 0 0 35px 12px rgba(220, 38, 38, 0.35), 0 0 65px 20px rgba(220, 38, 38, 0.12);
   }
 }
 
@@ -376,7 +190,7 @@
    CUSTOM UTILITY CLASSES
    ============================================ */
 
-/* Text gradients for hybrid theme */
+/* Text gradients (dashboard compat) */
 .text-gradient-market-ai {
   background: linear-gradient(135deg, var(--color-market-indigo), var(--color-ai-violet));
   -webkit-background-clip: text;
@@ -391,7 +205,7 @@
   background-clip: text;
 }
 
-/* Background gradients */
+/* Background gradients (dashboard compat) */
 .bg-gradient-market-ai {
   background: linear-gradient(135deg, var(--color-market-indigo), var(--color-ai-violet));
 }
@@ -404,7 +218,7 @@
   background: linear-gradient(to bottom, var(--color-space-dark), var(--color-market-indigo));
 }
 
-/* Glow effects */
+/* Glow effects (dashboard compat) */
 .glow-ai-violet {
   box-shadow: 0 0 20px rgba(139, 92, 246, 0.3);
 }
@@ -417,41 +231,125 @@
   box-shadow: 0 0 20px rgba(30, 58, 138, 0.3);
 }
 
-/* Reduced motion support */
-@media (prefers-reduced-motion: reduce) {
-  .animate-neural-pulse,
-  .animate-market-flow,
-  .animate-batik-morph,
-  .animate-hex-grid-pulse,
-  .animate-neural-pulse *,
-  .animate-market-flow *,
-  .animate-batik-morph *,
-  .animate-hex-grid-pulse * {
-    animation: none !important;
-    opacity: 0.5 !important;
-    transform: none !important;
-  }
-  
-  .animate-fade-in,
-  .animate-fade-in-up {
-    animation: fade-in 0.6s ease-out forwards !important;
-    transform: none !important;
-  }
+/* ============================================
+   PAPER SURFACE — Signature tactile effect
+   ============================================ */
+
+.paper-surface {
+  background: var(--color-krem);
+  border: 1px solid rgba(28, 25, 23, 0.08);
+  box-shadow:
+    0 1px 3px rgba(28, 25, 23, 0.06),
+    0 4px 12px rgba(28, 25, 23, 0.04);
+}
+
+.dark .paper-surface {
+  background: var(--color-dark-krem);
+  border-color: var(--color-stone-border);
+  box-shadow:
+    0 1px 3px rgba(0, 0, 0, 0.2),
+    0 4px 12px rgba(0, 0, 0, 0.15);
 }
 
 /* ============================================
-   BATIK TEXTURE OVERLAY
+   TACTICAL BRIEFING CARD — Signature element
+   ============================================ */
+
+.tactical-card {
+  background: white;
+  border: 1px solid rgba(28, 25, 23, 0.1);
+  border-radius: 2px;
+  box-shadow:
+    0 1px 2px rgba(28, 25, 23, 0.05),
+    0 4px 16px rgba(28, 25, 23, 0.08),
+    0 12px 40px rgba(28, 25, 23, 0.05);
+  position: relative;
+}
+
+.tactical-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: var(--color-merah);
+}
+
+.dark .tactical-card {
+  background: var(--color-charcoal-surface);
+  border-color: var(--color-stone-border);
+  box-shadow:
+    0 1px 2px rgba(0, 0, 0, 0.2),
+    0 4px 16px rgba(0, 0, 0, 0.15),
+    0 12px 40px rgba(0, 0, 0, 0.1);
+}
+
+/* ============================================
+   MARKET NEURAL NETWORK BACKGROUND (Dashboard compat)
+   ============================================ */
+
+.market-neural-background {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.market-neural-pattern {
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(30deg, transparent 40%, rgba(30, 58, 138, 0.03) 41%, rgba(30, 58, 138, 0.03) 42%, transparent 43%),
+    linear-gradient(-30deg, transparent 40%, rgba(30, 58, 138, 0.03) 41%, rgba(30, 58, 138, 0.03) 42%, transparent 43%),
+    linear-gradient(45deg, transparent 48%, rgba(139, 92, 246, 0.02) 49%, rgba(139, 92, 246, 0.02) 50%, transparent 51%),
+    linear-gradient(-45deg, transparent 48%, rgba(139, 92, 246, 0.02) 49%, rgba(139, 92, 246, 0.02) 50%, transparent 51%);
+  background-size: 80px 140px, 80px 140px, 60px 60px, 60px 60px;
+}
+
+.market-neural-nodes {
+  position: absolute;
+  inset: 0;
+}
+
+.market-neural-node {
+  position: absolute;
+  width: 4px;
+  height: 4px;
+  background: var(--color-ai-violet);
+  border-radius: 50%;
+  opacity: 0.4;
+}
+
+.market-neural-node:nth-child(odd) {
+  animation-delay: 0.5s;
+}
+
+.market-neural-node:nth-child(3n) {
+  animation-delay: 1s;
+}
+
+.market-neural-node:nth-child(4n) {
+  background: var(--color-data-cyan);
+}
+
+.market-neural-node:nth-child(5n) {
+  background: var(--color-market-indigo);
+  animation-delay: 1.5s;
+}
+
+/* ============================================
+   BATIK TEXTURE OVERLAY (Dashboard compat)
    ============================================ */
 
 .batik-overlay {
   position: absolute;
   inset: 0;
   pointer-events: none;
-  background-image: 
+  background-image:
     radial-gradient(circle at 20% 80%, rgba(30, 58, 138, 0.05) 0%, transparent 50%),
     radial-gradient(circle at 80% 20%, rgba(194, 65, 12, 0.03) 0%, transparent 50%),
     radial-gradient(circle at 50% 50%, rgba(30, 58, 138, 0.02) 0%, transparent 70%);
-  animation: batik-morph 20s ease-in-out infinite;
 }
 
 /* ============================================
@@ -484,12 +382,26 @@
 
 @media (min-width: 1024px) {
   .responsive-h1 {
-    font-size: clamp(3rem, 8vw, 5rem);
+    font-size: clamp(3rem, 8vw, 3.5rem);
   }
   .responsive-h2 {
-    font-size: clamp(2rem, 6vw, 3rem);
+    font-size: clamp(2rem, 6vw, 2.25rem);
   }
   .responsive-h3 {
-    font-size: clamp(1.5rem, 4vw, 2rem);
+    font-size: clamp(1.5rem, 4vw, 1.75rem);
+  }
+}
+
+/* ============================================
+   REDUCED MOTION — Accessibility
+   ============================================ */
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
   }
 }
