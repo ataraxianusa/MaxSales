@@ -1,5 +1,6 @@
 import React from "react";
 import { Routes, Route, useNavigate, useLocation } from "react-router-dom";
+import { API_BASE } from "./api";
 import Header from "./components/Header";
 import LandingPage from "./components/LandingPage";
 import Login from "./components/Login";
@@ -125,6 +126,31 @@ export default function App() {
     const saved = localStorage.getItem("maxx_sales_segments");
     return saved ? JSON.parse(saved) : defaultSegments();
   });
+
+  // Auto-generate segments from DNA when DNA is filled and segments are still default
+  React.useEffect(() => {
+    if (!canvas.biggestCompetitor?.trim()) return;
+    // Only auto-generate if segments are still the hardcoded defaults
+    const isDefault = segments.length === 4 && segments[0]?.name === "Ibu Muda Urban (Modern Hijabers)";
+    if (!isDefault) return;
+
+    const fetchAutoSegment = async () => {
+      try {
+        const response = await fetch(`${API_BASE}/api/auto-segment`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ dna: canvas })
+        });
+        const data = await response.json();
+        if (data.segments && data.segments.length > 0) {
+          setSegments(data.segments);
+        }
+      } catch (err) {
+        console.error("Auto-segment failed:", err);
+      }
+    };
+    fetchAutoSegment();
+  }, [canvas.biggestCompetitor]);
 
   // Sync state to localStorage
   React.useEffect(() => {
