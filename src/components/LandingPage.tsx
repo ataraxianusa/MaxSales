@@ -151,7 +151,7 @@ export default function LandingPage({ onEnterDashboard, darkMode, setDarkMode }:
     <div className="min-h-screen bg-base dark:bg-space-dark text-ink dark:text-dark-text font-body">
       {/* ── Nav ───────────────────────────────────────── */}
       <nav className="sticky top-0 z-50 bg-base/80 dark:bg-space-dark/80 backdrop-blur-md border-b border-ink/5 dark:border-dark-text/5">
-        <div className="w-full px-6 md:px-12 h-14 flex items-center justify-between">
+        <div className="max-w-6xl mx-auto px-6 md:px-12 h-14 flex items-center justify-between">
           <span className="font-display text-lg text-ink dark:text-dark-text">MaxxSales</span>
           <div className="flex items-center gap-4">
             <button onClick={() => setDarkMode(!darkMode)} className="p-2 text-ink/40 dark:text-dark-text/40 hover:text-ink dark:hover:text-dark-text transition-colors" aria-label="Toggle dark mode">
@@ -164,6 +164,7 @@ export default function LandingPage({ onEnterDashboard, darkMode, setDarkMode }:
 
       {/* ── HERO ──────────────────────────────────────── */}
       <section className="w-full px-6 md:px-12 pt-16 pb-20 md:pt-24 md:pb-28">
+        <div className="max-w-6xl mx-auto">
         <SectionLabel n={1} label="SISTEM OPERASI PERTUMBUHAN BISNIS" />
 
         <div className="grid lg:grid-cols-2 gap-10 lg:gap-16 items-start">
@@ -196,11 +197,12 @@ export default function LandingPage({ onEnterDashboard, darkMode, setDarkMode }:
         </div>
 
         <div className="lg:hidden mt-10"><TacticalBriefingCard /></div>
+        </div>
       </section>
 
       {/* ── PROBLEM ───────────────────────────────────── */}
       <section className="border-t border-ink/5 dark:border-dark-text/5">
-        <div className="w-full px-6 md:px-12 py-16 md:py-24">
+        <div className="max-w-6xl mx-auto px-6 md:px-12 py-16 md:py-24">
           <SectionLabel n={2} label="KENAPA ANDA BUTUH INI" />
 
           <div className="grid md:grid-cols-3 gap-4">
@@ -223,7 +225,7 @@ export default function LandingPage({ onEnterDashboard, darkMode, setDarkMode }:
 
       {/* ── FEATURES ──────────────────────────────────── */}
       <section className="border-t border-ink/5 dark:border-dark-text/5 bg-krem/50 dark:bg-dark-krem/30">
-        <div className="w-full px-6 md:px-12 py-16 md:py-24">
+        <div className="max-w-6xl mx-auto px-6 md:px-12 py-16 md:py-24">
           <SectionLabel n={3} label="6 MODUL INTI" />
 
           <div className="grid md:grid-cols-3 gap-4">
@@ -244,7 +246,7 @@ export default function LandingPage({ onEnterDashboard, darkMode, setDarkMode }:
 
       {/* ── HOW IT WORKS — Animated Steps ─────────────── */}
       <section className="border-t border-ink/5 dark:border-dark-text/5 overflow-hidden">
-        <div className="w-full px-6 md:px-12 py-16 md:py-24">
+        <div className="max-w-6xl mx-auto px-6 md:px-12 py-16 md:py-24">
           <SectionLabel n={4} label="CARA KERJA" />
 
           <div className="grid md:grid-cols-3 gap-8">
@@ -289,7 +291,7 @@ export default function LandingPage({ onEnterDashboard, darkMode, setDarkMode }:
 
       {/* ── PRICING ───────────────────────────────────── */}
       <section id="pricing" className="border-t border-ink/5 dark:border-dark-text/5 bg-krem/50 dark:bg-dark-krem/30">
-        <div className="w-full px-6 md:px-12 py-16 md:py-24">
+        <div className="max-w-6xl mx-auto px-6 md:px-12 py-16 md:py-24">
           <SectionLabel n={5} label="HARGA" />
           <PricingSection onBuyNow={onEnterDashboard} />
         </div>
@@ -297,7 +299,7 @@ export default function LandingPage({ onEnterDashboard, darkMode, setDarkMode }:
 
       {/* ── FAQ ────────────────────────────────────────── */}
       <section className="border-t border-ink/5 dark:border-dark-text/5">
-        <div className="w-full px-6 md:px-12 py-16 md:py-24 max-w-3xl">
+        <div className="max-w-6xl mx-auto px-6 md:px-12 py-16 md:py-24">
           <SectionLabel n={6} label="PERTANYAAN" />
 
           <div className="space-y-0">
@@ -320,7 +322,7 @@ export default function LandingPage({ onEnterDashboard, darkMode, setDarkMode }:
 
       {/* ── Footer ────────────────────────────────────── */}
       <footer className="border-t border-ink/5 dark:border-dark-text/5">
-        <div className="w-full px-6 md:px-12 py-10 flex flex-col md:flex-row items-center justify-between gap-4">
+        <div className="max-w-6xl mx-auto px-6 md:px-12 py-10 flex flex-col md:flex-row items-center justify-between gap-4">
           <div className="text-center md:text-left">
             <span className="font-display text-base text-ink dark:text-dark-text">MaxxSales</span>
             <p className="text-xs text-ink/30 dark:text-dark-text/30 mt-1 font-mono">© 2026 VOXIA. All rights reserved.</p>
