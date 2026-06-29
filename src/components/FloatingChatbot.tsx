@@ -23,7 +23,9 @@ export default function FloatingChatbot({ dna }: FloatingChatbotProps) {
     {
       id: "initial-1",
       sender: "bot",
-      text: `Halo! Saya MaxxSales Co-pilot AI. Ada yang bisa saya bantu terkait strategi penjualan, memetakan kompetitor, konten promosi, atau optimasi harian bisnis ${dna.brand || "Anda"}?`,
+      text: dna.brand
+        ? `Halo! Saya MaxxSales Co-pilot AI. Ada yang bisa saya bantu terkait strategi penjualan, memetakan kompetitor, konten promosi, atau optimasi harian bisnis ${dna.brand}?`
+        : `Halo! Saya MaxxSales Co-pilot AI. Untuk mendapatkan saran personal, silakan isi DNA Business Canvas terlebih dahulu. Atau tanya apa saja tentang fitur MaxxSales!`,
       timestamp: new Date()
     }
   ]);

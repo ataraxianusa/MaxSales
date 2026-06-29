@@ -668,8 +668,8 @@ export default function App() {
 
       </main>
 
-      {/* Floating Smart Virtual Assistant — Dashboard only, with DNA context */}
-      {currentTab === "dashboard" && isLoggedIn && isDnaFilled && (
+      {/* Floating Smart Virtual Assistant — Dashboard only */}
+      {currentTab === "dashboard" && isLoggedIn && (
         <FloatingChatbot dna={canvas} />
       )}
 
