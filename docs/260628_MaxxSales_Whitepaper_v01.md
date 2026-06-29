@@ -54,7 +54,7 @@
 ### Definisi Produk
 
 MaxxSales adalah **AI-Powered Business Growth OS** yang menggabungkan:
-1. **8 API Endpoint** dengan arsitektur 3-chain prompt pipeline
+1. **8 API Endpoint** (server.ts) / **11 API Endpoint** (worker.ts) dengan arsitektur 3-chain prompt pipeline
 2. **React 19 Dashboard** dengan 6 modul inti + modul pendukung
 3. **Dual-Backend Architecture** (Express.js untuk development, Cloudflare Workers + Hono untuk production)
 
@@ -89,7 +89,7 @@ MaxxSales adalah **AI-Powered Business Growth OS** yang menggabungkan:
 │  │  OpenRouter API │  (Default: openai/gpt-oss-120b:free)      │
 │  └─────────────────┘                                          │
 │   - 3-chain tactical briefing                                  │
-│   - Temperature-locked @ 0.25                                  │
+│   - Dynamic Temperature per chain (0.2 / 0.35 / 0.7)          │
 │   - Fallback simulator untuk offline mode                      │
 └─────────────────────────────────────────────────────────────┘
 ```
@@ -253,7 +253,7 @@ interface GeneratedContentText {
 
 ### Overview
 
-MaxxSales menggunakan **3-chain sequential prompt pipeline** dengan temperature locked di **0.25** untuk memastikan output yang taktis dan konsisten.
+MaxxSales menggunakan **3-chain sequential prompt pipeline** dengan **Dynamic Temperature** per chain — GapAnalyzer (0.2) untuk analisis JSON yang konsisten, ExecutionPlan (0.35) untuk instruksi dengan variasi kata kerja, dan CommsWriter (0.7) untuk copywriting natural.
 
 ### Chain Architecture
 
@@ -263,19 +263,19 @@ MaxxSales menggunakan **3-chain sequential prompt pipeline** dengan temperature 
 ├─────────────────────────────────────────────────────────────┤
 │                                                              │
 │  CHAIN 1: GapAnalyzer                                           │
-│  ├─ Temperature: 0.25                                          │
+│  ├─ Temperature: 0.2                                           │
 │  ├─ Max Tokens: 256                                           │
 │  ├─ Input: DNA + WarRoom + CustomerInsight + DailyContext    │
 │  └─ Output: JSON { gap, revenueImpact, urgency }              │
 │                                                              │
 │  CHAIN 2: ExecutionPlan                                        │
-│  ├─ Temperature: 0.25                                          │
+│  ├─ Temperature: 0.35                                          │
 │  ├─ Max Tokens: 256                                           │
 │  ├─ Input: Gap + PeakHours + TopConvertingChannel             │
 │  └─ Output: JSON { steps[], quickWin, expectedOutcome }      │
 │                                                              │
 │  CHAIN 3: CommsWriter                                          │
-│  ├─ Temperature: 0.25                                          │
+│  ├─ Temperature: 0.7                                           │
 │  ├─ Max Tokens: 512                                           │
 │  ├─ Input: Gap + Plan + Brand + Contact                       │
 │  └─ Output: Markdown (3 sections: Celah + Eksekusi + Amunisi)│
@@ -437,7 +437,7 @@ interface BusinessCanvasData {
 const AI_CONFIG = {
   provider: "OpenRouter",
   model: "openai/gpt-oss-120b:free",
-  temperature: 0.25,  // Locked for tactical outputs
+  temperature: 0.7,   // Dynamic: GapAnalyzer=0.2, ExecutionPlan=0.35, CommsWriter=0.7
   maxTokens: {
     gapAnalyzer: 256,
     executionPlan: 256,
@@ -800,7 +800,7 @@ Kebijakan ini dibuat untuk:
 
 ### Overview
 
-MaxxSales menyediakan **8 API endpoints** yang tersedia di kedua backend (Express & Cloudflare Workers).
+MaxxSales menyediakan **8 API endpoints** di Express.js (development) dan **11 API endpoints** di Cloudflare Workers (production).
 
 ### Endpoint Inventory
 
@@ -880,7 +880,7 @@ MaxxSales menyediakan **8 API endpoints** yang tersedia di kedua backend (Expres
   "markdown": "### 1. 🎯 Celah Bisnis Hari Ini\n...",
   "meta": {
     "model": "prompt-chain-3-step",
-    "temperature": 0.25,
+    "temperature": 0.7,
     "chainLatenciesMs": [120, 150, 200],
     "totalTokens": 1024
   }
@@ -1016,7 +1016,7 @@ MaxxSales is currently in **experiment phase (MVP v1.2)**. While we strive for a
 **AI Model Disclaimer:**
 - Uses OpenRouter API with various models
 - Default: `openai/gpt-oss-120b:free`
-- Temperature locked at 0.25 for consistency
+- Dynamic Temperature per chain: GapAnalyzer=0.2, ExecutionPlan=0.35, CommsWriter=0.7
 - Fallback to local simulator when API unavailable
 
 ### Liability

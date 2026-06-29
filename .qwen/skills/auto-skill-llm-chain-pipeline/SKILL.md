@@ -31,10 +31,13 @@ Chain 3: WRITER      →  "Give me ready-to-use output in the final format."
 
 ## Key Constraints for Reliability
 
-### 1. Temperature Locking
-Lock temperature at **0.2–0.3** for all three chains. Higher values cause hallucinated theory and drift from the output format. Lower values (0.1) produce robotic output. 0.25 is the sweet spot — compliant with rules but natural enough.
+### 1. Dynamic Temperature Per Chain
+Each chain uses a different temperature based on its output type:
+- **Chain 1 (GapAnalyzer):** 0.2 — JSON output harus konsisten & predictable
+- **Chain 2 (ExecutionPlan):** 0.35 — Instruksi butuh variasi kata kerja aktif
+- **Chain 3 (CommsWriter):** 0.7 — Copywriting butuh bahasa natural, bukan robotik
 
-**Why:** The Analyzer and Planner chains output JSON that the next chain consumes. If temperature is too high (0.7+), the JSON wraps in markdown fences or includes explanatory text, breaking the parser. The Writer chain at higher temps ignores the mandated section format.
+**Why:** The Analyzer and Planner chains output JSON that the next chain consumes. If temperature is too high (0.7+), the JSON wraps in markdown fences or includes explanatory text, breaking the parser. The Writer chain at 0.25 produces robotic, repetitive templates — 0.7 makes it sound like a real Pengusaha talking to customers.
 
 ### 2. Strict System Prompt Rules
 Each chain's system prompt must enumerate **forbidden behaviors**, not just desired output:
@@ -77,19 +80,19 @@ The pattern: write the pipeline → run `tsc --noEmit` → manually audit edge c
 const gap = await llm([
   { role: "system", content: ANALYZER_SYSTEM },  // role + forbidden list + JSON output format
   { role: "user", content: buildAnalyzerPrompt(input) },  // raw data from upstream
-], { temperature: 0.25, maxTokens: 256 });
+], { temperature: 0.2, maxTokens: 256 });
 
 // Chain 2: The Planner
 const plan = await llm([
   { role: "system", content: PLANNER_SYSTEM },    // action verb rule + JSON output format
   { role: "user", content: buildPlannerPrompt(input, gap) }, // gap from chain 1
-], { temperature: 0.25, maxTokens: 256 });
+], { temperature: 0.35, maxTokens: 256 });
 
 // Chain 3: The Writer
 const output = await llm([
   { role: "system", content: WRITER_SYSTEM },      // persona + final format spec
   { role: "user", content: buildWriterPrompt(input, gap, plan) }, // gap + plan from chains 1 & 2
-], { temperature: 0.25, maxTokens: 512 });
+], { temperature: 0.7, maxTokens: 512 });
 
 return { markdown: output.content.trim(), meta: { ... } };
 ```

@@ -60,7 +60,7 @@ All AI features are powered by **OpenRouter** (default model: `openai/gpt-oss-12
 | **Backend (Dev)** | Express.js, Node.js, `tsx` (dev runner), `esbuild` (production bundle) |
 | **Backend (Edge)** | Cloudflare Workers + Hono (`worker.ts`) |
 | **AI** | OpenRouter API (OpenAI-compatible, default: `openai/gpt-oss-120b:free`) |
-| **AI Architecture** | 3-chain sequential prompt pipeline (GapAnalyzer → ExecutionPlan → CommsWriter), temperature-locked at 0.25 for tactical outputs |
+| **AI Architecture** | 3-chain sequential prompt pipeline (GapAnalyzer → ExecutionPlan → CommsWriter), Dynamic Temperature per chain (0.2 / 0.35 / 0.7) |
 | **Build Tool** | Vite 6 + `@tailwindcss/vite` + `@vitejs/plugin-react` |
 | **Icons** | Lucide React |
 | **CI/CD** | GitHub Actions → GitHub Pages (`gh-pages` branch) |
@@ -127,7 +127,7 @@ The repo deploys to GitHub Pages automatically via `.github/workflows/deploy.yml
 
 ### Cloudflare Worker (AI Backend)
 
-The `worker.ts` file exports a Hono app with all 8 endpoints ready for Cloudflare Workers deployment:
+The `worker.ts` file exports a Hono app with all 11 endpoints ready for Cloudflare Workers deployment:
 
 ```bash
 # Set your OpenRouter API key as a secret
@@ -179,7 +179,7 @@ MaxSales/
 │   ├── tactical-briefing.ts      # ⭐ 3-chain prompt module (387 lines)
 │   └── types.ts                  # 6 TypeScript interfaces (59 DNA fields) + defaults
 ├── server.ts                     # Express backend — 8 API endpoints (654 lines)
-├── worker.ts                     # Cloudflare Worker (Hono) — 8 API endpoints (442 lines)
+├── worker.ts                     # Cloudflare Worker (Hono) — 11 API endpoints (986 lines)
 ├── docs/                         # Documentation
 │   ├── blueprint/                # Architecture blueprints (v01–v02)
 │   ├── migrasi/                  # Azure migration docs (18 files, v01–v02)
@@ -204,7 +204,7 @@ MaxSales/
 
 ## API Endpoints
 
-All 8 endpoints available both in `server.ts` and `worker.ts`.
+server.ts exposes 8 core endpoints; worker.ts exposes all 8 plus 3 additional endpoints (suggest-content, scrape-competitor, instagram-scrape, facebook-scrape, auto-segment, predict-revenue, cluster-customers).
 
 | # | Method | Endpoint | AI Calls | Description |
 |---|--------|----------|----------|-------------|
@@ -220,15 +220,15 @@ All 8 endpoints available both in `server.ts` and `worker.ts`.
 ### Tactical Briefing — 3-Chain Architecture
 
 ```
-Chain 1: GapAnalyzer          (temp: 0.25, tokens: 256)
+Chain 1: GapAnalyzer          (temp: 0.2, tokens: 256)
   Input:  DNA + WarRoom + CustomerInsight + DailyContext
   Output: JSON { gap, revenueImpact }
     ↓
-Chain 2: ExecutionPlan        (temp: 0.25, tokens: 256)
+Chain 2: ExecutionPlan        (temp: 0.35, tokens: 256)
   Input:  Gap + PeakHours + TopConvertingChannel
   Output: JSON { steps[], quickWin }
     ↓
-Chain 3: CommsWriter          (temp: 0.25, tokens: 512)
+Chain 3: CommsWriter          (temp: 0.7, tokens: 512)
   Input:  Gap + Plan + Brand + Contact
   Output: Markdown (3 sections: Celah + Eksekusi + Amunisi)
 ```
@@ -262,7 +262,7 @@ Enforced across: `server.ts`, `worker.ts`, `src/tactical-briefing.ts`, dan selur
 
 MaxSales is migrating from Cloudflare Workers to Microsoft Azure. See `docs/migrasi/` for comprehensive documentation:
 
-- **Endpoint Inventory v02** — 8 endpoints mapped to Azure Functions
+- **Endpoint Inventory v02** — 11 endpoints mapped to Azure Functions
 - **Architecture Analysis v02** — Current state + target state with Cosmos DB, Front Door, API Management
 - **Implementation Timeline v02** — 12-week plan with pre-migration Fase 0 already completed
 - **Executive Report v02** — Budget $43-64/month, risk matrix, next steps

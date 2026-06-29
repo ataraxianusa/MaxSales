@@ -64,7 +64,7 @@ Platform MaxSales menggunakan arsitektur **dual-backend** dengan dua implementas
 │ server.ts     │    │ worker.ts                   │
 │ (localhost)   │    │ (voxia-api.workers.dev)     │
 │               │    │                             │
-│ 8 endpoints   │    │ 8 endpoints                 │
+│ 8 endpoints   │    │ 11 endpoints                │
 │ + route #5    │    │ + route #7 (tactical)       │
 └───────┬───────┘    └──────────┬─────────────────┘
         │                       │

@@ -129,7 +129,7 @@ interface TacticalBriefingOutput {
   markdown: string;   // 3-section Markdown
   meta: {
     model: string;
-    temperature: number;     // 0.25 (locked)
+    temperature: number;     // Dynamic: GapAnalyzer=0.2, ExecutionPlan=0.35, CommsWriter=0.7
     chainLatenciesMs: number[];
     totalTokens: number;
   };
@@ -140,15 +140,15 @@ interface TacticalBriefingOutput {
 **3-Chain Prompt Architecture:**
 
 ```
-Chain 1: GapAnalyzer   (maxTokens: 256, temperature: 0.25)
+Chain 1: GapAnalyzer   (maxTokens: 256, temperature: 0.2)
   Input:  DNA + WarRoom + CustomerInsight + DailyContext
   Output: JSON { gap, revenueImpact, urgency }
   ↓
-Chain 2: ExecutionPlan (maxTokens: 256, temperature: 0.25)
+Chain 2: ExecutionPlan (maxTokens: 256, temperature: 0.35)
   Input:  Gap dari Chain 1 + Channel Aktif + Jam Sibuk
   Output: JSON { steps[], quickWin, expectedOutcome }
   ↓
-Chain 3: CommsWriter   (maxTokens: 512, temperature: 0.25)
+Chain 3: CommsWriter   (maxTokens: 512, temperature: 0.7)
   Input:  Gap + Plan + Brand + Contact
   Output: Markdown (3 sections)
 ```
@@ -199,7 +199,7 @@ Chain 3: CommsWriter   (maxTokens: 512, temperature: 0.25)
 | Aspek | v01 | v02 |
 |-------|-----|-----|
 | **Lokasi** | worker.ts, server.ts | worker.ts, server.ts |
-| **Penggunaan** | 7 endpoints | 8 endpoints |
+| **Penggunaan** | 7 endpoints | 8 endpoints (server.ts) / 11 endpoints (worker.ts) |
 | **Tidak berubah.** | | |
 
 ### 3.2 `parseJsonResponse()` - AI Response Parser

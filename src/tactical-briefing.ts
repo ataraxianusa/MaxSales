@@ -89,10 +89,12 @@ export type LlmCaller = (
 ) => Promise<{ content: string; tokensUsed: number }>;
 
 // ─────────────────────────────────────────────────────────────
-// CONSTANTS
+// DYNAMIC TEMPERATURE — beda chain, beda temp
 // ─────────────────────────────────────────────────────────────
 
-const T = 0.25;
+const T_GAP   = 0.2;  // Chain 1: GapAnalyzer — analisis ketat, output JSON
+const T_PLAN  = 0.35; // Chain 2: ExecutionPlan — instruksi dengan variasi kata kerja
+const T_COMMS = 0.7;  // Chain 3: CommsWriter — copywriting natural, bukan robotik
 
 // ─────────────────────────────────────────────────────────────
 // SYSTEM PROMPTS (tiga rantai)
@@ -293,7 +295,7 @@ Bahan ${dna.advantages.split(",")[0]?.trim() ?? "premium"}, harga mulai Rp ${dna
 \`\`\``,
     meta: {
       model: "simulator",
-      temperature: T,
+      temperature: T_COMMS,
       chainLatenciesMs: [0, 0, 0],
       totalTokens: 0,
     },
@@ -325,7 +327,7 @@ export async function generateTacticalBriefing(
       { role: "system", content: GAP_ANALYZER_SYSTEM },
       { role: "user", content: buildGapAnalyzerPrompt(input) },
     ],
-    { temperature: T, maxTokens: 256 },
+    { temperature: T_GAP, maxTokens: 256 },
   );
   latencies.push(Date.now() - t1);
   totalTokens += gapResult.tokensUsed;
@@ -347,7 +349,7 @@ export async function generateTacticalBriefing(
       { role: "system", content: EXECUTION_PLANNER_SYSTEM },
       { role: "user", content: buildExecutionPlannerPrompt(input, gap) },
     ],
-    { temperature: T, maxTokens: 256 },
+    { temperature: T_PLAN, maxTokens: 256 },
   );
   latencies.push(Date.now() - t2);
   totalTokens += planResult.tokensUsed;
@@ -370,7 +372,7 @@ export async function generateTacticalBriefing(
       { role: "system", content: COMMS_WRITER_SYSTEM },
       { role: "user", content: buildCommsWriterPrompt(input, gap, plan) },
     ],
-    { temperature: T, maxTokens: 512 },
+    { temperature: T_COMMS, maxTokens: 512 },
   );
   latencies.push(Date.now() - t3);
   totalTokens += commsResult.tokensUsed;
@@ -379,7 +381,7 @@ export async function generateTacticalBriefing(
     markdown: commsResult.content.trim(),
     meta: {
       model: "prompt-chain-3-step",
-      temperature: T,
+      temperature: T_COMMS,
       chainLatenciesMs: latencies,
       totalTokens,
     },

@@ -102,7 +102,7 @@ UI Tabs: 6 (5 original + "Performa Real-Time")
 
 1. **Prioritas #1:** Konsolidasi `callOpenRouter()` & `parseJsonResponse()` ke shared utility (ikuti pattern `src/tactical-briefing.ts`)
 2. **Prioritas #2:** Provision Azure infrastructure (resource group, functions, Cosmos DB)
-3. **Prioritas #3:** Port 8 endpoint ke Azure Functions dengan AI adapter multi-provider
+3. **Prioritas #3:** Port 11 endpoint (worker.ts) ke Azure Functions dengan AI adapter multi-provider
 4. **Prioritas #4:** Cosmos DB schema design — 4 containers termasuk `tactical-briefings`
 5. **Prioritas #5:** Frontend `VITE_API_URL` switch ke Azure endpoint
 

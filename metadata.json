@@ -1,6 +1,6 @@
 {
-  "name": "VOXIA Sales-Flow",
-  "description": "AI-powered Sales-Flow Platform for optimized lead management and unified CRM analytics dashboard",
+  "name": "MaxxSales",
+  "description": "AI-Powered Sales Growth Operating System for Pengusaha",
   "requestFramePermissions": [
     "geolocation"
   ],

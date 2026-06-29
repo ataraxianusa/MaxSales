@@ -40,10 +40,10 @@
 | Minggu | Task | Owner | Detail |
 |--------|------|-------|--------|
 | W3 | **Refactoring: konsolidasi duplikasi kode** | Backend | Gabungkan `callOpenRouter()` & `parseJsonResponse()` ke shared utility. `src/tactical-briefing.ts` jadi template pattern. |
-| W3 | **8 endpoint porting ke Azure Functions** | Backend | 8 function apps: status, generate-content, strategy-forge, daily-pulse (legacy), analyze-competitor, analyze-segments, chat, tactical-briefing |
+| W3 | **11 endpoint porting ke Azure Functions** | Backend | 11 function apps: status, generate-content, suggest-content, strategy-forge, daily-pulse (legacy), analyze-competitor, analyze-segments, chat, tactical-briefing, auto-segment, predict-revenue, cluster-customers |
 | W4 | **AI Adapter multi-provider** | Backend | Factory pattern (OpenRouter + Azure OpenAI + Simulation). Retry/fallback untuk 3-chain. ⚠️ Tactical briefing = 3 sequential calls, perlu error handling di tengah chain. |
 | W4 | **Cosmos DB schema design** | Backend | 4 containers: `business-dna`, `competitors`, `segments`, `tactical-briefings`. ⚠️ Schema harus mendukung 2 field DNA baru. |
-| W5 | **Unit & integration tests** | QA | 8 endpoints + 3-chain failure scenarios + fallback simulator. Contract tests untuk setiap response format. |
+| W5 | **Unit & integration tests** | QA | 11 endpoints + 3-chain failure scenarios + fallback simulator. Contract tests untuk setiap response format. |
 | W5 | **Frontend API_BASE switch** | Frontend | Ganti `VITE_API_URL` dari Worker URL ke Azure Functions URL. Test setiap module (DailyPulse, StrategyForge, ContentGenerator, DNA Canvas). |
 | W6 | **Playwright E2E tests** | QA | Flow: Login → Isi DNA → Competitor War Room → Customer Insight → Tactical Briefing (klik "Acak Tips Baru") → Checklist → Copy Amunisi. |
 | W6 | **k6 load testing** | DevOps | Threshold: p95 < 3s, error rate < 1%. ⚠️ Tactical briefing = latency lebih tinggi karena 3-chain. |
@@ -80,7 +80,7 @@
 |---|-----------|-------------|--------|
 | M0 | Tactical briefing + DNA expansion completed | 25 Jun 2026 | ✅ |
 | M1 | Azure infrastructure provisioned | W2 | ⏳ |
-| M2 | 8 endpoints running on Azure Functions | W4 | ⏳ |
+| M2 | 11 endpoints running on Azure Functions | W4 | ⏳ |
 | M3 | Cosmos DB integration + data migration | W5 | ⏳ |
 | M4 | Canary 50% — Azure vs Worker parity | W8 | ⏳ |
 | M5 | Production go-live | W10 | ⏳ |
