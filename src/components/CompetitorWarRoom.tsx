@@ -188,7 +188,7 @@ export default function CompetitorWarRoom({ dna, competitors, setCompetitors }: 
     const newCompetitor: CompetitorIntel = {
       id: newId,
       name,
-      location: location || "Butik Sebelah",
+      location: location || "Lokasi Kompetitor",
       averagePrice: averagePrice || "Rp 300.000",
       activeChannels: activeChannels.length > 0 ? activeChannels : ["Instagram"],
       strengths,
@@ -747,7 +747,7 @@ export default function CompetitorWarRoom({ dna, competitors, setCompetitors }: 
               <div className="p-5 rounded border bg-neutral-50 dark:bg-[#111111] border-neutral-200 dark:border-[#262626] space-y-2.5">
                 <h4 className="text-[10px] font-bold uppercase tracking-wider text-neutral-900 dark:text-white font-mono">BATTLEGROUND STRATEGY BRIEFING</h4>
                 <p className="text-xs text-neutral-600 dark:text-[#A3A3A3] leading-relaxed">
-                  Berdasarkan matriks di atas, kompetitor sebanding Anda <strong className="text-neutral-900 dark:text-white font-semibold">{activeIntelCompetitor.name}</strong> terfokus kuat pada penjualan {activeIntelCompetitor.location}. Namun, celah digital mereka lebar. Jangan ikut melakukan perang harga eceran jika margin Anda tipis. Dominasi butik Anda dengan mengandalkan <strong>Premium Packaging (Box Dus Berstempel Mewah + Hadiah Mini Card)</strong> serta memperkuat interaksi video pendek yang tidak dikuasai oleh kompetitor!
+                  Berdasarkan matriks di atas, kompetitor sebanding Anda <strong className="text-neutral-900 dark:text-white font-semibold">{activeIntelCompetitor.name}</strong> terfokus kuat pada penjualan {activeIntelCompetitor.location}. Namun, celah digital mereka lebar. Jangan ikut melakukan perang harga eceran jika margin Anda tipis. Dominasi pasar dengan mengandalkan <strong>{dna.advantages?.split(",")[0] || "keunggulan produk Anda"}</strong> serta memperkuat interaksi video pendek yang tidak dikuasai oleh kompetitor!
                 </p>
               </div>
             </div>
