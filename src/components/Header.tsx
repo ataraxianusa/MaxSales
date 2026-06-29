@@ -54,11 +54,8 @@ export default function Header({ currentTab, setTab, darkMode, setDarkMode, bran
 
           {/* Desktop Navigation Links */}
           <nav className="hidden md:flex items-center space-x-6 mx-auto">
-            <button onClick={() => handleNavClick('visual-showcase')} className="text-xs font-semibold text-neutral-600 dark:text-neutral-400 hover:text-ai-violet dark:hover:text-ai-violet transition-colors">
-              Pratinjau Dashboard
-            </button>
             <button onClick={() => handleNavClick('dna-canvas')} className="text-xs font-semibold text-neutral-600 dark:text-neutral-400 hover:text-ai-violet dark:hover:text-ai-violet transition-colors">
-              DNA Sistem
+              Cara Kerja
             </button>
             <button onClick={() => handleNavClick('pricing')} className="text-xs font-semibold text-neutral-600 dark:text-neutral-400 hover:text-ai-violet dark:hover:text-ai-violet transition-colors">
               Harga & Akses
@@ -131,11 +128,8 @@ export default function Header({ currentTab, setTab, darkMode, setDarkMode, bran
       {mobileMenuOpen && (
         <div className="md:hidden border-t border-neutral-200 dark:border-[#262626] bg-white dark:bg-[#0A0A0A]">
           <div className="px-6 py-4 space-y-4">
-            <button onClick={() => handleNavClick('visual-showcase')} className="block w-full text-left text-sm font-semibold text-neutral-700 dark:text-neutral-300">
-              Pratinjau Dashboard
-            </button>
             <button onClick={() => handleNavClick('dna-canvas')} className="block w-full text-left text-sm font-semibold text-neutral-700 dark:text-neutral-300">
-              DNA Sistem
+              Cara Kerja
             </button>
             <button onClick={() => handleNavClick('pricing')} className="block w-full text-left text-sm font-semibold text-neutral-700 dark:text-neutral-300">
               Harga & Akses
