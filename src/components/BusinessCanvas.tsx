@@ -500,7 +500,7 @@ export default function BusinessCanvas({ canvas, setCanvas, onSave, isSetupWizar
             </div>
 
             <div>
-              <label className="block text-xs font-semibold text-neutral-700 dark:text-neutral-300 mb-1.5">Suku Cadang Budget Iklan Bulanan (Rp)</label>
+              <label className="block text-xs font-semibold text-neutral-700 dark:text-neutral-300 mb-1.5">Budget Iklan Bulanan (Rp)</label>
               <input
                 id="inp-dna-monthlyAdBudget"
                 type="number"
