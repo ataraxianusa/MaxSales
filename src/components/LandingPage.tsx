@@ -188,13 +188,13 @@ export default function LandingPage({ onEnterDashboard }: LandingPageProps) {
         <div className="max-w-6xl mx-auto">
         <SectionLabel n={1} label="SISTEM OPERASI PERTUMBUHAN BISNIS" />
 
-        <div className="grid lg:grid-cols-2 gap-10 lg:gap-16 items-start">
+        <div className="grid lg:grid-cols-2 gap-10 lg:gap-16 items-center">
           <div>
-            <motion.h1 className="font-display text-4xl md:text-5xl lg:text-6xl text-ink dark:text-dark-text mb-6 leading-tight" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: 0.1 }}>
+            <motion.h1 className="font-display font-bold text-4xl md:text-5xl lg:text-6xl text-ink dark:text-dark-text mb-6 leading-tight" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: 0.1 }}>
               Ubah Produk Biasa<br /><span className="text-merah dark:text-merah">Jadi Luar Biasa</span>
             </motion.h1>
 
-            <motion.p className="text-lg text-ink/60 dark:text-dark-text/60 mb-8 max-w-md" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: 0.2 }}>
+            <motion.p className="text-lg font-bold text-ink/60 dark:text-dark-text/60 mb-8 max-w-md" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: 0.2 }}>
               AI yang memahami bisnis Anda. Strategi siap eksekusi setiap hari.
             </motion.p>
 
