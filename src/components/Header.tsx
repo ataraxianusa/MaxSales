@@ -47,7 +47,7 @@ export default function Header({ currentTab, setTab, darkMode, setDarkMode, bran
                 MAXX<span className="text-neutral-500 dark:text-[#A3A3A3]">SALES</span>
               </span>
               <p className="text-[9px] font-mono leading-none text-neutral-400 dark:text-[#737373]">
-                {brandName || "AI Business Brain"} • MVP v0.4
+                SISTEM OPERASI PERTUMBUHAN BISNIS • MVP v0.4
               </p>
             </div>
           </button>
