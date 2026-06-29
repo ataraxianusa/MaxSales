@@ -7,8 +7,6 @@ import {
   Target,
   Zap,
   TrendingUp,
-  Sun,
-  Moon,
   Check,
   Users,
   MessageSquare,
@@ -180,25 +178,13 @@ const TESTIMONIALS = [
   },
 ];
 
-export default function LandingPage({ onEnterDashboard, darkMode, setDarkMode }: LandingPageProps) {
+export default function LandingPage({ onEnterDashboard }: LandingPageProps) {
   const [openFaq, setOpenFaq] = React.useState<number | null>(null);
 
   return (
     <div className="min-h-screen bg-base dark:bg-space-dark text-ink dark:text-dark-text font-body">
-      {/* ── Nav ───────────────────────────────────────── */}
-      <nav className="sticky top-0 z-50 bg-base/80 dark:bg-space-dark/80 backdrop-blur-md border-b border-ink/5 dark:border-dark-text/5">
-        <div className="max-w-6xl mx-auto px-6 md:px-12 h-14 flex items-center justify-end">
-          <div className="flex items-center gap-4">
-            <button onClick={() => setDarkMode(!darkMode)} className="p-2 text-ink/40 dark:text-dark-text/40 hover:text-ink dark:hover:text-dark-text transition-colors" aria-label="Toggle dark mode">
-              {darkMode ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />}
-            </button>
-            <button onClick={onEnterDashboard} className="font-mono text-xs tracking-[0.1em] uppercase text-merah dark:text-merah hover:underline underline-offset-4">Masuk</button>
-          </div>
-        </div>
-      </nav>
-
       {/* ── HERO ──────────────────────────────────────── */}
-      <section className="w-full px-6 md:px-12 pt-16 pb-20 md:pt-24 md:pb-28">
+      <section className="w-full px-6 md:px-12 pt-12 pb-20 md:pt-20 md:pb-28">
         <div className="max-w-6xl mx-auto">
         <SectionLabel n={1} label="SISTEM OPERASI PERTUMBUHAN BISNIS" />
 
