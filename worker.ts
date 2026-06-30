@@ -11,6 +11,9 @@ type Bindings = {
   OPENROUTER_API_KEY: string;
   OPENROUTER_MODEL: string;
   APIFY_TOKEN: string;
+  AZURE_OPENAI_ENDPOINT: string;
+  AZURE_OPENAI_KEY: string;
+  AZURE_OPENAI_DEPLOYMENT: string;
 };
 
 const app = new Hono<{ Bindings: Bindings }>();
@@ -930,10 +933,14 @@ app.post("/api/chat", async (c) => {
   const { messages, dna } = await c.req.json();
   if (!Array.isArray(messages) || !messages.length) return c.json({ error: "Messages required." }, 400);
 
+  const azureEndpoint = c.env.AZURE_OPENAI_ENDPOINT;
+  const azureKey = c.env.AZURE_OPENAI_KEY;
+  const azureDeployment = c.env.AZURE_OPENAI_DEPLOYMENT || "gpt-4o";
+
   const apiKey = c.env.OPENROUTER_API_KEY;
   const model = c.env.OPENROUTER_MODEL || "openai/gpt-oss-120b:free";
 
-  if (!apiKey) {
+  if (!azureKey && !apiKey) {
     let reply = "Halo! Saya MaxxSales AI Co-pilot. Silakan tanya apa saja!";
     return c.json({ reply, mode: "simulated" });
   }
@@ -947,18 +954,46 @@ app.post("/api/chat", async (c) => {
       if (text.trim()) orMsgs.push({ role: m.role === "model" ? "assistant" : "user", content: text });
     }
 
-    // Retry up to 2 times on failure
-    let lastError: any;
-    for (let attempt = 0; attempt < 2; attempt++) {
+    // Try Azure OpenAI first, fallback to OpenRouter
+    let reply = "";
+    if (azureKey && azureEndpoint) {
       try {
-        const reply = await callOpenRouter(apiKey, model, orMsgs, { temperature: 0.7, maxTokens: 512 });
-        return c.json({ reply, mode: "live-ai" });
-      } catch (err) {
-        lastError = err;
-        if (attempt < 1) await new Promise(r => setTimeout(r, 1000));
+        const azRes = await fetch(`${azureEndpoint}/openai/deployments/${azureDeployment}/chat/completions?api-version=2024-10-21`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "api-key": azureKey
+          },
+          body: JSON.stringify({
+            messages: orMsgs,
+            temperature: 0.7,
+            max_tokens: 512
+          })
+        });
+        const azData = await azRes.json();
+        reply = azData.choices?.[0]?.message?.content || "";
+      } catch {
+        // Fallback to OpenRouter
       }
     }
-    throw lastError;
+
+    if (!reply && apiKey) {
+      // Retry up to 2 times on failure
+      let lastError: any;
+      for (let attempt = 0; attempt < 2; attempt++) {
+        try {
+          reply = await callOpenRouter(apiKey, model, orMsgs, { temperature: 0.7, maxTokens: 512 });
+          break;
+        } catch (err) {
+          lastError = err;
+          if (attempt < 1) await new Promise(r => setTimeout(r, 1000));
+        }
+      }
+      if (!reply) throw lastError;
+    }
+
+    if (!reply) throw new Error("No reply generated");
+    return c.json({ reply, mode: "live-ai" });
   } catch {
     return c.json({ reply: "Maaf, kendala koneksi AI. Silakan coba lagi dalam beberapa saat.", mode: "error" });
   }
