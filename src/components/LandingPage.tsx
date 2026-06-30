@@ -137,7 +137,7 @@ const STEPS = [
 const FAQ_ITEMS = [
   {
     q: "Saya gaptek, bisa pakai ini?",
-    a: "Bisa banget. MaxSales dirancang untuk pengusaha, bukan programmer. Anda cukup isi formulir bisnis seperti ngobrol biasa — soal produk, pelanggan, harga. Setelah itu, AI yang bekerja. Tidak perlu install apa pun, cukup buka browser.",
+    a: "Bisa banget. MaxxSales dirancang untuk pengusaha, bukan programmer. Anda cukup isi formulir bisnis seperti ngobrol biasa — soal produk, pelanggan, harga. Setelah itu, AI yang bekerja. Tidak perlu install apa pun, cukup buka browser.",
   },
   {
     q: "Kok bisa AI tahu bisnis saya? Datanya dari mana?",
@@ -149,7 +149,7 @@ const FAQ_ITEMS = [
   },
   {
     q: "Bisnis saya bidang jasa, cocok nggak?",
-    a: "Cocok. MaxSales dipakai oleh pengusaha F&B, fashion, retail, jasa catering, salon, bengkel, sampai kerajinan tangan. Yang penting Anda punya produk atau jasa yang dijual dan ingin omset naik — sisanya AI bantu.",
+    a: "Cocok. MaxxSales dipakai oleh pengusaha F&B, fashion, retail, jasa catering, salon, bengkel, sampai kerajinan tangan. Yang penting Anda punya produk atau jasa yang dijual dan ingin omset naik — sisanya AI bantu.",
   },
   {
     q: "Gimana kalau ternyata nggak cocok?",
@@ -161,7 +161,7 @@ const TESTIMONIALS = [
   {
     name: "Siti Nurhaliza",
     role: "Pemilik Katering Rumahan, Surabaya",
-    quote: "Dulu saya bingung setiap mau promosi. Sekarang tinggal buka MaxSales pagi-pagi, langsung dapat template WhatsApp yang tinggal kirim. Omset bulan ini naik 25%.",
+    quote: "Dulu saya bingung setiap mau promosi. Sekarang tinggal buka MaxxSales pagi-pagi, langsung dapat template WhatsApp yang tinggal kirim. Omset bulan ini naik 25%.",
     initials: "SN",
   },
   {
@@ -173,7 +173,7 @@ const TESTIMONIALS = [
   {
     name: "Rina Wijaya",
     role: "Pemilik Toko Kue Online, Bandung",
-    quote: "Saya nggak ngerti teknologi sama sekali, tapi MaxSales gampang banget dipakai. Sekarang setiap pagi saya punya 'briefing' dari AI — kayak punya asisten pribadi yang ngerti bisnis saya.",
+    quote: "Saya nggak ngerti teknologi sama sekali, tapi MaxxSales gampang banget dipakai. Sekarang setiap pagi saya punya 'briefing' dari AI — kayak punya asisten pribadi yang ngerti bisnis saya.",
     initials: "RW",
   },
 ];
@@ -239,7 +239,7 @@ export default function LandingPage({ onEnterDashboard }: LandingPageProps) {
           </div>
 
           <motion.p className="mt-8 text-lg text-ink/70 dark:text-dark-text/70" initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }} transition={{ duration: 0.5, delay: 0.3 }}>
-            MaxSales menyelesaikan ketiganya dalam <strong className="text-ink dark:text-dark-text">satu briefing harian</strong>.
+            MaxxSales menyelesaikan ketiganya dalam <strong className="text-ink dark:text-dark-text">satu briefing harian</strong>.
           </motion.p>
         </div>
       </section>
