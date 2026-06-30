@@ -52,7 +52,8 @@ export default function Header({ currentTab, setTab, darkMode, setDarkMode, bran
             </div>
           </button>
 
-          {/* Desktop Navigation Links */}
+          {/* Desktop Navigation Links — Landing page only */}
+          {currentTab === "landing" && (
           <nav className="hidden md:flex items-center space-x-6 mx-auto">
             <button onClick={() => handleNavClick('dna-canvas')} className="text-xs font-bold text-ink/70 dark:text-dark-text/70 hover:text-hijau dark:hover:text-hijau transition-colors cursor-pointer font-body">
               Cara Kerja
@@ -64,6 +65,7 @@ export default function Header({ currentTab, setTab, darkMode, setDarkMode, bran
               FAQ
             </button>
           </nav>
+          )}
 
           {/* Right Utilities (Theme Selector + Access Support / Logout) */}
           <div className="flex items-center space-x-3 ml-auto shrink-0">
@@ -124,8 +126,8 @@ export default function Header({ currentTab, setTab, darkMode, setDarkMode, bran
         </div>
       </div>
 
-      {/* Mobile Navigation Dropdown */}
-      {mobileMenuOpen && (
+      {/* Mobile Navigation Dropdown — Landing page only */}
+      {mobileMenuOpen && currentTab === "landing" && (
         <div className="md:hidden border-t border-neutral-200 dark:border-[#262626] bg-white dark:bg-[#0A0A0A]">
           <div className="px-6 py-4 space-y-4">
             <button onClick={() => handleNavClick('dna-canvas')} className="block w-full text-left text-sm font-semibold text-neutral-700 dark:text-neutral-300">

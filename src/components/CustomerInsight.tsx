@@ -321,7 +321,7 @@ export default function CustomerInsight({ dna, segments, setSegments }: Customer
               </div>
               {aiError && <span className="text-[9px] text-red-500">{aiError}</span>}
             </div>
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-2">
+            <div className="grid grid-cols-2 gap-2">
               <button onClick={fetchRevenuePrediction} disabled={revenueLoading || segments.length === 0} className="flex items-center justify-center space-x-1.5 py-2.5 rounded-lg border border-neutral-200 dark:border-[#262626] bg-neutral-50 dark:bg-[#1A1A1A] hover:bg-neutral-100 dark:hover:bg-[#262626] transition-colors disabled:opacity-40 text-[10px] font-semibold text-neutral-700 dark:text-neutral-300">
                 {revenueLoading ? <Loader2 className="w-3 h-3 animate-spin" /> : <BarChart3 className="w-3 h-3 text-blue-500" />}
                 <span>Prediksi Revenue</span>
