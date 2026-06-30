@@ -153,8 +153,6 @@ export default function App() {
     const timer = setTimeout(fetchAutoSegment, 1000);
     return () => clearTimeout(timer);
   }, [canvas.productName, canvas.category, canvas.normalPrice]);
-    fetchAutoSegment();
-  }, [canvas.biggestCompetitor]);
 
   // Sync state to localStorage
   React.useEffect(() => {
