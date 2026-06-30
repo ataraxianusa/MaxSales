@@ -278,7 +278,7 @@ export default function PricingSection({ onBuyNow }: PricingSectionProps) {
                       viewport={{ once: true }}
                       transition={{ delay: 0.05 * i, duration: 0.35 }}
                       whileHover={{ x: 3 }}
-                      className="card-sb p-3 flex items-start gap-3 border border-stone-border bg-[#122620] hover:border-emas/20 group cursor-default transition-all duration-300"
+                      className="rounded-xl p-3 flex items-start gap-3 border border-stone-border bg-[#122620] hover:border-emas/20 group cursor-default transition-all duration-300"
                     >
                       <div className="w-8 h-8 rounded-lg bg-[#1E3932] border border-stone-border flex items-center justify-center shrink-0">
                         <Icon className="w-4 h-4 text-emas" />
