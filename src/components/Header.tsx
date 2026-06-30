@@ -27,7 +27,7 @@ export default function Header({ currentTab, setTab, darkMode, setDarkMode, bran
   };
 
   return (
-    <header className="sticky top-0 z-50 w-full border-b backdrop-blur-md transition-colors duration-300 border-neutral-200 dark:border-[#262626] bg-white/95 dark:bg-[#0A0A0A]/95">
+    <header className="sticky top-0 z-50 w-full border-b backdrop-blur-md transition-colors duration-300 border-neutral-250 dark:border-stone-border bg-white/95 dark:bg-space-dark/95 shadow-[0_1px_3px_rgba(0,0,0,0.1),_0_2px_2px_rgba(0,0,0,0.06),_0_0_2px_rgba(0,0,0,0.07)]">
       <div className="max-w-7xl mx-auto px-6 sm:px-8">
         <div className="flex items-center justify-between h-16">
           {/* Logo & Brand ID */}
@@ -37,30 +37,30 @@ export default function Header({ currentTab, setTab, darkMode, setDarkMode, bran
               setTab("landing");
               window.scrollTo({ top: 0, behavior: "smooth" });
             }} 
-            className="flex items-center space-x-3 text-left focus:outline-none focus:ring-1 focus:ring-neutral-400 p-1 shrink-0"
+            className="flex items-center space-x-3 text-left focus:outline-none focus:ring-1 focus:ring-hijau p-1 shrink-0 cursor-pointer"
           >
-            <div className="w-6 h-6 bg-neutral-900 dark:bg-[#E5E5E5] rounded-sm flex items-center justify-center text-white dark:text-black">
-              <Sparkles className="w-3.5 h-3.5" />
+            <div className="w-7 h-7 bg-merah text-white dark:bg-dark-text dark:text-space-dark rounded-full flex items-center justify-center font-bold">
+              <Sparkles className="w-4 h-4" />
             </div>
             <div>
-              <span className="text-sm font-bold tracking-tight text-neutral-900 dark:text-white">
-                MAXX<span className="text-neutral-500 dark:text-[#A3A3A3]">SALES</span>
+              <span className="text-sm font-extrabold tracking-tight text-ink dark:text-dark-text font-body">
+                MAXX<span className="text-hijau">SALES</span>
               </span>
-              <p className="text-[9px] font-mono leading-none text-neutral-400 dark:text-[#737373]">
-                SISTEM OPERASI PERTUMBUHAN BISNIS • MVP v0.4
+              <p className="text-[9px] font-mono leading-none text-ink/40 dark:text-dark-text/40">
+                SISTEM OPERASI PERTUMBUHAN BISNIS • STARBUCKS v1.0
               </p>
             </div>
           </button>
 
           {/* Desktop Navigation Links */}
           <nav className="hidden md:flex items-center space-x-6 mx-auto">
-            <button onClick={() => handleNavClick('dna-canvas')} className="text-xs font-semibold text-neutral-600 dark:text-neutral-400 hover:text-ai-violet dark:hover:text-ai-violet transition-colors">
+            <button onClick={() => handleNavClick('dna-canvas')} className="text-xs font-bold text-ink/70 dark:text-dark-text/70 hover:text-hijau dark:hover:text-hijau transition-colors cursor-pointer font-body">
               Cara Kerja
             </button>
-            <button onClick={() => handleNavClick('pricing')} className="text-xs font-semibold text-neutral-600 dark:text-neutral-400 hover:text-ai-violet dark:hover:text-ai-violet transition-colors">
+            <button onClick={() => handleNavClick('pricing')} className="text-xs font-bold text-ink/70 dark:text-dark-text/70 hover:text-hijau dark:hover:text-hijau transition-colors cursor-pointer font-body">
               Harga & Akses
             </button>
-            <button onClick={() => handleNavClick('faq')} className="text-xs font-semibold text-neutral-600 dark:text-neutral-400 hover:text-ai-violet dark:hover:text-ai-violet transition-colors">
+            <button onClick={() => handleNavClick('faq')} className="text-xs font-bold text-ink/70 dark:text-dark-text/70 hover:text-hijau dark:hover:text-hijau transition-colors cursor-pointer font-body">
               FAQ
             </button>
           </nav>
@@ -72,7 +72,7 @@ export default function Header({ currentTab, setTab, darkMode, setDarkMode, bran
               onClick={() => setDarkMode(!darkMode)}
               title={darkMode ? "Ubah ke Mode Terang" : "Ubah ke Mode Gelap"}
               aria-label={darkMode ? "Ubah ke Mode Terang" : "Ubah ke Mode Gelap"}
-              className="flex items-center space-x-1.5 px-3 py-1.5 rounded-full border transition-all text-xs font-mono font-bold tracking-wide focus:outline-none bg-neutral-100 border-neutral-200 hover:border-neutral-300 text-neutral-800 dark:bg-[#151515] dark:border-[#262626] dark:hover:border-[#383838] dark:text-[#E5E5E5] shadow-sm cursor-pointer"
+              className="flex items-center space-x-1.5 px-3 py-1.5 rounded-full border transition-all text-xs font-mono font-bold tracking-wide focus:outline-none bg-neutral-100 border-neutral-200 hover:border-neutral-300 text-neutral-800 dark:bg-dark-krem dark:border-stone-border dark:hover:border-stone-border/80 dark:text-dark-text shadow-sm cursor-pointer"
             >
               {darkMode ? (
                 <>
@@ -89,11 +89,11 @@ export default function Header({ currentTab, setTab, darkMode, setDarkMode, bran
 
             {isLoggedIn && onLogout && (
               <>
-                <div className="hidden sm:block h-4 w-[1px] bg-neutral-200 dark:bg-[#262626]"></div>
+                <div className="hidden sm:block h-4 w-[1px] bg-neutral-200 dark:bg-stone-border"></div>
                 <button
                   id="btn-nav-logout"
                   onClick={onLogout}
-                  className="hidden sm:block px-3 py-1.5 rounded border border-neutral-300 dark:border-[#262626] font-mono text-[10px] uppercase font-bold text-neutral-700 dark:text-[#E5E5E5] hover:bg-neutral-50 dark:hover:bg-[#1C1C1C] transition-colors"
+                  className="hidden sm:block btn-sb btn-sb-dark-outline px-4 py-1.5 text-xs text-ink dark:text-dark-text cursor-pointer"
                 >
                   Keluar
                 </button>
@@ -102,11 +102,11 @@ export default function Header({ currentTab, setTab, darkMode, setDarkMode, bran
 
             {!isLoggedIn && (
               <>
-                <div className="hidden sm:block h-4 w-[1px] bg-neutral-200 dark:bg-[#262626]"></div>
+                <div className="hidden sm:block h-4 w-[1px] bg-neutral-200 dark:bg-stone-border"></div>
                 <button
                   id="btn-nav-login-direct"
                   onClick={() => setTab("login")}
-                  className="hidden sm:block px-3 py-1.5 rounded font-mono text-[10px] uppercase font-bold text-white dark:text-black bg-neutral-950 dark:bg-[#E5E5E5] hover:bg-neutral-800 dark:hover:bg-white transition-colors"
+                  className="hidden sm:block btn-sb btn-sb-black px-4 py-1.5 text-xs text-white dark:text-space-dark bg-black dark:bg-dark-text cursor-pointer"
                 >
                   Masuk
                 </button>

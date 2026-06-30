@@ -47,7 +47,7 @@ function SectionLabel({ n, label }: { n: number; label: string }) {
 function TacticalBriefingCard() {
   return (
     <motion.div
-      className="tactical-card p-6 md:p-8"
+      className="card-sb p-6 md:p-8 border-t-[3px] border-t-hijau relative overflow-hidden bg-white dark:bg-charcoal-surface"
       initial={{ opacity: 0, scale: 0.98 }}
       animate={{ opacity: 1, scale: 1 }}
       transition={{ duration: 0.8, delay: 0.4 }}
@@ -182,35 +182,35 @@ export default function LandingPage({ onEnterDashboard }: LandingPageProps) {
   const [openFaq, setOpenFaq] = React.useState<number | null>(null);
 
   return (
-    <div className="min-h-screen bg-base dark:bg-space-dark text-ink dark:text-dark-text font-body">
+    <div className="min-h-screen bg-base dark:bg-space-dark text-ink dark:text-dark-text font-body transition-colors duration-300">
       {/* ── HERO ──────────────────────────────────────── */}
-      <section id="visual-showcase" className="w-full px-6 md:px-12 pt-12 pb-20 md:pt-20 md:pb-28">
+      <section id="visual-showcase" className="w-full px-6 md:px-12 pt-16 pb-20 md:pt-24 md:pb-28 bg-base dark:bg-space-dark">
         <div className="max-w-6xl mx-auto">
         <SectionLabel n={1} label="SISTEM OPERASI PERTUMBUHAN BISNIS" />
 
         <div className="grid lg:grid-cols-2 gap-10 lg:gap-16 items-center">
           <div>
-            <motion.h1 className="font-display font-bold text-4xl md:text-5xl lg:text-6xl text-ink dark:text-dark-text mb-6 leading-tight" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: 0.1 }}>
-              Ubah Produk Biasa<br /><span className="text-merah dark:text-merah">Jadi Luar Biasa</span>
+            <motion.h1 className="font-display font-extrabold text-4xl md:text-5xl lg:text-6xl text-ink dark:text-dark-text mb-6 leading-tight" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: 0.1 }}>
+              Ubah Produk Biasa<br /><span className="text-merah dark:text-hijau">Jadi Luar Biasa</span>
             </motion.h1>
 
-            <motion.p className="text-lg font-bold text-ink/60 dark:text-dark-text/60 mb-8 max-w-md" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: 0.2 }}>
-              AI yang memahami bisnis Anda. Strategi siap eksekusi setiap hari.
+            <motion.p className="text-lg font-medium text-ink/70 dark:text-dark-text/70 mb-8 max-w-md" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: 0.2 }}>
+              AI yang memahami bisnis Anda secara mendalam. Strategi taktis siap eksekusi setiap hari.
             </motion.p>
 
             <motion.div className="flex flex-wrap gap-3 mb-8" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: 0.3 }}>
-              <button onClick={onEnterDashboard} className="bg-merah text-white px-6 py-3 font-mono text-sm tracking-[0.05em] uppercase hover:bg-merah/90 transition-colors flex items-center gap-2">
+              <button onClick={onEnterDashboard} className="btn-sb btn-sb-primary px-7 py-3 text-sm font-bold uppercase tracking-wider shadow-md">
                 Mulai Sekarang <ArrowRight className="w-4 h-4" />
               </button>
-              <a href="#pricing" className="px-6 py-3 border border-ink/15 dark:border-dark-text/15 font-mono text-sm tracking-[0.05em] uppercase text-ink/70 dark:text-dark-text/70 hover:border-ink/30 dark:hover:border-dark-text/30 transition-colors">
+              <a href="#pricing" className="btn-sb btn-sb-outline px-7 py-3 text-sm font-bold uppercase tracking-wider">
                 Lihat Harga
               </a>
             </motion.div>
 
             <motion.div className="flex flex-wrap gap-x-6 gap-y-2 text-xs text-ink/40 dark:text-dark-text/40 font-mono" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.5, delay: 0.5 }}>
-              <span className="flex items-center gap-1.5"><ShieldCheck className="w-3 h-3" /> Lifetime access</span>
-              <span className="flex items-center gap-1.5"><Check className="w-3 h-3" /> Tanpa biaya tersembunyi</span>
-              <span className="flex items-center gap-1.5"><Zap className="w-3 h-3" /> Siap pakai 5 menit</span>
+              <span className="flex items-center gap-1.5"><ShieldCheck className="w-3.5 h-3.5 text-hijau" /> Lifetime access</span>
+              <span className="flex items-center gap-1.5"><Check className="w-3.5 h-3.5 text-hijau" /> Tanpa biaya tersembunyi</span>
+              <span className="flex items-center gap-1.5"><Zap className="w-3.5 h-3.5 text-emas" /> Siap pakai 5 menit</span>
             </motion.div>
           </div>
 
@@ -228,7 +228,7 @@ export default function LandingPage({ onEnterDashboard }: LandingPageProps) {
 
           <div className="grid md:grid-cols-3 gap-4">
             {PROBLEMS.map((p, i) => (
-              <motion.div key={i} className="paper-surface rounded-sm p-6" initial={{ opacity: 0, y: 16 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, margin: "-30px" }} transition={{ duration: 0.5, delay: i * 0.1 }}>
+              <motion.div key={i} className="card-sb p-6 bg-white dark:bg-charcoal-surface" initial={{ opacity: 0, y: 16 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, margin: "-30px" }} transition={{ duration: 0.5, delay: i * 0.1 }}>
                 <div className="w-10 h-10 flex items-center justify-center border border-merah/20 mb-4">
                   <p.icon className="w-5 h-5 text-merah" />
                 </div>
@@ -245,13 +245,13 @@ export default function LandingPage({ onEnterDashboard }: LandingPageProps) {
       </section>
 
       {/* ── FEATURES ──────────────────────────────────── */}
-      <section className="border-t border-ink/5 dark:border-dark-text/5 bg-krem/50 dark:bg-dark-krem/30">
+      <section className="border-t border-ink/10 dark:border-stone-border bg-krem/50 dark:bg-dark-krem/30">
         <div className="max-w-6xl mx-auto px-6 md:px-12 py-16 md:py-24">
           <SectionLabel n={3} label="6 MODUL INTI" />
 
           <div className="grid md:grid-cols-3 gap-4">
             {FEATURES.map((f, i) => (
-              <motion.div key={i} className="paper-surface rounded-sm p-6 group" initial={{ opacity: 0, y: 16 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, margin: "-30px" }} transition={{ duration: 0.4, delay: i * 0.06 }}>
+              <motion.div key={i} className="card-sb p-6 bg-white dark:bg-charcoal-surface group" initial={{ opacity: 0, y: 16 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, margin: "-30px" }} transition={{ duration: 0.4, delay: i * 0.06 }}>
                 <div className="flex items-center gap-3 mb-3">
                   <div className={`w-8 h-8 flex items-center justify-center border ${f.color === "merah" ? "border-merah/20" : f.color === "emas" ? "border-emas/20" : "border-biru/20"}`}>
                     <f.icon className={`w-4 h-4 ${f.color === "merah" ? "text-merah" : f.color === "emas" ? "text-emas" : "text-biru"}`} />
@@ -274,7 +274,7 @@ export default function LandingPage({ onEnterDashboard }: LandingPageProps) {
             {STEPS.map((s, i) => (
               <motion.div
                 key={i}
-                className="relative"
+                className="relative group cursor-default"
                 initial={{ opacity: 0, y: 30, scale: 0.95 }}
                 whileInView={{ opacity: 1, y: 0, scale: 1 }}
                 viewport={{ once: true, margin: "-50px" }}
@@ -282,11 +282,10 @@ export default function LandingPage({ onEnterDashboard }: LandingPageProps) {
               >
                 {/* Big number */}
                 <motion.div
-                  className="w-16 h-16 flex items-center justify-center border-2 border-merah/20 dark:border-merah/20 mb-5"
-                  whileHover={{ scale: 1.05, borderColor: "var(--color-merah)" }}
-                  transition={{ duration: 0.2 }}
+                  className="w-14 h-14 rounded-full flex items-center justify-center border-2 border-hijau dark:border-hijau mb-5 bg-white dark:bg-charcoal-surface transition-all duration-300 group-hover:bg-hijau"
+                  whileHover={{ scale: 1.05 }}
                 >
-                  <span className="font-mono text-3xl font-bold text-merah dark:text-merah">{s.n}</span>
+                  <span className="font-body text-xl font-extrabold text-hijau group-hover:text-white transition-colors duration-300">{s.n}</span>
                 </motion.div>
 
                 <h3 className="font-display text-xl text-ink dark:text-dark-text mb-2">{s.title}</h3>
@@ -327,7 +326,7 @@ export default function LandingPage({ onEnterDashboard }: LandingPageProps) {
             {TESTIMONIALS.map((t, i) => (
               <motion.div
                 key={i}
-                className="paper-surface rounded-sm p-6"
+                className="card-sb p-6 bg-white dark:bg-charcoal-surface"
                 initial={{ opacity: 0, y: 16 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, margin: "-30px" }}
@@ -356,13 +355,13 @@ export default function LandingPage({ onEnterDashboard }: LandingPageProps) {
 
           <div className="space-y-0">
             {FAQ_ITEMS.map((item, i) => (
-              <motion.div key={i} className="border-b border-ink/5 dark:border-dark-text/5" initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }} transition={{ duration: 0.4, delay: i * 0.05 }}>
-                <button className="w-full flex items-center justify-between py-5 text-left group" onClick={() => setOpenFaq(openFaq === i ? null : i)}>
-                  <span className="font-body font-bold text-sm text-ink dark:text-dark-text group-hover:text-merah dark:group-hover:text-merah transition-colors pr-4">{item.q}</span>
+              <motion.div key={i} className="border-b border-ink/10 dark:border-stone-border" initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }} transition={{ duration: 0.4, delay: i * 0.05 }}>
+                <button className="w-full flex items-center justify-between py-5 text-left group cursor-pointer" onClick={() => setOpenFaq(openFaq === i ? null : i)}>
+                  <span className="font-body font-bold text-sm text-ink dark:text-dark-text group-hover:text-hijau dark:group-hover:text-hijau transition-colors pr-4">{item.q}</span>
                   <ChevronDown className={`w-4 h-4 text-ink/30 dark:text-dark-text/30 shrink-0 transition-transform ${openFaq === i ? "rotate-180" : ""}`} />
                 </button>
                 {openFaq === i && (
-                  <motion.div className="pb-5 pr-8" initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: "auto" }} transition={{ duration: 0.3 }}>
+                  <motion.div className="pb-5 pr-8" initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: "auto" }} transition={{ duration: 0.3, ease: [0.25, 0.46, 0.45, 0.94] }}>
                     <p className="text-sm text-ink/60 dark:text-dark-text/60">{item.a}</p>
                   </motion.div>
                 )}
@@ -373,17 +372,17 @@ export default function LandingPage({ onEnterDashboard }: LandingPageProps) {
       </section>
 
       {/* ── Footer ────────────────────────────────────── */}
-      <footer className="border-t border-ink/5 dark:border-dark-text/5">
-        <div className="max-w-6xl mx-auto px-6 md:px-12 py-10 flex flex-col md:flex-row items-center justify-between gap-4">
+      <footer className="bg-biru border-t border-stone-border py-12 text-white">
+        <div className="max-w-6xl mx-auto px-6 md:px-12 flex flex-col md:flex-row items-center justify-between gap-6">
           <div className="text-center md:text-left">
-            <span className="font-display text-base text-ink dark:text-dark-text">MaxxSales</span>
-            <p className="text-xs text-ink/30 dark:text-dark-text/30 mt-1 font-mono">© 2026 VOXIA. All rights reserved.</p>
+            <span className="font-display text-lg text-white tracking-wider">MaxxSales</span>
+            <p className="text-xs text-white/50 mt-1 font-mono">© 2026 VOXIA. All rights reserved.</p>
           </div>
-          <div className="flex gap-6 text-xs font-mono text-ink/40 dark:text-dark-text/40">
-            <Link to="/about" className="hover:text-ink dark:hover:text-dark-text transition-colors">Tentang</Link>
-            <Link to="/terms" className="hover:text-ink dark:hover:text-dark-text transition-colors">Syarat</Link>
-            <Link to="/privacy" className="hover:text-ink dark:hover:text-dark-text transition-colors">Privasi</Link>
-            <Link to="/risk" className="hover:text-ink dark:hover:text-dark-text transition-colors">Risiko</Link>
+          <div className="flex gap-6 text-xs font-mono text-white/70">
+            <Link to="/about" className="hover:text-emas transition-colors">Tentang</Link>
+            <Link to="/terms" className="hover:text-emas transition-colors">Syarat</Link>
+            <Link to="/privacy" className="hover:text-emas transition-colors">Privasi</Link>
+            <Link to="/risk" className="hover:text-emas transition-colors">Risiko</Link>
           </div>
         </div>
       </footer>

@@ -158,25 +158,25 @@ export default function PricingSection({ onBuyNow }: PricingSectionProps) {
         <div
           className={`absolute -inset-[1px] rounded-3xl transition-all duration-700 ${
             hovered
-              ? "bg-gradient-to-br from-emerald-500/50 via-cyan-500/30 to-purple-500/20 blur-sm"
-              : "bg-gradient-to-br from-emerald-500/20 via-transparent to-transparent"
+              ? "bg-gradient-to-br from-emas/40 via-hijau/30 to-transparent blur-sm"
+              : "bg-gradient-to-br from-hijau/20 via-transparent to-transparent"
           }`}
         />
 
         <div
           onMouseEnter={() => setHovered(true)}
           onMouseLeave={() => setHovered(false)}
-          className="relative rounded-3xl border border-emerald-500/25 bg-[#0c0c0c] overflow-hidden shadow-2xl shadow-black/60"
+          className="relative rounded-3xl border border-stone-border bg-biru overflow-hidden shadow-2xl shadow-black/60"
         >
-          {/* Top gradient stripe */}
-          <div className="h-1 w-full bg-gradient-to-r from-emerald-500 via-cyan-400 to-emerald-500 animate-gradient-shift" />
+          {/* Top gold tier stripe */}
+          <div className="h-1.5 w-full bg-emas" />
 
           {/* BEST VALUE ribbon */}
           <div className="absolute top-5 right-5">
             <motion.div
               animate={{ rotate: [0, 1, -1, 0] }}
               transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
-              className="px-3 py-1.5 rounded-xl bg-gradient-to-r from-emerald-500 to-emerald-600 text-black text-[10px] font-black uppercase tracking-wider shadow-lg shadow-emerald-500/30"
+              className="px-3 py-1.5 rounded-xl bg-emas text-biru text-[10px] font-black uppercase tracking-wider shadow-lg shadow-emas/30"
             >
               ⭐ Best Value
             </motion.div>
@@ -185,10 +185,10 @@ export default function PricingSection({ onBuyNow }: PricingSectionProps) {
           <div className="p-7 sm:p-10">
             {/* Plan name */}
             <div className="mb-6">
-              <span className="text-[10px] font-mono font-bold text-emerald-500 uppercase tracking-[0.2em] block mb-1.5">
+              <span className="text-[10px] font-mono font-bold text-emas uppercase tracking-[0.2em] block mb-1.5">
                 MaxxSales · Akses Penuh
               </span>
-              <h3 className="text-xl font-black text-white">
+              <h3 className="text-xl font-bold text-white font-display">
                 Paket Founder — Harga Perkenalan
               </h3>
             </div>
@@ -201,19 +201,19 @@ export default function PricingSection({ onBuyNow }: PricingSectionProps) {
                 transition={{ duration: 0.3 }}
                 className="flex items-baseline gap-1.5"
               >
-                <span className="text-[11px] font-mono text-emerald-400 -mb-1">Rp</span>
-                <span className="text-6xl sm:text-7xl font-black text-white tracking-tighter leading-none">
+                <span className="text-[11px] font-mono text-emas -mb-1">Rp</span>
+                <span className="text-6xl sm:text-7xl font-black text-white tracking-tighter leading-none font-body">
                   299
                 </span>
-                <span className="text-2xl font-bold text-white/80 -mb-1">ribu</span>
+                <span className="text-2xl font-bold text-white/80 -mb-1 font-body">ribu</span>
               </motion.div>
 
               {/* Strikethrough original price */}
               <div className="flex flex-col items-start pb-1">
-                <span className="text-xs font-mono text-neutral-500 line-through">
+                <span className="text-xs font-mono text-white/40 line-through">
                   Rp499.000
                 </span>
-                <span className="text-[10px] font-mono text-neutral-600">
+                <span className="text-[10px] font-mono text-white/30">
                   harga normal
                 </span>
               </div>
@@ -224,7 +224,7 @@ export default function PricingSection({ onBuyNow }: PricingSectionProps) {
                 whileInView={{ scale: 1, opacity: 1 }}
                 viewport={{ once: true }}
                 transition={{ delay: 0.3, type: "spring", stiffness: 260 }}
-                className="relative flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-gradient-to-br from-emerald-500/20 to-cyan-500/10 border border-emerald-500/30"
+                className="relative flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-emas/10 border border-emas/30"
               >
                 {/* Shimmer sweep on badge */}
                 <motion.span
@@ -232,12 +232,12 @@ export default function PricingSection({ onBuyNow }: PricingSectionProps) {
                   transition={{ duration: 2.5, repeat: Infinity, ease: "linear", repeatDelay: 1.5 }}
                   className="absolute inset-0 w-full h-full bg-gradient-to-r from-transparent via-white/10 to-transparent overflow-hidden rounded-xl"
                 />
-                <BadgePercent className="w-4 h-4 text-emerald-400 relative z-10" />
+                <BadgePercent className="w-4 h-4 text-emas relative z-10" />
                 <div className="relative z-10">
-                  <span className="text-lg font-black text-emerald-400 leading-none block">
+                  <span className="text-lg font-black text-emas leading-none block">
                     40%
                   </span>
-                  <span className="text-[8px] font-mono text-emerald-500/80 leading-none">
+                  <span className="text-[8px] font-mono text-emas/85 leading-none">
                     HEMAT
                   </span>
                 </div>
@@ -248,23 +248,23 @@ export default function PricingSection({ onBuyNow }: PricingSectionProps) {
             <motion.div
               animate={{ opacity: [0.85, 1, 0.85] }}
               transition={{ duration: 2.5, repeat: Infinity, ease: "easeInOut" }}
-              className="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg bg-amber-500/8 border border-amber-500/20 mb-7"
+              className="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg bg-emas/8 border border-emas/20 mb-7"
             >
-              <Clock className="w-3.5 h-3.5 text-amber-400" />
-              <span className="text-[11px] font-mono text-amber-300">
+              <Clock className="w-3.5 h-3.5 text-emas" />
+              <span className="text-[11px] font-mono text-emas/90">
                 Harga berakhir dalam:{" "}
-                <span className="font-black text-amber-400">
+                <span className="font-black text-emas">
                   {pad(countdown.h)}:{pad(countdown.m)}:{pad(countdown.s)}
                 </span>
               </span>
             </motion.div>
 
             {/* Divider */}
-            <div className="border-t border-neutral-800 mb-7" />
+            <div className="border-t border-stone-border mb-7" />
 
             {/* Benefits list */}
             <div className="mb-8">
-              <p className="text-[10px] font-mono text-neutral-500 uppercase tracking-widest mb-4">
+              <p className="text-[10px] font-mono text-white/50 uppercase tracking-widest mb-4">
                 Semua yang Anda Dapatkan:
               </p>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
@@ -278,20 +278,20 @@ export default function PricingSection({ onBuyNow }: PricingSectionProps) {
                       viewport={{ once: true }}
                       transition={{ delay: 0.05 * i, duration: 0.35 }}
                       whileHover={{ x: 3 }}
-                      className={`flex items-start gap-3 p-3 rounded-xl border ${b.border} ${b.bg} group cursor-default transition-all`}
+                      className="card-sb p-3 flex items-start gap-3 border border-stone-border bg-[#152e27] hover:border-emas/20 group cursor-default transition-all duration-300"
                     >
-                      <div className={`w-8 h-8 rounded-lg ${b.bg} border ${b.border} flex items-center justify-center shrink-0`}>
-                        <Icon className={`w-4 h-4 ${b.color}`} />
+                      <div className="w-8 h-8 rounded-lg bg-biru border border-stone-border flex items-center justify-center shrink-0">
+                        <Icon className="w-4 h-4 text-emas" />
                       </div>
                       <div className="min-w-0">
-                        <span className="text-[11px] font-bold text-white block leading-tight mb-0.5">
+                        <span className="text-[11px] font-bold text-white block leading-tight mb-0.5 font-body">
                           {b.title}
                         </span>
-                        <p className="text-[10px] text-neutral-500 leading-snug">
+                        <p className="text-[10px] text-white/60 leading-snug">
                           {b.desc}
                         </p>
                       </div>
-                      <Check className="w-3.5 h-3.5 text-emerald-500 shrink-0 mt-0.5" />
+                      <Check className="w-3.5 h-3.5 text-emas shrink-0 mt-0.5" />
                     </motion.div>
                   );
                 })}
@@ -306,7 +306,7 @@ export default function PricingSection({ onBuyNow }: PricingSectionProps) {
                 ].map((txt, i) => (
                   <span
                     key={i}
-                    className="px-2.5 py-1 rounded-full bg-neutral-800/60 text-[10px] font-mono text-neutral-400 border border-neutral-700/50"
+                    className="px-2.5 py-1 rounded-full bg-neutral-900/60 text-[10px] font-mono text-white/60 border border-stone-border/50"
                   >
                     {txt}
                   </span>
@@ -318,18 +318,10 @@ export default function PricingSection({ onBuyNow }: PricingSectionProps) {
             <motion.button
               id="cta-buy-now"
               onClick={onBuyNow}
-              whileHover={{ scale: 1.02 }}
-              whileTap={{ scale: 0.97 }}
-              className="group relative w-full py-4 rounded-2xl text-sm font-black transition-all duration-300 bg-gradient-to-r from-emerald-500 via-emerald-400 to-cyan-500 text-black shadow-xl shadow-emerald-500/30 hover:shadow-emerald-500/50 flex items-center justify-center gap-2.5 overflow-hidden mb-4"
+              className="btn-sb btn-sb-white group relative w-full py-4 text-sm font-extrabold shadow-xl flex items-center justify-center gap-2.5 overflow-hidden mb-4 cursor-pointer"
             >
-              {/* Shimmer sweep */}
-              <motion.span
-                animate={{ x: ["-100%", "200%"] }}
-                transition={{ duration: 1.8, repeat: Infinity, ease: "linear", repeatDelay: 2 }}
-                className="absolute inset-0 w-full h-full bg-gradient-to-r from-transparent via-white/25 to-transparent"
-              />
               <CreditCard className="w-5 h-5 relative z-10" />
-              <span className="relative z-10 tracking-wide">
+              <span className="relative z-10 tracking-wide font-body">
                 Beli Sekarang — Rp299.000
               </span>
               <ArrowRight className="w-4 h-4 relative z-10 transition-transform duration-300 group-hover:translate-x-1" />
@@ -337,8 +329,8 @@ export default function PricingSection({ onBuyNow }: PricingSectionProps) {
 
             {/* Payment info */}
             <div className="flex items-center justify-center gap-2 mb-5">
-              <Lock className="w-3 h-3 text-emerald-500" />
-              <span className="text-[10px] font-mono text-neutral-400 text-center max-w-[280px]">
+              <Lock className="w-3 h-3 text-emas" />
+              <span className="text-[10px] font-mono text-white/60 text-center max-w-[280px]">
                 <span className="text-white font-bold">10+ Metode Pembayaran:</span><br/>
                 QRIS · E-Wallet (GoPay/OVO/DANA) · Virtual Account · Kartu Kredit · Gerai Retail (Alfamart/Indomaret)
               </span>
@@ -352,10 +344,10 @@ export default function PricingSection({ onBuyNow }: PricingSectionProps) {
                   <motion.div
                     key={i}
                     whileHover={{ y: -2 }}
-                    className="flex flex-col items-center gap-1.5 py-2.5 px-1 rounded-xl bg-neutral-900/60 border border-neutral-800/60"
+                    className="flex flex-col items-center gap-1.5 py-2.5 px-1 rounded-xl bg-neutral-900/40 border border-stone-border"
                   >
-                    <Icon className="w-4 h-4 text-emerald-500/70" />
-                    <span className="text-[8.5px] font-mono text-neutral-500 text-center leading-tight">
+                    <Icon className="w-4 h-4 text-emas" />
+                    <span className="text-[8.5px] font-mono text-white/50 text-center leading-tight">
                       {badge.label}
                     </span>
                   </motion.div>

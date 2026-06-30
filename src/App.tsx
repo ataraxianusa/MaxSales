@@ -431,17 +431,17 @@ export default function App() {
                 
                 {/* Sidebar Navigation Panel for 5 main features */}
                 <aside className="w-full lg:w-64 shrink-0 space-y-4">
-                                   {/* Brand overview segment */}
-                  <div id="brand-overview-card" className="p-4 rounded border text-center space-y-1 bg-white dark:bg-[#111111] border-neutral-200 dark:border-[#262626]">
-                    <span className="text-[9px] font-bold font-mono tracking-widest uppercase text-neutral-500 dark:text-[#737373]">Merek Aktif Anda</span>
-                    <h3 className="text-sm font-bold text-neutral-900 dark:text-white truncate">{canvas.brand || "Siap Jualan"}</h3>
-                    <p className="text-[10px] font-mono text-neutral-400 dark:text-[#A3A3A3] capitalize truncate">{canvas.productName}</p>
+                       {/* Brand overview segment */}
+                  <div id="brand-overview-card" className="p-4 card-sb text-center space-y-1 bg-white dark:bg-charcoal-surface border border-neutral-250 dark:border-stone-border">
+                    <span className="text-[9px] font-bold font-mono tracking-widest uppercase text-ink/40 dark:text-dark-text/40">Merek Aktif Anda</span>
+                    <h3 className="text-sm font-extrabold text-ink dark:text-dark-text truncate font-body">{canvas.brand || "Siap Jualan"}</h3>
+                    <p className="text-[10px] font-mono text-ink/50 dark:text-dark-text/50 capitalize truncate">{canvas.productName}</p>
                     
-                    <div className="pt-2.5 border-t border-neutral-100 dark:border-[#1F1F1F] mt-2">
+                    <div className="pt-2.5 border-t border-neutral-150 dark:border-stone-border mt-2">
                        <button
                         id="btn-trigger-reedit-dna"
                         onClick={handleResetDNA}
-                        className="text-[9px] font-mono hover:underline font-bold text-neutral-500 dark:text-[#A3A3A3] uppercase tracking-wider block mx-auto"
+                        className="text-[9px] font-mono hover:underline font-bold text-hijau dark:text-emas uppercase tracking-wider block mx-auto cursor-pointer"
                       >
                         ✎ Sesuaikan DNA (Statis)
                       </button>
@@ -449,22 +449,22 @@ export default function App() {
                   </div>
 
                   {/* HIGHLY VISIBLE INTERACTIVE THEME SWITCHER CARD */}
-                  <div className="p-3 rounded border bg-neutral-50/50 dark:bg-[#111111] border-neutral-200 dark:border-[#262626] flex items-center justify-between shadow-xs">
+                  <div className="p-3 card-sb bg-white dark:bg-charcoal-surface border border-neutral-250 dark:border-stone-border flex items-center justify-between shadow-xs">
                     <div className="flex items-center space-x-2">
-                      {darkMode ? <Moon className="w-3.5 h-3.5 text-indigo-400" /> : <Sun className="w-3.5 h-3.5 text-amber-500" />}
-                      <span className="text-[10px] font-mono font-bold uppercase text-neutral-550 dark:text-[#A3A3A3]">TEMA VISUAL</span>
+                      {darkMode ? <Moon className="w-3.5 h-3.5 text-emas" /> : <Sun className="w-3.5 h-3.5 text-emas" />}
+                      <span className="text-[10px] font-mono font-bold uppercase text-ink/60 dark:text-dark-text/60">TEMA VISUAL</span>
                     </div>
-                    <div className="inline-flex items-center p-0.5 rounded-full bg-neutral-200 dark:bg-[#1c1c1c] border border-neutral-300 dark:border-[#2b2b2b]">
+                    <div className="inline-flex items-center p-0.5 rounded-full bg-[#f2f0eb] dark:bg-space-dark border border-neutral-250 dark:border-stone-border">
                       <button
                         onClick={() => setDarkMode(false)}
-                        className={`p-1 rounded-full transition-all cursor-pointer ${!darkMode ? "bg-white text-amber-500 shadow-xs" : "text-neutral-400 hover:text-neutral-900"}`}
+                        className={`p-1 rounded-full transition-all cursor-pointer ${!darkMode ? "bg-white text-emas shadow-xs" : "text-neutral-400 hover:text-neutral-900"}`}
                         title="Ubah ke Mode Terang"
                       >
                         <Sun className="w-3.5 h-3.5" />
                       </button>
                       <button
                         onClick={() => setDarkMode(true)}
-                        className={`p-1 rounded-full transition-all cursor-pointer ${darkMode ? "bg-neutral-800 text-indigo-400 shadow-xs" : "text-neutral-500 hover:text-neutral-900"}`}
+                        className={`p-1 rounded-full transition-all cursor-pointer ${darkMode ? "bg-biru text-emas shadow-xs" : "text-neutral-500 hover:text-neutral-905"}`}
                         title="Ubah ke Mode Gelap"
                       >
                         <Moon className="w-3.5 h-3.5" />
@@ -472,37 +472,37 @@ export default function App() {
                     </div>
                   </div>
 
-                  {/* Daily Streak Indicator Card */}
-                  <div id="daily-streak-sidebar-card" className="p-4 rounded border bg-neutral-50 dark:bg-[#111111] border-neutral-200 dark:border-[#262626] space-y-2.5">
+                  {/* Daily Streak Indicator Card (Starbucks Rewards style) */}
+                  <div id="daily-streak-sidebar-card" className="p-4 card-sb bg-biru border border-stone-border text-white space-y-2.5">
                     <div className="flex items-center justify-between">
-                      <span className="text-[9px] font-bold font-mono tracking-wider text-neutral-550 dark:text-[#A3A3A3] uppercase">🔥 DAILY STREAK PULSE</span>
-                      <span className="px-2 py-0.5 rounded text-[8px] font-mono font-bold bg-amber-500/10 text-amber-500 uppercase tracking-wide">
+                      <span className="text-[9px] font-bold font-mono tracking-wider text-white/60 uppercase">🔥 DAILY STREAK PULSE</span>
+                      <span className="border border-emas text-emas bg-emas/10 rounded-full px-2.5 py-0.5 text-[8px] font-mono font-bold tracking-wide uppercase">
                         LEVEL {Math.floor(streak.count / 3) + 1}
                       </span>
                     </div>
 
                     <div className="flex items-center space-x-3">
-                      <div className="w-9 h-9 rounded-full flex items-center justify-center bg-amber-500/10 text-amber-500 text-lg font-bold border border-amber-500/20 shadow-sm animate-pulse">
+                      <div className="w-9 h-9 rounded-full flex items-center justify-center bg-emas/10 text-emas text-lg font-bold border border-emas/20 shadow-sm animate-pulse">
                         🔥
                       </div>
                       <div className="min-w-0">
-                        <span className="text-sm font-bold block text-neutral-900 dark:text-white">
+                        <span className="text-sm font-extrabold block text-white font-body">
                           {streak.count} Hari Beruntun
                         </span>
-                        <span className="text-[9px] text-neutral-400 dark:text-[#737373] font-mono block leading-tight">
-                          XP Terkumpul: <strong className="text-[#A3A3A3]">{streak.xp}</strong>
+                        <span className="text-[9px] text-white/70 font-mono block leading-tight">
+                          XP Terkumpul: <strong className="text-emas">{streak.xp}</strong>
                         </span>
                       </div>
                     </div>
 
-                    <div className="text-[10px] text-neutral-500 dark:text-[#A3A3A3] leading-normal font-sans">
+                    <div className="text-[10px] text-white/80 leading-normal font-sans">
                       {streak.lastClaimDate === new Date().toISOString().split("T")[0] 
                         ? "✓ Anda telah mengaktifkan sinyal harian hari ini!" 
                         : "Ketuk tab harian atau klik check-in di bawah untuk klaim +50 XP!"}
                     </div>
 
                     {/* Interactive Simulator Claim buttons */}
-                    <div className="flex gap-2 pt-1 border-t border-neutral-200/60 dark:border-[#1F1F1F]">
+                    <div className="flex gap-2 pt-1 border-t border-stone-border">
                       <button
                         id="btn-claim-streak"
                         onClick={() => {
@@ -513,10 +513,10 @@ export default function App() {
                             alert("👍 Anda telah mengaktifkan energi jualan hari ini! Kembali lagi esok hari.");
                           }
                         }}
-                        className={`flex-1 px-2 py-1.5 rounded text-[9.5px] font-mono font-bold text-center transition-all ${
+                        className={`flex-1 btn-sb text-[9.5px] py-1.5 cursor-pointer ${
                           streak.lastClaimDate === new Date().toISOString().split("T")[0]
-                            ? "bg-neutral-100 dark:bg-[#1A1A1A] text-neutral-400 dark:text-[#737373] cursor-not-allowed"
-                            : "bg-amber-500 hover:bg-amber-600 text-black shadow-sm"
+                            ? "bg-white/10 text-white/40 border border-white/10 cursor-not-allowed"
+                            : "btn-sb-white shadow-sm"
                         }`}
                       >
                         {streak.lastClaimDate === new Date().toISOString().split("T")[0] ? "✓ Selesai" : "⚡ Check-in"}
@@ -532,7 +532,7 @@ export default function App() {
                           });
                           alert("🔬 Simulasi Esok Hari aktif! Status check-in didekatkan ke hari kemarin sehingga Anda bisa mengulas kembali tombol check-in harian.");
                         }}
-                        className="px-2 py-1.5 rounded text-[9px] font-mono border hover:bg-neutral-50 dark:hover:bg-[#1A1A1A] border-neutral-300 dark:border-[#262626] text-neutral-700 dark:text-[#A3A3A3] transition-colors"
+                        className="btn-sb btn-sb-white-outline px-2 py-1.5 text-[9px] cursor-pointer"
                         title="Simulasikan Kemarin agar bisa dicoba berulang"
                       >
                         Simulasi
@@ -541,17 +541,17 @@ export default function App() {
                   </div>
 
                   {/* Unified Dashboard Menu / Tab List with Integrated Progress Tracker */}
-                  <div className="p-4 rounded border bg-white dark:bg-[#111111] border-neutral-200 dark:border-[#262626] space-y-3 shadow-xs">
+                  <div className="p-4 card-sb bg-white dark:bg-charcoal-surface border border-neutral-250 dark:border-stone-border space-y-3 shadow-xs">
                     <div className="space-y-1.5">
                       <div className="flex justify-between items-center">
-                        <span className="text-[9px] font-bold font-mono tracking-wider uppercase text-neutral-500 dark:text-[#737373]">MENU UTAMA & PROGRES</span>
-                        <span className="text-xs font-bold font-mono text-emerald-500">{progressPercentage}%</span>
+                        <span className="text-[9px] font-bold font-mono tracking-wider uppercase text-ink/40 dark:text-dark-text/40">MENU UTAMA & PROGRES</span>
+                        <span className="text-xs font-bold font-mono text-hijau dark:text-emas">{progressPercentage}%</span>
                       </div>
 
                       {/* Progress Bar Track */}
-                      <div className="w-full bg-neutral-100 dark:bg-[#202020] h-1 rounded-full overflow-hidden">
+                      <div className="w-full bg-[#f2f0eb] dark:bg-space-dark h-1.5 rounded-full overflow-hidden">
                         <div 
-                          className="bg-emerald-500 h-1 rounded-full transition-all duration-500 ease-out" 
+                          className="bg-hijau dark:bg-emas h-1.5 rounded-full transition-all duration-500 ease-out" 
                           style={{ width: `${progressPercentage}%` }}
                         />
                       </div>
@@ -577,10 +577,10 @@ export default function App() {
                             role="tab"
                             aria-selected={isActive}
                             onClick={() => setDashTab(tab.key)}
-                            className={`group w-full flex items-center justify-between p-2 rounded text-left transition-all border cursor-pointer select-none ${
+                            className={`group w-full flex items-center justify-between p-2 rounded-xl text-left transition-all border cursor-pointer select-none ${
                               isActive
-                                ? "bg-neutral-950 text-white dark:bg-[#E5E5E5] dark:text-black border-transparent shadow bg-linear-to-r"
-                                : "bg-neutral-50/50 dark:bg-[#161616]/50 text-neutral-600 dark:text-[#A3A3A3] border-neutral-100 dark:border-[#202020] hover:bg-neutral-100 dark:hover:bg-[#1b1b1b]"
+                                ? "bg-hijau text-white dark:bg-emas dark:text-biru border-transparent shadow"
+                                : "bg-[#fcfbf9] dark:bg-space-dark/40 text-ink/70 dark:text-dark-text/75 border-neutral-200 dark:border-stone-border hover:bg-[#f2f0eb] dark:hover:bg-charcoal-surface"
                             }`}
                           >
                             <div className="flex items-center space-x-2.5 min-w-0 flex-1">

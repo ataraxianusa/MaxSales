@@ -9,37 +9,37 @@
 
 /* DESIGN TOKENS: COLOR PALETTE */
 @theme {
-  /* Core palette — War Room Table */
-  --color-base: #FAF8F5;
-  --color-ink: #1C1917;
-  --color-merah: #10B981;
-  --color-emas: #D4A017;
-  --color-biru: #1E3A8A;
-  --color-hijau: #059669;
-  --color-krem: #F5F0E8;
+  /* Core palette — Starbucks Inspired */
+  --color-base: #f2f0eb; /* Neutral Warm cream page canvas */
+  --color-ink: rgba(0, 0, 0, 0.87); /* Text Black */
+  --color-merah: #006241; /* Starbucks Green for primary headings and major brands */
+  --color-emas: #cba258; /* Gold for Rewards status, levels and XP */
+  --color-biru: #1E3932; /* House Green deep dark green for dark panels/feature bands */
+  --color-hijau: #00754A; /* Green Accent for filled CTA buttons, launcher triggers */
+  --color-krem: #edebe9; /* Ceramic off-white separators */
 
   /* Dark mode inversions */
-  --color-space-dark: #1C1917;
-  --color-charcoal-surface: #292524;
-  --color-stone-border: #44403C;
-  --color-dark-text: #FAF8F5;
-  --color-dark-krem: #292524;
+  --color-space-dark: #0a1412; /* Deep Forest Black */
+  --color-charcoal-surface: #122620; /* Deep House Green for card bg */
+  --color-stone-border: rgba(255, 255, 255, 0.08); /* Dark mode border */
+  --color-dark-text: #ffffff; /* Dark mode body text */
+  --color-dark-krem: #152e27; /* Dark mode sub-surface */
 
   /* Legacy aliases (backward compat with dashboard components) */
-  --color-market-indigo: #1E3A8A;
-  --color-ai-violet: #8B5CF6;
-  --color-data-cyan: #06B6D4;
-  --color-urgent-red: #DC2626;
-  --color-earth-terracotta: #C2410C;
-  --color-linen-base: #FAF8F5;
+  --color-market-indigo: #006241;
+  --color-ai-violet: #00754A;
+  --color-data-cyan: #2b5148;
+  --color-urgent-red: #c82014;
+  --color-earth-terracotta: #cba258;
+  --color-linen-base: #f2f0eb;
 
   /* Semantic colors */
-  --color-primary: var(--color-biru);
+  --color-primary: var(--color-merah);
   --color-secondary: var(--color-hijau);
   --color-accent: var(--color-emas);
-  --color-success: #16A34A;
-  --color-warning: #D97706;
-  --color-error: #DC2626;
+  --color-success: #10B981;
+  --color-warning: #fbbc05;
+  --color-error: #c82014;
 }
 
 /* ============================================
@@ -120,15 +120,20 @@
    ============================================ */
 
 .font-display {
-  font-family: 'Instrument Serif', Georgia, serif;
+  font-family: 'Lora', 'Iowan Old Style', Georgia, serif;
 }
 
 .font-body {
-  font-family: 'DM Sans', system-ui, sans-serif;
+  font-family: 'Manrope', system-ui, -apple-system, sans-serif;
+  letter-spacing: -0.16px;
 }
 
 .font-mono {
   font-family: 'JetBrains Mono', ui-monospace, monospace;
+}
+
+.font-script {
+  font-family: 'Kalam', 'Comic Sans MS', cursive;
 }
 
 /* ============================================
@@ -405,4 +410,192 @@
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
   }
+}
+
+/* ============================================
+   STARBUCKS DESIGN SYSTEM HELPER CLASSES
+   ============================================ */
+
+/* 1. Pill buttons & micro-interactions */
+.btn-sb {
+  border-radius: 50px !important;
+  font-weight: 600 !important;
+  transition: all 0.2s ease !important;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.btn-sb:active {
+  transform: scale(0.95) !important;
+}
+
+/* Primary Filled */
+.btn-sb-primary {
+  background-color: #00754A !important;
+  color: #ffffff !important;
+  border: 1px solid #00754A !important;
+}
+.btn-sb-primary:hover {
+  background-color: #006241 !important;
+  border-color: #006241 !important;
+}
+
+/* Primary Outlined */
+.btn-sb-outline {
+  background-color: transparent !important;
+  color: #00754A !important;
+  border: 1px solid #00754A !important;
+}
+.btn-sb-outline:hover {
+  background-color: rgba(0, 117, 74, 0.04) !important;
+}
+
+/* Black Filled */
+.btn-sb-black {
+  background-color: #000000 !important;
+  color: #ffffff !important;
+  border: 1px solid #000000 !important;
+}
+.btn-sb-black:hover {
+  background-color: #1a1a1a !important;
+  border-color: #1a1a1a !important;
+}
+
+/* Dark Outlined */
+.btn-sb-dark-outline {
+  background-color: transparent !important;
+  color: rgba(0, 0, 0, 0.87) !important;
+  border: 1px solid rgba(0, 0, 0, 0.87) !important;
+}
+.btn-sb-dark-outline:hover {
+  background-color: rgba(0, 0, 0, 0.04) !important;
+}
+.dark .btn-sb-dark-outline {
+  color: rgba(255, 255, 255, 0.87) !important;
+  border-color: rgba(255, 255, 255, 0.87) !important;
+}
+.dark .btn-sb-dark-outline:hover {
+  background-color: rgba(255, 255, 255, 0.04) !important;
+}
+
+/* White Filled / Green Text */
+.btn-sb-white {
+  background-color: #ffffff !important;
+  color: #00754A !important;
+  border: 1px solid #ffffff !important;
+}
+.btn-sb-white:hover {
+  background-color: #f2f0eb !important;
+}
+
+/* White Outlined */
+.btn-sb-white-outline {
+  background-color: transparent !important;
+  color: #ffffff !important;
+  border: 1px solid #ffffff !important;
+}
+.btn-sb-white-outline:hover {
+  background-color: rgba(255, 255, 255, 0.08) !important;
+}
+
+/* Frap Launcher (floating button) */
+.btn-sb-frap {
+  width: 56px !important;
+  height: 56px !important;
+  border-radius: 50% !important;
+  background-color: #00754A !important;
+  color: #ffffff !important;
+  box-shadow: 0 0 6px rgba(0,0,0,0.24), 0 8px 12px rgba(0,0,0,0.14) !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  transition: all 0.2s ease !important;
+  border: none !important;
+  cursor: pointer;
+}
+.btn-sb-frap:active {
+  transform: scale(0.95) !important;
+  box-shadow: 0 0 6px rgba(0,0,0,0.24), 0 8px 12px rgba(0,0,0,0) !important;
+}
+
+/* 2. Starbucks content cards */
+.card-sb {
+  background-color: #ffffff;
+  border-radius: 12px !important;
+  box-shadow: 0px 0px 0.5px 0px rgba(0,0,0,0.14), 0px 1px 1px 0px rgba(0,0,0,0.24) !important;
+  border: none !important;
+  transition: box-shadow 0.2s ease;
+}
+.dark .card-sb {
+  background-color: #122620; /* charcoal-surface / deep green */
+  box-shadow: 0px 0px 0.5px 0px rgba(255,255,255,0.08), 0px 1px 1px 0px rgba(255,255,255,0.12) !important;
+  border: 1px solid rgba(255,255,255,0.08) !important;
+}
+
+/* 3. Floating Label Input */
+.sb-input-container {
+  position: relative;
+  margin-bottom: 1.5rem;
+}
+.sb-input-field {
+  width: 100%;
+  padding: 12px 16px !important;
+  font-size: 14px !important;
+  border-radius: 4px !important;
+  border: 1px solid #d6dbde !important;
+  background-color: #ffffff !important;
+  color: rgba(0,0,0,0.87) !important;
+  transition: border-color 0.2s ease;
+}
+.dark .sb-input-field {
+  border-color: #2b5148 !important;
+  background-color: #0d1a17 !important;
+  color: #ffffff !important;
+}
+.sb-input-field:focus {
+  border-color: #00754A !important;
+  outline: none !important;
+}
+.sb-input-label {
+  position: absolute;
+  left: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  background-color: #ffffff;
+  padding: 0 4px;
+  color: rgba(0,0,0,0.58);
+  font-size: 14px;
+  pointer-events: none;
+  transition: all 0.2s ease;
+}
+.dark .sb-input-label {
+  background-color: #0d1a17;
+  color: rgba(255,255,255,0.7);
+}
+.sb-input-field:focus ~ .sb-input-label,
+.sb-input-field:not(:placeholder-shown) ~ .sb-input-label {
+  top: 0;
+  transform: translateY(-50%) scale(0.8);
+  transform-origin: left top;
+  color: #00754A;
+  font-weight: 700;
+}
+.dark .sb-input-field:focus ~ .sb-input-label,
+.dark .sb-input-field:not(:placeholder-shown) ~ .sb-input-label {
+  color: #d4e9e2;
+}
+
+/* Form Validation Tints */
+.sb-input-field:valid:not(:placeholder-shown) {
+  background-color: rgba(212, 233, 226, 0.2) !important;
+}
+.dark .sb-input-field:valid:not(:placeholder-shown) {
+  background-color: rgba(43, 81, 72, 0.15) !important;
+}
+.sb-input-field:invalid:not(:placeholder-shown) {
+  background-color: rgba(200, 32, 20, 0.05) !important;
+  border-color: #c82014 !important;
 }

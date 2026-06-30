@@ -137,8 +137,8 @@ export default function FloatingChatbot({ dna }: FloatingChatbotProps) {
       
       {/* Floating Indicator Hint Bubble */}
       {showHint && !isOpen && (
-        <div className="mb-3 mr-1 flex items-center bg-neutral-950 dark:bg-white text-white dark:text-black py-2 px-3 rounded shadow-lg text-[11px] font-mono animate-bounce relative max-w-xs">
-          <div className="absolute right-4 bottom-[-4px] w-2 h-2 bg-neutral-950 dark:bg-white rotate-45"></div>
+        <div className="mb-3 mr-1 flex items-center bg-biru text-white py-2.5 px-4 rounded-xl shadow-lg text-[11px] font-mono animate-bounce relative max-w-xs border border-stone-border">
+          <div className="absolute right-4 bottom-[-4px] w-2 h-2 bg-biru border-r border-b border-stone-border rotate-45"></div>
           <span className="mr-2">Tanya Trik Marketing? 👇</span>
           <button 
             id="btn-close-chat-hint"
@@ -146,25 +146,25 @@ export default function FloatingChatbot({ dna }: FloatingChatbotProps) {
               e.stopPropagation();
               setShowHint(false);
             }}
-            className="hover:opacity-75 transition-opacity"
+            className="hover:opacity-75 transition-opacity cursor-pointer"
             aria-label="Tutup Hint"
           >
-            <X className="w-3 h-3" />
+            <X className="w-3.5 h-3.5" />
           </button>
         </div>
       )}
 
-      {/* Floating launcher trigger button */}
+      {/* Floating launcher trigger button (Frap button) */}
       <button
         id="btn-trigger-floating-chat"
         onClick={() => {
           setIsOpen(!isOpen);
           setShowHint(false);
         }}
-        className={`w-12 h-12 rounded-full flex items-center justify-center shadow-lg transition-all transform hover:scale-105 active:scale-95 ${
+        className={`btn-sb-frap hover:scale-105 active:scale-95 flex items-center justify-center transition-all ${
           isOpen 
-            ? "bg-red-500 hover:bg-red-650 text-white" 
-            : "bg-emerald-500 hover:bg-emerald-600 text-white"
+            ? "bg-red-600 text-white shadow-none" 
+            : "bg-hijau text-white"
         }`}
         aria-label="Toggle Co-pilot Chat"
       >
@@ -173,21 +173,21 @@ export default function FloatingChatbot({ dna }: FloatingChatbotProps) {
 
       {/* Floating Chat container panel */}
       {isOpen && (
-        <div className="absolute bottom-16 right-0 w-[90vw] max-w-[580px] min-w-[320px] max-h-[70vh] min-h-[400px] bg-white dark:bg-[#0D0D0D] border border-neutral-200 dark:border-[#262626] rounded shadow-2xl flex flex-col overflow-hidden animate-fade-in">
+        <div className="absolute bottom-16 right-0 w-[90vw] max-w-[580px] min-w-[320px] max-h-[70vh] min-h-[400px] bg-white dark:bg-charcoal-surface border border-neutral-250 dark:border-stone-border card-sb flex flex-col overflow-hidden animate-fade-in shadow-2xl">
           
-          {/* Panel Header */}
-          <div className="p-3 bg-neutral-950 dark:bg-[#161616] text-white flex items-center justify-between">
-            <div className="flex items-center space-x-2">
-              <div className="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse"></div>
+          {/* Panel Header (House Green background) */}
+          <div className="p-3.5 bg-biru text-white flex items-center justify-between">
+            <div className="flex items-center space-x-2.5">
+              <div className="w-2.5 h-2.5 rounded-full bg-emas animate-pulse"></div>
               <div>
-                <h3 className="text-xs font-bold font-mono tracking-wide">MAXXSALES AI CO-PILOT</h3>
-                <p className="text-[9px] text-neutral-400 dark:text-[#A3A3A3] font-mono">Expert Business Assistant</p>
+                <h3 className="text-xs font-bold font-body tracking-wider text-white">MAXXSALES AI CO-PILOT</h3>
+                <p className="text-[9px] text-white/70 font-mono">Expert Business Assistant</p>
               </div>
             </div>
             <button
               id="btn-minimize-chat"
               onClick={() => setIsOpen(false)}
-              className="p-1 rounded text-neutral-400 hover:text-white transition-colors"
+              className="p-1 rounded hover:bg-white/10 text-white/70 hover:text-white transition-colors cursor-pointer"
               aria-label="Sembunyikan Chat"
             >
               <X className="w-4 h-4" />
@@ -195,46 +195,46 @@ export default function FloatingChatbot({ dna }: FloatingChatbotProps) {
           </div>
 
           {/* Quick Business State context badge */}
-          <div className="px-3 py-1.5 bg-neutral-50 dark:bg-[#131313] border-b border-neutral-200 dark:border-[#262626] flex items-center justify-between text-[9px] text-neutral-500 dark:text-[#A3A3A3] font-mono">
-            <span>Usaha Anda: <strong className="text-neutral-700 dark:text-neutral-300">{dna.brand || "Belum diset"}</strong></span>
-            <span>Target: <strong className="text-neutral-700 dark:text-neutral-300 truncate max-w-[100px] block">{dna.locations && dna.locations.length > 0 ? dna.locations[0] : "Semua Wilayah"}</strong></span>
+          <div className="px-3.5 py-2 bg-krem dark:bg-dark-krem border-b border-neutral-250 dark:border-stone-border flex items-center justify-between text-[9px] text-ink/60 dark:text-dark-text/60 font-mono">
+            <span>Usaha Anda: <strong className="text-ink dark:text-dark-text font-bold">{dna.brand || "Belum diset"}</strong></span>
+            <span>Target: <strong className="text-ink dark:text-dark-text font-bold truncate max-w-[100px] block">{dna.locations && dna.locations.length > 0 ? dna.locations[0] : "Semua Wilayah"}</strong></span>
           </div>
 
           {/* Messages layout */}
-          <div className="flex-1 overflow-y-auto p-4 space-y-3.5 bg-white dark:bg-[#080808] min-h-[220px]">
+          <div className="flex-1 overflow-y-auto p-4 space-y-3.5 bg-[#fcfbfa] dark:bg-space-dark min-h-[220px]">
             {messages.map((msg) => {
               const isBot = msg.sender === "bot";
               return (
                 <div 
                   key={msg.id}
-                  className={`flex ${isBot ? "justify-start" : "justify-end"} items-start gap-1.5 animate-fade-in`}
+                  className={`flex ${isBot ? "justify-start" : "justify-end"} items-start gap-2.5 animate-fade-in`}
                 >
                   {isBot && (
-                    <div className="w-6 h-6 rounded-full bg-neutral-100 dark:bg-[#1A1A1A] border border-neutral-200 dark:border-[#333333] flex items-center justify-center shrink-0 mt-0.5">
-                      <Bot className="w-3.5 h-3.5 text-emerald-500" />
+                    <div className="w-6 h-6 rounded-full bg-krem dark:bg-dark-krem border border-neutral-250 dark:border-stone-border flex items-center justify-center shrink-0 mt-0.5">
+                      <Bot className="w-3.5 h-3.5 text-hijau dark:text-emas" />
                     </div>
                   )}
                   
-                  <div className={`rounded-lg px-4 py-2.5 text-xs leading-relaxed ${
+                  <div className={`rounded-2xl px-4 py-2.5 text-xs leading-relaxed ${
                     isBot 
-                      ? "max-w-[95%] bg-neutral-100 dark:bg-[#1A1A1A] text-neutral-800 dark:text-[#E2E2E2] border border-neutral-200/50 dark:border-[#2A2A2A]" 
-                      : "max-w-[85%] bg-neutral-900 dark:bg-white text-white dark:text-black font-medium shadow-sm"
+                      ? "max-w-[95%] bg-white dark:bg-charcoal-surface text-ink dark:text-dark-text border border-neutral-250 dark:border-stone-border/60 shadow-xs" 
+                      : "max-w-[85%] bg-hijau text-white font-medium shadow-sm"
                   }`}>
                     {isBot ? (
-                      <div className="text-xs leading-relaxed overflow-x-auto [&_p]:my-1 [&_p:first-child]:mt-0 [&_p:last-child]:mb-0 [&_ul]:my-1 [&_ul]:pl-4 [&_ol]:my-1 [&_ol]:pl-4 [&_li]:my-0.5 [&_li]:list-disc [&_ol_li]:list-decimal [&_strong]:font-bold [&_strong]:text-neutral-900 dark:[&_strong]:text-white [&_code]:bg-neutral-200/60 dark:[&_code]:bg-[#2A2A2A] [&_code]:px-1.5 [&_code]:py-0.5 [&_code]:rounded [&_code]:text-[10px] [&_code]:font-mono [&_pre]:bg-neutral-200/60 dark:[&_pre]:bg-[#222] [&_pre]:p-3 [&_pre]:rounded-lg [&_pre]:text-[10px] [&_pre]:font-mono [&_pre]:mt-1.5 [&_pre]:mb-1.5 [&_pre]:overflow-x-auto [&_hr]:border-t [&_hr]:border-neutral-300 dark:[&_hr]:border-[#333] [&_hr]:my-2 [&_a]:text-emerald-600 dark:[&_a]:text-emerald-400 [&_a]:underline [&_a]:hover:no-underline [&_blockquote]:border-l-2 [&_blockquote]:border-neutral-400 dark:[&_blockquote]:border-neutral-600 [&_blockquote]:pl-3 [&_blockquote]:my-1.5 [&_blockquote]:italic [&_blockquote]:text-neutral-600 dark:[&_blockquote]:text-neutral-400 [&_h1]:text-sm [&_h1]:font-bold [&_h1]:my-1.5 [&_h2]:text-xs [&_h2]:font-bold [&_h2]:my-1 [&_h3]:text-xs [&_h3]:font-semibold [&_h3]:my-1 [&_table]:min-w-full [&_table]:table-auto [&_table]:border-collapse [&_table]:my-2 [&_table]:text-xs [&_thead]:bg-neutral-200/60 dark:[&_thead]:bg-[#222] [&_th]:px-2 [&_th]:py-1 [&_th]:text-left [&_th]:font-bold [&_th]:whitespace-nowrap [&_th]:border [&_th]:border-neutral-300 dark:[&_th]:border-[#333] [&_td]:px-2 [&_td]:py-1 [&_td]:border [&_td]:border-neutral-300 dark:[&_td]:border-[#333] [&_td]:whitespace-normal [&_td]:break-words [&_tr]:border-b [&_tr]:border-neutral-300 dark:[&_tr]:border-[#333] [&_tr]:even:bg-neutral-100/50 dark:[&_tr]:even:bg-[#141414]">
+                      <div className="text-xs leading-relaxed overflow-x-auto [&_p]:my-1 [&_p:first-child]:mt-0 [&_p:last-child]:mb-0 [&_ul]:my-1 [&_ul]:pl-4 [&_ol]:my-1 [&_ol]:pl-4 [&_li]:my-0.5 [&_li]:list-disc [&_ol_li]:list-decimal [&_strong]:font-bold [&_strong]:text-ink dark:[&_strong]:text-white [&_code]:bg-neutral-200/60 dark:[&_code]:bg-space-dark [&_code]:px-1.5 [&_code]:py-0.5 [&_code]:rounded [&_code]:text-[10px] [&_code]:font-mono [&_pre]:bg-neutral-250 dark:[&_pre]:bg-space-dark [&_pre]:p-3 [&_pre]:rounded-lg [&_pre]:text-[10px] [&_pre]:font-mono [&_pre]:mt-1.5 [&_pre]:mb-1.5 [&_pre]:overflow-x-auto [&_hr]:border-t [&_hr]:border-neutral-300 dark:[&_hr]:border-stone-border [&_hr]:my-2 [&_a]:text-hijau dark:[&_a]:text-emas [&_a]:underline [&_a]:hover:no-underline [&_blockquote]:border-l-2 [&_blockquote]:border-hijau dark:[&_blockquote]:border-emas [&_blockquote]:pl-3 [&_blockquote]:my-1.5 [&_blockquote]:italic [&_blockquote]:text-ink/65 dark:[&_blockquote]:text-dark-text/65 [&_h1]:text-sm [&_h1]:font-bold [&_h1]:my-1.5 [&_h2]:text-xs [&_h2]:font-bold [&_h2]:my-1 [&_h3]:text-xs [&_h3]:font-semibold [&_h3]:my-1 [&_table]:min-w-full [&_table]:table-auto [&_table]:border-collapse [&_table]:my-2 [&_table]:text-xs [&_thead]:bg-krem dark:[&_thead]:bg-dark-krem [&_th]:px-2 [&_th]:py-1 [&_th]:text-left [&_th]:font-bold [&_th]:whitespace-nowrap [&_th]:border [&_th]:border-neutral-250 dark:[&_th]:border-stone-border [&_td]:px-2 [&_td]:py-1 [&_td]:border [&_td]:border-neutral-250 dark:[&_td]:border-stone-border [&_td]:whitespace-normal [&_td]:break-words [&_tr]:border-b [&_tr]:border-neutral-250 dark:[&_tr]:border-stone-border [&_tr]:even:bg-neutral-100/50 dark:[&_tr]:even:bg-[#141414]">
                         <ReactMarkdown remarkPlugins={[remarkGfm]} rehypePlugins={[rehypeRaw]}>{msg.text}</ReactMarkdown>
                       </div>
                     ) : (
                       <p className="text-xs">{msg.text}</p>
                     )}
-                    <div className={`text-[8px] font-mono mt-1.5 text-right ${isBot ? "text-neutral-400 dark:text-[#7F7F7F]" : "text-neutral-300 dark:text-neutral-600"}`}>
+                    <div className={`text-[8px] font-mono mt-1.5 text-right ${isBot ? "text-ink/40 dark:text-dark-text/40" : "text-white/70"}`}>
                       {msg.timestamp.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
                     </div>
                   </div>
 
                   {!isBot && (
-                    <div className="w-6 h-6 rounded-full bg-neutral-900 dark:bg-white text-white dark:text-black flex items-center justify-center shrink-0 mt-0.5">
-                      <User className="w-3.5 h-3.5" />
+                    <div className="w-6 h-6 rounded-full bg-hijau text-white flex items-center justify-center shrink-0 mt-0.5 shadow-xs font-bold text-[10px]">
+                      ME
                     </div>
                   )}
                 </div>
@@ -242,13 +242,13 @@ export default function FloatingChatbot({ dna }: FloatingChatbotProps) {
             })}
 
             {loading && (
-              <div className="flex justify-start items-center gap-2 animate-pulse">
-                <div className="w-6 h-6 rounded-full bg-neutral-100 dark:bg-[#1A1A1A] flex items-center justify-center shrink-0">
-                  <Bot className="w-3.5 h-3.5 text-emerald-400 animate-spin" />
+              <div className="flex justify-start items-center gap-2.5 animate-pulse">
+                <div className="w-6 h-6 rounded-full bg-krem dark:bg-dark-krem flex items-center justify-center shrink-0">
+                  <Bot className="w-3.5 h-3.5 text-hijau animate-spin" />
                 </div>
-                <div className="bg-neutral-100 dark:bg-[#161616] rounded px-3 py-2 text-[10px] font-mono text-neutral-400 dark:text-[#7A7A7A] flex items-center space-x-1">
-                  <Loader2 className="w-3 h-3 animate-spin text-emerald-400" />
-                  <span>Sedang memikirkan strategi jitu...</span>
+                <div className="bg-white dark:bg-charcoal-surface border border-neutral-250 dark:border-stone-border/60 rounded-xl px-4 py-2.5 text-[10px] font-mono text-ink/50 dark:text-dark-text/50 flex items-center space-x-1.5 shadow-xs">
+                  <Loader2 className="w-3.5 h-3.5 animate-spin text-hijau" />
+                  <span>Sedang meracik strategi jitu...</span>
                 </div>
               </div>
             )}
@@ -256,20 +256,20 @@ export default function FloatingChatbot({ dna }: FloatingChatbotProps) {
             <div ref={messagesEndRef} />
           </div>
 
-          {/* Sugested quick questions */}
-          <div className="p-2 border-t border-neutral-100 dark:border-[#1F1F1F] bg-neutral-50 dark:bg-[#0A0A0A] space-y-1">
-            <span className="text-[8px] font-mono text-neutral-450 dark:text-[#737373] uppercase tracking-wider block px-1">Rekomendasi Pertanyaan Taktis:</span>
-            <div className="flex flex-wrap gap-1">
+          {/* Suggested quick questions (Pill style buttons) */}
+          <div className="p-3 border-t border-neutral-200 dark:border-stone-border bg-[#faf9f8] dark:bg-dark-krem/40 space-y-1.5">
+            <span className="text-[8px] font-mono text-ink/40 dark:text-dark-text/40 uppercase tracking-widest block px-1">Rekomendasi Pertanyaan Taktis:</span>
+            <div className="flex flex-wrap gap-1.5">
               {suggestions.map((s, idx) => (
                 <button
                   key={idx}
                   id={`btn-chat-suggest-${idx}`}
                   disabled={loading}
                   onClick={() => handleQuickQuestion(s.text)}
-                  className="text-[9px] font-mono bg-white dark:bg-[#151515] hover:bg-neutral-100 dark:hover:bg-[#202020] text-neutral-700 dark:text-neutral-300 border border-neutral-200 dark:border-[#2A2A2A] rounded px-2 py-1 flex items-center space-x-0.5 max-w-full text-left truncate transition-colors disabled:opacity-50"
+                  className="text-[9px] font-body bg-white dark:bg-charcoal-surface hover:bg-neutral-50 dark:hover:bg-biru text-hijau dark:text-emas border border-hijau/30 dark:border-emas/20 rounded-full px-3 py-1 flex items-center space-x-1 max-w-full text-left truncate transition-colors disabled:opacity-50 cursor-pointer shadow-xs font-bold"
                 >
                   <span>{s.label}</span>
-                  <ArrowUpRight className="w-2.5 h-2.5 text-neutral-400 shrink-0" />
+                  <ArrowUpRight className="w-2.5 h-2.5 text-hijau/60 dark:text-emas/60 shrink-0" />
                 </button>
               ))}
             </div>
@@ -278,7 +278,7 @@ export default function FloatingChatbot({ dna }: FloatingChatbotProps) {
           {/* Form input messaging */}
           <form 
             onSubmit={handleSubmit}
-            className="p-3 border-t border-neutral-200 dark:border-[#262626] bg-white dark:bg-[#0E0E0E] flex items-center gap-2"
+            className="p-3.5 border-t border-neutral-200 dark:border-stone-border bg-white dark:bg-charcoal-surface flex items-center gap-2"
           >
             <input
               id="inp-chat-message"
@@ -287,16 +287,16 @@ export default function FloatingChatbot({ dna }: FloatingChatbotProps) {
               value={inputText}
               onChange={(e) => setInputText(e.target.value)}
               disabled={loading}
-              className="flex-1 text-xs bg-neutral-50 dark:bg-[#151515] border border-neutral-300 dark:border-[#262626] focus:border-neutral-900 dark:focus:border-white focus:outline-none rounded px-3 py-2 text-neutral-900 dark:text-white"
+              className="flex-1 text-xs bg-[#fdfdfc] dark:bg-space-dark border border-neutral-300 dark:border-stone-border focus:border-hijau dark:focus:border-emas focus:outline-none rounded-xl px-3.5 py-2.5 text-ink dark:text-dark-text transition-colors"
             />
             <button
               id="btn-chat-send"
               type="submit"
               disabled={loading || !inputText.trim()}
-              className="p-2 rounded bg-neutral-950 dark:bg-white text-white dark:text-black hover:bg-neutral-800 dark:hover:bg-neutral-100 transition-colors disabled:opacity-40"
+              className="btn-sb btn-sb-primary p-2 w-9 h-9 flex items-center justify-center shrink-0 disabled:opacity-40 cursor-pointer"
               aria-label="Kirim Pesan"
             >
-              <Send className="w-3.5 h-3.5" />
+              <Send className="w-3.5 h-3.5 text-white" />
             </button>
           </form>
 
