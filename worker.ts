@@ -947,10 +947,20 @@ app.post("/api/chat", async (c) => {
       if (text.trim()) orMsgs.push({ role: m.role === "model" ? "assistant" : "user", content: text });
     }
 
-    const reply = await callOpenRouter(apiKey, model, orMsgs, { temperature: 0.7, maxTokens: 512 });
-    return c.json({ reply, mode: "live-ai" });
+    // Retry up to 2 times on failure
+    let lastError: any;
+    for (let attempt = 0; attempt < 2; attempt++) {
+      try {
+        const reply = await callOpenRouter(apiKey, model, orMsgs, { temperature: 0.7, maxTokens: 512 });
+        return c.json({ reply, mode: "live-ai" });
+      } catch (err) {
+        lastError = err;
+        if (attempt < 1) await new Promise(r => setTimeout(r, 1000));
+      }
+    }
+    throw lastError;
   } catch {
-    return c.json({ reply: "Maaf, kendala koneksi AI. Silakan coba lagi.", mode: "error" });
+    return c.json({ reply: "Maaf, kendala koneksi AI. Silakan coba lagi dalam beberapa saat.", mode: "error" });
   }
 });
 
