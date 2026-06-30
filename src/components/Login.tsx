@@ -42,11 +42,11 @@ export default function Login({ onLoginSuccess }: LoginProps) {
         
         {/* App identity mark */}
         <div className="text-center mb-8">
-          <div className="inline-flex w-12 h-12 rounded-full bg-merah text-white dark:bg-dark-text dark:text-space-dark mb-3 items-center justify-center font-bold">
+          <div className="inline-flex w-12 h-12 rounded-full bg-[#006241] text-white dark:bg-dark-text dark:text-space-dark mb-3 items-center justify-center font-bold">
             <Sparkles className="w-5 h-5" />
           </div>
           <h2 className="text-xl font-bold tracking-tight text-ink dark:text-dark-text font-body">
-            Masuk ke <span className="text-hijau">MaxxSales AI</span>
+            Masuk ke <span className="text-[#00754A]">MaxxSales AI</span>
           </h2>
           <p className="text-[10px] text-ink/40 dark:text-dark-text/40 mt-1 font-mono uppercase tracking-wider">
             Sistem Saraf AI Penjualan untuk Pengusaha
@@ -55,8 +55,8 @@ export default function Login({ onLoginSuccess }: LoginProps) {
 
         {/* Quick Credentials hint card */}
         <div className="p-4 mb-6 rounded-xl border border-neutral-200 dark:border-stone-border bg-neutral-50 dark:bg-space-dark/50 text-[11px] text-ink/70 dark:text-dark-text/70 space-y-2">
-          <div className="flex items-center space-x-1.5 font-bold tracking-wide uppercase text-hijau dark:text-emas font-mono text-[9px]">
-            <ShieldCheck className="w-3.5 h-3.5 text-hijau dark:text-emas" />
+          <div className="flex items-center space-x-1.5 font-bold tracking-wide uppercase text-[#00754A] dark:text-[#cba258] font-mono text-[9px]">
+            <ShieldCheck className="w-3.5 h-3.5 text-[#00754A] dark:text-[#cba258]" />
             <span>Akses Masuk Cepat</span>
           </div>
           <p className="leading-relaxed">
@@ -66,7 +66,7 @@ export default function Login({ onLoginSuccess }: LoginProps) {
             type="button"
             id="btn-quick-fill-login"
             onClick={handleQuickLogin}
-            className="text-[10px] font-mono hover:underline font-bold text-hijau dark:text-emas block pt-1 cursor-pointer"
+            className="text-[10px] font-mono hover:underline font-bold text-[#00754A] dark:text-[#cba258] block pt-1 cursor-pointer"
           >
             → Klik disini untuk Isian Otomatis
           </button>

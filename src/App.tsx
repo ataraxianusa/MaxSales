@@ -444,7 +444,7 @@ export default function App() {
                        <button
                         id="btn-trigger-reedit-dna"
                         onClick={handleResetDNA}
-                        className="text-[9px] font-mono hover:underline font-bold text-hijau dark:text-emas uppercase tracking-wider block mx-auto cursor-pointer"
+                        className="text-[9px] font-mono hover:underline font-bold text-[#00754A] dark:text-[#cba258] uppercase tracking-wider block mx-auto cursor-pointer"
                       >
                         ✎ Sesuaikan DNA (Statis)
                       </button>
@@ -454,20 +454,20 @@ export default function App() {
                   {/* HIGHLY VISIBLE INTERACTIVE THEME SWITCHER CARD */}
                   <div className="p-3 card-sb bg-white dark:bg-charcoal-surface border border-neutral-250 dark:border-stone-border flex items-center justify-between shadow-xs">
                     <div className="flex items-center space-x-2">
-                      {darkMode ? <Moon className="w-3.5 h-3.5 text-emas" /> : <Sun className="w-3.5 h-3.5 text-emas" />}
+                      {darkMode ? <Moon className="w-3.5 h-3.5 text-[#cba258]" /> : <Sun className="w-3.5 h-3.5 text-[#cba258]" />}
                       <span className="text-[10px] font-mono font-bold uppercase text-ink/60 dark:text-dark-text/60">TEMA VISUAL</span>
                     </div>
                     <div className="inline-flex items-center p-0.5 rounded-full bg-[#f2f0eb] dark:bg-space-dark border border-neutral-250 dark:border-stone-border">
                       <button
                         onClick={() => setDarkMode(false)}
-                        className={`p-1 rounded-full transition-all cursor-pointer ${!darkMode ? "bg-white text-emas shadow-xs" : "text-neutral-400 hover:text-neutral-900"}`}
+                        className={`p-1 rounded-full transition-all cursor-pointer ${!darkMode ? "bg-white text-[#cba258] shadow-xs" : "text-neutral-400 hover:text-neutral-900"}`}
                         title="Ubah ke Mode Terang"
                       >
                         <Sun className="w-3.5 h-3.5" />
                       </button>
                       <button
                         onClick={() => setDarkMode(true)}
-                        className={`p-1 rounded-full transition-all cursor-pointer ${darkMode ? "bg-biru text-emas shadow-xs" : "text-neutral-500 hover:text-neutral-905"}`}
+                        className={`p-1 rounded-full transition-all cursor-pointer ${darkMode ? "bg-[#1E3932] text-[#cba258] shadow-xs" : "text-neutral-500 hover:text-neutral-905"}`}
                         title="Ubah ke Mode Gelap"
                       >
                         <Moon className="w-3.5 h-3.5" />
@@ -476,16 +476,16 @@ export default function App() {
                   </div>
 
                   {/* Daily Streak Indicator Card (Starbucks Rewards style) */}
-                  <div id="daily-streak-sidebar-card" className="p-4 card-sb bg-biru border border-stone-border text-white space-y-2.5">
+                  <div id="daily-streak-sidebar-card" className="p-4 rounded-lg border border-[#2a5a4a] bg-[#1E3932] text-white space-y-2.5">
                     <div className="flex items-center justify-between">
                       <span className="text-[9px] font-bold font-mono tracking-wider text-white/60 uppercase">🔥 DAILY STREAK PULSE</span>
-                      <span className="border border-emas text-emas bg-emas/10 rounded-full px-2.5 py-0.5 text-[8px] font-mono font-bold tracking-wide uppercase">
+                      <span className="border border-[#cba258] text-[#cba258] bg-[#cba258]/10 rounded-full px-2.5 py-0.5 text-[8px] font-mono font-bold tracking-wide uppercase">
                         LEVEL {Math.floor(streak.count / 3) + 1}
                       </span>
                     </div>
 
                     <div className="flex items-center space-x-3">
-                      <div className="w-9 h-9 rounded-full flex items-center justify-center bg-emas/10 text-emas text-lg font-bold border border-emas/20 shadow-sm animate-pulse">
+                      <div className="w-9 h-9 rounded-full flex items-center justify-center bg-[#cba258]/10 text-[#cba258] text-lg font-bold border border-[#cba258]/20 shadow-sm animate-pulse">
                         🔥
                       </div>
                       <div className="min-w-0">
@@ -493,7 +493,7 @@ export default function App() {
                           {streak.count} Hari Beruntun
                         </span>
                         <span className="text-[9px] text-white/70 font-mono block leading-tight">
-                          XP Terkumpul: <strong className="text-emas">{streak.xp}</strong>
+                          XP Terkumpul: <strong className="text-[#cba258]">{streak.xp}</strong>
                         </span>
                       </div>
                     </div>
@@ -548,13 +548,13 @@ export default function App() {
                     <div className="space-y-1.5">
                       <div className="flex justify-between items-center">
                         <span className="text-[9px] font-bold font-mono tracking-wider uppercase text-ink/40 dark:text-dark-text/40">MENU UTAMA & PROGRES</span>
-                        <span className="text-xs font-bold font-mono text-hijau dark:text-emas">{progressPercentage}%</span>
+                        <span className="text-xs font-bold font-mono text-[#00754A] dark:text-[#cba258]">{progressPercentage}%</span>
                       </div>
 
                       {/* Progress Bar Track */}
                       <div className="w-full bg-[#f2f0eb] dark:bg-space-dark h-1.5 rounded-full overflow-hidden">
                         <div 
-                          className="bg-hijau dark:bg-emas h-1.5 rounded-full transition-all duration-500 ease-out" 
+                          className="bg-[#00754A] dark:bg-[#cba258] h-1.5 rounded-full transition-all duration-500 ease-out" 
                           style={{ width: `${progressPercentage}%` }}
                         />
                       </div>
@@ -582,7 +582,7 @@ export default function App() {
                             onClick={() => setDashTab(tab.key)}
                             className={`group w-full flex items-center justify-between p-2 rounded-xl text-left transition-all border cursor-pointer select-none ${
                               isActive
-                                ? "bg-hijau text-white dark:bg-emas dark:text-biru border-transparent shadow"
+                                ? "bg-[#00754A] text-white dark:bg-[#cba258] dark:text-[#1E3932] border-transparent shadow"
                                 : "bg-[#fcfbf9] dark:bg-space-dark/40 text-ink/70 dark:text-dark-text/75 border-neutral-200 dark:border-stone-border hover:bg-[#f2f0eb] dark:hover:bg-charcoal-surface"
                             }`}
                           >

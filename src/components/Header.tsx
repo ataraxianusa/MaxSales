@@ -39,12 +39,12 @@ export default function Header({ currentTab, setTab, darkMode, setDarkMode, bran
             }} 
             className="flex items-center space-x-3 text-left focus:outline-none focus:ring-1 focus:ring-hijau p-1 shrink-0 cursor-pointer"
           >
-            <div className="w-7 h-7 bg-merah text-white dark:bg-dark-text dark:text-space-dark rounded-full flex items-center justify-center font-bold">
+            <div className="w-7 h-7 bg-[#006241] text-white dark:bg-dark-text dark:text-space-dark rounded-full flex items-center justify-center font-bold">
               <Sparkles className="w-4 h-4" />
             </div>
             <div>
               <span className="text-sm font-extrabold tracking-tight text-ink dark:text-dark-text font-body">
-                MAXX<span className="text-hijau">SALES</span>
+                MAXX<span className="text-[#00754A]">SALES</span>
               </span>
               <p className="text-[9px] font-mono leading-none text-ink/40 dark:text-dark-text/40">
                 SISTEM OPERASI PERTUMBUHAN BISNIS • STARBUCKS v1.0
@@ -55,13 +55,13 @@ export default function Header({ currentTab, setTab, darkMode, setDarkMode, bran
           {/* Desktop Navigation Links — Landing page only */}
           {currentTab === "landing" && (
           <nav className="hidden md:flex items-center space-x-6 mx-auto">
-            <button onClick={() => handleNavClick('dna-canvas')} className="text-xs font-bold text-ink/70 dark:text-dark-text/70 hover:text-hijau dark:hover:text-hijau transition-colors cursor-pointer font-body">
+            <button onClick={() => handleNavClick('dna-canvas')} className="text-xs font-bold text-ink/70 dark:text-dark-text/70 hover:text-[#00754A] dark:hover:text-[#00754A] transition-colors cursor-pointer font-body">
               Cara Kerja
             </button>
-            <button onClick={() => handleNavClick('pricing')} className="text-xs font-bold text-ink/70 dark:text-dark-text/70 hover:text-hijau dark:hover:text-hijau transition-colors cursor-pointer font-body">
+            <button onClick={() => handleNavClick('pricing')} className="text-xs font-bold text-ink/70 dark:text-dark-text/70 hover:text-[#00754A] dark:hover:text-[#00754A] transition-colors cursor-pointer font-body">
               Harga & Akses
             </button>
-            <button onClick={() => handleNavClick('faq')} className="text-xs font-bold text-ink/70 dark:text-dark-text/70 hover:text-hijau dark:hover:text-hijau transition-colors cursor-pointer font-body">
+            <button onClick={() => handleNavClick('faq')} className="text-xs font-bold text-ink/70 dark:text-dark-text/70 hover:text-[#00754A] dark:hover:text-[#00754A] transition-colors cursor-pointer font-body">
               FAQ
             </button>
           </nav>

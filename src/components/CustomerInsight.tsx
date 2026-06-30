@@ -391,7 +391,55 @@ export default function CustomerInsight({ dna, segments, setSegments }: Customer
 
       {/* ====== FULL WIDTH: AI Results ====== */}
       {(aiAnalysis || revenuePredictions || clusters) && (
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+        <div className="space-y-4">
+          {/* Revenue + Clustering side by side */}
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+            {revenuePredictions && (
+              <div className="p-4 rounded-lg border border-neutral-200 dark:border-[#262626] bg-white dark:bg-[#111111]">
+                <div className="flex items-center justify-between pb-2 mb-3 border-b border-neutral-100 dark:border-[#262626]">
+                  <div className="flex items-center space-x-2">
+                    <BarChart3 className="w-4 h-4 text-blue-500" />
+                    <span className="text-[11px] font-bold font-mono uppercase tracking-wider text-neutral-800 dark:text-white">Prediksi Revenue</span>
+                  </div>
+                  <span className="text-xs font-bold text-blue-600 dark:text-blue-400">Rp {totalMonthlyRevenue.toLocaleString("id-ID")}/bln</span>
+                </div>
+                <div className="space-y-2">
+                  {revenuePredictions.map((pred, idx) => (
+                    <div key={idx} className="flex items-center justify-between p-2.5 rounded-lg bg-neutral-50 dark:bg-[#1A1A1A] border border-neutral-100 dark:border-[#262626]">
+                      <span className="text-[11px] font-semibold text-neutral-800 dark:text-white">{pred.name}</span>
+                      <div className="flex items-center gap-2">
+                        <span className="text-[10px] text-neutral-500 font-mono">Rp {pred.monthlyRevenue.toLocaleString("id-ID")}</span>
+                        <span className={`px-2 py-0.5 rounded-full text-[9px] font-bold ${pred.growthPotential === "Tinggi" ? "bg-emerald-100 text-emerald-600 dark:bg-emerald-900/20 dark:text-emerald-400" : pred.growthPotential === "Sedang" ? "bg-amber-100 text-amber-600 dark:bg-amber-900/20 dark:text-amber-400" : "bg-red-100 text-red-600 dark:bg-red-900/20 dark:text-red-400"}`}>{pred.growthPotential}</span>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {clusters && (
+              <div className="p-4 rounded-lg border border-neutral-200 dark:border-[#262626] bg-white dark:bg-[#111111]">
+                <div className="flex items-center space-x-2 pb-2 mb-3 border-b border-neutral-100 dark:border-[#262626]">
+                  <Award className="w-4 h-4 text-purple-500" />
+                  <span className="text-[11px] font-bold font-mono uppercase tracking-wider text-neutral-800 dark:text-white">Customer Clustering</span>
+                </div>
+                <div className="grid grid-cols-2 gap-3">
+                  {clusters.map((cluster, idx) => (
+                    <div key={idx} className="p-3 rounded-lg bg-gradient-to-br from-purple-50 to-blue-50 dark:from-purple-900/10 dark:to-blue-900/10 border border-purple-100 dark:border-purple-800/20">
+                      <div className="flex items-center justify-between mb-1.5">
+                        <span className="text-[11px] font-bold text-neutral-900 dark:text-white">{cluster.name}</span>
+                        <span className="text-[9px] font-mono px-2 py-0.5 rounded-full bg-purple-100 dark:bg-purple-900/20 text-purple-700 dark:text-purple-400">{cluster.percentage}%</span>
+                      </div>
+                      <p className="text-[10px] text-neutral-500 dark:text-neutral-400 leading-snug mb-1.5">{cluster.description}</p>
+                      <p className="text-[9px] text-purple-600 dark:text-purple-400">{cluster.strategy}</p>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+          </div>
+
+          {/* Analisis Segmen full width below */}
           {aiAnalysis && (
             <div className="p-4 rounded-lg border border-neutral-200 dark:border-[#262626] bg-white dark:bg-[#111111]">
               <div className="flex items-center space-x-2 pb-2 mb-3 border-b border-neutral-100 dark:border-[#262626]">
@@ -410,51 +458,7 @@ export default function CustomerInsight({ dna, segments, setSegments }: Customer
                   </div>
                 ))}
               </div>
-              {aiAnalysis.recommendations[0] && <p className="mt-3 pt-2 border-t border-neutral-100 dark:border-[#262626] text-[10px] text-neutral-500">💡 {aiAnalysis.recommendations[0]}</p>}
-            </div>
-          )}
-
-          {revenuePredictions && (
-            <div className="p-4 rounded-lg border border-neutral-200 dark:border-[#262626] bg-white dark:bg-[#111111]">
-              <div className="flex items-center justify-between pb-2 mb-3 border-b border-neutral-100 dark:border-[#262626]">
-                <div className="flex items-center space-x-2">
-                  <BarChart3 className="w-4 h-4 text-blue-500" />
-                  <span className="text-[11px] font-bold font-mono uppercase tracking-wider text-neutral-800 dark:text-white">Prediksi Revenue</span>
-                </div>
-                <span className="text-xs font-bold text-blue-600 dark:text-blue-400">Rp {totalMonthlyRevenue.toLocaleString("id-ID")}/bln</span>
-              </div>
-              <div className="space-y-2">
-                {revenuePredictions.map((pred, idx) => (
-                  <div key={idx} className="flex items-center justify-between p-2.5 rounded-lg bg-neutral-50 dark:bg-[#1A1A1A] border border-neutral-100 dark:border-[#262626]">
-                    <span className="text-[11px] font-semibold text-neutral-800 dark:text-white">{pred.name}</span>
-                    <div className="flex items-center gap-2">
-                      <span className="text-[10px] text-neutral-500 font-mono">Rp {pred.monthlyRevenue.toLocaleString("id-ID")}</span>
-                      <span className={`px-2 py-0.5 rounded-full text-[9px] font-bold ${pred.growthPotential === "Tinggi" ? "bg-emerald-100 text-emerald-600 dark:bg-emerald-900/20 dark:text-emerald-400" : pred.growthPotential === "Sedang" ? "bg-amber-100 text-amber-600 dark:bg-amber-900/20 dark:text-amber-400" : "bg-red-100 text-red-600 dark:bg-red-900/20 dark:text-red-400"}`}>{pred.growthPotential}</span>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-          )}
-
-          {clusters && (
-            <div className="p-4 rounded-lg border border-neutral-200 dark:border-[#262626] bg-white dark:bg-[#111111] lg:col-span-2">
-              <div className="flex items-center space-x-2 pb-2 mb-3 border-b border-neutral-100 dark:border-[#262626]">
-                <Award className="w-4 h-4 text-purple-500" />
-                <span className="text-[11px] font-bold font-mono uppercase tracking-wider text-neutral-800 dark:text-white">Customer Clustering</span>
-              </div>
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
-                {clusters.map((cluster, idx) => (
-                  <div key={idx} className="p-3 rounded-lg bg-gradient-to-br from-purple-50 to-blue-50 dark:from-purple-900/10 dark:to-blue-900/10 border border-purple-100 dark:border-purple-800/20">
-                    <div className="flex items-center justify-between mb-1.5">
-                      <span className="text-[11px] font-bold text-neutral-900 dark:text-white">{cluster.name}</span>
-                      <span className="text-[9px] font-mono px-2 py-0.5 rounded-full bg-purple-100 dark:bg-purple-900/20 text-purple-700 dark:text-purple-400">{cluster.percentage}%</span>
-                    </div>
-                    <p className="text-[10px] text-neutral-500 dark:text-neutral-400 leading-snug mb-1.5">{cluster.description}</p>
-                    <p className="text-[9px] text-purple-600 dark:text-purple-400">💡 {cluster.strategy}</p>
-                  </div>
-                ))}
-              </div>
+              {aiAnalysis.recommendations[0] && <p className="mt-3 pt-2 border-t border-neutral-100 dark:border-[#262626] text-[10px] text-neutral-500">{aiAnalysis.recommendations[0]}</p>}
             </div>
           )}
         </div>

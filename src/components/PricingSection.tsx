@@ -169,14 +169,14 @@ export default function PricingSection({ onBuyNow }: PricingSectionProps) {
           className="relative rounded-3xl border border-stone-border bg-[#1E3932] overflow-hidden shadow-2xl shadow-black/60"
         >
           {/* Top gold tier stripe */}
-          <div className="h-1.5 w-full bg-emas" />
+          <div className="h-1.5 w-full bg-[#cba258]" />
 
           {/* BEST VALUE ribbon */}
           <div className="absolute top-5 right-5">
             <motion.div
               animate={{ rotate: [0, 1, -1, 0] }}
               transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
-              className="px-3 py-1.5 rounded-xl bg-emas text-biru text-[10px] font-black uppercase tracking-wider shadow-lg shadow-emas/30"
+              className="px-3 py-1.5 rounded-xl bg-[#cba258] text-[#1E3932] text-[10px] font-black uppercase tracking-wider shadow-lg shadow-emas/30"
             >
               ⭐ Best Value
             </motion.div>
@@ -185,7 +185,7 @@ export default function PricingSection({ onBuyNow }: PricingSectionProps) {
           <div className="p-7 sm:p-10">
             {/* Plan name */}
             <div className="mb-6">
-              <span className="text-[10px] font-mono font-bold text-emas uppercase tracking-[0.2em] block mb-1.5">
+              <span className="text-[10px] font-mono font-bold text-[#cba258] uppercase tracking-[0.2em] block mb-1.5">
                 MaxxSales · Akses Penuh
               </span>
               <h3 className="text-xl font-bold text-white font-display">
@@ -201,7 +201,7 @@ export default function PricingSection({ onBuyNow }: PricingSectionProps) {
                 transition={{ duration: 0.3 }}
                 className="flex items-baseline gap-1.5"
               >
-                <span className="text-[11px] font-mono text-emas -mb-1">Rp</span>
+                <span className="text-[11px] font-mono text-[#cba258] -mb-1">Rp</span>
                 <span className="text-6xl sm:text-7xl font-black text-white tracking-tighter leading-none font-body">
                   299
                 </span>
@@ -224,7 +224,7 @@ export default function PricingSection({ onBuyNow }: PricingSectionProps) {
                 whileInView={{ scale: 1, opacity: 1 }}
                 viewport={{ once: true }}
                 transition={{ delay: 0.3, type: "spring", stiffness: 260 }}
-                className="relative flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-emas/10 border border-emas/30"
+                className="relative flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-[#cba258]/10 border border-[#cba258]/30"
               >
                 {/* Shimmer sweep on badge */}
                 <motion.span
@@ -232,12 +232,12 @@ export default function PricingSection({ onBuyNow }: PricingSectionProps) {
                   transition={{ duration: 2.5, repeat: Infinity, ease: "linear", repeatDelay: 1.5 }}
                   className="absolute inset-0 w-full h-full bg-gradient-to-r from-transparent via-white/10 to-transparent overflow-hidden rounded-xl"
                 />
-                <BadgePercent className="w-4 h-4 text-emas relative z-10" />
+                <BadgePercent className="w-4 h-4 text-[#cba258] relative z-10" />
                 <div className="relative z-10">
-                  <span className="text-lg font-black text-emas leading-none block">
+                  <span className="text-lg font-black text-[#cba258] leading-none block">
                     40%
                   </span>
-                  <span className="text-[8px] font-mono text-emas/85 leading-none">
+                  <span className="text-[8px] font-mono text-[#cba258]/85 leading-none">
                     HEMAT
                   </span>
                 </div>
@@ -248,12 +248,12 @@ export default function PricingSection({ onBuyNow }: PricingSectionProps) {
             <motion.div
               animate={{ opacity: [0.85, 1, 0.85] }}
               transition={{ duration: 2.5, repeat: Infinity, ease: "easeInOut" }}
-              className="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg bg-emas/8 border border-emas/20 mb-7"
+              className="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg bg-[#cba258]/8 border border-[#cba258]/20 mb-7"
             >
-              <Clock className="w-3.5 h-3.5 text-emas" />
-              <span className="text-[11px] font-mono text-emas/90">
+              <Clock className="w-3.5 h-3.5 text-[#cba258]" />
+              <span className="text-[11px] font-mono text-[#cba258]/90">
                 Harga berakhir dalam:{" "}
-                <span className="font-black text-emas">
+                <span className="font-black text-[#cba258]">
                   {pad(countdown.h)}:{pad(countdown.m)}:{pad(countdown.s)}
                 </span>
               </span>
@@ -278,10 +278,10 @@ export default function PricingSection({ onBuyNow }: PricingSectionProps) {
                       viewport={{ once: true }}
                       transition={{ delay: 0.05 * i, duration: 0.35 }}
                       whileHover={{ x: 3 }}
-                      className="rounded-xl p-3 flex items-start gap-3 border border-stone-border bg-[#122620] hover:border-emas/20 group cursor-default transition-all duration-300"
+                      className="rounded-xl p-3 flex items-start gap-3 border border-stone-border bg-[#122620] hover:border-[#cba258]/20 group cursor-default transition-all duration-300"
                     >
                       <div className="w-8 h-8 rounded-lg bg-[#1E3932] border border-stone-border flex items-center justify-center shrink-0">
-                        <Icon className="w-4 h-4 text-emas" />
+                        <Icon className="w-4 h-4 text-[#cba258]" />
                       </div>
                       <div className="min-w-0">
                         <span className="text-[11px] font-bold text-white block leading-tight mb-0.5 font-body">
@@ -291,7 +291,7 @@ export default function PricingSection({ onBuyNow }: PricingSectionProps) {
                           {b.desc}
                         </p>
                       </div>
-                      <Check className="w-3.5 h-3.5 text-emas shrink-0 mt-0.5" />
+                      <Check className="w-3.5 h-3.5 text-[#cba258] shrink-0 mt-0.5" />
                     </motion.div>
                   );
                 })}
@@ -329,7 +329,7 @@ export default function PricingSection({ onBuyNow }: PricingSectionProps) {
 
             {/* Payment info */}
             <div className="flex items-center justify-center gap-2 mb-5">
-              <Lock className="w-3 h-3 text-emas" />
+              <Lock className="w-3 h-3 text-[#cba258]" />
               <span className="text-[10px] font-mono text-neutral-500 dark:text-white/60 text-center max-w-[280px]">
                 <span className="text-neutral-900 dark:text-white font-bold">10+ Metode Pembayaran:</span><br/>
                 QRIS · E-Wallet (GoPay/OVO/DANA) · Virtual Account · Kartu Kredit · Gerai Retail (Alfamart/Indomaret)
@@ -346,7 +346,7 @@ export default function PricingSection({ onBuyNow }: PricingSectionProps) {
                     whileHover={{ y: -2 }}
                     className="flex flex-col items-center gap-1.5 py-2.5 px-1 rounded-xl bg-[#122620] border border-stone-border"
                   >
-                    <Icon className="w-4 h-4 text-emas" />
+                    <Icon className="w-4 h-4 text-[#cba258]" />
                     <span className="text-[8.5px] font-mono text-white/50 text-center leading-tight">
                       {badge.label}
                     </span>
