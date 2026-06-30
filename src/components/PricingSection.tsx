@@ -280,7 +280,7 @@ export default function PricingSection({ onBuyNow }: PricingSectionProps) {
                       whileHover={{ x: 3 }}
                       className="card-sb p-3 flex items-start gap-3 border border-stone-border bg-[#122620] hover:border-emas/20 group cursor-default transition-all duration-300"
                     >
-                      <div className="w-8 h-8 rounded-lg bg-biru border border-stone-border flex items-center justify-center shrink-0">
+                      <div className="w-8 h-8 rounded-lg bg-[#1E3932] border border-stone-border flex items-center justify-center shrink-0">
                         <Icon className="w-4 h-4 text-emas" />
                       </div>
                       <div className="min-w-0">
@@ -344,7 +344,7 @@ export default function PricingSection({ onBuyNow }: PricingSectionProps) {
                   <motion.div
                     key={i}
                     whileHover={{ y: -2 }}
-                    className="flex flex-col items-center gap-1.5 py-2.5 px-1 rounded-xl bg-neutral-900/40 border border-stone-border"
+                    className="flex flex-col items-center gap-1.5 py-2.5 px-1 rounded-xl bg-[#122620] border border-stone-border"
                   >
                     <Icon className="w-4 h-4 text-emas" />
                     <span className="text-[8.5px] font-mono text-white/50 text-center leading-tight">
