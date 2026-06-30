@@ -354,6 +354,7 @@ export default function App() {
           <Route path="/terms" element={<TermsOfService onBack={() => navigate("/")} />} />
           <Route path="/privacy" element={<PrivacyPolicy onBack={() => navigate("/")} />} />
           <Route path="/risk" element={<RiskDisclosure onBack={() => navigate("/")} />} />
+          <Route path="*" element={null} />
         </Routes>
 
         {/* APP CONTENT — only render when NOT on a legal page */}
