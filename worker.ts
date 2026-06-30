@@ -967,7 +967,7 @@ app.post("/api/chat", async (c) => {
           body: JSON.stringify({
             messages: orMsgs,
             temperature: 0.7,
-            max_tokens: 512
+            max_completion_tokens: 512
           })
         });
         const azData = await azRes.json();
