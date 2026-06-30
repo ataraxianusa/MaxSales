@@ -127,12 +127,12 @@ export default function App() {
     return saved ? JSON.parse(saved) : defaultSegments();
   });
 
-  // Auto-generate segments from DNA when DNA is filled and segments are still default
+  // Auto-generate segments from DNA when DNA is filled
   React.useEffect(() => {
-    if (!canvas.biggestCompetitor?.trim()) return;
     // Only auto-generate if segments are still the hardcoded defaults
     const isDefault = segments.length === 4 && segments[0]?.name === "Ibu Muda Urban (Modern Hijabers)";
     if (!isDefault) return;
+    if (!canvas.productName?.trim()) return;
 
     const fetchAutoSegment = async () => {
       try {
@@ -149,6 +149,10 @@ export default function App() {
         console.error("Auto-segment failed:", err);
       }
     };
+
+    const timer = setTimeout(fetchAutoSegment, 1000);
+    return () => clearTimeout(timer);
+  }, [canvas.productName, canvas.category, canvas.normalPrice]);
     fetchAutoSegment();
   }, [canvas.biggestCompetitor]);
 

@@ -946,7 +946,7 @@ app.post("/api/chat", async (c) => {
   }
 
   try {
-    const sys = `Anda MaxxSales AI Co-pilot untuk Pengusaha Indonesia. Fitur: DNA Canvas, Competitor War Room, Customer Insight, Strategy Fusion, Content Generator, Daily Pulse. Nada profesional-ramah. Bahasa Indonesia. <150 kata. Konteks: ${JSON.stringify({ brand: dna?.brand, product: dna?.productName })}`;
+    const sys = `Anda MaxxSales AI Co-pilot untuk Pengusaha Indonesia. Nada profesional-ramah. Bahasa Indonesia. <150 kata. Fokus pada SOLUSI, bukan menyebut nama brand berulang kali. Sebut brand hanya 1x di awal jika perlu, lalu fokus ke strategi dan aksi.`;
 
     const orMsgs: { role: string; content: string }[] = [{ role: "system", content: sys }];
     for (const m of messages.slice(-10)) {
