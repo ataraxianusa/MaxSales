@@ -135,13 +135,13 @@ export default function PricingSection({ onBuyNow }: PricingSectionProps) {
           <BadgePercent className="w-3.5 h-3.5" />
           Harga Perkenalan · Terbatas
         </span>
-        <h2 className="text-2xl sm:text-3xl font-black tracking-tight text-ink dark:text-white mb-2">
+        <h2 className="text-2xl sm:text-3xl font-black tracking-tight text-neutral-900 dark:text-white mb-2">
           Satu Investasi.{" "}
-          <span className="bg-clip-text text-transparent bg-gradient-to-r from-emerald-400 to-cyan-400">
+          <span className="bg-clip-text text-transparent bg-gradient-to-r from-emerald-600 to-emerald-400 dark:from-emerald-400 dark:to-cyan-400">
             Seluruh Sistem.
           </span>
         </h2>
-        <p className="text-sm text-neutral-400 max-w-md mx-auto">
+        <p className="text-sm text-neutral-500 dark:text-neutral-400 max-w-md mx-auto">
           Sistem komprehensif tanpa kejutan biaya tambahan di kemudian hari.
         </p>
       </motion.div>
@@ -166,7 +166,7 @@ export default function PricingSection({ onBuyNow }: PricingSectionProps) {
         <div
           onMouseEnter={() => setHovered(true)}
           onMouseLeave={() => setHovered(false)}
-          className="relative rounded-3xl border border-stone-border bg-biru overflow-hidden shadow-2xl shadow-black/60"
+          className="relative rounded-3xl border border-stone-border bg-[#1E3932] overflow-hidden shadow-2xl shadow-black/60"
         >
           {/* Top gold tier stripe */}
           <div className="h-1.5 w-full bg-emas" />
@@ -278,7 +278,7 @@ export default function PricingSection({ onBuyNow }: PricingSectionProps) {
                       viewport={{ once: true }}
                       transition={{ delay: 0.05 * i, duration: 0.35 }}
                       whileHover={{ x: 3 }}
-                      className="card-sb p-3 flex items-start gap-3 border border-stone-border bg-[#152e27] hover:border-emas/20 group cursor-default transition-all duration-300"
+                      className="card-sb p-3 flex items-start gap-3 border border-stone-border bg-[#122620] hover:border-emas/20 group cursor-default transition-all duration-300"
                     >
                       <div className="w-8 h-8 rounded-lg bg-biru border border-stone-border flex items-center justify-center shrink-0">
                         <Icon className="w-4 h-4 text-emas" />
@@ -330,8 +330,8 @@ export default function PricingSection({ onBuyNow }: PricingSectionProps) {
             {/* Payment info */}
             <div className="flex items-center justify-center gap-2 mb-5">
               <Lock className="w-3 h-3 text-emas" />
-              <span className="text-[10px] font-mono text-white/60 text-center max-w-[280px]">
-                <span className="text-white font-bold">10+ Metode Pembayaran:</span><br/>
+              <span className="text-[10px] font-mono text-neutral-500 dark:text-white/60 text-center max-w-[280px]">
+                <span className="text-neutral-900 dark:text-white font-bold">10+ Metode Pembayaran:</span><br/>
                 QRIS · E-Wallet (GoPay/OVO/DANA) · Virtual Account · Kartu Kredit · Gerai Retail (Alfamart/Indomaret)
               </span>
             </div>
@@ -378,7 +378,7 @@ export default function PricingSection({ onBuyNow }: PricingSectionProps) {
             ))}
           </span>
           <span>
-            <strong className="text-white">47 pengusaha</strong> bergabung minggu ini
+            <strong className="text-neutral-900 dark:text-white">47 pengusaha</strong> bergabung minggu ini
           </span>
           <span className="w-1 h-1 rounded-full bg-neutral-700" />
           <span className="text-emerald-500">⭐⭐⭐⭐⭐ 4.9/5</span>
