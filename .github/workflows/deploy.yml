@@ -44,5 +44,5 @@ jobs:
         with:
           branch: gh-pages
           folder: dist
-          clean: false
+          clean: true
           commit-message: "ci: deploy MaxxSales MVP build [skip ci]"
