@@ -129,9 +129,6 @@ export default function App() {
 
   // Auto-generate segments from DNA when DNA is filled
   React.useEffect(() => {
-    // Only auto-generate if segments are still the hardcoded defaults
-    const isDefault = segments.length === 4 && segments[0]?.name === "Ibu Muda Urban (Modern Hijabers)";
-    if (!isDefault) return;
     if (!canvas.productName?.trim()) return;
 
     const fetchAutoSegment = async () => {
@@ -142,7 +139,7 @@ export default function App() {
           body: JSON.stringify({ dna: canvas })
         });
         const data = await response.json();
-        if (data.segments && data.segments.length > 0) {
+        if (data.segments && data.segments.length > 0 && data.mode === "live-ai") {
           setSegments(data.segments);
         }
       } catch (err) {
@@ -150,9 +147,9 @@ export default function App() {
       }
     };
 
-    const timer = setTimeout(fetchAutoSegment, 1000);
+    const timer = setTimeout(fetchAutoSegment, 1500);
     return () => clearTimeout(timer);
-  }, [canvas.productName, canvas.category, canvas.normalPrice]);
+  }, [canvas.productName, canvas.category, canvas.normalPrice, canvas.brand, canvas.normalPrice]);
 
   // Sync state to localStorage
   React.useEffect(() => {

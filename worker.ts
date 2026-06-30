@@ -236,7 +236,10 @@ app.post("/api/strategy-forge", async (c) => {
 
   const apiKey = c.env.OPENROUTER_API_KEY;
   const model = c.env.OPENROUTER_MODEL || "openai/gpt-oss-120b:free";
-  if (!apiKey) return c.json({ ...fallback, mode: "simulated" });
+  const azureEndpoint = c.env.AZURE_OPENAI_ENDPOINT;
+  const azureKey = c.env.AZURE_OPENAI_KEY;
+  const azureDeployment = c.env.AZURE_OPENAI_DEPLOYMENT || "gpt-4o";
+  if (!apiKey && !azureKey) return c.json({ ...fallback, mode: "simulated" });
 
   const competitorIntel = Array.isArray(competitors) && competitors.length > 0
     ? competitors.filter((c: any) => c.name?.trim()).map((c: any) =>
@@ -244,10 +247,8 @@ app.post("/api/strategy-forge", async (c) => {
       ).join("\n")
     : "- Tidak ada data kompetitor";
 
-  try {
-    const raw = await callOpenRouter(apiKey, model, [
-      { role: "system", content: JSON_SYS },
-      { role: "user", content: `Buat strategi bisnis 5-11 pilar untuk:
+  const sysMsg = JSON_SYS;
+  const userMsg = `Buat strategi bisnis 5-11 pilar untuk:
 - Produk: ${dna?.productName || "Produk"}
 - Brand: ${dna?.brand || "Brand"}
 - Kategori: ${dna?.category || "Fashion"}
@@ -266,11 +267,39 @@ ${competitorIntel}
 INSTRUKSI: Prioritaskan strategi yang mengeksploitasi kelemahan kompetitor.
 
 JSON: {"synopsis":"ringkasan 2-3 kalimat Bahasa Indonesia","pillars":[{"areaName":"area strategi","title":"judul","description":"deskripsi","actionSteps":["langkah 1","langkah 2","langkah 3"]}]}
-Minimal 5 pillars, maksimal 11 pillars. HANYA JSON.` }
-    ], { temperature: 0.7 });
+Minimal 5 pillars, maksimal 11 pillars. HANYA JSON.`;
 
-    const parsed = parseJsonResponse(raw, fallback);
-    return c.json({ synopsis: parsed.synopsis, pillars: parsed.pillars, mode: "live-ai" });
+  try {
+    // Try Azure OpenAI first with retry
+    for (let attempt = 0; attempt < 2; attempt++) {
+      if (azureKey && azureEndpoint) {
+        try {
+          const azRes = await fetch(`${azureEndpoint}/openai/deployments/${azureDeployment}/chat/completions?api-version=2024-10-21`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json", "api-key": azureKey },
+            body: JSON.stringify({ messages: [{ role: "system", content: sysMsg }, { role: "user", content: userMsg }], temperature: 0.7, max_completion_tokens: 2048 })
+          });
+          const azData = await azRes.json();
+          const raw = azData.choices?.[0]?.message?.content || "";
+          if (raw) {
+            const parsed = parseJsonResponse(raw, fallback);
+            return c.json({ synopsis: parsed.synopsis, pillars: parsed.pillars, mode: "live-ai" });
+          }
+        } catch {}
+      }
+      // Fallback to OpenRouter
+      if (apiKey) {
+        try {
+          const raw = await callOpenRouter(apiKey, model, [{ role: "system", content: sysMsg }, { role: "user", content: userMsg }], { temperature: 0.7, maxTokens: 2048 });
+          if (raw) {
+            const parsed = parseJsonResponse(raw, fallback);
+            return c.json({ synopsis: parsed.synopsis, pillars: parsed.pillars, mode: "live-ai" });
+          }
+        } catch {}
+      }
+      if (attempt < 1) await new Promise(r => setTimeout(r, 1500));
+    }
+    return c.json({ ...fallback, mode: "error" });
   } catch {
     return c.json({ ...fallback, mode: "error" });
   }
