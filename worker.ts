@@ -163,6 +163,13 @@ app.post("/api/suggest-content", async (c) => {
       `✨ ${dna?.productName || "Produk"} hadir dengan ${dna?.quality?.toLowerCase() || "kualitas premium"}! ${dna?.advantages?.split(",")[0] || ""}. Dapatkan sekarang sebelum kehabisan!`,
       `🔥 PROMO SPESIAL! ${dna?.brand || "Brand"} lagi bagi-bagi diskon buat ${dna?.productName || "produk"} favorit kamu. Stok terbatas ya!`,
       `💫 Kenapa ${dna?.productName || "produk"} ini beda dari yang lain? ${dna?.advantages?.split(",").slice(0, 2).join(" & ") || "Kualitas terjamin"}. Order sekarang!`
+    ],
+    promoPrices: [
+      { label: "Diskon 10%", value: Math.round((dna?.normalPrice || 399000) * 0.9) },
+      { label: "Diskon 15%", value: Math.round((dna?.normalPrice || 399000) * 0.85) },
+      { label: "Diskon 20%", value: Math.round((dna?.normalPrice || 399000) * 0.8) },
+      { label: "Diskon 25%", value: Math.round((dna?.normalPrice || 399000) * 0.75) },
+      { label: "Flash Sale 30%", value: Math.round((dna?.normalPrice || 399000) * 0.7) }
     ]
   };
 
@@ -207,7 +214,7 @@ INSTRUKSI:
 3. Buat 5 "captions" (caption promosi 2-3 kalimat, persuasive, include emoji, sesuai karakter produk)
 
 JSON FORMAT:
-{"hooks":["hook1","hook2","hook3","hook4","hook5"],"ctas":["cta1","cta2","cta3","cta4","cta5"],"captions":["caption1","caption2","caption3","caption4","caption5"]}
+{"hooks":["hook1","hook2","hook3","hook4","hook5"],"ctas":["cta1","cta2","cta3","cta4","cta5"],"captions":["caption1","caption2","caption3","caption4","caption5"],"promoPrices":[{"label":"Diskon 10%","value":359100},{"label":"Diskon 20%","value":319200},{"label":"Flash Sale 30%","value":279300}]}
 HANYA JSON.` }
     ], { temperature: 0.9 });
 
@@ -734,12 +741,13 @@ app.post("/api/auto-segment", async (c) => {
 
   const apiKey = c.env.OPENROUTER_API_KEY;
   const model = c.env.OPENROUTER_MODEL || "openai/gpt-oss-120b:free";
-  if (!apiKey) return c.json(fallback);
+  const azureEndpoint = c.env.AZURE_OPENAI_ENDPOINT;
+  const azureKey = c.env.AZURE_OPENAI_KEY;
+  const azureDeployment = c.env.AZURE_OPENAI_DEPLOYMENT || "gpt-4o";
+  if (!apiKey && !azureKey) return c.json(fallback);
 
   try {
-    const raw = await callOpenRouter(apiKey, model, [
-      { role: "system", content: JSON_SYS },
-      { role: "user", content: `Buat segmentasi pelanggan untuk bisnis fashion Indonesia.
+    const prompt = `Buat segmentasi pelanggan untuk bisnis fashion Indonesia.
 
 Profil Bisnis:
 - Brand: ${dna?.brand || "Brand"}
@@ -760,7 +768,7 @@ Buat 4-6 segmen pelanggan yang realistis dengan estimasi:
 - Kanal utama
 - Rata-rata transaksi
 - Frekuensi beli
-- Resiko churn
+- Resiko churn (Low/Medium/High)
 
 JSON format:
 {
@@ -775,11 +783,26 @@ JSON format:
     }
   ]
 }
-HANYA JSON.` }
-    ], { temperature: 0.8, maxTokens: 1024 });
+HANYA JSON.`;
+
+    let raw = "";
+    if (azureKey && azureEndpoint) {
+      try {
+        const azRes = await fetch(`${azureEndpoint}/openai/deployments/${azureDeployment}/chat/completions?api-version=2024-10-21`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json", "api-key": azureKey },
+          body: JSON.stringify({ messages: [{ role: "system", content: JSON_SYS }, { role: "user", content: prompt }], temperature: 0.8, max_completion_tokens: 1024 })
+        });
+        const azData = await azRes.json();
+        raw = azData.choices?.[0]?.message?.content || "";
+      } catch {}
+    }
+    if (!raw && apiKey) {
+      raw = await callOpenRouter(apiKey, model, [{ role: "system", content: JSON_SYS }, { role: "user", content: prompt }], { temperature: 0.8, maxTokens: 1024 });
+    }
 
     const parsed = parseJsonResponse(raw, fallback);
-    return c.json({ segments: parsed.segments || fallback.segments, mode: "live-ai" });
+    return c.json({ segments: parsed.segments || fallback.segments, mode: raw ? "live-ai" : "simulated" });
   } catch {
     return c.json(fallback);
   }
