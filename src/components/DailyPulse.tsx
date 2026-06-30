@@ -20,13 +20,49 @@ export default function DailyPulse() {
   const [socialCopy, setSocialCopy] = React.useState("");
   const [radarIntel, setRadarIntel] = React.useState("");
 
-  const [items, setItems] = React.useState([
-    { id: "1", text: `Posting desain visual Reels terbaru dari Content Generator ke Instagram`, done: false, category: "Marketing" },
-    { id: "2", text: "Follow up chat prospek pelanggan Ibu Rianita (LTV Tinggi: score 95)", done: true, category: "Sales" },
-    { id: "3", text: `Siapkan kupon voucher "Penyelamat Churn" 15% ke grup reseller`, done: false, category: "Retention" },
-    { id: "4", text: `Periksa kesesuaian stok fisik dan digital untuk varian utama`, done: false, category: "Operasional" },
-    { id: "5", text: "Pantau perang promo diskon Zahra Store (kompetitor utama)", done: false, category: "Competitor" },
-  ]);
+  // Dynamic action items pool - more creative and varied
+  const allTasks = React.useMemo(() => [
+    { text: `Buat 3 konten Story Instagram tentang ${dna.productName || "produk"} dengan angle berbeda`, category: "Marketing" },
+    { text: "Kirim broadcast WA promo ke 10 grup pelanggan teraktif hari ini", category: "Sales" },
+    { text: "Analisis 3 postingan kompetitor terlaris minggu ini di Instagram", category: "Competitor" },
+    { text: "Hubungi pelanggan yang rating LTV-nya di atas 80 untuk repeat order", category: "Retention" },
+    { text: "Review stok produk paling laris & pastikan aman sampai akhir minggu", category: "Operasional" },
+    { text: "Buat 1 video Reels unboxing atau behind-the-scenes produk", category: "Marketing" },
+    { text: "Kirim voucher spesial ke 5 pelanggan yang belum beli 2 minggu terakhir", category: "Retention" },
+    { text: "Screenshot harga kompetitor di Shopee/Tokopedia dan bandingkan", category: "Competitor" },
+    { text: "Siapkan 2 caption Instagram berbeda untuk produk terlaris Anda", category: "Marketing" },
+    { text: "Hitung omzet kemarin vs target, catat di Daily Pulse", category: "Operasional" },
+    { text: "Buat 1 konten carousel tips & trik yang relevan dengan produk Anda", category: "Marketing" },
+    { text: "Follow 5 akun influencer potensial di niche bisnis Anda", category: "Sales" },
+    { text: "Cek rating & review di marketplace, balas 3 ulasan terbaru", category: "Retention" },
+    { text: "Ambil foto produk terbaru untuk digunakan di konten minggu ini", category: "Marketing" },
+    { text: "Buat daftar 3 ide konten yang bisa dipost minggu depan", category: "Marketing" },
+    { text: "Pelajari 1 tren terbaru di TikTok yang relevan dengan produk Anda", category: "Competitor" },
+    { text: "Kirim pesan personal ke 3 pelanggan setia sebagai bentuk apresiasi", category: "Retention" },
+    { text: "Periksa semua kanal penjualan dan pastikan harga konsisten", category: "Operasional" },
+    { text: "Buat 1 postingan dengan format Before-After atau Testimoni pelanggan", category: "Marketing" },
+    { text: "Tawarkan bundle promo spesial untuk pelanggan yang beli lebih dari 2 item", category: "Sales" },
+  ], [dna.productName]);
+
+  const [items, setItems] = React.useState(() => {
+    const shuffled = [...allTasks].sort(() => Math.random() - 0.5);
+    return shuffled.slice(0, 5).map((t, i) => ({
+      id: String(i + 1),
+      text: t.text,
+      done: false,
+      category: t.category
+    }));
+  });
+
+  const refreshTasks = () => {
+    const shuffled = [...allTasks].sort(() => Math.random() - 0.5);
+    setItems(shuffled.slice(0, 5).map((t, i) => ({
+      id: String(Date.now() + i),
+      text: t.text,
+      done: false,
+      category: t.category
+    })));
+  };
 
   // Revenue tracking state
   const [yesterdayRevenue, setYesterdayRevenue] = React.useState<number>(() => {
@@ -350,6 +386,14 @@ export default function DailyPulse() {
               </div>
 
               <div className="text-right shrink-0">
+                <button
+                  onClick={refreshTasks}
+                  className="text-[9px] font-mono text-neutral-400 hover:text-neutral-700 dark:hover:text-white flex items-center space-x-1 mb-1"
+                  title="Acak ulang pekerjaan"
+                >
+                  <RefreshCw className="w-3 h-3" />
+                  <span>Acak Ulang</span>
+                </button>
                 <span className="text-[9px] font-mono text-neutral-450 dark:text-[#737373] font-bold block uppercase tracking-wider">KETERAMPILAN SELESAI</span>
                 <span className="text-xs font-bold font-mono text-neutral-900 dark:text-white">
                   {progressPercent}% ({doneCount}/{items.length})

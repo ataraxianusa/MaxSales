@@ -12,6 +12,7 @@ interface ContentSuggestions {
   hooks: string[];
   ctas: string[];
   captions: string[];
+  promoPrices?: { label: string; value: number }[];
 }
 
 export default function ContentGenerator() {
@@ -592,14 +593,32 @@ export default function ContentGenerator() {
             {/* Promo Inputs */}
             <div>
               <label className="block text-[10px] font-mono font-semibold text-neutral-450 dark:text-[#737373] mb-1">2. JENIS PROMO / DISKON HEADLINE *</label>
-              <input
-                id="inp-prom-text"
-                type="text"
-                placeholder="misal: Flash Sale Diskon 30%!"
-                value={promo}
-                onChange={e => setPromo(e.target.value)}
-                className="w-full text-xs px-3 py-2 rounded border bg-transparent border-neutral-300 dark:border-neutral-800 focus:border-neutral-900 dark:focus:border-white focus:outline-none"
-              />
+              <div className="flex gap-2">
+                <input
+                  id="inp-prom-text"
+                  type="text"
+                  placeholder="misal: Flash Sale Diskon 30%!"
+                  value={promo}
+                  onChange={e => setPromo(e.target.value)}
+                  className="flex-1 text-xs px-3 py-2 rounded border bg-transparent border-neutral-300 dark:border-neutral-800 focus:border-neutral-900 dark:focus:border-white focus:outline-none"
+                />
+                <button
+                  onClick={() => {
+                    const headlines = [
+                      `${dna.productName || "Produk"} — Diskon Spesial!`,
+                      `Flash Sale: Hemat ${Math.round((1 - promoPrice/normalPrice) * 100)}%!`,
+                      `Promo Terbatas: ${dna.productName || "Produk"} Diskon Besar!`,
+                      `Harga Spesial Hari Ini: ${dna.productName || "Produk"}`,
+                      `Last Chance: Diskon ${dna.productName || "Produk"} Besok Berakhir!`
+                    ];
+                    setPromo(headlines[Math.floor(Math.random() * headlines.length)]);
+                  }}
+                  className="px-2 py-1 rounded border border-neutral-300 dark:border-neutral-800 text-[9px] font-mono text-neutral-500 hover:text-neutral-900 dark:hover:text-white hover:border-neutral-900 dark:hover:border-white transition-colors"
+                  title="Saran AI untuk headline promo"
+                >
+                  ✨ AI
+                </button>
+              </div>
             </div>
 
             {/* Price Adjusters */}
@@ -728,6 +747,28 @@ export default function ContentGenerator() {
                       ))}
                     </div>
                   </div>
+
+                  {/* Promo Price Suggestions */}
+                  {suggestions.promoPrices && suggestions.promoPrices.length > 0 && (
+                    <div>
+                      <span className="text-[9px] font-mono font-semibold text-neutral-500 dark:text-neutral-500 mb-1 block">HARGA PROMO IDEA:</span>
+                      <div className="flex flex-wrap gap-1.5">
+                        {suggestions.promoPrices.map((p, i) => (
+                          <button
+                            key={i}
+                            onClick={() => setPromoPrice(p.value)}
+                            className={`text-[9px] px-2 py-1 rounded border transition-colors ${
+                              promoPrice === p.value
+                                ? "bg-neutral-900 text-white dark:bg-white dark:text-black border-neutral-900 dark:border-white"
+                                : "bg-white dark:bg-neutral-900 text-neutral-600 dark:text-neutral-400 border-neutral-200 dark:border-neutral-800 hover:border-neutral-400 dark:hover:border-neutral-600"
+                            }`}
+                          >
+                            {p.label}: Rp {p.value.toLocaleString("id-ID")}
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+                  )}
                 </div>
               )}
             </div>

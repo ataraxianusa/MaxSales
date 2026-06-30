@@ -44,19 +44,17 @@ export default function StrategyForge() {
   };
 
   React.useEffect(() => {
-    const newDnaHash = JSON.stringify(dna);
-    const newCompHash = JSON.stringify(competitors);
-    if (newDnaHash === cacheRef.current.dnaHash && newCompHash === cacheRef.current.competitorsHash) {
-      return;
-    }
-    cacheRef.current.dnaHash = newDnaHash;
-    cacheRef.current.competitorsHash = newCompHash;
+    // Always fetch on mount or level change, don't use cache
+    cacheRef.current.dnaHash = "";
+    cacheRef.current.competitorsHash = "";
     fetchStrategy(level);
-  }, [dna, level, competitors]);
+  }, [level]);
 
   const handleLevelChange = (newLevel: "Konservatif" | "Moderat" | "Agresif") => {
     setLevel(newLevel);
+    // Force re-fetch by clearing cache
     cacheRef.current.dnaHash = "";
+    cacheRef.current.competitorsHash = "";
     fetchStrategy(newLevel);
   };
 
