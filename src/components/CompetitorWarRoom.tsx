@@ -31,6 +31,36 @@ export default function CompetitorWarRoom({ dna, competitors, setCompetitors }: 
   const [activeIntelCompetitor, setActiveIntelCompetitor] = React.useState<CompetitorIntel | null>(
     competitors[0] || null
   );
+  const [battlegroundBriefing, setBattlegroundBriefing] = React.useState<string>("");
+  const [briefingLoading, setBriefingLoading] = React.useState(false);
+
+  const fetchBattlegroundBriefing = async (competitor: CompetitorIntel) => {
+    setBriefingLoading(true);
+    try {
+      const response = await fetch(`${API_BASE}/api/chat`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          messages: [{ role: "user", content: `Buat briefing strategi pertempuran 2-3 kalimat untuk bisnis "${dna.brand || "Toko Anda"}" (${dna.productName || "produk"}, kategori ${dna.category || "-"}, harga Rp${dna.normalPrice || 0}) melawan kompetitor "${competitor.name}" (kekuatan: ${competitor.strengths || "-"}, kelemahan: ${competitor.weaknesses || "-"}, peluang: ${competitor.opportunities || "-"}, ancaman: ${competitor.threats || "-"}, lokasi: ${competitor.location || "-"}, saluran: ${competitor.activeChannels?.join(", ") || "-"}, estimasi omzet: ${competitor.estimatedRevenue || "-"}). Keunggulan bisnis: ${dna.advantages || "-"}. Fokus pada celah strategis dan aksi konkret. Bahasa Indonesia, singkat, tajam.` }],
+          dna
+        })
+      });
+      const data = await response.json();
+      if (data.reply) {
+        setBattlegroundBriefing(data.reply);
+      }
+    } catch {
+      setBattlegroundBriefing("");
+    } finally {
+      setBriefingLoading(false);
+    }
+  };
+
+  React.useEffect(() => {
+    if (activeIntelCompetitor && dna.productName) {
+      fetchBattlegroundBriefing(activeIntelCompetitor);
+    }
+  }, [activeIntelCompetitor?.id, dna.productName]);
 
   // Radar scores states for brand and competitors comparison
   const [ratings, setRatings] = React.useState<Record<string, {
@@ -746,9 +776,29 @@ export default function CompetitorWarRoom({ dna, competitors, setCompetitors }: 
               {/* Head-to-Head battlefield summary card */}
               <div className="p-5 rounded border bg-neutral-50 dark:bg-[#111111] border-neutral-200 dark:border-[#262626] space-y-2.5">
                 <h4 className="text-[10px] font-bold uppercase tracking-wider text-neutral-900 dark:text-white font-mono">BATTLEGROUND STRATEGY BRIEFING</h4>
-                <p className="text-xs text-neutral-600 dark:text-[#A3A3A3] leading-relaxed">
-                  Berdasarkan matriks di atas, kompetitor sebanding Anda <strong className="text-neutral-900 dark:text-white font-semibold">{activeIntelCompetitor.name}</strong> terfokus kuat pada penjualan {activeIntelCompetitor.location}. Namun, celah digital mereka lebar. Jangan ikut melakukan perang harga eceran jika margin Anda tipis. Dominasi pasar dengan mengandalkan <strong>{dna.advantages?.split(",")[0] || "keunggulan produk Anda"}</strong> serta memperkuat interaksi video pendek yang tidak dikuasai oleh kompetitor!
-                </p>
+                {briefingLoading ? (
+                  <div className="flex items-center space-x-2 text-[11px] text-neutral-500">
+                    <Loader2 className="w-3 h-3 animate-spin" />
+                    <span>AI sedang menganalisis...</span>
+                  </div>
+                ) : battlegroundBriefing ? (
+                  <p className="text-xs text-neutral-600 dark:text-[#A3A3A3] leading-relaxed">
+                    {battlegroundBriefing}
+                  </p>
+                ) : (
+                  <p className="text-xs text-neutral-400 italic">
+                    Klik "Generate Briefing" untuk analisis AI.
+                  </p>
+                )}
+                {!briefingLoading && (
+                  <button
+                    onClick={() => fetchBattlegroundBriefing(activeIntelCompetitor)}
+                    disabled={!dna.productName}
+                    className="text-[9px] font-mono text-neutral-500 hover:text-neutral-900 dark:hover:text-white transition-colors disabled:opacity-40"
+                  >
+                    {battlegroundBriefing ? "Regenerate Briefing" : "Generate Briefing"}
+                  </button>
+                )}
               </div>
             </div>
           ) : (
