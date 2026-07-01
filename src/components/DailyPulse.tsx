@@ -9,9 +9,36 @@ import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, Cell, Refere
 export default function DailyPulse() {
   const { dna, strategyOutput, dailyRecords, addPulseRecord, streakCount, competitors, segments } = useChain();
   const [loading, setLoading] = React.useState(false);
-  const [briefing, setBriefing] = React.useState(
-    `Selamat pagi, Owner Hebat! Hari baru adalah momentum baru untuk memajukan brand Anda. Berdasarkan DNA Produk: ${dna.productName}, segmentasi ibu muda saat ini sangat aktif mencari inspirasi belanja menjelang siang hari. Kami menyarankan untuk menyelesaikan action item di bawah ini sebelum pukul 11:30 WIB agar tidak kehilangan momentum closing!`
-  );
+  const [briefing, setBriefing] = React.useState("");
+
+  // Generate AI briefing on mount
+  React.useEffect(() => {
+    if (!dna.productName) {
+      setBriefing("Selamat pagi! Isi DNA bisnis Anda terlebih dahulu untuk mendapatkan briefing personal.");
+      return;
+    }
+    const fetchBriefing = async () => {
+      try {
+        const response = await fetch(`${API_BASE}/api/chat`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            messages: [{ role: "user", content: `Buat briefing pagi singkat (2-3 kalimat) untuk pemilik bisnis "${dna.brand || "Bisnis Anda"}" yang menjual ${dna.productName || "produk"} (kategori ${dna.category || "-"}, harga Rp${dna.normalPrice || 0}). Target revenue: Rp${(dna.targetMonthlyRevenue || 0).toLocaleString()}/bln. Sertakan satu saran aksi konkret untuk hari ini. Bahasa Indonesia, nada motivasi, singkat.` }],
+            dna
+          })
+        });
+        const data = await response.json();
+        if (data.reply) {
+          setBriefing(data.reply);
+        } else {
+          setBriefing(`Selamat pagi! Hari baru, semangat baru untuk ${dna.productName || "bisnis Anda"}. Fokus pada action item di bawah ini untuk mencapai target harian.`);
+        }
+      } catch {
+        setBriefing(`Selamat pagi! Hari baru, semangat baru untuk ${dna.productName || "bisnis Anda"}. Fokus pada action item di bawah ini.`);
+      }
+    };
+    fetchBriefing();
+  }, [dna.productName, dna.brand, dna.category]);
 
   // Tactical Briefing state (3-chain output)
   const [tacticalGap, setTacticalGap] = React.useState("");

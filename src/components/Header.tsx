@@ -47,7 +47,7 @@ export default function Header({ currentTab, setTab, darkMode, setDarkMode, bran
                 MAXX<span className="text-[#00754A]">SALES</span>
               </span>
               <p className="text-[9px] font-mono leading-none text-ink/40 dark:text-dark-text/40">
-                SISTEM OPERASI PERTUMBUHAN BISNIS • STARBUCKS v1.0
+                SISTEM OPERASI PERTUMBUHAN BISNIS
               </p>
             </div>
           </button>
