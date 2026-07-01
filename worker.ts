@@ -60,12 +60,19 @@ function parseJsonResponse(rawText: string, fallbackJson: any): any {
     else if (clean.startsWith('```')) clean = clean.substring(3);
     if (clean.endsWith('```')) clean = clean.substring(0, clean.length - 3);
     clean = clean.trim();
-    return JSON.parse(clean);
+    // Remove trailing commas before } or ]
+    clean = clean.replace(/,\s*([\]}])/g, '$1');
+    const parsed = JSON.parse(clean);
+    return parsed;
   } catch {
     try {
       const i = rawText.indexOf('{');
       const j = rawText.lastIndexOf('}');
-      if (i !== -1 && j !== -1) return JSON.parse(rawText.substring(i, j + 1));
+      if (i !== -1 && j !== -1 && j > i) {
+        let slice = rawText.substring(i, j + 1);
+        slice = slice.replace(/,\s*([\]}])/g, '$1');
+        return JSON.parse(slice);
+      }
     } catch {}
     return fallbackJson;
   }
@@ -283,7 +290,9 @@ Minimal 5 pillars, maksimal 11 pillars. HANYA JSON.`;
           const raw = azData.choices?.[0]?.message?.content || "";
           if (raw) {
             const parsed = parseJsonResponse(raw, fallback);
-            return c.json({ synopsis: parsed.synopsis, pillars: parsed.pillars, mode: "live-ai" });
+            if (parsed.pillars && parsed.pillars.length >= 3) {
+              return c.json({ synopsis: parsed.synopsis, pillars: parsed.pillars, mode: "live-ai" });
+            }
           }
         } catch {}
       }
@@ -293,7 +302,9 @@ Minimal 5 pillars, maksimal 11 pillars. HANYA JSON.`;
           const raw = await callOpenRouter(apiKey, model, [{ role: "system", content: sysMsg }, { role: "user", content: userMsg }], { temperature: 0.7, maxTokens: 2048 });
           if (raw) {
             const parsed = parseJsonResponse(raw, fallback);
-            return c.json({ synopsis: parsed.synopsis, pillars: parsed.pillars, mode: "live-ai" });
+            if (parsed.pillars && parsed.pillars.length >= 3) {
+              return c.json({ synopsis: parsed.synopsis, pillars: parsed.pillars, mode: "live-ai" });
+            }
           }
         } catch {}
       }
