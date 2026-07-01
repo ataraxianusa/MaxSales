@@ -415,65 +415,142 @@ export default function ContentGenerator() {
         ctx.textAlign = "left";
 
       } else if (layoutStyle === "banner") {
-        // ── BANNER: Diagonal top banner with overlay below ──
-        // Full dark overlay
-        ctx.fillStyle = "rgba(0, 0, 0, 0.75)";
+        // ── BANNER: Premium diagonal banner with gradient overlay ──
+        // Gradient overlay (not flat black)
+        const bannerGrad = ctx.createLinearGradient(0, 0, 0, height);
+        bannerGrad.addColorStop(0, "rgba(0, 0, 0, 0.3)");
+        bannerGrad.addColorStop(0.35, "rgba(0, 0, 0, 0.5)");
+        bannerGrad.addColorStop(0.65, "rgba(0, 0, 0, 0.8)");
+        bannerGrad.addColorStop(1, "rgba(0, 0, 0, 0.92)");
+        ctx.fillStyle = bannerGrad;
         ctx.fillRect(0, 0, width, height);
 
-        // Diagonal accent shape at top
-        ctx.fillStyle = "#10b981";
+        // Top diagonal accent — refined shape with gradient
+        const accentGrad = ctx.createLinearGradient(0, 0, width, 0);
+        accentGrad.addColorStop(0, "#059669");
+        accentGrad.addColorStop(1, "#10b981");
+        ctx.fillStyle = accentGrad;
         ctx.beginPath();
         ctx.moveTo(0, 0);
         ctx.lineTo(width, 0);
-        ctx.lineTo(width, height * 0.15);
-        ctx.lineTo(0, height * 0.22);
+        ctx.lineTo(width, height * 0.13);
+        ctx.lineTo(width * 0.15, height * 0.22);
+        ctx.lineTo(0, height * 0.18);
         ctx.closePath();
         ctx.fill();
 
-        // Brand in banner
-        ctx.fillStyle = "#065f46";
-        ctx.font = `black ${Math.round(28 * fScale)}px Inter, system-ui, sans-serif`;
-        ctx.fillText((dna.brand || "BRAND").toUpperCase(), 60, height * 0.09);
-
-        // Flash badge
-        ctx.fillStyle = "#ffffff";
-        const flashText = "⚡ FLASH SALE";
-        ctx.font = `black ${Math.round(20 * fScale)}px Inter, system-ui, sans-serif`;
-        const flashW = ctx.measureText(flashText).width + 32;
+        // Brand badge in accent area
+        const brandText = (dna.brand || "BRAND").toUpperCase();
+        ctx.font = `800 ${Math.round(18 * fScale)}px Inter, system-ui, sans-serif`;
+        const brandBadgeW = ctx.measureText(brandText).width + 28;
+        ctx.fillStyle = "rgba(255,255,255,0.15)";
         ctx.beginPath();
-        ctx.roundRect(width - flashW - 60, height * 0.04, flashW, 38 * fScale, 8);
+        ctx.roundRect(50, height * 0.055, brandBadgeW, 30 * fScale, 6);
         ctx.fill();
-        ctx.fillStyle = "#10b981";
-        ctx.fillText(flashText, width - flashW - 44, height * 0.05 + 6 * fScale);
-
-        // Large headline below banner
         ctx.fillStyle = "#ffffff";
-        ctx.font = `black ${Math.round(52 * fScale)}px Inter, system-ui, sans-serif`;
-        ctx.fillText(generatedText.headline, 60, height * 0.30);
+        ctx.fillText(brandText, 64, height * 0.078 + 6 * fScale);
+
+        // Flash sale badge — pill shape
+        const flashText = "⚡ FLASH SALE";
+        ctx.font = `800 ${Math.round(16 * fScale)}px Inter, system-ui, sans-serif`;
+        const flashW = ctx.measureText(flashText).width + 32;
+        ctx.fillStyle = "#ef4444";
+        ctx.beginPath();
+        ctx.roundRect(width - flashW - 50, height * 0.055, flashW, 30 * fScale, 15);
+        ctx.fill();
+        ctx.fillStyle = "#ffffff";
+        ctx.fillText(flashText, width - flashW - 34, height * 0.078 + 4 * fScale);
+
+        // Headline — bold, white, tighter
+        ctx.fillStyle = "#ffffff";
+        ctx.font = `900 ${Math.round(46 * fScale)}px Inter, system-ui, sans-serif`;
+        const headlineY = height * 0.30;
+        ctx.fillText(generatedText.headline, 50, headlineY);
 
         // Subheadline
         ctx.fillStyle = "#d4d4d4";
-        ctx.font = `400 ${Math.round(22 * fScale)}px Inter, system-ui, sans-serif`;
-        ctx.fillText(generatedText.subheadline, 60, height * 0.38);
+        ctx.font = `400 ${Math.round(20 * fScale)}px Inter, system-ui, sans-serif`;
+        ctx.fillText(generatedText.subheadline, 50, headlineY + 48 * fScale);
 
-        // Accent line
-        ctx.fillStyle = "#10b981";
-        ctx.fillRect(60, height * 0.44, 120, 4);
+        // Accent divider line — gradient
+        const lineGrad = ctx.createLinearGradient(50, 0, 180, 0);
+        lineGrad.addColorStop(0, "#10b981");
+        lineGrad.addColorStop(1, "rgba(16,185,129,0)");
+        ctx.fillStyle = lineGrad;
+        ctx.fillRect(50, headlineY + 68 * fScale, 140, 3);
 
-        // Price block
-        drawPrice(60, height * 0.50);
+        // Price block — cleaner layout
+        const priceY = headlineY + 90 * fScale;
+        // Normal price with strikethrough
+        ctx.fillStyle = "#737373";
+        ctx.font = `400 ${Math.round(18 * fScale)}px Inter, system-ui, sans-serif`;
+        const npText = `Rp ${normalPrice.toLocaleString("id-ID")}`;
+        ctx.fillText(npText, 50, priceY);
+        const npWidth = ctx.measureText(npText).width;
+        ctx.strokeStyle = "#ef4444";
+        ctx.lineWidth = 2;
+        ctx.beginPath();
+        ctx.moveTo(50, priceY - 5 * fScale);
+        ctx.lineTo(50 + npWidth, priceY - 5 * fScale);
+        ctx.stroke();
 
-        // Urgency
-        ctx.fillStyle = "#a3a3a3";
-        ctx.font = `italic bold ${Math.round(22 * fScale)}px Inter, system-ui, sans-serif`;
-        ctx.fillText(`⏰ ${generatedText.urgencyText.toUpperCase()}`, 60, height * 0.68);
+        // Promo price — large, white, bold
+        ctx.fillStyle = "#ffffff";
+        ctx.font = `900 ${Math.round(36 * fScale)}px Inter, system-ui, sans-serif`;
+        const promoText = `Rp ${promoPrice.toLocaleString("id-ID")}`;
+        ctx.fillText(promoText, 50, priceY + 38 * fScale);
 
-        // CTA
-        drawCTA(60, height * 0.76, 280, 55 * fScale, 10);
+        // Discount badge
+        if (normalPrice > 0) {
+          const discountPct = Math.round((1 - promoPrice / normalPrice) * 100);
+          if (discountPct > 0) {
+            const discText = `-${discountPct}%`;
+            ctx.font = `800 ${Math.round(16 * fScale)}px Inter, system-ui, sans-serif`;
+            const discW = ctx.measureText(discText).width + 20;
+            const discX = 50 + ctx.measureText(promoText).width + 14;
+            ctx.fillStyle = "#ef4444";
+            ctx.beginPath();
+            ctx.roundRect(discX, priceY + 14 * fScale, discW, 26 * fScale, 6);
+            ctx.fill();
+            ctx.fillStyle = "#ffffff";
+            ctx.fillText(discText, discX + 10, priceY + 32 * fScale);
+          }
+        }
 
-        // Bottom accent line
-        ctx.fillStyle = "#10b981";
-        ctx.fillRect(0, height - 6, width, 6);
+        // Urgency — subtle, bottom area
+        ctx.fillStyle = "rgba(255,255,255,0.6)";
+        ctx.font = `600 ${Math.round(16 * fScale)}px Inter, system-ui, sans-serif`;
+        ctx.fillText(`⏰ ${generatedText.urgencyText.toUpperCase()}`, 50, height * 0.72);
+
+        // CTA button — pill shape with shadow
+        const ctaX = 50;
+        const ctaY = height * 0.78;
+        const ctaW = 260;
+        const ctaH = 50 * fScale;
+        // Shadow
+        ctx.fillStyle = "rgba(0,0,0,0.3)";
+        ctx.beginPath();
+        ctx.roundRect(ctaX + 3, ctaY + 3, ctaW, ctaH, 25);
+        ctx.fill();
+        // Button
+        const ctaGrad = ctx.createLinearGradient(ctaX, ctaY, ctaX + ctaW, ctaY);
+        ctaGrad.addColorStop(0, "#10b981");
+        ctaGrad.addColorStop(1, "#059669");
+        ctx.fillStyle = ctaGrad;
+        ctx.beginPath();
+        ctx.roundRect(ctaX, ctaY, ctaW, ctaH, 25);
+        ctx.fill();
+        ctx.fillStyle = "#ffffff";
+        ctx.font = `800 ${Math.round(18 * fScale)}px Inter, system-ui, sans-serif`;
+        ctx.fillText(generatedText.ctaText || "Beli Sekarang", ctaX + 30, ctaY + 34 * fScale);
+
+        // Bottom accent line — thin gradient
+        const bottomGrad = ctx.createLinearGradient(0, 0, width, 0);
+        bottomGrad.addColorStop(0, "#059669");
+        bottomGrad.addColorStop(0.5, "#10b981");
+        bottomGrad.addColorStop(1, "#059669");
+        ctx.fillStyle = bottomGrad;
+        ctx.fillRect(0, height - 4, width, 4);
       }
 
       // Watermark (all layouts)
