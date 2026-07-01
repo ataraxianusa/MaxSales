@@ -165,7 +165,7 @@ export default function BusinessCanvas({ canvas, setCanvas, onSave, isSetupWizar
             </div>
 
             <div>
-              <label className="block text-xs font-semibold text-neutral-700 dark:text-neutral-300 mb-1.5">Sub-Kategori Produk</label>
+              <label className="block text-xs font-semibold text-neutral-700 dark:text-neutral-300 mb-1.5">Sub-Kategori Produk *</label>
               <input
                 id="inp-dna-subCategory"
                 type="text"
@@ -215,7 +215,7 @@ export default function BusinessCanvas({ canvas, setCanvas, onSave, isSetupWizar
             </div>
 
             <div>
-              <label className="block text-xs font-semibold text-neutral-700 dark:text-neutral-300 mb-1.5">Kualitas Finis / Bahan</label>
+              <label className="block text-xs font-semibold text-neutral-700 dark:text-neutral-300 mb-1.5">Kualitas Finis / Bahan *</label>
               <select
                 id="inp-dna-quality"
                 value={canvas.quality}
@@ -259,7 +259,7 @@ export default function BusinessCanvas({ canvas, setCanvas, onSave, isSetupWizar
           <div className="space-y-5">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
               <div>
-                <label className="block text-xs font-semibold text-neutral-700 dark:text-neutral-300 mb-2">Jenis Kelamin Target Market</label>
+                <label className="block text-xs font-semibold text-neutral-700 dark:text-neutral-300 mb-2">Jenis Kelamin Target Market *</label>
                 <div className="flex space-x-2 text-xs">
                   {["Laki-laki", "Perempuan", "Semua"].map(g => {
                     const isSelected = canvas.genders?.includes(g);
@@ -282,7 +282,7 @@ export default function BusinessCanvas({ canvas, setCanvas, onSave, isSetupWizar
               </div>
 
               <div>
-                <label className="block text-xs font-semibold text-neutral-700 dark:text-neutral-300 mb-2">Rentang Usia</label>
+                <label className="block text-xs font-semibold text-neutral-700 dark:text-neutral-300 mb-2">Rentang Usia *</label>
                 <div className="flex flex-wrap gap-1.5 text-[11px]">
                   {["Anak (0-12)", "Remaja (13-17)", "Dewasa Muda (18-25)", "Dewasa (26-35)", "Paruh Baya (36-50)", "Senior (51+)"].map(a => {
                     const isSelected = canvas.ages?.includes(a);
@@ -415,7 +415,7 @@ export default function BusinessCanvas({ canvas, setCanvas, onSave, isSetupWizar
         {activeSubTab === "pola" && (
           <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
             <div>
-              <label className="block text-xs font-semibold text-neutral-700 dark:text-neutral-300 mb-1.5">Tipe Skema Bisnis</label>
+              <label className="block text-xs font-semibold text-neutral-700 dark:text-neutral-300 mb-1.5">Tipe Skema Bisnis *</label>
               <select
                 id="inp-dna-businessType"
                 value={canvas.businessType}
