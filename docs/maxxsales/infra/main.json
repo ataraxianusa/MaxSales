@@ -1,0 +1,494 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "metadata": {
+    "_generator": {
+      "name": "bicep",
+      "version": "0.44.1.10279",
+      "templateHash": "13273616662051855878"
+    }
+  },
+  "parameters": {
+    "environment": {
+      "type": "string",
+      "metadata": {
+        "description": "Environment: stg or prod"
+      }
+    },
+    "location": {
+      "type": "string",
+      "metadata": {
+        "description": "Azure location for resources"
+      }
+    },
+    "openAiDeployment": {
+      "type": "string",
+      "defaultValue": "gpt-4o",
+      "metadata": {
+        "description": "Azure OpenAI deployment name"
+      }
+    }
+  },
+  "variables": {
+    "functionPlanSku": "[if(equals(parameters('environment'), 'prod'), createObject('name', 'EP2', 'tier', 'ElasticPremium', 'size', 'EP2', 'family', 'EP', 'capacity', 1), createObject('name', 'Y1', 'tier', 'Dynamic', 'size', 'Y1', 'family', 'Y', 'capacity', 0))]",
+    "swaSku": "[if(equals(parameters('environment'), 'prod'), createObject('name', 'Standard', 'tier', 'Standard'), createObject('name', 'Free', 'tier', 'Free'))]",
+    "swaBranch": "[if(equals(parameters('environment'), 'prod'), 'main', 'develop')]",
+    "keyVaultSoftDeleteDays": "[if(equals(parameters('environment'), 'prod'), 90, 7)]",
+    "keyVaultPurgeProtection": "[if(equals(parameters('environment'), 'prod'), true(), false())]",
+    "logRetentionDays": "[if(equals(parameters('environment'), 'prod'), 90, 30)]",
+    "namePrefix": "[format('maxxsales-{0}', parameters('environment'))]",
+    "tags": {
+      "environment": "[parameters('environment')]",
+      "project": "MaxxSales",
+      "managedBy": "VOXIA",
+      "domain": "maxxsales.com"
+    },
+    "storageName": "[format('st{0}', replace(variables('namePrefix'), '-', ''))]",
+    "cosmosSqlRoleDefinitionId": "00000000-0000-0000-0000-000000000002"
+  },
+  "resources": [
+    {
+      "type": "Microsoft.Storage/storageAccounts",
+      "apiVersion": "2025-01-01",
+      "name": "[variables('storageName')]",
+      "location": "[parameters('location')]",
+      "kind": "StorageV2",
+      "sku": {
+        "name": "Standard_LRS"
+      },
+      "properties": {
+        "accessTier": "Hot",
+        "supportsHttpsTrafficOnly": true,
+        "minimumTlsVersion": "TLS1_2",
+        "allowBlobPublicAccess": false,
+        "publicNetworkAccess": "Enabled"
+      },
+      "tags": "[variables('tags')]"
+    },
+    {
+      "type": "Microsoft.Storage/storageAccounts/blobServices",
+      "apiVersion": "2025-01-01",
+      "name": "[format('{0}/{1}', variables('storageName'), 'default')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.Storage/storageAccounts', variables('storageName'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.Storage/storageAccounts/blobServices/containers",
+      "apiVersion": "2025-01-01",
+      "name": "[format('{0}/{1}/{2}', variables('storageName'), 'default', 'product-images')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.Storage/storageAccounts/blobServices', variables('storageName'), 'default')]"
+      ]
+    },
+    {
+      "type": "Microsoft.ManagedIdentity/userAssignedIdentities",
+      "apiVersion": "2024-11-30",
+      "name": "[format('id-{0}', variables('namePrefix'))]",
+      "location": "[parameters('location')]",
+      "tags": "[variables('tags')]"
+    },
+    {
+      "type": "Microsoft.KeyVault/vaults",
+      "apiVersion": "2024-11-01",
+      "name": "[format('kv-{0}', variables('namePrefix'))]",
+      "location": "[parameters('location')]",
+      "properties": {
+        "tenantId": "[subscription().tenantId]",
+        "sku": {
+          "name": "standard",
+          "family": "A"
+        },
+        "enableRbacAuthorization": true,
+        "enableSoftDelete": true,
+        "softDeleteRetentionInDays": "[variables('keyVaultSoftDeleteDays')]",
+        "enablePurgeProtection": "[variables('keyVaultPurgeProtection')]",
+        "publicNetworkAccess": "Enabled",
+        "networkAcls": {
+          "defaultAction": "Allow",
+          "bypass": "AzureServices"
+        }
+      },
+      "tags": "[variables('tags')]"
+    },
+    {
+      "type": "Microsoft.OperationalInsights/workspaces",
+      "apiVersion": "2025-02-01",
+      "name": "[format('log-{0}', variables('namePrefix'))]",
+      "location": "[parameters('location')]",
+      "properties": {
+        "sku": {
+          "name": "PerGB2018"
+        },
+        "retentionInDays": "[variables('logRetentionDays')]"
+      },
+      "tags": "[variables('tags')]"
+    },
+    {
+      "type": "Microsoft.Insights/components",
+      "apiVersion": "2020-02-02",
+      "name": "[format('appi-{0}', variables('namePrefix'))]",
+      "location": "[parameters('location')]",
+      "kind": "web",
+      "properties": {
+        "Application_Type": "web",
+        "WorkspaceResourceId": "[resourceId('Microsoft.OperationalInsights/workspaces', format('log-{0}', variables('namePrefix')))]"
+      },
+      "tags": "[variables('tags')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.OperationalInsights/workspaces', format('log-{0}', variables('namePrefix')))]"
+      ]
+    },
+    {
+      "type": "Microsoft.DocumentDB/databaseAccounts",
+      "apiVersion": "2025-04-15",
+      "name": "[format('cosmos-{0}', variables('namePrefix'))]",
+      "location": "[parameters('location')]",
+      "kind": "GlobalDocumentDB",
+      "identity": {
+        "type": "None"
+      },
+      "properties": {
+        "databaseAccountOfferType": "Standard",
+        "consistencyPolicy": {
+          "defaultConsistencyLevel": "Session",
+          "maxIntervalInSeconds": 5,
+          "maxStalenessPrefix": 100
+        },
+        "locations": [
+          {
+            "locationName": "[parameters('location')]",
+            "failoverPriority": 0,
+            "isZoneRedundant": false
+          }
+        ],
+        "enableMultipleWriteLocations": false,
+        "publicNetworkAccess": "Enabled",
+        "disableLocalAuth": true,
+        "disableKeyBasedMetadataWriteAccess": true
+      },
+      "tags": "[variables('tags')]"
+    },
+    {
+      "type": "Microsoft.DocumentDB/databaseAccounts/sqlDatabases",
+      "apiVersion": "2025-04-15",
+      "name": "[format('{0}/{1}', format('cosmos-{0}', variables('namePrefix')), 'maxxsales')]",
+      "properties": {
+        "resource": {
+          "id": "maxxsales"
+        }
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.DocumentDB/databaseAccounts', format('cosmos-{0}', variables('namePrefix')))]"
+      ]
+    },
+    {
+      "type": "Microsoft.DocumentDB/databaseAccounts/sqlDatabases/containers",
+      "apiVersion": "2025-04-15",
+      "name": "[format('{0}/{1}/{2}', format('cosmos-{0}', variables('namePrefix')), 'maxxsales', 'business-dna')]",
+      "properties": {
+        "resource": {
+          "id": "business-dna",
+          "partitionKey": {
+            "paths": [
+              "/brand"
+            ],
+            "kind": "Hash"
+          }
+        }
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.DocumentDB/databaseAccounts/sqlDatabases', format('cosmos-{0}', variables('namePrefix')), 'maxxsales')]"
+      ]
+    },
+    {
+      "type": "Microsoft.DocumentDB/databaseAccounts/sqlDatabases/containers",
+      "apiVersion": "2025-04-15",
+      "name": "[format('{0}/{1}/{2}', format('cosmos-{0}', variables('namePrefix')), 'maxxsales', 'competitors')]",
+      "properties": {
+        "resource": {
+          "id": "competitors",
+          "partitionKey": {
+            "paths": [
+              "/brand"
+            ],
+            "kind": "Hash"
+          }
+        }
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.DocumentDB/databaseAccounts/sqlDatabases', format('cosmos-{0}', variables('namePrefix')), 'maxxsales')]"
+      ]
+    },
+    {
+      "type": "Microsoft.DocumentDB/databaseAccounts/sqlDatabases/containers",
+      "apiVersion": "2025-04-15",
+      "name": "[format('{0}/{1}/{2}', format('cosmos-{0}', variables('namePrefix')), 'maxxsales', 'segments')]",
+      "properties": {
+        "resource": {
+          "id": "segments",
+          "partitionKey": {
+            "paths": [
+              "/brand"
+            ],
+            "kind": "Hash"
+          }
+        }
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.DocumentDB/databaseAccounts/sqlDatabases', format('cosmos-{0}', variables('namePrefix')), 'maxxsales')]"
+      ]
+    },
+    {
+      "type": "Microsoft.DocumentDB/databaseAccounts/sqlDatabases/containers",
+      "apiVersion": "2025-04-15",
+      "name": "[format('{0}/{1}/{2}', format('cosmos-{0}', variables('namePrefix')), 'maxxsales', 'chat-history')]",
+      "properties": {
+        "resource": {
+          "id": "chat-history",
+          "partitionKey": {
+            "paths": [
+              "/userId"
+            ],
+            "kind": "Hash"
+          },
+          "defaultTtl": 86400
+        }
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.DocumentDB/databaseAccounts/sqlDatabases', format('cosmos-{0}', variables('namePrefix')), 'maxxsales')]"
+      ]
+    },
+    {
+      "type": "Microsoft.DocumentDB/databaseAccounts/sqlDatabases/containers",
+      "apiVersion": "2025-04-15",
+      "name": "[format('{0}/{1}/{2}', format('cosmos-{0}', variables('namePrefix')), 'maxxsales', 'content-library')]",
+      "properties": {
+        "resource": {
+          "id": "content-library",
+          "partitionKey": {
+            "paths": [
+              "/brand"
+            ],
+            "kind": "Hash"
+          }
+        }
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.DocumentDB/databaseAccounts/sqlDatabases', format('cosmos-{0}', variables('namePrefix')), 'maxxsales')]"
+      ]
+    },
+    {
+      "type": "Microsoft.Web/serverfarms",
+      "apiVersion": "2024-11-01",
+      "name": "[format('asp-{0}', variables('namePrefix'))]",
+      "location": "[parameters('location')]",
+      "kind": "linux",
+      "sku": "[variables('functionPlanSku')]",
+      "properties": {
+        "reserved": true
+      },
+      "tags": "[variables('tags')]"
+    },
+    {
+      "type": "Microsoft.Web/sites",
+      "apiVersion": "2024-11-01",
+      "name": "[format('func-{0}', variables('namePrefix'))]",
+      "location": "[parameters('location')]",
+      "kind": "functionapp,linux",
+      "identity": {
+        "type": "UserAssigned",
+        "userAssignedIdentities": {
+          "[format('{0}', resourceId('Microsoft.ManagedIdentity/userAssignedIdentities', format('id-{0}', variables('namePrefix'))))]": {}
+        }
+      },
+      "properties": {
+        "serverFarmId": "[resourceId('Microsoft.Web/serverfarms', format('asp-{0}', variables('namePrefix')))]",
+        "httpsOnly": true,
+        "publicNetworkAccess": "Enabled",
+        "clientAffinityEnabled": false,
+        "siteConfig": {
+          "linuxFxVersion": "NODE|20-lts",
+          "appSettings": [
+            {
+              "name": "FUNCTIONS_EXTENSION_VERSION",
+              "value": "~4"
+            },
+            {
+              "name": "FUNCTIONS_WORKER_RUNTIME",
+              "value": "node"
+            },
+            {
+              "name": "WEBSITE_RUN_FROM_PACKAGE",
+              "value": "1"
+            },
+            {
+              "name": "AzureWebJobsStorage__accountName",
+              "value": "[variables('storageName')]"
+            },
+            {
+              "name": "APPLICATIONINSIGHTS_CONNECTION_STRING",
+              "value": "[format('@Microsoft.KeyVault(SecretUri={0}secrets/AppInsightsConnectionString/)', reference(resourceId('Microsoft.KeyVault/vaults', format('kv-{0}', variables('namePrefix'))), '2024-11-01').vaultUri)]"
+            },
+            {
+              "name": "CosmosDBConnection__accountEndpoint",
+              "value": "[reference(resourceId('Microsoft.DocumentDB/databaseAccounts', format('cosmos-{0}', variables('namePrefix'))), '2025-04-15').documentEndpoint]"
+            },
+            {
+              "name": "AZURE_OPENAI_ENDPOINT",
+              "value": "[format('@Microsoft.KeyVault(SecretUri={0}secrets/OpenAIEndpoint/)', reference(resourceId('Microsoft.KeyVault/vaults', format('kv-{0}', variables('namePrefix'))), '2024-11-01').vaultUri)]"
+            },
+            {
+              "name": "AZURE_OPENAI_KEY",
+              "value": "[format('@Microsoft.KeyVault(SecretUri={0}secrets/OpenAIKey/)', reference(resourceId('Microsoft.KeyVault/vaults', format('kv-{0}', variables('namePrefix'))), '2024-11-01').vaultUri)]"
+            },
+            {
+              "name": "AZURE_OPENAI_DEPLOYMENT",
+              "value": "[parameters('openAiDeployment')]"
+            },
+            {
+              "name": "AZURE_OPENAI_API_VERSION",
+              "value": "2024-10-21"
+            },
+            {
+              "name": "AZURE_STORAGE_CONTAINER",
+              "value": "product-images"
+            },
+            {
+              "name": "NODE_ENV",
+              "value": "[parameters('environment')]"
+            },
+            {
+              "name": "SCM_DO_BUILD_DURING_DEPLOYMENT",
+              "value": "1"
+            }
+          ],
+          "ftpsState": "Disabled",
+          "http20Enabled": true,
+          "minTlsVersion": "1.2",
+          "scmMinTlsVersion": "1.2",
+          "use32BitWorkerProcess": false
+        }
+      },
+      "tags": "[variables('tags')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.DocumentDB/databaseAccounts', format('cosmos-{0}', variables('namePrefix')))]",
+        "[resourceId('Microsoft.Web/serverfarms', format('asp-{0}', variables('namePrefix')))]",
+        "[resourceId('Microsoft.KeyVault/vaults', format('kv-{0}', variables('namePrefix')))]",
+        "[resourceId('Microsoft.ManagedIdentity/userAssignedIdentities', format('id-{0}', variables('namePrefix')))]",
+        "[resourceId('Microsoft.Storage/storageAccounts', variables('storageName'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.Web/staticSites",
+      "apiVersion": "2022-09-01",
+      "name": "[format('swa-{0}', variables('namePrefix'))]",
+      "location": "[if(equals(parameters('environment'), 'prod'), parameters('location'), 'centralus')]",
+      "sku": "[variables('swaSku')]",
+      "properties": {
+        "repositoryUrl": "https://github.com/VOXIA-ID/MaxxSales",
+        "branch": "[variables('swaBranch')]",
+        "buildProperties": {
+          "appLocation": ".",
+          "apiLocation": "api",
+          "outputLocation": "dist"
+        },
+        "stagingEnvironmentPolicy": "Enabled",
+        "allowConfigFileUpdates": true
+      },
+      "tags": "[variables('tags')]"
+    },
+    {
+      "type": "Microsoft.Web/staticSites/config",
+      "apiVersion": "2022-09-01",
+      "name": "[format('{0}/{1}', format('swa-{0}', variables('namePrefix')), 'authsettings')]",
+      "properties": {
+        "platform": {
+          "enabled": true,
+          "runtimeVersion": "1.0"
+        },
+        "globalValidation": {
+          "unauthenticatedClientAction": "AllowAnonymous"
+        },
+        "identityProviders": {
+          "google": {
+            "registration": {
+              "clientIdSettingName": "GOOGLE_CLIENT_ID",
+              "clientSecretSettingName": "GOOGLE_CLIENT_SECRET"
+            },
+            "login": {
+              "scopes": [
+                "openid",
+                "profile",
+                "email"
+              ]
+            }
+          }
+        }
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.Web/staticSites', format('swa-{0}', variables('namePrefix')))]"
+      ]
+    },
+    {
+      "type": "Microsoft.DocumentDB/databaseAccounts/sqlRoleAssignments",
+      "apiVersion": "2025-04-15",
+      "name": "[format('{0}/{1}', format('cosmos-{0}', variables('namePrefix')), guid(resourceId('Microsoft.DocumentDB/databaseAccounts', format('cosmos-{0}', variables('namePrefix'))), resourceId('Microsoft.ManagedIdentity/userAssignedIdentities', format('id-{0}', variables('namePrefix'))), variables('cosmosSqlRoleDefinitionId')))]",
+      "properties": {
+        "roleDefinitionId": "[variables('cosmosSqlRoleDefinitionId')]",
+        "principalId": "[reference(resourceId('Microsoft.ManagedIdentity/userAssignedIdentities', format('id-{0}', variables('namePrefix'))), '2024-11-30').principalId]",
+        "scope": "[format('{0}/dbs/maxxsales', resourceId('Microsoft.DocumentDB/databaseAccounts', format('cosmos-{0}', variables('namePrefix'))))]"
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.DocumentDB/databaseAccounts', format('cosmos-{0}', variables('namePrefix')))]",
+        "[resourceId('Microsoft.ManagedIdentity/userAssignedIdentities', format('id-{0}', variables('namePrefix')))]"
+      ]
+    }
+  ],
+  "outputs": {
+    "functionAppName": {
+      "type": "string",
+      "value": "[format('func-{0}', variables('namePrefix'))]"
+    },
+    "functionAppEndpoint": {
+      "type": "string",
+      "value": "[format('https://{0}', reference(resourceId('Microsoft.Web/sites', format('func-{0}', variables('namePrefix'))), '2024-11-01').defaultHostName)]"
+    },
+    "swaEndpoint": {
+      "type": "string",
+      "value": "[format('https://{0}', reference(resourceId('Microsoft.Web/staticSites', format('swa-{0}', variables('namePrefix'))), '2022-09-01').defaultHostname)]"
+    },
+    "swaName": {
+      "type": "string",
+      "value": "[format('swa-{0}', variables('namePrefix'))]"
+    },
+    "storageAccountName": {
+      "type": "string",
+      "value": "[variables('storageName')]"
+    },
+    "cosmosEndpoint": {
+      "type": "string",
+      "value": "[reference(resourceId('Microsoft.DocumentDB/databaseAccounts', format('cosmos-{0}', variables('namePrefix'))), '2025-04-15').documentEndpoint]"
+    },
+    "keyVaultUri": {
+      "type": "string",
+      "value": "[reference(resourceId('Microsoft.KeyVault/vaults', format('kv-{0}', variables('namePrefix'))), '2024-11-01').vaultUri]"
+    },
+    "identityPrincipalId": {
+      "type": "string",
+      "value": "[reference(resourceId('Microsoft.ManagedIdentity/userAssignedIdentities', format('id-{0}', variables('namePrefix'))), '2024-11-30').principalId]"
+    },
+    "appInsightsConnectionString": {
+      "type": "string",
+      "value": "[reference(resourceId('Microsoft.Insights/components', format('appi-{0}', variables('namePrefix'))), '2020-02-02').ConnectionString]"
+    },
+    "cosmosDatabaseName": {
+      "type": "string",
+      "value": "maxxsales"
+    },
+    "cosmosDatabaseId": {
+      "type": "string",
+      "value": "[resourceId('Microsoft.DocumentDB/databaseAccounts/sqlDatabases', format('cosmos-{0}', variables('namePrefix')), 'maxxsales')]"
+    }
+  }
+}
