@@ -1,7 +1,7 @@
 import React from "react";
 import { CustomerSegment, BusinessCanvasData } from "../types";
 import { API_BASE } from "../api";
-import { Users, HeartCrack, Plus, Award, Loader2, Coins, Cpu, CheckCircle2, AlertTriangle, TrendingUp, Lightbulb, BarChart3 } from "lucide-react";
+import { Users, HeartCrack, Plus, Award, Loader2, Coins, Cpu, CheckCircle2, AlertTriangle, TrendingUp, Lightbulb, BarChart3, RefreshCw } from "lucide-react";
 import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, Cell } from "recharts";
 import { motion } from "motion/react";
 
@@ -144,6 +144,30 @@ export default function CustomerInsight({ dna, segments, setSegments }: Customer
     }
   };
 
+  const isDefaultSegments = segments.length > 0 && segments.every(s => s.channel === "-" || s.avgTransaction === 0);
+
+  const handleRegenerateSegments = async () => {
+    setAiLoading(true);
+    setAiError(null);
+    try {
+      const response = await fetch(`${API_BASE}/api/auto-segment`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ dna })
+      });
+      const data = await response.json();
+      if (data.segments && data.segments.length > 0) {
+        setSegments(data.segments);
+      } else {
+        setAiError("Gagal generate segmen. Pastikan DNA bisnis sudah terisi.");
+      }
+    } catch (err: any) {
+      setAiError(err.message || "Gagal regenerate segmen.");
+    } finally {
+      setAiLoading(false);
+    }
+  };
+
   const fetchRevenuePrediction = async () => {
     setRevenueLoading(true);
     try {
@@ -221,6 +245,15 @@ export default function CustomerInsight({ dna, segments, setSegments }: Customer
             <span className="text-[10px] font-bold font-mono text-neutral-400 uppercase tracking-widest">Model Segmentasi Demografi Psikografis</span>
             <span className="text-xs text-neutral-400 font-mono">Berdasarkan data DNA: {dna.productName}</span>
           </div>
+
+          {/* Default Segments Indicator */}
+          {isDefaultSegments && (
+            <div className="p-2.5 rounded-lg bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-800/30">
+              <span className="text-[10px] text-amber-700 dark:text-amber-300">
+                {dna.productName ? "Segmen placeholder. Klik \"Regenerate Segmen\" untuk analisis AI berdasarkan DNA Anda." : "Isi nama produk di DNA Canvas, lalu klik \"Regenerate Segmen\" untuk dapatkan analisis AI."}
+              </span>
+            </div>
+          )}
 
           {/* Segmentation Cards */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -321,7 +354,11 @@ export default function CustomerInsight({ dna, segments, setSegments }: Customer
               </div>
               {aiError && <span className="text-[9px] text-red-500">{aiError}</span>}
             </div>
-            <div className="grid grid-cols-2 gap-2">
+            <div className="grid grid-cols-3 gap-2">
+              <button onClick={handleRegenerateSegments} disabled={aiLoading || !dna.productName?.trim()} className="flex items-center justify-center space-x-1.5 py-2.5 rounded-lg border border-neutral-200 dark:border-[#262626] bg-neutral-50 dark:bg-[#1A1A1A] hover:bg-neutral-100 dark:hover:bg-[#262626] transition-colors disabled:opacity-40 text-[10px] font-semibold text-neutral-700 dark:text-neutral-300">
+                {aiLoading ? <Loader2 className="w-3 h-3 animate-spin" /> : <RefreshCw className="w-3 h-3 text-emerald-500" />}
+                <span>Regenerate Segmen</span>
+              </button>
               <button onClick={fetchRevenuePrediction} disabled={revenueLoading || segments.length === 0} className="flex items-center justify-center space-x-1.5 py-2.5 rounded-lg border border-neutral-200 dark:border-[#262626] bg-neutral-50 dark:bg-[#1A1A1A] hover:bg-neutral-100 dark:hover:bg-[#262626] transition-colors disabled:opacity-40 text-[10px] font-semibold text-neutral-700 dark:text-neutral-300">
                 {revenueLoading ? <Loader2 className="w-3 h-3 animate-spin" /> : <BarChart3 className="w-3 h-3 text-blue-500" />}
                 <span>Prediksi Revenue</span>

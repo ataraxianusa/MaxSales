@@ -128,11 +128,8 @@ export default function App() {
   });
 
   // Auto-generate segments from DNA when DNA is filled
-  const autoSegmentFetchedRef = React.useRef(false);
   React.useEffect(() => {
     if (!canvas.productName?.trim()) return;
-    if (autoSegmentFetchedRef.current) return;
-    autoSegmentFetchedRef.current = true;
 
     const fetchAutoSegment = async () => {
       try {
@@ -150,9 +147,9 @@ export default function App() {
       }
     };
 
-    const timer = setTimeout(fetchAutoSegment, 1500);
+    const timer = setTimeout(fetchAutoSegment, 2000);
     return () => clearTimeout(timer);
-  }, []);
+  }, [canvas.productName, canvas.category, canvas.normalPrice, canvas.brand]);
 
   // Sync state to localStorage
   React.useEffect(() => {
