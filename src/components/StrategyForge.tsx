@@ -3,22 +3,24 @@ import { StrategyArea } from "../types";
 import { API_BASE } from "../api";
 import { useChain } from "../store/ChainContext";
 import AIFeedback from "./AIFeedback";
-import { Zap, Shield, Sparkles, Copy, CheckCircle2, Loader2 } from "lucide-react";
+import { Zap, Shield, Sparkles, Copy, CheckCircle2, Loader2, AlertTriangle } from "lucide-react";
 
 export default function StrategyForge() {
   const { dna, competitors, strategyOutput, setStrategyOutput } = useChain();
   const [level, setLevel] = React.useState<"Konservatif" | "Moderat" | "Agresif">("Moderat");
   const [loading, setLoading] = React.useState(false);
+  const [error, setError] = React.useState<string | null>(null);
   const [strategyIntro, setStrategyIntro] = React.useState(
     strategyOutput?.synopsis || "STRATEGI AMAN BERKELANJUTAN: Pelayanan prima dipadu dengan retensi loyalitas seimbang."
   );
   const [areas, setAreas] = React.useState<StrategyArea[]>(strategyOutput?.pillars || []);
   const [copiedText, setCopiedText] = React.useState(false);
 
-  const cacheRef = React.useRef({ dnaHash: "", competitorsHash: "" });
+  const abortRef = React.useRef<AbortController | null>(null);
 
-  const fetchStrategy = async (optLevel: "Konservatif" | "Moderat" | "Agresif") => {
+  const fetchStrategy = async (optLevel: "Konservatif" | "Moderat" | "Agresif", signal?: AbortSignal) => {
     setLoading(true);
+    setError(null);
     try {
       const response = await fetch(`${API_BASE}/api/strategy-forge`, {
         method: "POST",
@@ -28,34 +30,46 @@ export default function StrategyForge() {
           optimismLevel: optLevel,
           competitors: competitors.filter((c) => c.name.trim()),
         }),
+        signal,
       });
       const data = await response.json();
-      if (data.pillars) {
+      if (data.pillars && data.pillars.length > 0) {
         setAreas(data.pillars);
         setStrategyIntro(data.synopsis || data.intro || "");
         setStrategyOutput({ pillars: data.pillars, synopsis: data.synopsis || "" });
+      } else {
+        setError("AI tidak menghasilkan strategi. Coba lagi atau ganti level optimisme.");
       }
-    } catch (err) {
+    } catch (err: any) {
+      if (err.name === "AbortError") return;
       console.error(err);
-      alert("Gagal meramu strategi. Silakan periksa jaringan dan coba lagi.");
+      setError("Gagal menghubungi AI. Periksa jaringan lalu coba lagi.");
     } finally {
       setLoading(false);
     }
   };
 
+  // Auto-fetch on mount only
   React.useEffect(() => {
-    // Always fetch on mount or level change, don't use cache
-    cacheRef.current.dnaHash = "";
-    cacheRef.current.competitorsHash = "";
-    fetchStrategy(level);
-  }, [level]);
+    const ctrl = new AbortController();
+    fetchStrategy("Moderat", ctrl.signal);
+    return () => ctrl.abort();
+  }, []);
 
   const handleLevelChange = (newLevel: "Konservatif" | "Moderat" | "Agresif") => {
+    if (newLevel === level && areas.length > 0) return;
     setLevel(newLevel);
-    // Force re-fetch by clearing cache
-    cacheRef.current.dnaHash = "";
-    cacheRef.current.competitorsHash = "";
-    fetchStrategy(newLevel);
+    abortRef.current?.abort();
+    const ctrl = new AbortController();
+    abortRef.current = ctrl;
+    fetchStrategy(newLevel, ctrl.signal);
+  };
+
+  const handleManualGenerate = () => {
+    abortRef.current?.abort();
+    const ctrl = new AbortController();
+    abortRef.current = ctrl;
+    fetchStrategy(level, ctrl.signal);
   };
 
   const copyStrategySummary = () => {
@@ -91,15 +105,32 @@ export default function StrategyForge() {
 
         <div className="flex items-center space-x-2">
           <button
+            onClick={handleManualGenerate}
+            disabled={loading || !dna.productName?.trim()}
+            className="px-3.5 py-1.5 rounded text-xs font-mono border border-neutral-350 dark:border-[#262626] bg-neutral-950 text-white dark:bg-[#E5E5E5] dark:text-black hover:bg-neutral-800 dark:hover:bg-neutral-200 disabled:opacity-40 flex items-center space-x-1.5 transition-colors"
+          >
+            {loading ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : <Sparkles className="w-3.5 h-3.5" />}
+            <span>Generate Strategi</span>
+          </button>
+          <button
             id="btn-copy-strategy-plan"
             onClick={copyStrategySummary}
-            className="px-3.5 py-1.5 rounded text-xs font-mono border hover:bg-neutral-50 dark:hover:bg-[#1A1A1A] border-neutral-350 dark:border-[#262626] text-neutral-800 dark:text-neutral-200 flex items-center space-x-1.5 transition-colors"
+            disabled={areas.length === 0}
+            className="px-3.5 py-1.5 rounded text-xs font-mono border hover:bg-neutral-50 dark:hover:bg-[#1A1A1A] border-neutral-350 dark:border-[#262626] text-neutral-800 dark:text-neutral-200 flex items-center space-x-1.5 transition-colors disabled:opacity-40"
           >
             {copiedText ? <CheckCircle2 className="w-3.5 h-3.5 text-emerald-500" /> : <Copy className="w-3.5 h-3.5" />}
             <span>{copiedText ? "Tersalin!" : "Salin Rencana Rapi"}</span>
           </button>
         </div>
       </div>
+
+      {/* Error Banner */}
+      {error && (
+        <div className="p-3 rounded-lg bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800/30 flex items-center space-x-2">
+          <AlertTriangle className="w-4 h-4 text-red-500 shrink-0" />
+          <span className="text-[11px] text-red-700 dark:text-red-300">{error}</span>
+        </div>
+      )}
 
       {/* Optimism Level Buttons */}
       <div className="p-5 rounded border bg-white dark:bg-[#111111] border-neutral-200 dark:border-[#262626] space-y-4">
@@ -145,7 +176,7 @@ export default function StrategyForge() {
         <div className="p-20 text-center rounded border bg-white dark:bg-[#111111] border-neutral-200 dark:border-[#262626] flex flex-col items-center justify-center space-y-3">
           <Loader2 className="w-6 h-6 text-neutral-900 dark:text-white animate-spin" />
           <p className="text-[11px] text-neutral-550 dark:text-neutral-450 font-mono text-center max-w-md">
-            Bekerja di server proxy... AI sedang menganalisis keunggulan {dna.productName || "Pengusaha"} Anda beserta {competitors.length} kompetitor...
+            Bekerja di server proxy... AI sedang menganalisis keunggulan {dna.productName || "bisnis"} Anda beserta {competitors.filter((c) => c.name.trim()).length} kompetitor...
           </p>
         </div>
       ) : (
