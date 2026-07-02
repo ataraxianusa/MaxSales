@@ -358,14 +358,19 @@ export default function App() {
       {/* Main Routing Render */}
       <main id="main-content" className="flex-1">
         
-        {/* All Routes — partner, admin, legal pages */}
+        {/* Partner Dashboard wrapper */}
         <Routes>
           <Route path="/partner/:code" element={<PartnerDashboardWrapper />} />
-          <Route path="/admin/promos" element={<AdminPromos onBack={() => navigate("/")} />} />
+          <Route path="*" element={null} />
+        </Routes>
+        
+        {/* LEGAL PAGES — direct URL, hide all other content */}
+        <Routes>
           <Route path="/about" element={<AboutPage onBack={() => navigate("/")} />} />
           <Route path="/terms" element={<TermsOfService onBack={() => navigate("/")} />} />
           <Route path="/privacy" element={<PrivacyPolicy onBack={() => navigate("/")} />} />
           <Route path="/risk" element={<RiskDisclosure onBack={() => navigate("/")} />} />
+          <Route path="/admin/promos" element={<AdminPromos onBack={() => navigate("/")} />} />
           <Route path="*" element={null} />
         </Routes>
 
