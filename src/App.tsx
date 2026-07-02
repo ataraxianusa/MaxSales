@@ -358,11 +358,19 @@ export default function App() {
       {/* Main Routing Render */}
       <main id="main-content" className="flex-1">
         
-        {/* Partner Dashboard wrapper */}
-        <Routes>
-          <Route path="/partner/:code" element={<PartnerDashboardWrapper />} />
-          <Route path="*" element={null} />
-        </Routes>
+        {/* GitHub Pages SPA redirect: /admin/promos → /?/admin/promos */}
+        {(() => {
+          const search = location.search;
+          const pathname = location.pathname;
+          if (pathname === "/admin/promos" || search.includes("/admin/promos")) {
+            return <AdminPromos onBack={() => navigate("/")} />;
+          }
+          if (pathname.startsWith("/partner/") || search.includes("/partner/")) {
+            const code = pathname.split("/partner/")[1] || search.split("/partner/")[1]?.split("&")[0] || "";
+            return <PartnerDashboard partnerCode={code} onLogout={() => window.location.href = "/"} onBack={() => navigate("/")} />;
+          }
+          return null;
+        })()}
         
         {/* LEGAL PAGES — direct URL, hide all other content */}
         <Routes>
@@ -370,7 +378,6 @@ export default function App() {
           <Route path="/terms" element={<TermsOfService onBack={() => navigate("/")} />} />
           <Route path="/privacy" element={<PrivacyPolicy onBack={() => navigate("/")} />} />
           <Route path="/risk" element={<RiskDisclosure onBack={() => navigate("/")} />} />
-          <Route path="/admin/promos" element={<AdminPromos onBack={() => navigate("/")} />} />
           <Route path="*" element={null} />
         </Routes>
 
