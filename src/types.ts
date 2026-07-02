@@ -258,13 +258,32 @@ export interface PromoCode {
   id: string;
   code: string;
   influencer: string;
+  type: "internal" | "partner";
   discount: number;
-  type: "percent" | "nominal";
+  discountType: "percent" | "nominal";
+  commissionRate: number;
+  partnerName?: string;
+  partnerContact?: string;
   maxUsage: number;
   currentUsage: number;
+  totalRevenue: number;
+  totalPartnerPayout: number;
   expiresAt?: string;
   active: boolean;
   createdBy: string;
+  createdAt: string;
+}
+
+export interface PartnerPayout {
+  id: string;
+  partnerName: string;
+  partnerContact: string;
+  promoCode: string;
+  amount: number;
+  status: "pending" | "paid" | "processing";
+  paidAt?: string;
+  paidBy?: string;
+  notes?: string;
   createdAt: string;
 }
 

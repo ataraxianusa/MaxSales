@@ -1,5 +1,5 @@
 import React from "react";
-import { Routes, Route, useNavigate, useLocation } from "react-router-dom";
+import { Routes, Route, useNavigate, useLocation, useParams } from "react-router-dom";
 import { API_BASE } from "./api";
 import Header from "./components/Header";
 import LandingPage from "./components/LandingPage";
@@ -16,6 +16,8 @@ import ContentGenerator from "./components/ContentGenerator";
 import DailyPulse from "./components/DailyPulse";
 import FloatingChatbot from "./components/FloatingChatbot";
 import UserTour from "./components/UserTour";
+import PartnerDashboard from "./pages/PartnerDashboard";
+import AdminPromos from "./pages/AdminPromos";
 import { ChainProvider, useChain } from "./store/ChainContext";
 import { useDNAAutoUpdate } from "./hooks/useDNAAutoUpdate";
 import { 
@@ -74,6 +76,17 @@ function DNANotificationBanner() {
         </button>
       </div>
     </div>
+  );
+}
+
+function PartnerDashboardWrapper() {
+  const { code } = useParams();
+  return (
+    <PartnerDashboard
+      partnerCode={code || "PARTNER"}
+      onLogout={() => window.location.href = "/"}
+      onBack={() => window.history.back()}
+    />
   );
 }
 
@@ -345,12 +358,23 @@ export default function App() {
       {/* Main Routing Render */}
       <main id="main-content" className="flex-1">
         
+        {/* Partner Dashboard wrapper */}
+        <Routes>
+          <Route path="/partner/:code" element={
+            <PartnerDashboardWrapper />
+          } />
+          <Route path="/admin/promos" element={
+            <AdminPromos onBack={() => window.history.back()} />
+          } />
+        </Routes>
+        
         {/* LEGAL PAGES — direct URL, hide all other content */}
         <Routes>
           <Route path="/about" element={<AboutPage onBack={() => navigate("/")} />} />
           <Route path="/terms" element={<TermsOfService onBack={() => navigate("/")} />} />
           <Route path="/privacy" element={<PrivacyPolicy onBack={() => navigate("/")} />} />
           <Route path="/risk" element={<RiskDisclosure onBack={() => navigate("/")} />} />
+          <Route path="/partner/:code" element={<PartnerDashboardWrapper />} />
           <Route path="*" element={null} />
         </Routes>
 
