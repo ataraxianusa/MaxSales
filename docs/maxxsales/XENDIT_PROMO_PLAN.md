@@ -1,196 +1,96 @@
-# Plan: Xendit Payment Integration + Promo Code System
+# Plan: Xendit Payment + Promo Code System v02
 
-## Context
+## Business Rules
 
-Saat ini **tidak ada implementasi Xendit** di kedua repo. Billing UI sepenuhnya mock — klik "Upgrade" hanya toggle state React, tidak ada backend call. Plan ini membangun dari nol:
+### Diskon vs Komisi
+| Komponen | Siapa | Contoh |
+|----------|-------|--------|
+| **Diskon** | User (potongan harga) | 20% → user bayar Rp239.200 |
+| **Komisi** | Partner (bagian dari yang user bayar) | 10% → partner dapat Rp23.920 |
 
-1. Xendit payment processing (Invoice API)
-2. Promo code system (BUNGA20 = influencer + diskon %)
-3. Cosmos DB persistence (users, payments, promo_codes)
-4. Webhook handling (payment confirmation)
-5. Admin dashboard untuk manage promo codes
-
----
-
-## Architecture Overview
-
+### Format Kode Promo
 ```
-User klik "Beli Sekarang"
-    ↓
-Input kode promo (opsional): BUNGA20
-    ↓
-POST /api/promo/validate → { valid: true, discount: 20%, type: "percent" }
-    ↓
-POST /api/create-invoice → amount = Rp299.000 × (1-20%) = Rp239.200
-    ↓
-Xendit Invoice API → returns invoiceUrl
-    ↓
-User redirect ke Xendit checkout → bayar via VA/E-Wallet/QRIS
-    ↓
-Xendit webhook → POST /api/payment-webhook
-    ↓
-Backend: verify signature → update user plan → record payment → track promo usage
-    ↓
-User redirect balik ke app → plan = Pro
+[INFLUENCER][DISKON]
+BUNGA20      → BUNGA + 20% diskon
+SAMPOERNA15  → SAMPOERNA + 15% diskon
+VIP100K      → VIP + Rp100.000 diskon
+FLASH30      → FLASH + 30% diskon (internal, tidak ada komisi)
 ```
-
----
-
-## Cosmos DB Containers ( tambah 3 )
-
-| Container | Partition Key | TTL | Purpose |
-|-----------|--------------|-----|---------|
-| `users` | `/id` | - | User account + plan status |
-| `payments` | `/userId` | - | Invoice & payment records |
-| `promo-codes` | `/code` | - | Kode promo definition + usage |
-
----
-
-## Backend: 6 Azure Functions baru
-
-### 1. `api/src/functions/create-invoice/index.ts`
-
-**Input:** `{ userId, email, name, promoCode? }`
-**Logic:**
-1. Cek user di Cosmos DB
-2. Jika `promoCode` ada → validate via promo engine → hitung discounted amount
-3. Call `xendit-node` Invoice.create():
-   ```typescript
-   Invoice.create({
-     externalId: `PRO-${userId}-${Date.now()}`,
-     amount: discountedAmount, // Rp239.200 jika BUNGA20
-     description: `MaxxSales Pro ${promoCode ? `(${promoCode})` : ''}`,
-     customer: { givenNames: name, email },
-     successRedirectUrl: `${APP_URL}/billing?success=true`,
-     failureRedirectUrl: `${APP_URL}/billing?success=false`,
-     currency: 'IDR',
-     items: [{ name: 'MaxxSales Pro (Monthly)', quantity: 1, price: discountedAmount }]
-   })
-   ```
-4. Simpan invoice ke Cosmos DB `payments` container
-5. Return `{ invoiceId, invoiceUrl, amount, originalAmount, discount }`
-
-### 2. `api/src/functions/payment-webhook/index.ts`
-
-**Input:** Xendit webhook payload
-**Logic:**
-1. Verify webhook signature (`XENDIT_WEBHOOK_TOKEN`)
-2. Cek status pembayaran (PAID / EXPIRED / FAILED)
-3. Jika PAID:
-   - Update user plan → 'Pro' di Cosmos DB `users`
-   - Update payment status di `payments`
-   - Increment usage counter di `promo-codes` (jika pakai promo)
-4. Return 200 OK
-
-### 3. `api/src/functions/promo-validate/index.ts`
-
-**Input:** `{ code: string, userId: string }`
-**Logic:**
-1. Cari promo code di Cosmos DB
-2. Validasi:
-   - Code exists?
-   - Not expired?
-   - Not at max usage?
-   - User belum pakai code ini?
-3. Return `{ valid, discount, type, message }`
-
-**Format kode:**
-```
-BUNGA20    → influencer="BUNGA", discount=20%, type="percent"
-RAMADHAN50 → influencer="RAMADHAN", discount=50%, type="percent"
-VIP100K    → influencer="VIP", discount=100000, type="nominal"
-FLASH30    → influencer="FLASH", discount=30%, type="percent"
-```
-
-### 4. `api/src/functions/promo-admin/index.ts`
-
-**Input:** `{ action: "create"|"list"|"delete"|"toggle", data? }`
-**Logic:**
-- `create`: Buat promo code baru
-- `list`: List semua promo codes
-- `delete`: Hapus promo code
-- `toggle`: Aktifkan/nonaktifkan
-
-### 5. `api/src/functions/billing-history/index.ts`
-
-**Input:** `{ userId }`
-**Logic:**
-1. Query Cosmos DB `payments` by userId
-2. Return list transaksi
-
-### 6. `api/src/functions/user-plan/index.ts`
-
-**Input:** `{ userId }`
-**Logic:**
-1. Query Cosmos DB `users` by userId
-2. Return `{ plan: "Free"|"Pro", expiresAt? }`
-
----
-
-## Frontend Changes
-
-### 1. Checkout Modal (ganti mock billing modal)
-
-**File:** `src/App.tsx` — replace billing modal
-
-```
-┌─────────────────────────────────────┐
-│  UPGRADE KE PRO                     │
-│                                     │
-│  Harga: Rp 299.000/bln             │
-│  [input kode promo: BUNGA20    ]   │
-│  [Gunakan]  → diskon 20% = Rp239.200│
-│                                     │
-│  Total: Rp 239.200                  │
-│  Hemat: Rp 60.000                   │
-│                                     │
-│  [Bayar Sekarang]                   │
-│  QRIS • GoPay • OVO • VA           │
-└─────────────────────────────────────┘
-```
-
-### 2. Pricing Section (landing page)
-
-Tambah input kode promo di pricing card:
-- Input field "Punya kode promo?"
-- Button "Gunakan"
-- Tampilkan diskon jika valid
-
-### 3. Admin Dashboard (baru)
-
-Halaman `/admin/promos` untuk:
-- List promo codes (code, influencer, discount, usage, expires)
-- Create promo code
-- Toggle active/inactive
-- Delete promo code
 
 ---
 
 ## Data Models
 
-### User (Cosmos DB `users`)
+### PartnerProfile (Cosmos DB `partner-profiles`) — BARU
 ```typescript
 {
-  id: string;           // userId
-  name: string;
+  id: string;
+  // Data Pribadi/Organisasi
+  name: string;                    // "Bunga Putri" / "Sampoerna Foundation"
+  type: "personal" | "organization";
   email: string;
-  plan: "Free" | "Pro";
-  planExpiresAt?: string;
-  promoCodesUsed: string[];  // ["BUNGA20", "FLASH30"]
+  phone: string;                   // HP/WA aktif
+  address?: string;
+  
+  // PIC (untuk organisasi)
+  picName?: string;
+  picPhone?: string;
+  picEmail?: string;
+  
+  // Rekening Bank (manual transfer)
+  bankName?: string;
+  bankAccountNumber?: string;
+  bankAccountName?: string;
+  
+  // E-Wallet (untuk disbursement)
+  ovoPhone?: string;
+  gopayPhone?: string;
+  
+  // Metadata
+  promoCode: string;               // Auto-generated: "BUNGA20"
+  discountPercent: number;         // 20
+  commissionPercent: number;       // 10 (komisi partner)
+  totalEarning: number;
+  totalPayout: number;
+  pendingPayout: number;
+  status: "active" | "inactive" | "suspended";
   createdAt: string;
   updatedAt: string;
 }
 ```
 
-### Payment (Cosmos DB `payments`)
+### PromoCode (tetap)
 ```typescript
 {
-  id: string;           // invoiceId
+  id: string;
+  code: string;                    // "BUNGA20"
+  type: "internal" | "partner";
+  discount: number;                // 20 (untuk user)
+  discountType: "percent" | "nominal";
+  commissionRate: number;          // 10 (komisi partner, 0 untuk internal)
+  partnerName?: string;            // "BUNGA"
+  maxUsage: number;
+  currentUsage: number;
+  totalRevenue: number;
+  totalPartnerPayout: number;
+  active: boolean;
+  expiresAt?: string;
+  createdAt: string;
+}
+```
+
+### Payment (tetap, tambah komisi)
+```typescript
+{
+  id: string;
   userId: string;
-  amount: number;       // Rp239.200 (discounted)
-  originalAmount: number; // Rp299.000
-  promoCode?: string;   // "BUNGA20"
-  discount?: number;    // 20
+  amount: number;                  // Yang user bayar
+  originalAmount: number;          // Harga normal
+  promoCode?: string;
+  discount?: number;               // Diskon untuk user
+  promoType?: "internal" | "partner";
+  commissionAmount?: number;       // Komisi untuk partner
+  partnerName?: string;
   status: "pending" | "paid" | "expired" | "failed";
   xenditInvoiceId: string;
   paymentMethod?: string;
@@ -199,60 +99,327 @@ Halaman `/admin/promos` untuk:
 }
 ```
 
-### PromoCode (Cosmos DB `promo-codes`)
+### PartnerPayout (tetap)
 ```typescript
 {
-  id: string;           // code (e.g., "BUNGA20")
-  code: string;         // "BUNGA20"
-  influencer: string;   // "BUNGA"
-  discount: number;     // 20
-  type: "percent" | "nominal";
-  maxUsage: number;     // 100
-  currentUsage: number; // 35
-  expiresAt?: string;
-  active: boolean;
-  createdBy: string;
+  id: string;
+  partnerName: string;
+  partnerContact: string;
+  promoCode: string;
+  amount: number;
+  status: "pending" | "paid" | "processing";
+  paidAt?: string;
+  paidBy?: string;
+  notes?: string;
   createdAt: string;
 }
 ```
 
 ---
 
-## Environment Variables
+## Super Admin Dashboard
+
+### Tab 1: Partner Management
+- List semua partner (bukan promo codes)
+- Klik partner → detail profile + promo code
+- Form buat partner baru:
+  - Data pribadi/organisasi
+  - PIC (jika organisasi)
+  - Rekening bank
+  - E-wallet (OVO/GoPay)
+  - Diskon % + Komisi %
+  - **Kode promo auto-generated** dari nama partner
+- Export CSV/Excel
+
+### Tab 2: Promo Codes
+- List semua kode (internal + partner)
+- Usage stats per kode
+
+### Tab 3: Payouts
+- Pending payouts per partner
+- Mark as paid
+- Export payout report
+
+---
+
+## Auto-Generate Kode Promo
+
+**Logic:**
+```
+Input: nama = "Bunga Putri", diskon = 20
+Output: kode = "BUNGA20"
+
+Input: nama = "Sampoerna Foundation", diskon = 15
+Output: kode = "SAMPOERNA15"
+
+Input: nama = "Kopi Kenangan", diskon = 25
+Output: kode = "KOPI25"
+```
+
+**Rules:**
+1. Ambil kata pertama dari nama (huruf kapital)
+2. Tambah angka diskon
+3. Jika sudah ada → tambah suffix (BUNGA20-2, BUNGA20-3)
+
+---
+
+## Export CSV/Excel
+
+### Waktu Operasional: WIB (UTC+7)
+Semua tanggal dan waktu di-export dalam format WIB:
+- Cutoff settlement: 00:00 WIB tanggal 1 bulan berikutnya
+- Deadline pembayaran: 23:59 WIB tanggal 5 bulan berikutnya
+- Format tanggal: `DD/MM/YYYY HH:MM WIB`
+
+### 3 Jenis Export
+
+#### 1. Export Semua Partner
+Button: "Export Semua Partner"
+
+| Kolom | Contoh | Sumber |
+|-------|--------|--------|
+| Kode Promo | BUNGA20 | PartnerProfile |
+| Nama Partner | Bunga Putri | PartnerProfile |
+| Tipe | Personal | PartnerProfile |
+| Email | bunga@email.com | PartnerProfile |
+| WA | 08123456789 | PartnerProfile |
+| Bank | BCA | PartnerProfile |
+| No Rekening | 1234567890 | PartnerProfile |
+| Nama Rekening | Bunga Putri | PartnerProfile |
+| OVO | 08123456789 | PartnerProfile |
+| GoPay | 08123456789 | PartnerProfile |
+| Diskon % | 20% | PartnerProfile |
+| Komisi % | 10% | PartnerProfile |
+| Join Date | 15/06/2026 | PartnerProfile |
+| Total Transaksi | 35 | Aggregated |
+| Total Revenue | Rp8.372.000 | Aggregated |
+| Total Earning | Rp837.200 | Aggregated |
+| Total Payout | Rp598.000 | Aggregated |
+| Pending | Rp239.200 | Aggregated |
+| Status | Active | PartnerProfile |
+
+#### 2. Export Transaksi Periode
+Button: "Export Transaksi" + pilih bulan/tahun
+
+| Kolom | Contoh | Sumber |
+|-------|--------|--------|
+| ID Transaksi | INV-001 | Payment |
+| Tanggal | 15/06/2026 14:30 WIB | Payment.paidAt |
+| User | Rina Sari | Payment.userId → User |
+| Kode Promo | BUNGA20 | Payment.promoType |
+| Harga Normal | Rp299.000 | Payment.originalAmount |
+| Diskon | 20% | Payment.discount |
+| Yang Dibayar | Rp239.200 | Payment.amount |
+| Komisi Partner | Rp23.920 | Payment.commissionAmount |
+| Partner | BUNGA | Payment.partnerName |
+| Metode Bayar | QRIS | Payment.paymentMethod |
+| Status | Paid | Payment.status |
+
+#### 3. Export Settlement Report
+Button: "Export Settlement" + pilih periode
+
+| Kolom | Contoh | Sumber |
+|-------|--------|--------|
+| Partner | Bunga Putri | PartnerSettlement |
+| Periode | 01/06/2026 - 30/06/2026 | PartnerSettlement |
+| Jumlah Transaksi | 15 | PartnerSettlement |
+| Total Revenue | Rp3.588.000 | PartnerSettlement |
+| Total Komisi | Rp358.800 | PartnerSettlement |
+| Deadline | 05/07/2026 23:59 WIB | PartnerSettlement |
+| Status | Pending | PartnerSettlement |
+| Tanggal Bayar | - | PartnerSettlement.paidAt |
+| Dibayar Oleh | - | PartnerSettlement.paidBy |
+
+### Implementasi Export
+
+```typescript
+// Server-side: Azure Function
+app.post("/api/partner-export", async (c) => {
+  const { type, periodStart?, periodEnd? } = await c.req.json();
+  
+  let data: any[];
+  let filename: string;
+  
+  switch (type) {
+    case "partners":
+      data = await queryAllPartnerProfiles();
+      filename = `partner-list-${formatDate(now())}.csv`;
+      break;
+    case "transactions":
+      data = await queryPayments({ periodStart, periodEnd, promoType: "partner" });
+      filename = `transaksi-${periodStart}-${periodEnd}.csv`;
+      break;
+    case "settlements":
+      data = await querySettlements({ periodStart, periodEnd });
+      filename = `settlement-${periodStart}-${periodEnd}.csv`;
+      break;
+  }
+  
+  const csv = convertToCSV(data);
+  return new Response(csv, {
+    headers: {
+      "Content-Type": "text/csv",
+      "Content-Disposition": `attachment; filename="${filename}"`
+    }
+  });
+});
+```
+
+### Frontend: Export Button di Admin
+
+```tsx
+// 3 tombol export di header admin
+<button onClick={() => handleExport("partners")}>Export Semua Partner</button>
+<button onClick={() => handleExport("transactions")}>Export Transaksi</button>
+<button onClick={() => handleExport("settlements")}>Export Settlement</button>
+```
+
+---
+
+## Settlement System
+
+### Flow Settlement
 
 ```
-XENDIT_SECRET_KEY=xnd_development_...
-XENDIT_WEBHOOK_TOKEN=...
-APP_URL=https://maxxsales.com
+Tanggal 1 bulan berikutnya (auto-trigger via Azure Timer):
+    ↓
+System auto-cutoff: transaksi 1-30/31 bulan lalu
+    ↓
+Hitung total komisi per partner:
+  - BUNGA: 15 transaksi × Rp23.920 = Rp358.800
+  - SAMPOERNA: 50 transaksi × Rp1.196.000
+    ↓
+Generate settlement report
+    ↓
+Deadline bayar: tanggal 5 bulan berikutnya
 ```
+
+### PartnerSettlement (Cosmos DB `partner-settlements`) — BARU
+
+```typescript
+{
+  id: string;
+  partnerName: string;
+  periodStart: string;      // "2026-06-01"
+  periodEnd: string;        // "2026-06-30"
+  totalTransactions: number;
+  totalRevenue: number;     // Total yang user bayar
+  totalCommission: number;  // Komisi partner
+  status: "pending" | "processing" | "paid" | "overdue";
+  deadline: string;         // "2026-07-05" (5 hari setelah cutoff)
+  paidAt?: string;
+  paidBy?: string;
+  notes?: string;
+  createdAt: string;
+}
+```
+
+### Join Date
+
+Partner mendapat `joinDate` otomatis saat admin buat partner baru:
+
+```typescript
+joinDate: string;  // Auto-generated: new Date().toISOString()
+```
+
+**Kegunaan join date:**
+- Settlement period pertama: Partner join 15 Juni → periode pertama 15-30 Juni (partial)
+- Audit trail: Kapan partner mulai aktif
+- Reporting: "Partner aktif > 6 bulan"
+- Masa depan: Tier system / loyalty program
+
+### Auto-Cutoff Logic (WIB / UTC+7)
+
+```typescript
+// Azure Timer Trigger: 0 17 * * * (17:00 UTC = 00:00 WIB)
+// Check: apakah hari ini hari terakhir bulan?
+function runSettlement() {
+  const nowWIB = new Date(new Date().toLocaleString("en-US", { timeZone: "Asia/Jakarta" }));
+  const isLastDay = nowWIB.getDate() === getDaysInMonth(nowWIB.getMonth() + 1, nowWIB.getFullYear());
+  
+  if (!isLastDay) return; // Skip if not last day of month
+  
+  const lastMonth = getPreviousMonth(nowWIB);
+  const periodStart = firstDayOfMonth(lastMonth);
+  const periodEnd = lastDayOfMonth(lastMonth);
+  
+  // Query all paid partner transactions in period
+  const transactions = queryPayments({
+    periodStart,
+    periodEnd,
+    promoType: "partner",
+    status: "paid"
+  });
+  
+  // Group by partnerName
+  const partnerGroups = groupBy(transactions, "partnerName");
+  
+  // Create settlement record per partner
+  for (const [partner, txs] of Object.entries(partnerGroups)) {
+    const totalCommission = txs.reduce((s, t) => s + (t.commissionAmount || 0), 0);
+    const totalRevenue = txs.reduce((s, t) => s + t.amount, 0);
+    
+    createSettlement({
+      partnerName: partner,
+      periodStart,
+      periodEnd,
+      totalTransactions: txs.length,
+      totalRevenue,
+      totalCommission,
+      deadline: addDays(firstDayOfMonth(now()), 5), // Tanggal 5 bulan berikutnya
+      status: "pending",
+      createdAt: now()
+    });
+  }
+}
+```
+
+### Admin Settlement Dashboard
+
+| Kolom | Contoh |
+|-------|--------|
+| Partner | Bunga Putri |
+| Periode | 1-30 Juni 2026 |
+| Transaksi | 15 |
+| Revenue | Rp3.588.000 |
+| Komisi | Rp358.800 |
+| Deadline | 5 Juli 2026 |
+| Status | Pending / Paid / Overdue |
+
+### Payment Deadline Rules
+
+| Hari | Status | Aksi |
+|------|--------|------|
+| 1-5 bulan berikutnya | Pending | Admin proses manual transfer |
+| 6+ bulan berikutnya | Overdue | Alert ke admin + notifikasi ke partner |
+| Setelah bayar | Paid | Record paidAt, paidBy |
+
+### Export Settlement Report
+
+Format CSV/Excel untuk partner:
+| Kolom | Contoh |
+|-------|--------|
+| Periode | Juni 2026 |
+| Jumlah Transaksi | 15 |
+| Total Revenue | Rp3.588.000 |
+| Total Komisi | Rp358.800 |
+| Status | Pending |
+| Deadline | 5 Juli 2026 |
 
 ---
 
 ## Execution Order
 
-| Phase | What | Files |
-|-------|------|-------|
-| 1 | Cosmos DB containers (users, payments, promo-codes) | infra/main.bicep |
-| 2 | xendit-node SDK install | api/package.json |
-| 3 | create-invoice function | api/src/functions/create-invoice/ |
-| 4 | payment-webhook function | api/src/functions/payment-webhook/ |
-| 5 | promo-validate function | api/src/functions/promo-validate/ |
-| 6 | promo-admin function | api/src/functions/promo-admin/ |
-| 7 | billing-history function | api/src/functions/billing-history/ |
-| 8 | user-plan function | api/src/functions/user-plan/ |
-| 9 | Frontend checkout modal | src/App.tsx |
-| 10 | Pricing section promo input | src/components/PricingSection.tsx |
-| 11 | Admin promo dashboard | src/pages/AdminPromos.tsx (baru) |
-| 12 | Xendit env vars → Key Vault | post-deploy.sh |
-| 13 | Deploy & test | CI/CD |
-
----
-
-## Verification
-
-1. `npm run build` — zero errors
-2. Test promo validate: `curl -X POST /api/promo-validate -d '{"code":"BUNGA20","userId":"test"}'`
-3. Test create invoice: `curl -X POST /api/create-invoice -d '{"userId":"test","email":"test@test.com","promoCode":"BUNGA20"}'`
-4. Test webhook: Send mock Xendit webhook → verify user plan updated
-5. Test billing history: `curl /api/billing-history?userId=test`
-6. Manual test: Click "Bayar Sekarang" → redirect ke Xendit → bayar → redirect balik → plan = Pro
+| # | Phase | File/Dir |
+|---|-------|----------|
+| 1 | PartnerProfile type + Cosmos container | `src/types.ts`, `infra/main.bicep` |
+| 2 | PartnerSettlement type + Cosmos container | `src/types.ts`, `infra/main.bicep` |
+| 3 | partner-manage function | `api/src/functions/partner-manage/` |
+| 4 | Auto-generate kode promo logic | `api/src/shared/promo-generator.ts` |
+| 5 | settlement-cron function (Timer Trigger) | `api/src/functions/settlement-cron/` |
+| 6 | partner-export function (CSV) | `api/src/functions/partner-export/` |
+| 7 | AdminPromos → AdminPartners redesign | `src/pages/AdminPromos.tsx` |
+| 8 | PartnerProfile form (lengkap) | `src/pages/AdminPromos.tsx` |
+| 9 | Settlement tab + export | `src/pages/AdminPromos.tsx` |
+| 10 | Export CSV/Excel button | `src/pages/AdminPromos.tsx` |
+| 11 | Xendit integration | (sudah ada plan sebelumnya) |

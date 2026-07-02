@@ -294,10 +294,57 @@ export interface Payment {
   originalAmount: number;
   promoCode?: string;
   discount?: number;
+  promoType?: "internal" | "partner";
+  commissionAmount?: number;
+  partnerName?: string;
   status: "pending" | "paid" | "expired" | "failed";
   xenditInvoiceId: string;
   paymentMethod?: string;
   paidAt?: string;
+  createdAt: string;
+}
+
+export interface PartnerProfile {
+  id: string;
+  name: string;
+  type: "personal" | "organization";
+  email: string;
+  phone: string;
+  address?: string;
+  picName?: string;
+  picPhone?: string;
+  picEmail?: string;
+  bankName?: string;
+  bankAccountNumber?: string;
+  bankAccountName?: string;
+  ovoPhone?: string;
+  gopayPhone?: string;
+  promoCode: string;
+  discountPercent: number;
+  commissionPercent: number;
+  joinDate: string;
+  totalEarning: number;
+  totalPayout: number;
+  pendingPayout: number;
+  totalTransactions: number;
+  status: "active" | "inactive" | "suspended";
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface PartnerSettlement {
+  id: string;
+  partnerName: string;
+  periodStart: string;
+  periodEnd: string;
+  totalTransactions: number;
+  totalRevenue: number;
+  totalCommission: number;
+  status: "pending" | "processing" | "paid" | "overdue";
+  deadline: string;
+  paidAt?: string;
+  paidBy?: string;
+  notes?: string;
   createdAt: string;
 }
 
