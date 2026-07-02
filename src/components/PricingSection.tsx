@@ -17,11 +17,22 @@ import {
   Rocket,
   RefreshCcw,
   Star,
+  Tag,
 } from "lucide-react";
 
 interface PricingSectionProps {
   onBuyNow: () => void;
 }
+
+const BASE_PRICE = 299000;
+
+const PROMO_CODES: Record<string, { influencer: string; discount: number; type: "percent" | "nominal" }> = {
+  BUNGA20: { influencer: "BUNGA", discount: 20, type: "percent" },
+  RAMADHAN50: { influencer: "RAMADHAN", discount: 50, type: "percent" },
+  FLASH30: { influencer: "FLASH", discount: 30, type: "percent" },
+  VIP100K: { influencer: "VIP", discount: 100000, type: "nominal" },
+  FOUNDER15: { influencer: "FOUNDER", discount: 15, type: "percent" },
+};
 
 const BENEFITS = [
   {
@@ -99,6 +110,30 @@ const TRUST_BADGES = [
 
 export default function PricingSection({ onBuyNow }: PricingSectionProps) {
   const [hovered, setHovered] = React.useState(false);
+  const [promoCode, setPromoCode] = React.useState("");
+  const [promoResult, setPromoResult] = React.useState<{ valid: boolean; code: string; discount: number; type: string; savingText: string; message?: string } | null>(null);
+
+  const handleApplyPromo = () => {
+    const code = promoCode.trim().toUpperCase();
+    if (!code) return;
+    const promo = PROMO_CODES[code];
+    if (promo) {
+      const saving = promo.type === "percent"
+        ? `${promo.discount}% (Rp${(BASE_PRICE * promo.discount / 100).toLocaleString("id-ID")})`
+        : `Rp${promo.discount.toLocaleString("id-ID")}`;
+      setPromoResult({ valid: true, code, discount: promo.discount, type: promo.type, savingText: saving });
+    } else {
+      setPromoResult({ valid: false, code, discount: 0, type: "", savingText: "", message: `Kode "${code}" tidak ditemukan atau sudah kedaluwarsa.` });
+    }
+  };
+
+  const finalPrice = promoResult?.valid
+    ? promoResult.type === "percent"
+      ? Math.round(BASE_PRICE * (1 - promoResult.discount / 100))
+      : BASE_PRICE - promoResult.discount
+    : BASE_PRICE;
+
+  const discountAmount = BASE_PRICE - finalPrice;
   const [countdown, setCountdown] = React.useState({ h: 5, m: 47, s: 12 });
 
   // Live countdown timer for urgency
@@ -235,10 +270,10 @@ export default function PricingSection({ onBuyNow }: PricingSectionProps) {
                 <BadgePercent className="w-4 h-4 text-[#cba258] relative z-10" />
                 <div className="relative z-10">
                   <span className="text-lg font-black text-[#cba258] leading-none block">
-                    40%
+                    {promoResult?.valid ? `${promoResult.discount}${promoResult.type === "percent" ? "%" : ""}` : "40%"}
                   </span>
                   <span className="text-[8px] font-mono text-[#cba258]/85 leading-none">
-                    HEMAT
+                    {promoResult?.valid ? `HEMAT Rp${discountAmount.toLocaleString("id-ID")}` : "HEMAT"}
                   </span>
                 </div>
               </motion.div>
@@ -314,6 +349,55 @@ export default function PricingSection({ onBuyNow }: PricingSectionProps) {
               </div>
             </div>
 
+            {/* Promo Code Input */}
+            <div className="mb-4">
+              <div className="flex gap-2">
+                <div className="flex-1 relative">
+                  <Tag className="absolute left-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-[#cba258]/60" />
+                  <input
+                    type="text"
+                    placeholder="Punya kode promo?"
+                    value={promoCode}
+                    onChange={e => setPromoCode(e.target.value.toUpperCase())}
+                    onKeyDown={e => e.key === "Enter" && handleApplyPromo()}
+                    className="w-full pl-9 pr-3 py-2.5 rounded-xl bg-[#122620] border border-stone-border text-xs font-mono text-white placeholder:text-white/30 focus:outline-none focus:border-[#cba258]/50 transition-colors"
+                  />
+                </div>
+                <button
+                  onClick={handleApplyPromo}
+                  disabled={!promoCode.trim()}
+                  className="px-4 py-2.5 rounded-xl bg-[#cba258]/10 border border-[#cba258]/30 text-[10px] font-bold font-mono text-[#cba258] hover:bg-[#cba258]/20 transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
+                >
+                  Gunakan
+                </button>
+              </div>
+              <AnimatePresence>
+                {promoResult && (
+                  <motion.div
+                    initial={{ opacity: 0, y: -5, height: 0 }}
+                    animate={{ opacity: 1, y: 0, height: "auto" }}
+                    exit={{ opacity: 0, y: -5, height: 0 }}
+                    className="mt-2"
+                  >
+                    {promoResult.valid ? (
+                      <div className="flex items-center gap-2 px-3 py-2 rounded-lg bg-emerald-500/10 border border-emerald-500/20">
+                        <Check className="w-3.5 h-3.5 text-emerald-400" />
+                        <span className="text-[10px] font-mono text-emerald-400">
+                          Kode "{promoResult.code}" aktif — Hemat {promoResult.savingText}
+                        </span>
+                      </div>
+                    ) : (
+                      <div className="flex items-center gap-2 px-3 py-2 rounded-lg bg-red-500/10 border border-red-500/20">
+                        <span className="text-[10px] font-mono text-red-400">
+                          {promoResult.message}
+                        </span>
+                      </div>
+                    )}
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </div>
+
             {/* CTA Button */}
             <motion.button
               id="cta-buy-now"
@@ -322,7 +406,7 @@ export default function PricingSection({ onBuyNow }: PricingSectionProps) {
             >
               <CreditCard className="w-5 h-5 relative z-10" />
               <span className="relative z-10 tracking-wide font-body">
-                Beli Sekarang — Rp299.000
+                Beli Sekarang — Rp{finalPrice.toLocaleString("id-ID")}
               </span>
               <ArrowRight className="w-4 h-4 relative z-10 transition-transform duration-300 group-hover:translate-x-1" />
             </motion.button>
