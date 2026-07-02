@@ -251,3 +251,44 @@ export const defaultSegments = (): CustomerSegment[] => [
     risk: "High"
   }
 ];
+
+// ── Payment & Promo Types ──
+
+export interface PromoCode {
+  id: string;
+  code: string;
+  influencer: string;
+  discount: number;
+  type: "percent" | "nominal";
+  maxUsage: number;
+  currentUsage: number;
+  expiresAt?: string;
+  active: boolean;
+  createdBy: string;
+  createdAt: string;
+}
+
+export interface Payment {
+  id: string;
+  userId: string;
+  amount: number;
+  originalAmount: number;
+  promoCode?: string;
+  discount?: number;
+  status: "pending" | "paid" | "expired" | "failed";
+  xenditInvoiceId: string;
+  paymentMethod?: string;
+  paidAt?: string;
+  createdAt: string;
+}
+
+export interface UserAccount {
+  id: string;
+  name: string;
+  email: string;
+  plan: "Free" | "Pro";
+  planExpiresAt?: string;
+  promoCodesUsed: string[];
+  createdAt: string;
+  updatedAt: string;
+}
