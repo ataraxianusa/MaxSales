@@ -358,28 +358,19 @@ export default function App() {
       {/* Main Routing Render */}
       <main id="main-content" className="flex-1">
         
-        {/* Partner Dashboard wrapper */}
+        {/* All Routes — partner, admin, legal pages */}
         <Routes>
-          <Route path="/partner/:code" element={
-            <PartnerDashboardWrapper />
-          } />
-          <Route path="/admin/promos" element={
-            <AdminPromos onBack={() => window.history.back()} />
-          } />
-        </Routes>
-        
-        {/* LEGAL PAGES — direct URL, hide all other content */}
-        <Routes>
+          <Route path="/partner/:code" element={<PartnerDashboardWrapper />} />
+          <Route path="/admin/promos" element={<AdminPromos onBack={() => navigate("/")} />} />
           <Route path="/about" element={<AboutPage onBack={() => navigate("/")} />} />
           <Route path="/terms" element={<TermsOfService onBack={() => navigate("/")} />} />
           <Route path="/privacy" element={<PrivacyPolicy onBack={() => navigate("/")} />} />
           <Route path="/risk" element={<RiskDisclosure onBack={() => navigate("/")} />} />
-          <Route path="/partner/:code" element={<PartnerDashboardWrapper />} />
           <Route path="*" element={null} />
         </Routes>
 
-        {/* APP CONTENT — only render when NOT on a legal page */}
-        {!["/about", "/terms", "/privacy", "/risk"].includes(location.pathname) && (
+        {/* APP CONTENT — only render when NOT on a special page */}
+        {!["/about", "/terms", "/privacy", "/risk", "/admin/promos"].includes(location.pathname) && !location.pathname.startsWith("/partner/") && (
           <>
             {/* LANDING PAGE ROUTE */}
             {currentTab === "landing" && (
