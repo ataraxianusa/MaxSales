@@ -118,33 +118,57 @@ export default function AdminPromos({ onBack }: AdminPromosProps) {
 
           {showForm && (
             <div className="mb-4 p-4 rounded-xl border border-neutral-200 dark:border-[#262626] bg-neutral-50 dark:bg-[#111111] space-y-3">
-              <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
-                <input placeholder="Kode (BUNGA20)" value={form.code} onChange={e => setForm({ ...form, code: e.target.value })} className="text-xs px-3 py-2 rounded-lg border border-neutral-300 dark:border-[#262626] bg-white dark:bg-[#1A1A1A] text-neutral-900 dark:text-white" />
-                <select value={form.type} onChange={e => setForm({ ...form, type: e.target.value as any })} className="text-xs px-3 py-2 rounded-lg border border-neutral-300 dark:border-[#262626] bg-white dark:bg-[#1A1A1A] text-neutral-900 dark:text-white">
-                  <option value="internal">Internal (100% MaxxSales)</option>
-                  <option value="partner">Partner (split revenue)</option>
-                </select>
-                <input placeholder="Diskon (20)" value={form.discount} onChange={e => setForm({ ...form, discount: e.target.value })} className="text-xs px-3 py-2 rounded-lg border border-neutral-300 dark:border-[#262626] bg-white dark:bg-[#1A1A1A] text-neutral-900 dark:text-white" />
-                <select value={form.discountType} onChange={e => setForm({ ...form, discountType: e.target.value as any })} className="text-xs px-3 py-2 rounded-lg border border-neutral-300 dark:border-[#262626] bg-white dark:bg-[#1A1A1A] text-neutral-900 dark:text-white">
-                  <option value="percent">Persen (%)</option>
-                  <option value="nominal">Nominal (Rp)</option>
-                </select>
+              {/* Step 1: Pilih tipe dulu */}
+              <div className="grid grid-cols-2 gap-3">
+                <button onClick={() => setForm({ ...form, type: "internal" })}
+                  className={`p-4 rounded-xl border text-left transition-colors ${form.type === "internal" ? "border-[#cba258] bg-[#cba258]/5" : "border-neutral-200 dark:border-[#262626] hover:border-neutral-400"}`}>
+                  <span className="text-sm font-bold text-neutral-900 dark:text-white block">Internal</span>
+                  <span className="text-[10px] text-neutral-500">100% masuk MaxxSales</span>
+                </button>
+                <button onClick={() => setForm({ ...form, type: "partner" })}
+                  className={`p-4 rounded-xl border text-left transition-colors ${form.type === "partner" ? "border-blue-500 bg-blue-500/5" : "border-neutral-200 dark:border-[#262626] hover:border-neutral-400"}`}>
+                  <span className="text-sm font-bold text-neutral-900 dark:text-white block">Partner</span>
+                  <span className="text-[10px] text-neutral-500">Split revenue dengan partner</span>
+                </button>
               </div>
-              {form.type === "partner" && (
-                <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
-                  <input placeholder="Nama Partner" value={form.partnerName} onChange={e => setForm({ ...form, partnerName: e.target.value })} className="text-xs px-3 py-2 rounded-lg border border-neutral-300 dark:border-[#262626] bg-white dark:bg-[#1A1A1A] text-neutral-900 dark:text-white" />
-                  <input placeholder="Kontak (email/WA)" value={form.partnerContact} onChange={e => setForm({ ...form, partnerContact: e.target.value })} className="text-xs px-3 py-2 rounded-lg border border-neutral-300 dark:border-[#262626] bg-white dark:bg-[#1A1A1A] text-neutral-900 dark:text-white" />
-                  <input placeholder="Komisi partner % (20)" value={form.commissionRate} onChange={e => setForm({ ...form, commissionRate: e.target.value })} className="text-xs px-3 py-2 rounded-lg border border-neutral-300 dark:border-[#262626] bg-white dark:bg-[#1A1A1A] text-neutral-900 dark:text-white" />
-                  <input placeholder="Max usage (100)" value={form.maxUsage} onChange={e => setForm({ ...form, maxUsage: e.target.value })} className="text-xs px-3 py-2 rounded-lg border border-neutral-300 dark:border-[#262626] bg-white dark:bg-[#1A1A1A] text-neutral-900 dark:text-white" />
-                </div>
-              )}
+
+              {/* Step 2: Field sesuai tipe */}
               {form.type === "internal" && (
-                <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
-                  <input placeholder="Influencer" value={form.influencer} onChange={e => setForm({ ...form, influencer: e.target.value })} className="text-xs px-3 py-2 rounded-lg border border-neutral-300 dark:border-[#262626] bg-white dark:bg-[#1A1A1A] text-neutral-900 dark:text-white" />
-                  <input placeholder="Max usage (100)" value={form.maxUsage} onChange={e => setForm({ ...form, maxUsage: e.target.value })} className="text-xs px-3 py-2 rounded-lg border border-neutral-300 dark:border-[#262626] bg-white dark:bg-[#1A1A1A] text-neutral-900 dark:text-white" />
+                <div className="space-y-3">
+                  <span className="text-[10px] font-bold font-mono text-[#cba258] uppercase tracking-wider">Kode Promo Internal</span>
+                  <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+                    <input placeholder="Kode (FLASH30)" value={form.code} onChange={e => setForm({ ...form, code: e.target.value })} className="text-xs px-3 py-2 rounded-lg border border-neutral-300 dark:border-[#262626] bg-white dark:bg-[#1A1A1A] text-neutral-900 dark:text-white" />
+                    <input placeholder="Diskon (30)" value={form.discount} onChange={e => setForm({ ...form, discount: e.target.value })} className="text-xs px-3 py-2 rounded-lg border border-neutral-300 dark:border-[#262626] bg-white dark:bg-[#1A1A1A] text-neutral-900 dark:text-white" />
+                    <select value={form.discountType} onChange={e => setForm({ ...form, discountType: e.target.value as any })} className="text-xs px-3 py-2 rounded-lg border border-neutral-300 dark:border-[#262626] bg-white dark:bg-[#1A1A1A] text-neutral-900 dark:text-white">
+                      <option value="percent">Persen (%)</option>
+                      <option value="nominal">Nominal (Rp)</option>
+                    </select>
+                    <input placeholder="Max usage (100)" value={form.maxUsage} onChange={e => setForm({ ...form, maxUsage: e.target.value })} className="text-xs px-3 py-2 rounded-lg border border-neutral-300 dark:border-[#262626] bg-white dark:bg-[#1A1A1A] text-neutral-900 dark:text-white" />
+                  </div>
                 </div>
               )}
-              <div className="flex gap-2">
+
+              {form.type === "partner" && (
+                <div className="space-y-3">
+                  <span className="text-[10px] font-bold font-mono text-blue-500 uppercase tracking-wider">Kode Promo Partner</span>
+                  <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
+                    <input placeholder="Kode (BUNGA20)" value={form.code} onChange={e => setForm({ ...form, code: e.target.value })} className="text-xs px-3 py-2 rounded-lg border border-neutral-300 dark:border-[#262626] bg-white dark:bg-[#1A1A1A] text-neutral-900 dark:text-white" />
+                    <input placeholder="Diskon (20)" value={form.discount} onChange={e => setForm({ ...form, discount: e.target.value })} className="text-xs px-3 py-2 rounded-lg border border-neutral-300 dark:border-[#262626] bg-white dark:bg-[#1A1A1A] text-neutral-900 dark:text-white" />
+                    <select value={form.discountType} onChange={e => setForm({ ...form, discountType: e.target.value as any })} className="text-xs px-3 py-2 rounded-lg border border-neutral-300 dark:border-[#262626] bg-white dark:bg-[#1A1A1A] text-neutral-900 dark:text-white">
+                      <option value="percent">Persen (%)</option>
+                      <option value="nominal">Nominal (Rp)</option>
+                    </select>
+                  </div>
+                  <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+                    <input placeholder="Nama Partner" value={form.partnerName} onChange={e => setForm({ ...form, partnerName: e.target.value })} className="text-xs px-3 py-2 rounded-lg border border-neutral-300 dark:border-[#262626] bg-white dark:bg-[#1A1A1A] text-neutral-900 dark:text-white" />
+                    <input placeholder="Kontak (email/WA)" value={form.partnerContact} onChange={e => setForm({ ...form, partnerContact: e.target.value })} className="text-xs px-3 py-2 rounded-lg border border-neutral-300 dark:border-[#262626] bg-white dark:bg-[#1A1A1A] text-neutral-900 dark:text-white" />
+                    <input placeholder="Komisi partner %" value={form.commissionRate} onChange={e => setForm({ ...form, commissionRate: e.target.value })} className="text-xs px-3 py-2 rounded-lg border border-neutral-300 dark:border-[#262626] bg-white dark:bg-[#1A1A1A] text-neutral-900 dark:text-white" />
+                    <input placeholder="Max usage (100)" value={form.maxUsage} onChange={e => setForm({ ...form, maxUsage: e.target.value })} className="text-xs px-3 py-2 rounded-lg border border-neutral-300 dark:border-[#262626] bg-white dark:bg-[#1A1A1A] text-neutral-900 dark:text-white" />
+                  </div>
+                </div>
+              )}
+
+              <div className="flex gap-2 pt-2">
                 <button onClick={handleCreate} className="px-4 py-2 rounded-lg bg-[#00754A] text-white text-xs font-bold hover:bg-[#005a3a] transition-colors">Simpan</button>
                 <button onClick={() => setShowForm(false)} className="px-4 py-2 rounded-lg border border-neutral-300 dark:border-[#262626] text-xs font-bold text-neutral-600 dark:text-neutral-400 hover:bg-neutral-100 dark:hover:bg-[#1A1A1A] transition-colors">Batal</button>
               </div>
