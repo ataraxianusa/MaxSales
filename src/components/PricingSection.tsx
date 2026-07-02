@@ -350,23 +350,24 @@ export default function PricingSection({ onBuyNow }: PricingSectionProps) {
             </div>
 
             {/* Promo Code Input */}
-            <div className="mb-4">
+            <div className="mb-4 p-3 rounded-xl border border-dashed border-[#cba258]/40 bg-[#cba258]/5">
+              <label className="text-[10px] font-bold font-mono text-[#cba258] uppercase tracking-wider mb-2 block flex items-center gap-1.5">
+                <Tag className="w-3.5 h-3.5" />
+                Kode Promo / Voucher Influencer
+              </label>
               <div className="flex gap-2">
-                <div className="flex-1 relative">
-                  <Tag className="absolute left-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-[#cba258]/60" />
-                  <input
-                    type="text"
-                    placeholder="Punya kode promo?"
-                    value={promoCode}
-                    onChange={e => setPromoCode(e.target.value.toUpperCase())}
-                    onKeyDown={e => e.key === "Enter" && handleApplyPromo()}
-                    className="w-full pl-9 pr-3 py-2.5 rounded-xl bg-[#122620] border border-stone-border text-xs font-mono text-white placeholder:text-white/30 focus:outline-none focus:border-[#cba258]/50 transition-colors"
-                  />
-                </div>
+                <input
+                  type="text"
+                  placeholder="Contoh: BUNGA20, FLASH30, RAMADHAN50"
+                  value={promoCode}
+                  onChange={e => setPromoCode(e.target.value.toUpperCase())}
+                  onKeyDown={e => e.key === "Enter" && handleApplyPromo()}
+                  className="flex-1 px-3 py-2.5 rounded-lg bg-[#1E3932] border border-[#cba258]/30 text-sm font-mono font-bold text-white placeholder:text-white/50 focus:outline-none focus:border-[#cba258] focus:ring-1 focus:ring-[#cba258]/30 transition-all"
+                />
                 <button
                   onClick={handleApplyPromo}
                   disabled={!promoCode.trim()}
-                  className="px-4 py-2.5 rounded-xl bg-[#cba258]/10 border border-[#cba258]/30 text-[10px] font-bold font-mono text-[#cba258] hover:bg-[#cba258]/20 transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
+                  className="px-5 py-2.5 rounded-lg bg-[#cba258] text-[#1E3932] text-xs font-black font-mono hover:bg-[#d4af6a] active:scale-95 transition-all disabled:opacity-40 disabled:cursor-not-allowed shadow-lg shadow-[#cba258]/20"
                 >
                   Gunakan
                 </button>
@@ -380,15 +381,15 @@ export default function PricingSection({ onBuyNow }: PricingSectionProps) {
                     className="mt-2"
                   >
                     {promoResult.valid ? (
-                      <div className="flex items-center gap-2 px-3 py-2 rounded-lg bg-emerald-500/10 border border-emerald-500/20">
-                        <Check className="w-3.5 h-3.5 text-emerald-400" />
-                        <span className="text-[10px] font-mono text-emerald-400">
-                          Kode "{promoResult.code}" aktif — Hemat {promoResult.savingText}
+                      <div className="flex items-center gap-2 px-3 py-2.5 rounded-lg bg-emerald-500/15 border border-emerald-500/30">
+                        <Check className="w-4 h-4 text-emerald-400 shrink-0" />
+                        <span className="text-xs font-bold font-mono text-emerald-400">
+                          Kode "{promoResult.code}" aktif! Hemat {promoResult.savingText}
                         </span>
                       </div>
                     ) : (
-                      <div className="flex items-center gap-2 px-3 py-2 rounded-lg bg-red-500/10 border border-red-500/20">
-                        <span className="text-[10px] font-mono text-red-400">
+                      <div className="flex items-center gap-2 px-3 py-2.5 rounded-lg bg-red-500/15 border border-red-500/30">
+                        <span className="text-xs font-bold font-mono text-red-400">
                           {promoResult.message}
                         </span>
                       </div>
